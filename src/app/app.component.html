@@ -6,7 +6,7 @@
     [opened]="drawerOpened$ | async"
   >
     <mat-toolbar class="mat-elevation-z4 toolbar" color="primary">
-      <h1>SHO-KAI</h1>
+      <h1>Cosmoscan</h1>
     </mat-toolbar>
     <mat-nav-list> </mat-nav-list>
   </mat-drawer>
@@ -17,7 +17,7 @@
       </button>
       <form #form="ngForm" (submit)="submit()" [ngClass.xs]="'xs'">
         <mat-form-field appearance="fill">
-          <mat-label>検索</mat-label>
+          <mat-label>Transaction hash</mat-label>
           <input matInput name="search" [(ngModel)]="forms.search" />
           <button mat-icon-button matSuffix>
             <mat-icon>search</mat-icon>
