@@ -1,1 +1,4 @@
-<p>home works!</p>
+<ng-container *ngIf="designated$ | async; else undesignated"></ng-container>
+<ng-template #undesignated>
+
+</ng-template>

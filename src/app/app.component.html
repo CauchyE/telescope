@@ -15,15 +15,12 @@
       <button mat-icon-button fxHide fxShow.xs (click)="drawer.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
-      <form #form="ngForm" (submit)="submit()" [ngClass.xs]="'xs'">
-        <mat-form-field appearance="fill">
-          <mat-label>Transaction hash</mat-label>
-          <input matInput name="search" [(ngModel)]="forms.search" />
-          <button mat-icon-button matSuffix>
-            <mat-icon>search</mat-icon>
-          </button>
-        </mat-form-field>
-      </form>
+      <ng-container *ngIf="designated$ | async; else undesignated">
+        <app-designated-toolbar></app-designated-toolbar
+      ></ng-container>
+      <ng-template #undesignated>
+        <app-undesignated-toolbar></app-undesignated-toolbar>
+      </ng-template>
     </mat-toolbar>
     <div class="container">
       <router-outlet></router-outlet>

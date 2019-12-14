@@ -1,14 +1,11 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { ToolbarComponent } from './toolbar/toolbar.component';
-import { HomeComponent } from './home/home.component';
-
-
+import { NgModule } from "@angular/core";
+import { CommonModule } from "@angular/common";
+import { ToolbarComponent } from "./toolbar/toolbar.component";
+import { HomeComponent } from "./home/home.component";
 
 @NgModule({
   declarations: [ToolbarComponent, HomeComponent],
-  imports: [
-    CommonModule
-  ]
+  imports: [CommonModule],
+  exports: [HomeComponent, ToolbarComponent]
 })
-export class UndesignatedModule { }
+export class UndesignatedModule {}

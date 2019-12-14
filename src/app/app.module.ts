@@ -4,6 +4,8 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 
@@ -20,6 +22,8 @@ import { SharedModule } from './shared/shared.module';
 import { TransactionComponent } from './transactions/transaction/transaction.component';
 import { ValidatorsComponent } from './validators/validators.component';
 import { ValidatorComponent } from './validators/validator/validator.component';
+import { DesignatedModule } from './designated/designated.module';
+import { UndesignatedModule } from './undesignated/undesignated.module';
 
 @NgModule({
   declarations: [
@@ -33,6 +37,7 @@ import { ValidatorComponent } from './validators/validator/validator.component';
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production }),
     FormsModule,
     FlexLayoutModule,
     MatButtonModule,
@@ -43,6 +48,8 @@ import { ValidatorComponent } from './validators/validator/validator.component';
     MatSnackBarModule,
     MatToolbarModule,
     SharedModule,
+    DesignatedModule,
+    UndesignatedModule
   ],
   providers: [],
   bootstrap: [AppComponent]

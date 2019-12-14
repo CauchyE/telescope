@@ -2,15 +2,7 @@
   border: none;
 }
 
-form {
-  font-size: initial;
-  margin-top: 1.34375em;
-}
-
-form.xs {
-  margin-top: 1em;
-}
-
 .container {
   padding-top: 16px;
+  padding-bottom: 16px;
 }
