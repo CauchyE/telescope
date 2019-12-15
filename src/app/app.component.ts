@@ -2,7 +2,6 @@ import { Component } from "@angular/core";
 import { Observable } from "rxjs";
 import { MediaChange, MediaObserver } from "@angular/flex-layout";
 import { map } from "rxjs/operators";
-import { Router } from "@angular/router";
 import { StateService } from "./core/services/state.service";
 
 @Component({
@@ -16,7 +15,6 @@ export class AppComponent {
   designated$: Observable<boolean>;
 
   constructor(
-    private router: Router,
     private mediaObserver: MediaObserver,
     private state: StateService
   ) {
@@ -29,7 +27,7 @@ export class AppComponent {
     );
 
     this.designated$ = this.state.value$.pipe(
-      map(value => !!value.designatedHost)
+      map(state => state.designatedHost !== undefined)
     );
   }
 }

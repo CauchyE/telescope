@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
 
   constructor(private state: StateService) {
     this.designated$ = this.state.value$.pipe(
-      map(value => !!value.designatedHost)
+      map(state => state.designatedHost !== undefined)
     );
   }
 

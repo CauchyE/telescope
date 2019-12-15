@@ -1,5 +1,9 @@
 # Cosmoscan
 
+簡易CosmosSDK製ブロックチェーンエクスプローラー。
+`cosmos-client-ts`の動作実験兼ねて開発するのが良いかと。
+ホストのURLとChain IDを指定できるのがmintscanとの違い。
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 8.3.20.
 
 ## Development server

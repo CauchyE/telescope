@@ -9,9 +9,7 @@ export class StateService {
   private _value$: BehaviorSubject<State>;
 
   constructor() {
-    this._value = {
-      designatedHost: ""
-    };
+    this._value = {};
     this._value$ = new BehaviorSubject(this._value);
   }
 
@@ -29,5 +27,8 @@ export class StateService {
 }
 
 export interface State {
-  designatedHost: string;
+  designatedHost?: {
+    url: string;
+    chainID: string;
+  };
 }
