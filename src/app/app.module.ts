@@ -19,19 +19,19 @@ import { MatToolbarModule } from "@angular/material/toolbar";
 
 import { HomeComponent } from './home/home.component';
 import { SharedModule } from './shared/shared.module';
-import { TransactionComponent } from './transactions/transaction/transaction.component';
 import { ValidatorsComponent } from './validators/validators.component';
 import { ValidatorComponent } from './validators/validator/validator.component';
 import { DesignatedModule } from './designated/designated.module';
 import { UndesignatedModule } from './undesignated/undesignated.module';
+import { TxComponent } from './txs/tx/tx.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    TransactionComponent,
     ValidatorsComponent,
-    ValidatorComponent
+    ValidatorComponent,
+    TxComponent
   ],
   imports: [
     BrowserModule,
