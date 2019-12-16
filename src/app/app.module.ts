@@ -24,6 +24,7 @@ import { ValidatorComponent } from './validators/validator/validator.component';
 import { DesignatedModule } from './designated/designated.module';
 import { UndesignatedModule } from './undesignated/undesignated.module';
 import { TxComponent } from './txs/tx/tx.component';
+import { AccountComponent } from './accounts/account/account.component';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { TxComponent } from './txs/tx/tx.component';
     HomeComponent,
     ValidatorsComponent,
     ValidatorComponent,
-    TxComponent
+    TxComponent,
+    AccountComponent
   ],
   imports: [
     BrowserModule,

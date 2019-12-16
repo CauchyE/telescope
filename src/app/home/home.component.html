@@ -1,4 +1,6 @@
-<ng-container *ngIf="designated$ | async; else undesignated"></ng-container>
+<ng-container *ngIf="designated$ | async; else undesignated">
+  <app-designated-home></app-designated-home>
+</ng-container>
 <ng-template #undesignated>
-
+  <app-undesignated-home></app-undesignated-home>
 </ng-template>
