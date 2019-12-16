@@ -27,7 +27,7 @@ mat-toolbar.toolbar {
 .container {
   box-sizing: border-box;
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 16px;
 }
 
 mat-spinner {
