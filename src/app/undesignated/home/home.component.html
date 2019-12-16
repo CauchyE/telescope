@@ -1,11 +1,11 @@
 <form #form="ngForm" (submit)="submit()">
-  <mat-form-field>
+  <mat-form-field fxFill>
     <mat-label>URL</mat-label>
     <input matInput required pattern="^http(s)?://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?$" name="url" [(ngModel)]="forms.url" />
   </mat-form-field>
-  <mat-form-field>
+  <mat-form-field fxFill>
     <mat-label>Chain ID</mat-label>
     <input matInput required name="chain-id" [(ngModel)]="forms.chainID" />
   </mat-form-field>
-  <button mat-flat-button color="accent">Go to Explorer</button>
+  <button mat-flat-button fxFill color="accent">Go to Explorer</button>
 </form>
