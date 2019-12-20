@@ -1,5 +1,5 @@
 import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Observable, interval } from "rxjs";
+import { Observable, timer } from "rxjs";
 import { Auth, SearchTxsResult, CosmosSDK, StdTx, TxResponse } from "cosmos-client-ts/lib/";
 import { mergeMap, map } from "rxjs/operators";
 import { StateService } from "../../core/services/state.service";
@@ -21,7 +21,7 @@ export class HomeComponent implements OnInit, OnDestroy {
       url: "",
       chainID: ""
     };
-    this.txResponses$ = interval(60 * 1000).pipe(
+    this.txResponses$ = timer(0, 60 * 1000).pipe(
       mergeMap(_ => this.state.value$),
       map(state => state.designatedHost!),
       map(host => new CosmosSDK(host.url, host.chainID)),
@@ -30,9 +30,9 @@ export class HomeComponent implements OnInit, OnDestroy {
     );
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  ngOnDestroy() {}
+  ngOnDestroy() { }
 
   getMsgType(tx: StdTx) {
   }
