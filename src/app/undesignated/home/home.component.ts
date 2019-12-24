@@ -7,25 +7,15 @@ import { StateService } from "../../core/services/state.service";
   styleUrls: ["./home.component.css"]
 })
 export class HomeComponent implements OnInit {
-  forms: {
-    url: string;
-    chainID: string;
-  };
-
-  constructor(private state: StateService) {
-    this.forms = {
-      url: "",
-      chainID: ""
-    };
-  }
+  constructor(private state: StateService) {}
 
   ngOnInit() {}
 
-  submit() {
+  onSubmit(url: string, chainID: string) {
     this.state.update({
       designatedHost: {
-        url: this.forms.url,
-        chainID: this.forms.chainID
+        url: url,
+        chainID: chainID
       }
     });
   }

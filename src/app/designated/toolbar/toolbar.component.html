@@ -1,7 +1,7 @@
-<form #form="ngForm" (submit)="submit()" [ngClass.xs]="'xs'">
+<form #form="ngForm" (submit)="onSubmit(hash.value)" [ngClass.xs]="'xs'">
   <mat-form-field appearance="fill">
-    <mat-label>検索</mat-label>
-    <input matInput name="search" [(ngModel)]="forms.search" />
+    <mat-label>Tx Hash</mat-label>
+    <input matInput name="hash" #hash />
     <button mat-icon-button matSuffix>
       <mat-icon>search</mat-icon>
     </button>
