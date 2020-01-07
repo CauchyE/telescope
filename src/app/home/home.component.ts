@@ -1,12 +1,12 @@
-import { Component, OnInit } from "@angular/core";
-import { StateService } from "../core/services/state.service";
-import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { Component, OnInit } from '@angular/core';
+import { StateService } from '../core/services/state.service';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
-  selector: "app-home",
-  templateUrl: "./home.component.html",
-  styleUrls: ["./home.component.css"]
+  selector: 'app-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit {
   designated$: Observable<boolean>;
@@ -17,5 +17,5 @@ export class HomeComponent implements OnInit {
     );
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 }
