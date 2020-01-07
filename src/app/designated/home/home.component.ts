@@ -1,13 +1,13 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { Observable, timer } from "rxjs";
-import { Auth, SearchTxsResult, CosmosSDK, StdTx, TxResponse } from "cosmos-client-ts/lib/";
-import { mergeMap, map } from "rxjs/operators";
-import { StateService } from "../../core/services/state.service";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Observable, timer } from 'rxjs';
+import { Auth, SearchTxsResult, CosmosSDK, StdTx, TxResponse } from 'cosmos-client-ts/lib/';
+import { mergeMap, map } from 'rxjs/operators';
+import { StateService } from '../../core/services/state.service';
 
 @Component({
-  selector: "app-designated-home",
-  templateUrl: "./home.component.html",
-  styleUrls: ["./home.component.css"]
+  selector: 'app-designated-home',
+  templateUrl: './home.component.html',
+  styleUrls: ['./home.component.css']
 })
 export class HomeComponent implements OnInit, OnDestroy {
   forms: {
@@ -18,8 +18,8 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(private state: StateService) {
     this.forms = {
-      url: "",
-      chainID: ""
+      url: '',
+      chainID: ''
     };
     this.txResponses$ = timer(0, 60 * 1000).pipe(
       mergeMap(_ => this.state.value$),
