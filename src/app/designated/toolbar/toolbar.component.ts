@@ -12,8 +12,6 @@ export class ToolbarComponent implements OnInit {
   ngOnInit() { }
 
   async onSubmit(hash: string) {
-    await this.router.navigate(['transactions'], {
-      queryParams: { hash: hash }
-    });
+    await this.router.navigate(['txs', hash]);
   }
 }
