@@ -1,3 +1,20 @@
-<pre>
+<!-- <pre>
   {{ tx$ | async | json }}
+</pre> -->
+
+<pre
+  >{{ tx.height }}
+{{ tx.txhash }}
+{{ tx.code }}
+{{ tx.data }}
+{{ tx.raw_log }}
+{{ tx.logs }}
+{{ tx.info }}
+{{ tx.gas_wanted }}
+{{ tx.gas_used }}
+{{ tx.events.type }}
+{{ tx.events.attributes }}
+{{ tx.codespace }}
+{{ tx.tx }}
+{{ tx.timestamp }}
 </pre>
