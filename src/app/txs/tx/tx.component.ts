@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { map, mergeMap } from 'rxjs/operators';
 import { Auth, CosmosSDK, TxResponse } from 'cosmos-client-ts';
 import { StateService } from '../../core/services/state.service';
-import { MockTx } from './MockTx';
+import { MockTx } from './mockTx';
 
 @Component({
   selector: 'app-transaction',
@@ -14,19 +14,19 @@ import { MockTx } from './MockTx';
 export class TxComponent implements OnInit {
   hash$: Observable<string>;
   tx = MockTx;
-  // tx$: Observable<TxResponse>;
+  tx$: Observable<TxResponse>;
 
   constructor(private route: ActivatedRoute, private state: StateService) {
     this.hash$ = this.route.params.pipe(map(params => params['hash']));
-    // this.tx$ = this.hash$.pipe(
-    //   mergeMap(hash =>
-    //     this.state.value$.pipe(
-    //       map(state => state.designatedHost!),
-    //       map(host => new CosmosSDK(host.url, host.chainID)),
-    //       mergeMap(sdk => Auth.getTransaction(sdk, hash))
-    //     )
-    //   )
-    // );
+    this.tx$ = this.hash$.pipe(
+      mergeMap(hash =>
+        this.state.value$.pipe(
+          map(state => state.designatedHost!),
+          map(host => new CosmosSDK(host.url, host.chainID)),
+          mergeMap(sdk => Auth.getTransaction(sdk, hash))
+        )
+      )
+    );
   }
 
   ngOnInit() { }
