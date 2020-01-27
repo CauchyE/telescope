@@ -1,13 +1,13 @@
-import { Component } from "@angular/core";
-import { Observable } from "rxjs";
-import { MediaChange, MediaObserver } from "@angular/flex-layout";
-import { map } from "rxjs/operators";
-import { StateService } from "./core/services/state.service";
+import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
+import { MediaChange, MediaObserver } from '@angular/flex-layout';
+import { map } from 'rxjs/operators';
+import { StateService } from './core/services/state.service';
 
 @Component({
-  selector: "app-root",
-  templateUrl: "./app.component.html",
-  styleUrls: ["./app.component.css"]
+  selector: 'app-root',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
 export class AppComponent {
   drawerMode$: Observable<string>;
@@ -19,11 +19,11 @@ export class AppComponent {
     private state: StateService
   ) {
     this.drawerMode$ = this.mediaObserver.media$.pipe(
-      map(change => (change.mqAlias === "xs" ? "over" : "side"))
+      map(change => (change.mqAlias === 'xs' ? 'over' : 'side'))
     );
 
     this.drawerOpened$ = this.mediaObserver.media$.pipe(
-      map(change => (change.mqAlias === "xs" ? false : true))
+      map(change => (change.mqAlias === 'xs' ? false : true))
     );
 
     this.designated$ = this.state.value$.pipe(

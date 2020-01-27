@@ -8,14 +8,14 @@ import { StateService } from "../../core/services/state.service";
 @Component({
   selector: "app-transaction",
   templateUrl: "./tx.component.html",
-  styleUrls: ["./tx.component.css"]
+  styleUrls: ['./tx.component.css']
 })
 export class TxComponent implements OnInit {
   hash$: Observable<string>;
   tx$: Observable<TxResponse>;
 
   constructor(private route: ActivatedRoute, private state: StateService) {
-    this.hash$ = this.route.params.pipe(map(params => params["hash"]));
+    this.hash$ = this.route.params.pipe(map(params => params['hash']));
     this.tx$ = this.hash$.pipe(
       mergeMap(hash =>
         this.state.value$.pipe(
@@ -27,5 +27,5 @@ export class TxComponent implements OnInit {
     );
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 }
