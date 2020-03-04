@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, ViewChild } from '@angular/core';
+import { Observable, combineLatest } from 'rxjs';
 import { MediaChange, MediaObserver } from '@angular/flex-layout';
 import { map } from 'rxjs/operators';
 import { StateService } from './core/services/state.service';
+import { Router, NavigationEnd } from '@angular/router';
+import { MatSidenav } from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-root',
@@ -10,11 +12,15 @@ import { StateService } from './core/services/state.service';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
+  @ViewChild('sidenav')
+  sidenav!: MatSidenav;
+
   drawerMode$: Observable<string>;
   drawerOpened$: Observable<boolean>;
   designated$: Observable<boolean>;
 
   constructor(
+    private router: Router,
     private mediaObserver: MediaObserver,
     private state: StateService
   ) {
@@ -28,6 +34,14 @@ export class AppComponent {
 
     this.designated$ = this.state.value$.pipe(
       map(state => state.designatedHost !== undefined)
+    );
+
+    combineLatest(this.drawerMode$, this.router.events).subscribe(
+      ([drawerMode, event]) => {
+        if (drawerMode === 'over' && event instanceof NavigationEnd) {
+          this.sidenav.close();
+        }
+      },
     );
   }
 }
