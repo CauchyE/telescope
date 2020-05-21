@@ -1,9 +1,0 @@
-<mat-nav-list>
-  <ng-container *ngFor="let res of txResponses$ | async">
-    <mat-list-item routerLink="/txs/{{ res.txhash }}">
-      <span>{{ res.txhash }}</span>
-      <span fxFlex="auto"></span>
-      <span>{{ res.timestamp }}</span>
-    </mat-list-item>
-  </ng-container>
-</mat-nav-list>

@@ -131,5 +131,8 @@
       }
     }
   },
-  "defaultProject": "cosmoscan"
+  "defaultProject": "cosmoscan",
+  "cli": {
+    "analytics": "b7af6576-8981-4382-9f5a-7cdd42521d0d"
+  }
 }

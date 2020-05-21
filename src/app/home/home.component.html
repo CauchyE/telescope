@@ -1,6 +1,11 @@
-<ng-container *ngIf="designated$ | async; else undesignated">
-  <app-designated-home></app-designated-home>
-</ng-container>
-<ng-template #undesignated>
-  <app-undesignated-home></app-undesignated-home>
-</ng-template>
+<mat-nav-list>
+  <ng-container *ngIf="txs$ | async as txs">
+    <ng-container *ngFor="let tx of txs.txs || []">
+      <mat-list-item routerLink="/txs/{{ tx.hash }}">
+        <span>{{ tx.hash }}</span>
+        <span fxFlex="auto"></span>
+        <span>{{ tx.height }}</span>
+      </mat-list-item>
+    </ng-container>
+  </ng-container>
+</mat-nav-list>
