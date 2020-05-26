@@ -1,4 +1,11 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ViewChild,
+  Input,
+  Output,
+  EventEmitter,
+} from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
 import { MediaObserver } from '@angular/flex-layout';
 import { map } from 'rxjs/operators';
@@ -11,6 +18,24 @@ import { MatSidenav } from '@angular/material/sidenav';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
+  @Input()
+  url: string;
+
+  @Input()
+  chainID: string;
+
+  @Output()
+  appSubmitSDK: EventEmitter<{
+    url: string;
+    chainID: string;
+  }>;
+
+  @Input()
+  txHash: string;
+
+  @Output()
+  appSubmitTxHash: EventEmitter<string>;
+
   @ViewChild('sidenav')
   sidenav!: MatSidenav;
 
@@ -18,6 +43,12 @@ export class AppComponent implements OnInit {
   drawerOpened$: Observable<boolean>;
 
   constructor(private router: Router, private mediaObserver: MediaObserver) {
+    this.url = '';
+    this.chainID = '';
+    this.appSubmitSDK = new EventEmitter();
+    this.txHash = '';
+    this.appSubmitTxHash = new EventEmitter();
+
     this.drawerMode$ = this.mediaObserver.media$.pipe(
       map((change) => (change.mqAlias === 'xs' ? 'over' : 'side')),
     );
@@ -36,4 +67,12 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {}
+
+  onSubmitSDK(url: string, chainID: string) {
+    this.appSubmitSDK.emit({ url, chainID });
+  }
+
+  onSubmitTxHash(txHash: string) {
+    this.appSubmitTxHash.emit(txHash);
+  }
 }

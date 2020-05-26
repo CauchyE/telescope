@@ -12,15 +12,15 @@ import { CosmosSDKService } from '@model/state.service';
   styleUrls: ['./tx.component.css'],
 })
 export class TxComponent implements OnInit {
-  hash$: Observable<string>;
+  txHash$: Observable<string>;
   tx$: Observable<TxQuery>;
 
   constructor(
     private route: ActivatedRoute,
     private cosmosSDK: CosmosSDKService,
   ) {
-    this.hash$ = this.route.params.pipe(map((params) => params['tx_hash']));
-    this.tx$ = this.hash$.pipe(
+    this.txHash$ = this.route.params.pipe(map((params) => params['tx_hash']));
+    this.tx$ = this.txHash$.pipe(
       mergeMap((hash) =>
         auth.txsHashGet(this.cosmosSDK.sdk, hash).then((res) => res.data),
       ),

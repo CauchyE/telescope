@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 
 @Component({
   selector: 'view-toolbar',
@@ -6,9 +6,19 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./toolbar.component.css'],
 })
 export class ToolbarComponent implements OnInit {
-  constructor() {}
+  @Input()
+  txHash: string;
+  @Output()
+  appSubmitTxHash: EventEmitter<string>
+
+  constructor() {
+    this.txHash = ""
+    this.appSubmitTxHash = new EventEmitter()
+  }
 
   ngOnInit(): void {}
 
-  onSubmit(query: string) {}
+  onSubmit(txHash: string) {
+    this.appSubmitTxHash.emit(txHash)
+  }
 }

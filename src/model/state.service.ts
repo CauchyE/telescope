@@ -9,6 +9,10 @@ export class CosmosSDKService {
   sdk: CosmosSDK;
 
   constructor() {
-    this.sdk = new CosmosSDK('https://gaia.lcnem.com', 'cosmoshub-3');
+    this.sdk = new CosmosSDK('https://gaia.lcnem.net', 'cosmoshub-3');
+  }
+
+  update(url: string, chainID: string) {
+    this.sdk = new CosmosSDK(url, chainID);
   }
 }
