@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { TxQuery } from 'cosmos-client/api';
 
 @Component({
   selector: 'view-tx',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./tx.component.css'],
 })
 export class TxComponent implements OnInit {
+  @Input()
+  tx?: TxQuery;
   constructor() {}
 
   ngOnInit(): void {}

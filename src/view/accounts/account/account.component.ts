@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { BaseAccount } from 'cosmos-client/x/auth';
 
 @Component({
   selector: 'view-account',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./account.component.css']
 })
 export class AccountComponent implements OnInit {
+  @Input()
+  account?: BaseAccount
 
   constructor() { }
 

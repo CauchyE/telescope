@@ -1,11 +1,1 @@
-<mat-nav-list>
-  <ng-container *ngIf="txs$ | async as txs">
-    <ng-container *ngFor="let tx of txs.txs || []">
-      <mat-list-item routerLink="/txs/{{ tx.hash }}">
-        <span>{{ tx.hash }}</span>
-        <span fxFlex="auto"></span>
-        <span>{{ tx.height }}</span>
-      </mat-list-item>
-    </ng-container>
-  </ng-container>
-</mat-nav-list>
+<view-home [txs]="txs$ | async"></view-home>

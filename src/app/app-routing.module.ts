@@ -1,34 +1,27 @@
-import { NgModule } from "@angular/core";
-import { Routes, RouterModule } from "@angular/router";
-import { HomeComponent } from "./home/home.component";
-import { TxComponent } from "./txs/tx/tx.component";
-import { DesignationGuard } from "./guards/designation.guard";
-import { ValidatorsComponent } from "./validators/validators.component";
-import { ValidatorComponent } from "./validators/validator/validator.component";
-import { AccountComponent } from "./accounts/account/account.component";
+import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
+import { HomeComponent } from './home/home.component';
 
 const routes: Routes = [
-  { path: "", component: HomeComponent },
-  { path: "txs/:hash", component: TxComponent, canActivate: [DesignationGuard] },
+  { path: '', component: HomeComponent },
   {
-    path: "accounts/:address",
-    component: AccountComponent,
-    canActivate: [DesignationGuard]
+    path: 'accounts',
+    loadChildren: () =>
+      import('./accounts/accounts.module').then((m) => m.AccountsModule),
   },
   {
-    path: "validators",
-    component: ValidatorsComponent,
-    canActivate: [DesignationGuard]
+    path: 'txs',
+    loadChildren: () => import('./txs/txs.module').then((m) => m.TxsModule),
   },
   {
-    path: "validators/:address",
-    component: ValidatorComponent,
-    canActivate: [DesignationGuard]
-  }
+    path: 'validators',
+    loadChildren: () =>
+      import('./validators/validators.module').then((m) => m.ValidatorsModule),
+  },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
 export class AppRoutingModule {}

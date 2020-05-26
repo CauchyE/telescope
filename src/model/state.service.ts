@@ -1,34 +1,14 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { CosmosSDK } from 'cosmos-client';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-export class StateService {
-  private _value: State;
-  private _value$: BehaviorSubject<State>;
+export class CosmosSDKService {
+  sdk: CosmosSDK;
 
   constructor() {
-    this._value = {};
-    this._value$ = new BehaviorSubject(this._value);
+    this.sdk = new CosmosSDK('https://gaia.lcnem.com', 'cosmoshub-3');
   }
-
-  public get value$() {
-    return this._value$.asObservable();
-  }
-
-  public update(data: Partial<State>) {
-    this._value = {
-      ...this._value,
-      ...data
-    };
-    this._value$.next(this._value);
-  }
-}
-
-export interface State {
-  designatedHost?: {
-    url: string;
-    chainID: string;
-  };
 }
