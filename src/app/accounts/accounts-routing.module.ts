@@ -4,7 +4,7 @@ import { AccountComponent } from './account/account.component';
 
 const routes: Routes = [
   {
-    path: ':address',
+    path: '',
     component: AccountComponent,
   },
 ];
@@ -13,4 +13,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class AccountsRoutingModule {}
+export class AccountsRoutingModule { }

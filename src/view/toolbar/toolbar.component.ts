@@ -7,18 +7,18 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 })
 export class ToolbarComponent implements OnInit {
   @Input()
-  txHash: string;
+  searchValue: string;
   @Output()
-  appSubmitTxHash: EventEmitter<string>
+  appSubmitSearchValue: EventEmitter<string>;
 
   constructor() {
-    this.txHash = ""
-    this.appSubmitTxHash = new EventEmitter()
+    this.searchValue = '';
+    this.appSubmitSearchValue = new EventEmitter();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
-  onSubmit(txHash: string) {
-    this.appSubmitTxHash.emit(txHash)
+  onSubmit(searchValue: string) {
+    this.appSubmitSearchValue.emit(searchValue);
   }
 }

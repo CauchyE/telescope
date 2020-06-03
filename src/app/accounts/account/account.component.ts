@@ -19,7 +19,7 @@ export class AccountComponent implements OnInit {
     private route: ActivatedRoute,
     private cosmosSDK: CosmosSDKService,
   ) {
-    this.address$ = this.route.params.pipe(map((params) => params['address']));
+    this.address$ = this.route.params.pipe(map((params) => params.address));
 
     this.account$ = this.address$.pipe(
       mergeMap((address) =>
@@ -28,10 +28,10 @@ export class AccountComponent implements OnInit {
             this.cosmosSDK.sdk,
             AccAddress.fromBech32(address),
           )
-          .then((res) => res.data),
+          .then((res) => JSON.parse(res.request?.response ?? '{}'))
       ),
     );
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 }

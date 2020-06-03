@@ -5,12 +5,12 @@ import { HomeComponent } from './home/home.component';
 const routes: Routes = [
   { path: '', component: HomeComponent },
   {
-    path: 'accounts',
+    path: 'accounts/:address',
     loadChildren: () =>
       import('./accounts/accounts.module').then((m) => m.AccountsModule),
   },
   {
-    path: 'txs',
+    path: 'txs/:tx_hash',
     loadChildren: () => import('./txs/txs.module').then((m) => m.TxsModule),
   },
   {
@@ -24,4 +24,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule {}
+export class AppRoutingModule { }

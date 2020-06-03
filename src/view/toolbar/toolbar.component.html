@@ -1,7 +1,7 @@
-<form #form="ngForm" (submit)="onSubmit(hashRef.value)" [ngClass.xs]="'xs'">
+<form #form="ngForm" (submit)="onSubmit(searchValueRef.value)" [ngClass.xs]="'xs'">
   <mat-form-field appearance="fill">
-    <mat-label>Tx Hash</mat-label>
-    <input #hashRef matInput required [ngModel]="txHash" name="hash" />
+    <mat-label>Tx Hash or Address</mat-label>
+    <input #searchValueRef matInput required [ngModel]="searchValue" name="searchValue" />
     <button mat-icon-button matSuffix [disabled]="form.invalid">
       <mat-icon>search</mat-icon>
     </button>

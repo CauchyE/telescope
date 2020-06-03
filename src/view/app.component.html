@@ -40,10 +40,7 @@
       <button mat-icon-button fxHide fxShow.xs (click)="drawer.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
-      <view-toolbar
-        [txHash]="txHash"
-        (appSubmitTxHash)="onSubmitTxHash($event)"
-      ></view-toolbar>
+      <view-toolbar [searchValue]="searchValue" (appSubmitSearchValue)="onSubmitSearchValue($event)"></view-toolbar>
     </mat-toolbar>
     <div class="container">
       <ng-content></ng-content>
