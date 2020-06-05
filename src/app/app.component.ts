@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, Router, ActivationEnd } from '@angular/router';
+import { Router, ActivationEnd } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map, filter, tap } from 'rxjs/operators';
+import { map, filter } from 'rxjs/operators';
 import { CosmosSDKService } from '@model/state.service';
+import * as qs from 'querystring';
 
 @Component({
   selector: 'app-root',
@@ -12,16 +13,19 @@ import { CosmosSDKService } from '@model/state.service';
 export class AppComponent {
   searchValue$: Observable<string>;
 
-  constructor(
-    private route: ActivatedRoute,
-    private router: Router,
-    public cosmosSDK: CosmosSDKService,
-  ) {
+  constructor(private router: Router, public cosmosSDK: CosmosSDKService) {
     this.searchValue$ = this.router.events.pipe(
       filter((event): event is ActivationEnd => event instanceof ActivationEnd),
       map((event) => {
-        const { tx_hash, address } = event.snapshot.params;
-        return tx_hash ?? address;
+        const { address, tx_hash } = event.snapshot.params;
+        switch (true) {
+          case !!address:
+            return qs.stringify({ address });
+          case !!tx_hash:
+            return qs.stringify({ tx_hash });
+          default:
+            return '';
+        }
       }),
     );
   }
@@ -31,10 +35,14 @@ export class AppComponent {
   }
 
   async onSubmitSearchValue(value: string) {
-    if (value.indexOf('cosmos') === 0) {
-      return this.router.navigate(['accounts', value]);
-    } else {
-      return this.router.navigate(['txs', value]);
+    const { address, tx_hash } = qs.parse(value);
+    switch (true) {
+      case !!address:
+        await this.router.navigate(['accounts', address]);
+        break;
+      case !!tx_hash:
+        await this.router.navigate(['txs', tx_hash]);
+        break;
     }
   }
 }
