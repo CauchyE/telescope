@@ -1,3 +1,88 @@
-<pre>
-    {{ account | json }}
-</pre>
+<div class="account-container">
+    <div>
+        <h1>Account</h1>
+        <mat-card>
+            <mat-card-content class="info-container">
+                <mat-list>
+                    <mat-list-item>
+                        <span class="column-name">Sequence:</span>
+                        <span class="column-value">{{ account?.sequence }}</span>
+                        <mat-divider [inset]="true"></mat-divider>
+                    </mat-list-item>
+
+                    <mat-list-item>
+                        <span class="column-name">Account Number: </span>
+                        <span class="column-value">{{ account?.account_number }}</span>
+                        <mat-divider [inset]="true"></mat-divider>
+                    </mat-list-item>
+
+                    <mat-list-item>
+                        <span class="column-name">Address: </span>
+                        <span class="column-value">{{ account?.address }}</span>
+                        <mat-divider [inset]="true"></mat-divider>
+                    </mat-list-item>
+
+                    <mat-list-item>
+                        <span class="column-name">Public key: </span>
+                        <span class="column-value">{{ account?.public_key }}</span>
+                        <mat-divider [inset]="true"></mat-divider>
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <div>
+        <h2>Coins</h2>
+        <mat-card>
+            <mat-card-content class="info-container">
+                <mat-list *ngFor="let coin of account?.coins">
+                    <mat-list-item>
+                        <span class="column-name">{{ coin.amount }}</span>
+                        <span class="column-value">{{ coin.denom }}</span>
+                        <mat-divider [inset]="true"></mat-divider>
+                    </mat-list-item>
+                </mat-list>
+            </mat-card-content>
+        </mat-card>
+    </div>
+
+    <div>
+        <h2>Transactions</h2>
+        <mat-card>
+            <mat-card-content class="info-container">
+                <table mat-table [dataSource]="paginatedTxs?.txs" class="table-container">
+                    <ng-container matColumnDef="height">
+                        <th mat-header-cell *matHeaderCellDef>height</th>
+                        <td mat-cell *matCellDef="let element">{{ element.height }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="txhash">
+                        <th mat-header-cell *matHeaderCellDef>hash</th>
+                        <td mat-cell *matCellDef="let element">
+                            <a href="/txs/{{element.txhash}}">{{ element.txhash }}</a>
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="gas_wanted">
+                        <th mat-header-cell *matHeaderCellDef>Gas Wanted</th>
+                        <td mat-cell *matCellDef="let element">{{ element.gas_wanted }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="gas_used">
+                        <th mat-header-cell *matHeaderCellDef>Gas Used</th>
+                        <td mat-cell *matCellDef="let element">{{ element.gas_used }}</td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="timestamp">
+                        <th mat-header-cell *matHeaderCellDef>timestamp</th>
+                        <td mat-cell *matCellDef="let element">{{ element.timestamp }}</td>
+                    </ng-container>
+
+                    <tr mat-header-row *matHeaderRowDef="txColumnKeys"></tr>
+                    <tr mat-row *matRowDef="let row; columns: txColumnKeys;"></tr>
+                </table>
+            </mat-card-content>
+        </mat-card>
+    </div>
+</div>

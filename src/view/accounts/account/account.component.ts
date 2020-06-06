@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { BaseAccount } from 'cosmos-client/x/auth';
+import { PaginatedQueryTxs } from 'cosmos-client/api';
 
 @Component({
   selector: 'view-account',
@@ -8,11 +9,20 @@ import { BaseAccount } from 'cosmos-client/x/auth';
 })
 export class AccountComponent implements OnInit {
   @Input()
-  account?: BaseAccount
+  account?: BaseAccount;
+
+  @Input()
+  paginatedTxs?: PaginatedQueryTxs;
+
+  txColumnKeys = [
+    'height',
+    'txhash',
+    'timestamp',
+    'gas_wanted',
+    'gas_used',
+  ];
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void { }
 }
