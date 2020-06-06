@@ -1,3 +1,119 @@
-<pre>
-  {{ tx | json }}
-</pre>
+<div class="tx-container">
+  <h1>Transaction</h1>
+
+  <div>
+    <mat-card>
+      <mat-card-content class="info-container">
+        <mat-list>
+          <mat-list-item>
+            <span class="column-name">TxHash:</span>
+            <span class="column-value">{{ tx?.txhash }}</span>
+            <mat-divider [inset]="true"></mat-divider>
+          </mat-list-item>
+
+          <mat-list-item>
+            <span class="column-name">Height: </span>
+            <span class="column-value">{{ tx?.height }}</span>
+            <mat-divider [inset]="true"></mat-divider>
+          </mat-list-item>
+
+          <mat-list-item>
+            <span class="column-name">Gas Used: </span>
+            <span class="column-value">{{ tx?.gas_used }}</span>
+            <mat-divider [inset]="true"></mat-divider>
+          </mat-list-item>
+
+          <mat-list-item>
+            <span class="column-name">Gas Wanted: </span>
+            <span class="column-value">{{ tx?.gas_wanted }}</span>
+            <mat-divider [inset]="true"></mat-divider>
+          </mat-list-item>
+
+          <mat-list-item>
+            <span class="column-name">Timestamp: </span>
+            <span class="column-value">{{ tx?.timestamp }}</span>
+            <mat-divider [inset]="true"></mat-divider>
+          </mat-list-item>
+        </mat-list>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div>
+    <h2>Msgs</h2>
+    <ng-template ngFor let-msg [ngForOf]="tx?.tx?.value?.msg">
+      <mat-card>
+        <mat-card-content class="info-container">
+          <mat-list>
+            <mat-list-item>
+              <span class="column-name">Type: </span>
+              <span class="column-value">{{ msg.type }}</span>
+              <mat-divider [inset]="true"></mat-divider>
+            </mat-list-item>
+            <div *ngFor="let data of msg.value | keyvalue">
+              <mat-list-item>
+                <span class="column-name">{{ data.key }}</span>
+                <span class="column-value">{{ data.value | json }}</span>
+                <mat-divider [inset]="true"></mat-divider>
+              </mat-list-item>
+            </div>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+    </ng-template>
+  </div>
+
+
+  <div>
+    <h2>Signatures</h2>
+    <ng-template ngFor let-sign [ngForOf]="tx?.tx?.value?.signatures">
+      <mat-card>
+        <mat-card-content class="info-container">
+          <mat-list>
+            <mat-list-item>
+              <span class="column-name">Key Type: </span>
+              <span class="column-value">{{ sign.pub_key.type }}</span>
+              <mat-divider [inset]="true"></mat-divider>
+            </mat-list-item>
+            <mat-list-item>
+              <span class="column-name">Public Key: </span>
+              <span class="column-value">{{ sign.pub_key.value }}</span>
+              <mat-divider [inset]="true"></mat-divider>
+            </mat-list-item>
+            <mat-list-item>
+              <span class="column-name">Signature: </span>
+              <span class="column-value">{{ sign.signature }}</span>
+              <mat-divider [inset]="true"></mat-divider>
+            </mat-list-item>
+          </mat-list>
+        </mat-card-content>
+      </mat-card>
+    </ng-template>
+  </div>
+
+  <div>
+    <h2>Logs</h2>
+    <ng-template ngFor let-log [ngForOf]="tx?.logs">
+      <ng-template ngFor let-event [ngForOf]="log.events">
+        <mat-card class="card">
+          <mat-card-content class="info-container">
+            <mat-list>
+              <mat-list-item>
+                <span class="column-name">Type: </span>
+                <span class="column-value">{{ event.type }}</span>
+                <mat-divider [inset]="true"></mat-divider>
+              </mat-list-item>
+              <ng-template ngFor let-attr [ngForOf]="event.attributes">
+                <mat-list-item>
+                  <span class="column-name">{{ attr.key }}</span>
+                  <span class="column-value">{{ attr.value | json }}</span>
+                  <mat-divider [inset]="true"></mat-divider>
+                </mat-list-item>
+              </ng-template>
+            </mat-list>
+          </mat-card-content>
+        </mat-card>
+      </ng-template>
+    </ng-template>
+  </div>
+</div>
