@@ -18,7 +18,7 @@ export class AppComponent {
     public cosmosSDK: CosmosSDKService,
   ) {
     this.searchValue$ = this.router.events.pipe(
-      filter((event): event is ActivationEnd => event instanceof ActivationEnd),
+      filter((event): event is ActivationEnd => event instanceof ActivationEnd && Object.keys(event.snapshot.params).length > 0),
       map((event) => {
         const { tx_hash, address } = event.snapshot.params;
         return tx_hash ?? address;
