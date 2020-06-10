@@ -16,7 +16,7 @@ export class ToolbarComponent implements OnInit {
     this.appSubmitSearchValue = new EventEmitter();
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   searchForTransaction(searchValue: string): void {
     this.appSubmitSearchValue.emit(['txs', searchValue]);

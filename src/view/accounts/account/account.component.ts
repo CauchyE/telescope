@@ -5,7 +5,7 @@ import { PaginatedQueryTxs } from 'cosmos-client/api';
 @Component({
   selector: 'view-account',
   templateUrl: './account.component.html',
-  styleUrls: ['./account.component.css']
+  styleUrls: ['./account.component.css'],
 })
 export class AccountComponent implements OnInit {
   @Input()
@@ -14,15 +14,9 @@ export class AccountComponent implements OnInit {
   @Input()
   paginatedTxs?: PaginatedQueryTxs;
 
-  txColumnKeys = [
-    'height',
-    'txhash',
-    'timestamp',
-    'gas_wanted',
-    'gas_used',
-  ];
+  txColumnKeys = ['height', 'txhash', 'timestamp', 'gas_wanted', 'gas_used'];
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 }

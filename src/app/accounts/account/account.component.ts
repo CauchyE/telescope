@@ -25,22 +25,22 @@ export class AccountComponent implements OnInit {
 
     this.account$ = this.address$.pipe(
       mergeMap((address) =>
-        auth
-          .accountsAddressGet(
-            this.cosmosSDK.sdk,
-            AccAddress.fromBech32(address),
-          )
+        auth.accountsAddressGet(
+          this.cosmosSDK.sdk,
+          AccAddress.fromBech32(address),
+        ),
       ),
       map((res) => JSON.parse(res.request?.response ?? '{}')?.result?.value),
     );
 
     this.paginatedTxs$ = this.address$.pipe(
       mergeMap((address) =>
-        auth.txsGet(this.cosmosSDK.sdk, undefined, address)
-          .then((res) => res.data)
+        auth
+          .txsGet(this.cosmosSDK.sdk, undefined, address)
+          .then((res) => res.data),
       ),
     );
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 }

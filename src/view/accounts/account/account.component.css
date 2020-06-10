@@ -1,29 +1,29 @@
 .account-container {
-    padding: 20px;
-    overflow-y: auto;
-    display: grid;
-    gap: 10px;
-    grid-template-columns: 1fr;
+  padding: 20px;
+  overflow-y: auto;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 1fr;
 }
 
 .info-row:not(:first-child) {
-    margin-top: 15px;
+  margin-top: 15px;
 }
 
 .column-name {
-    white-space: nowrap;
+  white-space: nowrap;
 }
 
 .column-value {
-    margin-left: 10px;
-    word-break: break-all;
+  margin-left: 10px;
+  word-break: break-all;
 }
 
 .table-container {
-    width: 100%;
+  width: 100%;
 }
 
 .table-container th,
 .table-container td {
-    padding: 0px 20px 0px;
+  padding: 0px 20px 0px;
 }

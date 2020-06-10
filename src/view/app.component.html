@@ -1,5 +1,10 @@
 <mat-drawer-container>
-  <mat-drawer #drawer class="mat-elevation-z16" [mode]="drawerMode$ | async" [opened]="drawerOpened$ | async">
+  <mat-drawer
+    #drawer
+    class="mat-elevation-z16"
+    [mode]="drawerMode$ | async"
+    [opened]="drawerOpened$ | async"
+  >
     <mat-toolbar class="mat-elevation-z4 toolbar" color="primary">
       <button mat-icon-button routerLink="/">
         <img class="icon" src="/favicon.ico" />
@@ -13,7 +18,13 @@
       </mat-form-field>
       <mat-form-field fxFill>
         <mat-label>Chain ID</mat-label>
-        <input #chainIDRef matInput required [ngModel]="chainID" name="chain-id" />
+        <input
+          #chainIDRef
+          matInput
+          required
+          [ngModel]="chainID"
+          name="chain-id"
+        />
       </mat-form-field>
       <button mat-button fxFill color="accent" [disabled]="form.invalid">
         <mat-icon>save</mat-icon>
@@ -30,11 +41,13 @@
       <button mat-icon-button fxHide fxShow.xs (click)="drawer.toggle()">
         <mat-icon>menu</mat-icon>
       </button>
-      <view-toolbar [searchValue]="searchValue" (appSubmitSearchValue)="onSubmitSearchValue($event)"></view-toolbar>
+      <view-toolbar
+        [searchValue]="searchValue"
+        (appSubmitSearchValue)="onSubmitSearchValue($event)"
+      ></view-toolbar>
     </mat-toolbar>
     <div class="container">
       <ng-content></ng-content>
     </div>
   </mat-drawer-content>
-
 </mat-drawer-container>
