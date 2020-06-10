@@ -1,9 +1,13 @@
-<form #form="ngForm" (submit)="onSubmit(searchValueRef.value)" [ngClass.xs]="'xs'">
+<form #form="ngForm" [ngClass.xs]="'xs'">
   <mat-form-field appearance="fill">
     <mat-label>Tx Hash or Address</mat-label>
-    <input #searchValueRef matInput required [ngModel]="searchValue" name="searchValue" />
-    <button mat-icon-button matSuffix [disabled]="form.invalid">
+    <input #searchValueRef matInput required id="searchValue" [ngModel]="searchValue" name="searchValue" />
+    <button mat-icon-button matSuffix [disabled]="form.invalid" [matMenuTriggerFor]="searchSelector">
       <mat-icon>search</mat-icon>
     </button>
+    <mat-menu #searchSelector="matMenu">
+      <button mat-menu-item (click)="searchForTransaction(searchValueRef.value)">Search For Transaction</button>
+      <button mat-menu-item (click)="searchForAccount(searchValueRef.value)">Search For Account</button>
+    </mat-menu>
   </mat-form-field>
 </form>

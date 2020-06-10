@@ -12,7 +12,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTableModule } from '@angular/material/table';
-import { MatDialogModule } from '@angular/material/dialog';
+import { MatMenuModule } from '@angular/material/menu';
 
 @NgModule({
   declarations: [],
@@ -29,7 +29,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatCardModule,
     MatDividerModule,
     MatTableModule,
-    MatDialogModule,
+    MatMenuModule,
   ],
 })
 export class MaterialModule { }

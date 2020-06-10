@@ -30,11 +30,7 @@ export class AppComponent {
     this.cosmosSDK.update($event.url, $event.chainID);
   }
 
-  async onSubmitSearchValue(value: string) {
-    if (value.indexOf('cosmos') === 0) {
-      return this.router.navigate(['accounts', value]);
-    } else {
-      return this.router.navigate(['txs', value]);
-    }
+  onSubmitSearchValue(data: [string, string]) {
+    return this.router.navigate(data);
   }
 }

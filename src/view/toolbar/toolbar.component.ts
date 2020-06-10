@@ -9,7 +9,7 @@ export class ToolbarComponent implements OnInit {
   @Input()
   searchValue: string;
   @Output()
-  appSubmitSearchValue: EventEmitter<string>;
+  appSubmitSearchValue: EventEmitter<[string, string]>;
 
   constructor() {
     this.searchValue = '';
@@ -18,7 +18,11 @@ export class ToolbarComponent implements OnInit {
 
   ngOnInit(): void { }
 
-  onSubmit(searchValue: string) {
-    this.appSubmitSearchValue.emit(searchValue);
+  searchForTransaction(searchValue: string): void {
+    this.appSubmitSearchValue.emit(['txs', searchValue]);
+  }
+
+  searchForAccount(searchValue: string): void {
+    this.appSubmitSearchValue.emit(['accounts', searchValue]);
   }
 }
