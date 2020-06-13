@@ -7,7 +7,6 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 import { RouterModule } from '@angular/router';
-import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent, ToolbarComponent],
@@ -17,7 +16,6 @@ import { ReactiveFormsModule } from '@angular/forms';
     FormsModule,
     FlexLayoutModule,
     MaterialModule,
-    ReactiveFormsModule,
   ],
   exports: [AppComponent, HomeComponent, ToolbarComponent],
 })

@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "cosmoscan-fa85d"
+    "default": "cosmoscan-fa85d",
+    "staging": "cosmoscan-test"
   }
 }
