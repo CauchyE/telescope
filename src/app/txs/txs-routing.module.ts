@@ -8,4 +8,4 @@ const routes: Routes = [{ path: ':tx_hash', component: TxComponent }];
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class TxsRoutingModule {}
+export class TxsRoutingModule { }

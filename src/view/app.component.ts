@@ -31,10 +31,10 @@ export class AppComponent implements OnInit {
   }>;
 
   @Input()
-  txHash: string;
+  searchValue: string;
 
   @Output()
-  appSubmitTxHash: EventEmitter<string>;
+  appSubmitSearchValue: EventEmitter<[string, string]>;
 
   @ViewChild('sidenav')
   sidenav!: MatSidenav;
@@ -46,8 +46,8 @@ export class AppComponent implements OnInit {
     this.url = '';
     this.chainID = '';
     this.appSubmitSDK = new EventEmitter();
-    this.txHash = '';
-    this.appSubmitTxHash = new EventEmitter();
+    this.searchValue = '';
+    this.appSubmitSearchValue = new EventEmitter();
 
     this.drawerMode$ = this.mediaObserver.media$.pipe(
       map((change) => (change.mqAlias === 'xs' ? 'over' : 'side')),
@@ -66,13 +66,13 @@ export class AppComponent implements OnInit {
     );
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   onSubmitSDK(url: string, chainID: string) {
     this.appSubmitSDK.emit({ url, chainID });
   }
 
-  onSubmitTxHash(txHash: string) {
-    this.appSubmitTxHash.emit(txHash);
+  onSubmitSearchValue(value: [string, string]) {
+    this.appSubmitSearchValue.emit(value);
   }
 }

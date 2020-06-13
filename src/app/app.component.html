@@ -2,8 +2,8 @@
   [url]="cosmosSDK.sdk.url"
   [chainID]="cosmosSDK.sdk.chainID"
   (appSubmitSDK)="onSubmitSDK($event)"
-  [txHash]="txHash$ | async"
-  (appSubmitTxHash)="onSubmitTxHash($event)"
+  [searchValue]="searchValue$ | async"
+  (appSubmitSearchValue)="onSubmitSearchValue($event)"
 >
   <router-outlet></router-outlet>
 </view-app>

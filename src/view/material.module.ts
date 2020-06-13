@@ -9,6 +9,10 @@ import { MatListModule } from '@angular/material/list';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatTableModule } from '@angular/material/table';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [],
@@ -22,6 +26,10 @@ import { MatToolbarModule } from '@angular/material/toolbar';
     MatSidenavModule,
     MatSnackBarModule,
     MatToolbarModule,
+    MatCardModule,
+    MatDividerModule,
+    MatTableModule,
+    MatAutocompleteModule,
   ],
 })
 export class MaterialModule {}

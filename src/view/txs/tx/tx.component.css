@@ -1,0 +1,33 @@
+.tx-container {
+  padding: 24px;
+  overflow-y: auto;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 1fr;
+}
+
+.info-row:not(:first-child) {
+  margin-top: 16px;
+}
+
+.card:not(:first-child) {
+  margin-top: 16px;
+}
+
+.column-name {
+  white-space: nowrap;
+}
+
+.column-value {
+  margin-left: 8px;
+  word-break: break-all;
+}
+
+.table-container {
+  width: 100%;
+}
+
+.table-container th,
+.table-container td {
+  padding: 0px 24px 0px;
+}

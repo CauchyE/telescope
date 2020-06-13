@@ -19,7 +19,7 @@ export class TxComponent implements OnInit {
     private route: ActivatedRoute,
     private cosmosSDK: CosmosSDKService,
   ) {
-    this.txHash$ = this.route.params.pipe(map((params) => params['tx_hash']));
+    this.txHash$ = this.route.params.pipe(map((params) => params.tx_hash));
     this.tx$ = this.txHash$.pipe(
       mergeMap((hash) =>
         auth.txsHashGet(this.cosmosSDK.sdk, hash).then((res) => res.data),
@@ -27,5 +27,5 @@ export class TxComponent implements OnInit {
     );
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 }

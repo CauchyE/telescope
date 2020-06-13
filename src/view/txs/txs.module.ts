@@ -1,10 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TxComponent } from './tx/tx.component';
+import { MaterialModule } from '@view/material.module';
 
 @NgModule({
   declarations: [TxComponent],
-  imports: [CommonModule],
+  imports: [CommonModule, MaterialModule],
   exports: [TxComponent],
 })
-export class TxsViewModule {}
+export class TxsViewModule { }
