@@ -1,17 +1,17 @@
 .tx-container {
-  padding: 20px;
+  padding: 24px;
   overflow-y: auto;
   display: grid;
-  gap: 10px;
+  gap: 8px;
   grid-template-columns: 1fr;
 }
 
 .info-row:not(:first-child) {
-  margin-top: 15px;
+  margin-top: 16px;
 }
 
 .card:not(:first-child) {
-  margin-top: 15px;
+  margin-top: 16px;
 }
 
 .column-name {
@@ -19,7 +19,7 @@
 }
 
 .column-value {
-  margin-left: 10px;
+  margin-left: 8px;
   word-break: break-all;
 }
 
@@ -29,5 +29,5 @@
 
 .table-container th,
 .table-container td {
-  padding: 0px 20px 0px;
+  padding: 0px 24px 0px;
 }
