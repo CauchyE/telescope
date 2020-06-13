@@ -1,6 +1,8 @@
 import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+import { FormControl } from '@angular/forms';
 
 @Component({
+  // tslint:disable-next-line
   selector: 'view-toolbar',
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.css'],
@@ -11,18 +13,25 @@ export class ToolbarComponent implements OnInit {
   @Output()
   appSubmitSearchValue: EventEmitter<[string, string]>;
 
+  options = [
+    { value: 'txs', label: 'Search for transaction' },
+    { value: 'accounts', label: 'Search for accounts' },
+  ];
+
+  searchBox: FormControl;
+
   constructor() {
     this.searchValue = '';
     this.appSubmitSearchValue = new EventEmitter();
+    this.searchBox = new FormControl();
   }
 
   ngOnInit(): void {}
 
-  searchForTransaction(searchValue: string): void {
-    this.appSubmitSearchValue.emit(['txs', searchValue]);
-  }
-
-  searchForAccount(searchValue: string): void {
-    this.appSubmitSearchValue.emit(['accounts', searchValue]);
+  onOptionSelected(option: any): void {
+    const paths = (this?.searchValue ?? '').split('/');
+    const value = paths[paths.length - 1];
+    this.searchBox.setValue(`${option.value}/${value}`);
+    this.appSubmitSearchValue.emit([option.value, value]);
   }
 }

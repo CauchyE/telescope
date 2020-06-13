@@ -6,9 +6,20 @@
       matInput
       required
       id="searchValue"
-      [ngModel]="searchValue"
       name="searchValue"
+      [ngModel]="searchValue"
+      [formControl]="searchBox"
+      [matAutocomplete]="auto"
+      [matAutocompleteConnectedTo]="origin"
     />
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      (optionSelected)="onOptionSelected($event.option.value)"
+    >
+      <mat-option *ngFor="let option of options" [value]="option">
+        {{ option.label }}
+      </mat-option>
+    </mat-autocomplete>
     <button
       mat-icon-button
       matSuffix
@@ -17,16 +28,5 @@
     >
       <mat-icon>search</mat-icon>
     </button>
-    <mat-menu #searchSelector="matMenu">
-      <button
-        mat-menu-item
-        (click)="searchForTransaction(searchValueRef.value)"
-      >
-        Search For Transaction
-      </button>
-      <button mat-menu-item (click)="searchForAccount(searchValueRef.value)">
-        Search For Account
-      </button>
-    </mat-menu>
   </mat-form-field>
 </form>

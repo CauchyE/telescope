@@ -12,7 +12,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatTableModule } from '@angular/material/table';
-import { MatMenuModule } from '@angular/material/menu';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 @NgModule({
   declarations: [],
@@ -29,7 +29,7 @@ import { MatMenuModule } from '@angular/material/menu';
     MatCardModule,
     MatDividerModule,
     MatTableModule,
-    MatMenuModule,
+    MatAutocompleteModule,
   ],
 })
-export class MaterialModule { }
+export class MaterialModule {}

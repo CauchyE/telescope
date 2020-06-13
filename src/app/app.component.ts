@@ -24,8 +24,12 @@ export class AppComponent {
           Object.keys(event.snapshot.params).length > 0,
       ),
       map((event) => {
-        const { tx_hash, address } = event.snapshot.params;
-        return tx_hash ?? address;
+        if ('address' in event.snapshot.params) {
+          return `accounts/${event.snapshot.params.address}`;
+        } else if ('tx_hash' in event.snapshot.params) {
+          return `txs/${event.snapshot.params.tx_hash}`;
+        }
+        return '';
       }),
     );
   }
