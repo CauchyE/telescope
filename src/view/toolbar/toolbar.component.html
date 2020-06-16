@@ -1,6 +1,6 @@
 <form #form="ngForm" [ngClass.xs]="'xs'">
-  <mat-form-field appearance="fill">
-    <mat-label>Tx Hash or Address</mat-label>
+  <mat-form-field appearance="fill" (submit)="onSubmit(searchValueRef.value)">
+    <mat-label>Search</mat-label>
     <input
       #searchValueRef
       matInput
@@ -8,23 +8,20 @@
       id="searchValue"
       name="searchValue"
       [ngModel]="searchValue"
-      [formControl]="searchBox"
       [matAutocomplete]="auto"
-      [matAutocompleteConnectedTo]="origin"
     />
     <mat-autocomplete
       #auto="matAutocomplete"
       (optionSelected)="onOptionSelected($event.option.value)"
     >
-      <mat-option *ngFor="let option of options" [value]="option">
-        {{ option.label }}
+      <mat-option *ngFor="let option of options" [value]="option.format(searchValueRef.value)">
+        {{ option.label(searchValueRef.value) }}
       </mat-option>
     </mat-autocomplete>
     <button
       mat-icon-button
       matSuffix
       [disabled]="form.invalid"
-      [matMenuTriggerFor]="searchSelector"
     >
       <mat-icon>search</mat-icon>
     </button>

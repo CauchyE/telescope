@@ -27,5 +27,5 @@ export class TxComponent implements OnInit {
     );
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 }

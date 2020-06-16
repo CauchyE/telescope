@@ -30,7 +30,7 @@ export class AccountComponent implements OnInit {
           AccAddress.fromBech32(address),
         ),
       ),
-      map((res) => JSON.parse(res.request?.response ?? '{}')?.result?.value),
+      map((res) => res.data.result),
     );
 
     this.paginatedTxs$ = this.address$.pipe(

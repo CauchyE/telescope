@@ -1,5 +1,12 @@
-import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
-import { FormControl } from '@angular/forms';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  Input,
+  ViewChild,
+} from '@angular/core';
+import { NgModel } from '@angular/forms';
 
 @Component({
   // tslint:disable-next-line
@@ -11,27 +18,34 @@ export class ToolbarComponent implements OnInit {
   @Input()
   searchValue: string;
   @Output()
-  appSubmitSearchValue: EventEmitter<[string, string]>;
+  appSubmitSearchValue: EventEmitter<string>;
+
+  @ViewChild('searchValueRef')
+  searchValueRef!: NgModel;
 
   options = [
-    { value: 'txs', label: 'Search for transaction' },
-    { value: 'accounts', label: 'Search for accounts' },
+    {
+      label: (value: string) => `Address "${value}"`,
+      format: (value: string) => `address=${value}`,
+    },
+    {
+      label: (value: string) => `Tx hash "${value}"`,
+      format: (value: string) => `tx_hash=${value}`,
+    },
   ];
-
-  searchBox: FormControl;
 
   constructor() {
     this.searchValue = '';
     this.appSubmitSearchValue = new EventEmitter();
-    this.searchBox = new FormControl();
   }
 
   ngOnInit(): void {}
 
   onOptionSelected(option: any): void {
-    const paths = (this?.searchValue ?? '').split('/');
-    const value = paths[paths.length - 1];
-    this.searchBox.setValue(`${option.value}/${value}`);
-    this.appSubmitSearchValue.emit([option.value, value]);
+    this.appSubmitSearchValue.emit(option);
+  }
+
+  onSubmit(value: string) {
+    this.appSubmitSearchValue.emit(value);
   }
 }

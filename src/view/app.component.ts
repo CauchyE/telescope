@@ -34,7 +34,7 @@ export class AppComponent implements OnInit {
   searchValue: string;
 
   @Output()
-  appSubmitSearchValue: EventEmitter<[string, string]>;
+  appSubmitSearchValue: EventEmitter<string>;
 
   @ViewChild('sidenav')
   sidenav!: MatSidenav;
@@ -66,13 +66,13 @@ export class AppComponent implements OnInit {
     );
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   onSubmitSDK(url: string, chainID: string) {
     this.appSubmitSDK.emit({ url, chainID });
   }
 
-  onSubmitSearchValue(value: [string, string]) {
+  onSubmitSearchValue(value: string) {
     this.appSubmitSearchValue.emit(value);
   }
 }
