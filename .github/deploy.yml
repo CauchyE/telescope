@@ -27,5 +27,7 @@ jobs:
             ${{ runner.os }}-node-
       - run: npm install
       - run: npm run build --prod --if-present
+      - run: npm install
+        working-directory: ./functions
       - run: npm i -g firebase-tools typescript tslint
       - run: firebase deploy --token=${{ secrets.FIREBASE_TOKEN }}
