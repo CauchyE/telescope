@@ -30,4 +30,5 @@ jobs:
       - run: npm install
         working-directory: ./functions
       - run: npm i -g firebase-tools typescript tslint
+      - run: firebase use default
       - run: firebase deploy --token=${{ secrets.FIREBASE_TOKEN }}
