@@ -31,4 +31,4 @@ jobs:
       #   working-directory: ./functions
       - run: npm i -g firebase-tools typescript tslint
       - run: firebase use default --token ${{ secrets.FIREBASE_TOKEN }}
-      - run: firebase deploy --token ${{ secrets.FIREBASE_TOKEN }}
+      - run: firebase deploy --project cosmoscan-test --token ${{ secrets.FIREBASE_TOKEN }}

@@ -30,5 +30,4 @@ jobs:
       # - run: npm install
       #   working-directory: ./functions
       - run: npm i -g firebase-tools typescript tslint
-      - run: firebase use prod --token ${{ secrets.FIREBASE_TOKEN }}
-      - run: firebase deploy --token ${{ secrets.FIREBASE_TOKEN }}
+      - run: firebase deploy --project cosmoscan-fa85d --token ${{ secrets.FIREBASE_TOKEN }}
