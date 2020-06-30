@@ -5,11 +5,12 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from './material.module';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { ToolbarComponent } from './toolbar/toolbar.component';
+import { ToolbarsViewModule } from './toolbars/toolbars.module';
+import { ToolbarComponent } from './toolbars/toolbar/toolbar.component';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, ToolbarComponent],
+  declarations: [AppComponent, HomeComponent, ToolbarsViewModule],
   imports: [
     CommonModule,
     RouterModule,
@@ -17,6 +18,6 @@ import { RouterModule } from '@angular/router';
     FlexLayoutModule,
     MaterialModule,
   ],
-  exports: [AppComponent, HomeComponent, ToolbarComponent],
+  exports: [AppComponent, HomeComponent, ToolbarsViewModule],
 })
-export class ViewModule {}
+export class ViewModule { }
