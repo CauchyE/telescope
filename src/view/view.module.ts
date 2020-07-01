@@ -9,9 +9,13 @@ import { HomeModule } from './home/home.module';
 import { ToolbarModule } from './toolbar/toolbar.module';
 // import { ToolbarComponent } from './toolbar/toolbar.component';
 import { RouterModule } from '@angular/router';
+import { HomeComponent } from '@app/home/home.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
 
 @NgModule({
-  declarations: [AppComponent, HomeModule, ToolbarModule],
+  // declarations: [AppComponent, HomeModule, ToolbarModule],
+  // declarations: [AppComponent, HomeComponent, ToolbarComponent],
+  declarations: [AppComponent],
   imports: [
     CommonModule,
     RouterModule,
