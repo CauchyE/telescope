@@ -8,5 +8,5 @@ import { MaterialModule } from '@view/material.module';
   imports: [CommonModule, MaterialModule],
   exports: [ToolbarComponent],
 })
-export class ToolbarsViewModule { }
+export class ToolbarModule { }
 
