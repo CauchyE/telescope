@@ -7,11 +7,14 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
-import { HomeComponent } from './home/home.component';
+// import { HomeComponent } from './home/home.component';
 import { ViewModule } from 'src/view/view.module';
+import { HomeModule } from '@view/home/home.module';
+import { ToolbarModule } from '@view/toolbar/toolbar.module';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent],
+  // declarations: [AppComponent, HomeComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -20,8 +23,10 @@ import { ViewModule } from 'src/view/view.module';
       enabled: environment.production,
     }),
     ViewModule,
+    HomeModule,
+    ToolbarModule
   ],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
