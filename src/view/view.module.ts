@@ -4,13 +4,14 @@ import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from './material.module';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
-import { ToolbarsViewModule } from './toolbars/toolbars.module';
-import { ToolbarComponent } from './toolbars/toolbar/toolbar.component';
+// import { HomeComponent } from './home/home.component';
+import { HomeModule } from './home/home.module';
+import { ToolbarModule } from './toolbar/toolbar.module';
+// import { ToolbarComponent } from './toolbar/toolbar.component';
 import { RouterModule } from '@angular/router';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, ToolbarsViewModule],
+  declarations: [AppComponent, HomeModule, ToolbarModule],
   imports: [
     CommonModule,
     RouterModule,
@@ -18,6 +19,6 @@ import { RouterModule } from '@angular/router';
     FlexLayoutModule,
     MaterialModule,
   ],
-  exports: [AppComponent, HomeComponent, ToolbarsViewModule],
+  exports: [AppComponent],
 })
 export class ViewModule { }
