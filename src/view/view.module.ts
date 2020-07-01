@@ -13,8 +13,6 @@ import { HomeComponent } from '@app/home/home.component';
 import { ToolbarComponent } from './toolbar/toolbar.component';
 
 @NgModule({
-  // declarations: [AppComponent, HomeModule, ToolbarModule],
-  // declarations: [AppComponent, HomeComponent, ToolbarComponent],
   declarations: [AppComponent],
   imports: [
     CommonModule,
