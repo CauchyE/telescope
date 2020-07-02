@@ -7,16 +7,18 @@ const routes: Routes = [
   {
     path: 'accounts',
     loadChildren: () =>
-      import('./accounts/accounts.module').then((m) => m.AccountsModule),
+      import('./accounts/accounts.module').then((m) => m.AppAccountsModule),
   },
   {
     path: 'txs',
-    loadChildren: () => import('./txs/txs.module').then((m) => m.TxsModule),
+    loadChildren: () => import('./txs/txs.module').then((m) => m.AppTxsModule),
   },
   {
     path: 'validators',
     loadChildren: () =>
-      import('./validators/validators.module').then((m) => m.ValidatorsModule),
+      import('./validators/validators.module').then(
+        (m) => m.AppValidatorsModule,
+      ),
   },
 ];
 
@@ -24,4 +26,4 @@ const routes: Routes = [
   imports: [RouterModule.forRoot(routes)],
   exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

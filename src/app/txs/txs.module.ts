@@ -3,10 +3,10 @@ import { CommonModule } from '@angular/common';
 
 import { TxsRoutingModule } from './txs-routing.module';
 import { TxComponent } from './tx/tx.component';
-import { TxsViewModule } from '@view/txs/txs.module';
+import { TxModule } from '@view/txs/tx/tx.module';
 
 @NgModule({
   declarations: [TxComponent],
-  imports: [CommonModule, TxsRoutingModule, TxsViewModule],
+  imports: [CommonModule, TxsRoutingModule, TxModule],
 })
-export class TxsModule {}
+export class AppTxsModule {}

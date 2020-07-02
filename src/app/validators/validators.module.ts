@@ -10,4 +10,4 @@ import { ValidatorComponent } from './validator/validator.component';
   declarations: [ValidatorsComponent, ValidatorComponent],
   imports: [CommonModule, ValidatorsRoutingModule, ValidatorsViewModule],
 })
-export class ValidatorsModule {}
+export class AppValidatorsModule {}

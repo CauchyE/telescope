@@ -9,4 +9,4 @@ import { AccountComponent } from './account/account.component';
   declarations: [AccountComponent],
   imports: [CommonModule, AccountsRoutingModule, AccountsViewModule],
 })
-export class AccountsModule {}
+export class AppAccountsModule {}
