@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ValidatorComponent } from './validator.component';
 import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '@view/material.module';
-import { ValidatorsComponent } from './validators.component';
 
 @NgModule({
-  declarations: [ValidatorsComponent],
+  declarations: [ValidatorComponent],
   imports: [CommonModule, RouterModule, FlexLayoutModule, MaterialModule],
-  exports: [ValidatorsComponent],
+  exports: [ValidatorComponent],
 })
-export class ValidatorsViewModule { }
+export class ValidatorModule { }
