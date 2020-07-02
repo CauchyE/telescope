@@ -13,7 +13,7 @@ import { HomeModule } from '@view/home/home.module';
 import { ToolbarModule } from '@view/toolbar/toolbar.module';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -21,11 +21,11 @@ import { ToolbarModule } from '@view/toolbar/toolbar.module';
     ServiceWorkerModule.register('ngsw-worker.js', {
       enabled: environment.production,
     }),
-    ViewModule,
     HomeModule,
     ToolbarModule,
+    ViewModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
