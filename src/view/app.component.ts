@@ -19,18 +19,6 @@ import { MatSidenav } from '@angular/material/sidenav';
 })
 export class AppComponent implements OnInit {
   @Input()
-  url: string;
-
-  @Input()
-  chainID: string;
-
-  @Output()
-  appSubmitSDK: EventEmitter<{
-    url: string;
-    chainID: string;
-  }>;
-
-  @Input()
   searchValue: string;
 
   @Output()
@@ -43,9 +31,6 @@ export class AppComponent implements OnInit {
   drawerOpened$: Observable<boolean>;
 
   constructor(private router: Router, private mediaObserver: MediaObserver) {
-    this.url = '';
-    this.chainID = '';
-    this.appSubmitSDK = new EventEmitter();
     this.searchValue = '';
     this.appSubmitSearchValue = new EventEmitter();
 
@@ -67,10 +52,6 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit() {}
-
-  onSubmitSDK(url: string, chainID: string) {
-    this.appSubmitSDK.emit({ url, chainID });
-  }
 
   onSubmitSearchValue(value: string) {
     this.appSubmitSearchValue.emit(value);

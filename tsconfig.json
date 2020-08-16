@@ -19,7 +19,8 @@
       "@environments/*": ["src/environments/*"],
       "@model/*": ["src/model/*"],
       "@view/*": ["src/view/*"]
-    }
+    },
+    "resolveJsonModule": true
   },
   "angularCompilerOptions": {
     "fullTemplateTypeCheck": true,

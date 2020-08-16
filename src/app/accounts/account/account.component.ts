@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { auth, BaseAccount } from 'cosmos-client/x/auth';
 import { PaginatedQueryTxs } from 'cosmos-client/api';
-import { CosmosSDKService } from '@model/state.service';
+import { CosmosSDKService } from '@model/cosmos-sdk.service';
 import { AccAddress } from 'cosmos-client';
 
 @Component({

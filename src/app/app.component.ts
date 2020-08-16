@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { Router, ActivationEnd } from '@angular/router';
 import { Observable } from 'rxjs';
-import { map, filter, tap } from 'rxjs/operators';
-import { CosmosSDKService } from '@model/state.service';
+import { map, filter } from 'rxjs/operators';
+import { CosmosSDKService } from '@model/cosmos-sdk.service';
 import * as qs from 'querystring';
 
 @Component({
@@ -30,10 +30,6 @@ export class AppComponent {
         return '';
       }),
     );
-  }
-
-  onSubmitSDK($event: { url: string; chainID: string }) {
-    this.cosmosSDK.update($event.url, $event.chainID);
   }
 
   async onSubmitSearchValue(value: string) {

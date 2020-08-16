@@ -5,6 +5,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from './material.module';
 import { AppComponent } from './app.component';
 import { RouterModule } from '@angular/router';
+import { ToolbarModule } from './toolbar/toolbar.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -14,6 +15,7 @@ import { RouterModule } from '@angular/router';
     FormsModule,
     FlexLayoutModule,
     MaterialModule,
+    ToolbarModule
   ],
   exports: [AppComponent],
 })
