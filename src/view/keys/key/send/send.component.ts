@@ -24,18 +24,29 @@ export class SendComponent implements OnInit {
   @Output()
   appSubmit: EventEmitter<SendOnSubmitEvent>;
 
+  amount: Coin[];
+
   constructor() {
     this.appSubmit = new EventEmitter();
+    this.amount = [{ denom: '', amount: '' }];
   }
 
   ngOnInit(): void {}
 
-  onSubmit() {
+  removeAmount(index: number) {
+    this.amount.splice(index, 1);
+  }
+
+  addAmount() {
+    this.amount.push({});
+  }
+
+  onSubmit(toAddress: string, privateKey: string) {
     this.appSubmit.emit({
       key: this.key!,
-      toAddress: '', //todo
-      amount: [], //todo
-      privateKey: '', //todo
+      toAddress: toAddress,
+      amount: this.amount,
+      privateKey: privateKey,
     });
   }
 }

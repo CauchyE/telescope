@@ -23,9 +23,57 @@
       <mat-divider></mat-divider>
     </ng-container>
   </mat-list>
-  
-  <form #formRef="ngForm">
+
+  <form
+    #formRef="ngForm"
+    (submit)="onSubmit(toAddressRef.value, privateKeyRef.value)"
+  >
+    <mat-form-field fxFill>
+      <mat-label>To address</mat-label>
+      <input #toAddressRef ngModel name="to-address" matInput required />
+    </mat-form-field>
+
+    <ng-container *ngFor="let e of amount; let i = index">
+      <div fxLayout="row" fxLayoutAlign="initial center">
+        <mat-form-field fxFlex="auto">
+          <mat-label>Denom</mat-label>
+          <input [(ngModel)]="amount[i].denom" name="denom-{{ i }}" matInput />
+        </mat-form-field>
+        <mat-form-field fxFlex="auto">
+          <mat-label>Amount</mat-label>
+          <input
+            [(ngModel)]="amount[i].amount"
+            name="amount-{{ i }}"
+            matInput
+            type="number"
+            pattern="^\d+$"
+            [min]="0"
+          />
+        </mat-form-field>
+        <button
+          mat-icon-button
+          color="warn"
+          [disabled]="amount.length <= 1"
+          (click)="removeAmount(i)"
+        >
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </ng-container>
+    <button mat-button fxFill color="accent" (click)="addAmount()">
+      <mat-icon>add</mat-icon>
+      <span>Add</span>
+    </button>
     <mat-checkbox required>Confirm</mat-checkbox>
+
+    <mat-form-field fxFill>
+      <mat-label>ID</mat-label>
+      <input #idRef [ngModel]="key?.id" name="id" matInput readonly />
+    </mat-form-field>
+    <mat-form-field fxFill>
+      <mat-label>Private key</mat-label>
+      <input #privateKeyRef ngModel name="password" matInput required />
+    </mat-form-field>
     <button mat-flat-button [disabled]="formRef.invalid">Send</button>
   </form>
 </ng-template>

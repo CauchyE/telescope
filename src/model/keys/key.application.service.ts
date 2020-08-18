@@ -17,6 +17,8 @@ export class KeyApplicationService {
     private readonly key: KeyService,
   ) {}
 
+  async create(id: string, privateKey: string) {}
+
   async send(key: Key, toAddress: string, amount: Coin[], privateKey: string) {
     let dialogRef = this.loadingDialog.open('Sending');
 

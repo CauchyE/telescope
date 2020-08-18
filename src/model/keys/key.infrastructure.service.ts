@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Key } from './key.model';
+import { Key, KeyType } from './key.model';
 import { Coin } from 'cosmos-client/api';
 import { IKeyInfrastructure } from './key.service';
 import { auth } from 'cosmos-client/x/auth';
@@ -14,24 +14,60 @@ import { CosmosSDKService } from '@model/cosmos-sdk.service';
 export class KeyInfrastructureService implements IKeyInfrastructure {
   constructor(private readonly cosmosSDK: CosmosSDKService) {}
 
+  private getPrivKey(type: KeyType, privateKey: string) {
+    const privKeyBuffer = Buffer.from(privateKey, 'base64');
+    switch (type) {
+      case KeyType.SECP256K1:
+        return new PrivKeySecp256k1(privKeyBuffer);
+      case KeyType.ED25519:
+        return new PrivKeyEd25519(privKeyBuffer);
+      case KeyType.SR25519:
+        return new PrivKeySr25519(privKeyBuffer);
+    }
+  }
+
+  async getPrivateKeyFromMnemonic(mnemonic: string) {
+    return (
+      await this.cosmosSDK.sdk.generatePrivKeyFromMnemonic(mnemonic)
+    ).toString('base64');
+  }
+
+  /**
+   * Get one from Indexed DB
+   * @param id
+   */
   async get(id: string) {}
 
+  /**
+   * Get all from Indexed DB
+   */
   async keys() {}
 
-  async set(id: string, data: Key) {}
+  /**
+   * Set with id in Indexed DB
+   * @param id
+   * @param type
+   * @param privateKey
+   */
+  async set(id: string, type: KeyType, privateKey: string) {
+    const privKey = this.getPrivKey(type, privateKey);
+    const publicKey = privKey.getPubKey().toBase64();
+
+    const data: Key = {
+      id,
+      type,
+      public_key: publicKey,
+    };
+  }
+
+  /**
+   * Delete with id from Indexed DB
+   * @param id
+   */
+  async delete(id: string) {}
 
   async send(key: Key, toAddress: string, amount: Coin[], privateKey: string) {
-    const privKeyBuffer = Buffer.from(privateKey, 'hex');
-    const privKey = (() => {
-      switch (key.type) {
-        case 'secp256k1':
-          return new PrivKeySecp256k1(privKeyBuffer);
-        case 'ed25519':
-          return new PrivKeyEd25519(privKeyBuffer);
-        case 'sr25519':
-          return new PrivKeySr25519(privKeyBuffer);
-      }
-    })();
+    const privKey = this.getPrivKey(key.type, privateKey);
     const fromAddress = AccAddress.fromPublicKey(privKey.getPubKey());
     const account = await auth
       .accountsAddressGet(this.cosmosSDK.sdk, fromAddress)

@@ -5,6 +5,7 @@ import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '@view/material.module';
+import { MinModule } from 'ng-min-max';
 
 @NgModule({
   declarations: [SendComponent],
@@ -14,6 +15,7 @@ import { MaterialModule } from '@view/material.module';
     FormsModule,
     FlexLayoutModule,
     MaterialModule,
+    MinModule,
   ],
   exports: [SendComponent],
 })

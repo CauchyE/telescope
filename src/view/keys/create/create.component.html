@@ -1,4 +1,4 @@
-<form #formRef="ngForm">
+<form #formRef="ngForm" (submit)="onSubmit(idRef.value, privateKeyRef.value)">
   <mat-form-field fxFill>
     <mat-label>ID</mat-label>
     <input
@@ -10,6 +10,10 @@
       pattern="^[a-z_][a-z_0-9]*$"
     />
     <mat-error>^[a-z_][a-z_0-9]*$</mat-error>
+  </mat-form-field>
+  <mat-form-field fxFill>
+    <mat-label>Type</mat-label>
+    <mat-select></mat-select>
   </mat-form-field>
   <mat-form-field fxFill>
     <mat-label>Mnemonic</mat-label>

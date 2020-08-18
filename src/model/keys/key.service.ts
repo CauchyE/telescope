@@ -4,9 +4,11 @@ import { Key } from './key.model';
 import { KeyInfrastructureService } from './key.infrastructure.service';
 
 export interface IKeyInfrastructure {
+  getPrivateKeyFromMnemonic(mnemonic: string): Promise<string>;
   get(id: string): Promise<Key>;
   keys(): Promise<Key[]>;
-  set(id: string, data: Key): Promise<void>;
+  set(id: string, type: KeyType, privateKey: string): Promise<void>;
+  delete(id: string): Promise<void>;
   send(
     key: Key,
     toAddress: string,
@@ -22,6 +24,9 @@ export class KeyService {
   private readonly iKeyInfrastructure: IKeyInfrastructure;
   constructor(readonly keyInfrastructure: KeyInfrastructureService) {
     this.iKeyInfrastructure = keyInfrastructure;
+  }
+  getPrivateKeyFromMnemonic(mnemonic: string) {
+    return this.iKeyInfrastructure.getPrivateKeyFromMnemonic(mnemonic);
   }
 
   send(key: Key, toAddress: string, amount: Coin[], privateKey: string) {
