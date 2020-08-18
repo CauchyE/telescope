@@ -1,1 +1,1 @@
-<view-send (appSubmit)="onSubmit($event)"></view-send>
+<view-send [key]="key$ | async" (appSubmit)="onSubmit($event)"></view-send>

@@ -20,6 +20,11 @@ const routes: Routes = [
         (m) => m.AppValidatorsModule,
       ),
   },
+  {
+    path: 'keys',
+    loadChildren: () =>
+      import('./keys/keys.module').then((m) => m.AppKeysModule),
+  },
 ];
 
 @NgModule({
