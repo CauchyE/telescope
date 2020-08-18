@@ -1,1 +1,34 @@
-<p>send works!</p>
+<ng-container *ngIf="coins === null; then loading; else loaded"></ng-container>
+<ng-template #loading>
+  <mat-progress-spinner
+    [diameter]="60"
+    [mode]="'indeterminate'"
+  ></mat-progress-spinner>
+</ng-template>
+<ng-template #loaded>
+  <ng-container
+    *ngIf="coins?.length || 0 > 0; then exist; else empty"
+  ></ng-container>
+</ng-template>
+<ng-template #exist>
+  <mat-list>
+    <h3 matSubheader>Keys</h3>
+    <mat-divider></mat-divider>
+    <ng-container *ngFor="let coin of coins">
+      <mat-list-item>
+        <span>{{ coin?.denom }}</span>
+        <span fxFlex="auto"> </span>
+        <span>{{ coin?.amount }}</span>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </ng-container>
+  </mat-list>
+  
+  <form #formRef="ngForm">
+    <mat-checkbox required>Confirm</mat-checkbox>
+    <button mat-flat-button [disabled]="formRef.invalid">Send</button>
+  </form>
+</ng-template>
+<ng-template #empty>
+  <p>Balance is empty</p>
+</ng-template>

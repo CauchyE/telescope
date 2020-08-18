@@ -1,1 +1,30 @@
-<p>keys works!</p>
+<ng-container *ngIf="keys === null; then loading; else loaded"> </ng-container>
+<ng-template #loading>
+  <mat-progress-spinner
+    [diameter]="60"
+    [mode]="'indeterminate'"
+  ></mat-progress-spinner>
+</ng-template>
+<ng-template #loaded>
+  <ng-container *ngIf="keys?.length > 0; then exist; else empty">
+  </ng-container>
+</ng-template>
+<ng-template #exist>
+  <mat-nav-list>
+    <h3 matSubheader>Keys</h3>
+    <mat-divider></mat-divider>
+    <ng-container *ngFor="let key of keys">
+      <mat-list-item routerLink="/keys/{{ key.id }}">
+        <div
+          mat-list-icon
+          [ngStyle]="{ 'background-color': getColorCode(key) }"
+        ></div>
+        <span>{{ key.id }}</span>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </ng-container>
+  </mat-nav-list>
+</ng-template>
+<ng-template #empty>
+  <p class="empty">There is no key.</p>
+</ng-template>

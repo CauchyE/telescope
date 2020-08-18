@@ -1,15 +1,27 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
+import { Key } from '@model/keys/key.model';
+import * as crypto from 'crypto';
 
 @Component({
-  selector: 'app-keys',
+  selector: 'view-keys',
   templateUrl: './keys.component.html',
-  styleUrls: ['./keys.component.css']
+  styleUrls: ['./keys.component.css'],
 })
 export class KeysComponent implements OnInit {
+  @Input()
+  keys?: Key[] | null;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
+  ngOnInit(): void {}
+
+  getColorCode(key: Key) {
+    const hash = crypto
+      .createHash('sha3-256')
+      .update(Buffer.from(key.id))
+      .digest()
+      .toString('hex');
+
+    return `#${hash.substr(0, 6)}`;
   }
-
 }

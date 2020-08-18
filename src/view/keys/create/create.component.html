@@ -1,1 +1,40 @@
-<p>create works!</p>
+<form #formRef="ngForm">
+  <mat-form-field fxFill>
+    <mat-label>ID</mat-label>
+    <input
+      #idRef
+      ngModel
+      name="id"
+      matInput
+      required
+      pattern="^[a-z_][a-z_0-9]*$"
+    />
+    <mat-error>^[a-z_][a-z_0-9]*$</mat-error>
+  </mat-form-field>
+  <mat-form-field fxFill>
+    <mat-label>Mnemonic</mat-label>
+    <textarea
+      #mnemonicRef
+      ngModel
+      name="mnemonic"
+      matInput
+      rows="3"
+      style="resize: none;"
+      required
+      pattern="^[a-z\s]+$"
+      (blur)="onBlurMnemonic(mnemonicRef.value)"
+    ></textarea>
+  </mat-form-field>
+  <mat-form-field fxFill>
+    <mat-label>Private key</mat-label>
+    <input #privateKeyRef ngModel name="password" matInput readonly required />
+    <button mat-button matSuffix>
+      <mat-icon>copy</mat-icon>
+    </button>
+    <mat-hint>
+      You must save this as a password using password manager built in the web
+      browser.
+    </mat-hint>
+  </mat-form-field>
+  <button mat-flat-button [disabled]="formRef.invalid">Submit</button>
+</form>
