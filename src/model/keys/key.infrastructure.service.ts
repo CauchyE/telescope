@@ -103,5 +103,7 @@ export class KeyInfrastructureService implements IKeyInfrastructure {
     const result = await auth
       .txsPost(this.cosmosSDK.sdk, signedStdTx, 'block')
       .then((res) => res.data);
+
+    return result.txhash || '';
   }
 }

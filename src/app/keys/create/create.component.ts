@@ -25,6 +25,6 @@ export class CreateComponent implements OnInit {
   }
 
   async onSubmit($event: CreateOnSubmitEvent) {
-    await this.keyApplication.create($event.id, $event.privateKey);
+    await this.keyApplication.create($event.id, $event.type, $event.privateKey);
   }
 }

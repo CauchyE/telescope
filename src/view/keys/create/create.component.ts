@@ -1,7 +1,9 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { KeyType } from '@model/keys/key.model';
 
 export type CreateOnSubmitEvent = {
   id: string;
+  type: KeyType;
   privateKey: string;
 };
 
@@ -31,7 +33,7 @@ export class CreateComponent implements OnInit {
     this.appMnemonic.next(mnemonic);
   }
 
-  onSubmit(id: string, privateKey: string) {
-    this.appSubmit.emit({ id, privateKey });
+  onSubmit(id: string, type: KeyType, privateKey: string) {
+    this.appSubmit.emit({ id, type, privateKey });
   }
 }

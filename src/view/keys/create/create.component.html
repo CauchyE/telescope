@@ -1,4 +1,7 @@
-<form #formRef="ngForm" (submit)="onSubmit(idRef.value, privateKeyRef.value)">
+<form
+  #formRef="ngForm"
+  (submit)="onSubmit(idRef.value, typeRef.value, privateKeyRef.value)"
+>
   <mat-form-field fxFill>
     <mat-label>ID</mat-label>
     <input
@@ -13,7 +16,11 @@
   </mat-form-field>
   <mat-form-field fxFill>
     <mat-label>Type</mat-label>
-    <mat-select></mat-select>
+    <mat-select #typeRef ngModel name="type" matInput required>
+      <mat-option [value]="'secp256k1'">Secp256k1</mat-option>
+      <mat-option [value]="'ed25519'">Ed25519</mat-option>
+      <mat-option [value]="'sr25519'">Sr25519</mat-option>
+    </mat-select>
   </mat-form-field>
   <mat-form-field fxFill>
     <mat-label>Mnemonic</mat-label>

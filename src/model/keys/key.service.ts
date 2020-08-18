@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Coin } from 'cosmos-client/api';
-import { Key } from './key.model';
+import { Key, KeyType } from './key.model';
 import { KeyInfrastructureService } from './key.infrastructure.service';
 
 export interface IKeyInfrastructure {
@@ -14,7 +14,7 @@ export interface IKeyInfrastructure {
     toAddress: string,
     amount: Coin[],
     privateKey: string,
-  ): Promise<void>;
+  ): Promise<string>;
 }
 
 @Injectable({
@@ -42,10 +42,10 @@ export class KeyService {
   }
 
   delete(id: string) {
-    this.iKeyInfrastructure.delete(id);
+    return this.iKeyInfrastructure.delete(id);
   }
 
   send(key: Key, toAddress: string, amount: Coin[], privateKey: string) {
-    this.iKeyInfrastructure.send(key, toAddress, amount, privateKey);
+    return this.iKeyInfrastructure.send(key, toAddress, amount, privateKey);
   }
 }
