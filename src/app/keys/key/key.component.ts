@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Key } from '@model/keys/key.model';
 import { ActivatedRoute } from '@angular/router';
-import { KeyService } from '@model/keys/key.service';
+import { KeyService } from '@model/index';
 import { map, mergeMap } from 'rxjs/operators';
 
 @Component({

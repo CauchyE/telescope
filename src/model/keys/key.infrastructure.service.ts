@@ -6,13 +6,15 @@ import { auth } from 'cosmos-client/x/auth';
 import { bank } from 'cosmos-client/x/bank';
 import { PrivKeySecp256k1, PrivKeyEd25519, AccAddress } from 'cosmos-client';
 import { PrivKeySr25519 } from 'cosmos-client/tendermint/types/sr25519';
-import { CosmosSDKService } from '@model/cosmos-sdk.service';
+import { CosmosSDKService } from '@model/index';
 
 @Injectable({
   providedIn: 'root',
 })
 export class KeyInfrastructureService implements IKeyInfrastructure {
-  constructor(private readonly cosmosSDK: CosmosSDKService) {}
+  constructor(private readonly cosmosSDK: CosmosSDKService) {
+    console.log('KeyInfrastructureService', cosmosSDK);
+  }
 
   private getPrivKey(type: KeyType, privateKey: string) {
     const privKeyBuffer = Buffer.from(privateKey, 'base64');
@@ -36,12 +38,16 @@ export class KeyInfrastructureService implements IKeyInfrastructure {
    * Get one from Indexed DB
    * @param id
    */
-  async get(id: string) {}
+  async get(id: string): Promise<Key | undefined> {
+    return undefined;
+  }
 
   /**
    * Get all from Indexed DB
    */
-  async keys() {}
+  async keys(): Promise<Key[]> {
+    return [];
+  }
 
   /**
    * Set with id in Indexed DB

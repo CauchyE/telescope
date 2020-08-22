@@ -3,9 +3,8 @@ import { SendOnSubmitEvent } from '@view/keys/key/send/send.component';
 import { Observable } from 'rxjs';
 import { Key } from '@model/keys/key.model';
 import { ActivatedRoute } from '@angular/router';
-import { KeyService } from '@model/keys/key.service';
 import { map, mergeMap } from 'rxjs/operators';
-import { KeyApplicationService } from '@model/keys/key.application.service';
+import { KeyService, KeyApplicationService } from '@model/index';
 
 @Component({
   selector: 'app-send',

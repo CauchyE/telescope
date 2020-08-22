@@ -9,6 +9,8 @@ export class CosmosSDKService {
   sdk: CosmosSDK;
 
   constructor() {
+    console.log('cosmos sdk service', config);
+
     this.sdk = new CosmosSDK(config.url, config.chain_id);
 
     if (

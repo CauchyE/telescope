@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, from } from 'rxjs';
 import { Key } from '@model/keys/key.model';
-import { KeyService } from '@model/keys/key.service';
+import { CosmosSDKService, KeyService } from '@model/index';
 
 @Component({
   selector: 'app-keys',
@@ -9,10 +9,10 @@ import { KeyService } from '@model/keys/key.service';
   styleUrls: ['./keys.component.css'],
 })
 export class KeysComponent implements OnInit {
-  keys$: Observable<Key[]>;
-
+  //keys$: Observable<Key[]>;
   constructor(private readonly key: KeyService) {
-    this.keys$ = from(this.key.keys());
+    console.log('keys component', key);
+    //this.keys$ = from(this.key.keys());
   }
 
   ngOnInit(): void {}

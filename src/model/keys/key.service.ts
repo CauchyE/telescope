@@ -23,6 +23,7 @@ export interface IKeyInfrastructure {
 export class KeyService {
   private readonly iKeyInfrastructure: IKeyInfrastructure;
   constructor(readonly keyInfrastructure: KeyInfrastructureService) {
+    console.log('KeyService', keyInfrastructure);
     this.iKeyInfrastructure = keyInfrastructure;
   }
   getPrivateKeyFromMnemonic(mnemonic: string) {

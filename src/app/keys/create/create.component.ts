@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CreateOnSubmitEvent } from '@view/keys/create/create.component';
-import { KeyApplicationService } from '@model/keys/key.application.service';
-import { KeyService } from '@model/keys/key.service';
+import { KeyService, KeyApplicationService } from '@model/index';
 
 @Component({
   selector: 'app-create',

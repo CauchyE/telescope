@@ -3,7 +3,7 @@ import { Observable, timer } from 'rxjs';
 import { mergeMap, map } from 'rxjs/operators';
 import { auth } from 'cosmos-client/x/auth';
 import { PaginatedQueryTxs } from 'cosmos-client/api';
-import { CosmosSDKService } from '@model/cosmos-sdk.service';
+import { CosmosSDKService } from '@model/index';
 
 @Component({
   selector: 'app-home',
