@@ -38,7 +38,15 @@
   </mat-form-field>
   <mat-form-field fxFill>
     <mat-label>Private key</mat-label>
-    <input #privateKeyRef ngModel name="password" matInput readonly required />
+    <input
+      #privateKeyRef
+      ngModel
+      name="privateKey"
+      [(ngModel)]="privateKey"
+      matInput
+      readonly
+      required
+    />
     <button mat-button matSuffix>
       <mat-icon>copy</mat-icon>
     </button>
@@ -47,5 +55,7 @@
       browser.
     </mat-hint>
   </mat-form-field>
-  <button mat-flat-button [disabled]="formRef.invalid">Submit</button>
+  <button mat-flat-button type="submit" [disabled]="formRef.invalid">
+    Submit
+  </button>
 </form>

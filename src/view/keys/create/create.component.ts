@@ -36,4 +36,6 @@ export class CreateComponent implements OnInit {
   onSubmit(id: string, type: KeyType, privateKey: string) {
     this.appSubmit.emit({ id, type, privateKey });
   }
+
+  //todo: copy password on click button
 }

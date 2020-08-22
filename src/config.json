@@ -8,5 +8,6 @@
     "val_pub": "",
     "cons_addr": "",
     "cons_pub": ""
-  }
+  },
+  "indexed_db_name": "test"
 }
