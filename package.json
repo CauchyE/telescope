@@ -23,7 +23,7 @@
     "@angular/platform-browser-dynamic": "~10.0.10",
     "@angular/router": "~10.0.10",
     "@angular/service-worker": "~10.0.10",
-    "cosmos-client": "^0.39.0",
+    "cosmos-client": "^0.39.1",
     "ng-loading-dialog": "0.0.1",
     "ng-min-max": "0.0.2",
     "querystring": "^0.2.0",

@@ -36,12 +36,12 @@ export class KeyInfrastructureService implements IKeyInfrastructure {
    * Get one from Indexed DB
    * @param id
    */
-  async get(id: string) {}
+  async get(id: string): Promise<any> {}
 
   /**
    * Get all from Indexed DB
    */
-  async keys() {}
+  async keys(): Promise<any> {}
 
   /**
    * Set with id in Indexed DB
