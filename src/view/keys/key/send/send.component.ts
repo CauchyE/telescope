@@ -45,7 +45,10 @@ export class SendComponent implements OnInit {
     this.appSubmit.emit({
       key: this.key!,
       toAddress: toAddress,
-      amount: this.amount,
+      amount: this.amount.map((data) => ({
+        denom: data.denom,
+        amount: data.amount?.toString(),
+      })),
       privateKey: privateKey,
     });
   }

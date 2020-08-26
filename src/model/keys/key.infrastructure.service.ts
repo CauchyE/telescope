@@ -130,6 +130,8 @@ export class KeyInfrastructureService implements IKeyInfrastructure {
       })
       .then((res) => res.data);
 
+    console.log('unsignedStdTx', unsignedStdTx);
+
     const signedStdTx = auth.signStdTx(
       this.cosmosSDK.sdk,
       privKey,
@@ -137,6 +139,8 @@ export class KeyInfrastructureService implements IKeyInfrastructure {
       account.account_number.toString(),
       account.sequence.toString(),
     );
+
+    console.log('signedStdTx', unsignedStdTx);
 
     const result = await auth
       .txsPost(this.cosmosSDK.sdk, signedStdTx, 'block')
