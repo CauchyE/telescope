@@ -22,6 +22,8 @@ export class CreateComponent implements OnInit {
   @Output()
   appSubmit: EventEmitter<CreateOnSubmitEvent>;
 
+  isPasswordVisible: boolean = false;
+
   constructor() {
     this.appMnemonic = new EventEmitter();
     this.appSubmit = new EventEmitter();
@@ -34,8 +36,14 @@ export class CreateComponent implements OnInit {
   }
 
   onSubmit(id: string, type: KeyType, privateKey: string) {
+    this.isPasswordVisible = false;
     this.appSubmit.emit({ id, type, privateKey });
   }
 
+  togglePasswordVisibility() {
+    this.isPasswordVisible = !this.isPasswordVisible;
+  }
+
   //todo: copy password on click button
+  //todo: check id is unique
 }

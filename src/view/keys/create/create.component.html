@@ -30,7 +30,7 @@
       name="mnemonic"
       matInput
       rows="3"
-      style="resize: none;"
+      style="resize: none"
       required
       pattern="^[a-z\s]+$"
       (blur)="onBlurMnemonic(mnemonicRef.value)"
@@ -41,12 +41,17 @@
     <input
       #privateKeyRef
       ngModel
+      [type]="isPasswordVisible ? 'text' : 'password'"
       name="privateKey"
       [(ngModel)]="privateKey"
+      [matAutocomplete]="auto"
       matInput
       readonly
       required
     />
+    <mat-icon matSuffix (click)="togglePasswordVisibility()">{{
+      isPasswordVisible ? 'visibility' : 'visibility_off'
+    }}</mat-icon>
     <button mat-button matSuffix>
       <mat-icon>copy</mat-icon>
     </button>
