@@ -1,5 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { KeyType } from '@model/keys/key.model';
+import { Clipboard } from '@angular/cdk/clipboard';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 export type CreateOnSubmitEvent = {
   id: string;
@@ -24,7 +26,10 @@ export class CreateComponent implements OnInit {
 
   isPasswordVisible: boolean = false;
 
-  constructor() {
+  constructor(
+    private clipboard: Clipboard,
+    private readonly snackBar: MatSnackBar,
+  ) {
     this.appMnemonic = new EventEmitter();
     this.appSubmit = new EventEmitter();
   }
@@ -42,8 +47,17 @@ export class CreateComponent implements OnInit {
 
   togglePasswordVisibility() {
     this.isPasswordVisible = !this.isPasswordVisible;
+    return false;
   }
 
-  //todo: copy password on click button
-  //todo: check id is unique
+  copyPrivateKey(privateKey: string) {
+    if (privateKey.length > 0) {
+      this.clipboard.copy(privateKey);
+      this.snackBar.open('Copied to clipboard', undefined, {
+        duration: 3000,
+      });
+    }
+
+    return false;
+  }
 }

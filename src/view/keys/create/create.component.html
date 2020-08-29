@@ -38,6 +38,7 @@
   </mat-form-field>
   <mat-form-field fxFill>
     <mat-label>Private key</mat-label>
+
     <input
       #privateKeyRef
       ngModel
@@ -49,11 +50,13 @@
       readonly
       required
     />
-    <mat-icon matSuffix (click)="togglePasswordVisibility()">{{
-      isPasswordVisible ? 'visibility' : 'visibility_off'
-    }}</mat-icon>
-    <button mat-button matSuffix>
-      <mat-icon>copy</mat-icon>
+    <button mat-button matSuffix (click)="togglePasswordVisibility()">
+      <mat-icon>{{
+        isPasswordVisible ? 'visibility' : 'visibility_off'
+      }}</mat-icon>
+    </button>
+    <button mat-button matSuffix (click)="copyPrivateKey(privateKeyRef.value)">
+      <mat-icon>content_copy</mat-icon>
     </button>
     <mat-hint>
       You must save this as a password using password manager built in the web
