@@ -35,10 +35,12 @@ export class SendComponent implements OnInit {
 
   removeAmount(index: number) {
     this.amount.splice(index, 1);
+    return false;
   }
 
   addAmount() {
     this.amount.push({});
+    return false;
   }
 
   onSubmit(toAddress: string, privateKey: string) {
