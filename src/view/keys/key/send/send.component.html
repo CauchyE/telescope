@@ -68,7 +68,15 @@
 
     <mat-form-field fxFill>
       <mat-label>ID</mat-label>
-      <input #idRef [ngModel]="key?.id" name="id" matInput readonly />
+      <input
+        #idRef
+        type="text"
+        name="id"
+        [ngModel]="key?.id"
+        autocomplete="username"
+        matInput
+        readonly
+      />
     </mat-form-field>
     <mat-form-field fxFill>
       <mat-label>Private key</mat-label>
@@ -77,7 +85,7 @@
         ngModel
         type="password"
         name="privateKey"
-        [matAutocomplete]="auto"
+        autocomplete="current-password"
         matInput
         required
       />
