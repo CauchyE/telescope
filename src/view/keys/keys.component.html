@@ -15,11 +15,11 @@
     <mat-divider></mat-divider>
     <ng-container *ngFor="let key of keys">
       <mat-list-item routerLink="/keys/{{ key.id }}">
-        <span>{{ key.id }}</span>
         <div
           mat-list-icon
           [ngStyle]="{ 'background-color': getColorCode(key) }"
         ></div>
+        <span>{{ key.id }}</span>
       </mat-list-item>
       <mat-divider></mat-divider>
     </ng-container>
