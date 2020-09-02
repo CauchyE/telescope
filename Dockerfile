@@ -1,10 +1,8 @@
 FROM node:12.14.1 as build-stage
 
-WORKDIR /app
-COPY ./package*.json /app/
-
+WORKDIR /root/app
+COPY . /root/app/
 RUN npm install
-COPY . /app/
 
 RUN npm run config:generate
 RUN npm run build -- --output-path=./dist/out
