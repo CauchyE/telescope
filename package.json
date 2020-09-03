@@ -2,6 +2,7 @@
   "name": "cosmoscan",
   "version": "0.0.0",
   "scripts": {
+    "config:generate": "ts-node ./scripts/setenv.ts",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
@@ -25,6 +26,7 @@
     "@angular/service-worker": "~10.0.10",
     "cosmos-client": "^0.39.1",
     "dexie": "^3.0.2",
+    "dotenv": "^8.2.0",
     "ng-loading-dialog": "0.0.1",
     "ng-min-max": "0.0.2",
     "querystring": "^0.2.0",
@@ -43,6 +45,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
     "codelyzer": "^6.0.0",
+    "fs": "^0.0.1-security",
     "jasmine-core": "~3.5.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~5.0.0",
@@ -53,6 +56,7 @@
     "protractor": "~7.0.0",
     "ts-node": "~7.0.0",
     "tslint": "~6.1.0",
-    "typescript": "^3.9.7"
+    "typescript": "^3.9.7",
+    "yargs": "^15.4.1"
   }
 }

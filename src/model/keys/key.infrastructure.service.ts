@@ -8,7 +8,7 @@ import { bank } from 'cosmos-client/x/bank';
 import { PrivKeySecp256k1, PrivKeyEd25519, AccAddress } from 'cosmos-client';
 import { PrivKeySr25519 } from 'cosmos-client/tendermint/types/sr25519';
 import { CosmosSDKService } from '@model/index';
-import * as config from 'src/config.json';
+import { environment } from '@environments/environment';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +17,7 @@ export class KeyInfrastructureService implements IKeyInfrastructure {
   private db: Dexie;
 
   constructor(private readonly cosmosSDK: CosmosSDKService) {
-    const dbName = config.indexed_db_name || 'cosmoscan';
+    const dbName = environment.indexed_db_name || 'cosmoscan';
     this.db = new Dexie(dbName);
     this.db.version(1).stores({
       keys: '++index, &id, type, public_key',
