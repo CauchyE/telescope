@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import Dexie from 'dexie';
 import { Key, KeyType } from './key.model';
 import { Coin } from 'cosmos-client/api';
 import { IKeyInfrastructure } from './key.service';
@@ -6,13 +7,22 @@ import { auth } from 'cosmos-client/x/auth';
 import { bank } from 'cosmos-client/x/bank';
 import { PrivKeySecp256k1, PrivKeyEd25519, AccAddress } from 'cosmos-client';
 import { PrivKeySr25519 } from 'cosmos-client/tendermint/types/sr25519';
-import { CosmosSDKService } from '@model/cosmos-sdk.service';
+import { CosmosSDKService } from '@model/index';
+import * as config from 'src/config.json';
 
 @Injectable({
   providedIn: 'root',
 })
 export class KeyInfrastructureService implements IKeyInfrastructure {
-  constructor(private readonly cosmosSDK: CosmosSDKService) {}
+  private db: Dexie;
+
+  constructor(private readonly cosmosSDK: CosmosSDKService) {
+    const dbName = config.indexed_db_name || 'cosmoscan';
+    this.db = new Dexie(dbName);
+    this.db.version(1).stores({
+      keys: '++index, &id, type, public_key',
+    });
+  }
 
   private getPrivKey(type: KeyType, privateKey: string) {
     const privKeyBuffer = Buffer.from(privateKey, 'base64');
@@ -36,12 +46,32 @@ export class KeyInfrastructureService implements IKeyInfrastructure {
    * Get one from Indexed DB
    * @param id
    */
-  async get(id: string): Promise<any> {}
+  async get(id: string): Promise<Key | undefined> {
+    try {
+      const data = await this.db.table('keys').get({ id });
+      if (data !== undefined) {
+        return {
+          id: data.id,
+          type: data.type,
+          public_key: data.public_key,
+        };
+      }
+    } catch (error) {
+      console.error(error);
+    }
+    return undefined;
+  }
 
   /**
    * Get all from Indexed DB
    */
-  async keys(): Promise<any> {}
+  async keys(): Promise<Key[]> {
+    return (await this.db.table('keys').toArray()).map((data) => ({
+      id: data.id,
+      type: data.type,
+      public_key: data.public_key,
+    }));
+  }
 
   /**
    * Set with id in Indexed DB
@@ -50,6 +80,11 @@ export class KeyInfrastructureService implements IKeyInfrastructure {
    * @param privateKey
    */
   async set(id: string, type: KeyType, privateKey: string) {
+    const key = await this.get(id);
+    if (key !== undefined) {
+      throw new Error('Already exists');
+    }
+
     const privKey = this.getPrivKey(type, privateKey);
     const publicKey = privKey.getPubKey().toBase64();
 
@@ -58,13 +93,16 @@ export class KeyInfrastructureService implements IKeyInfrastructure {
       type,
       public_key: publicKey,
     };
+    await this.db.table('keys').put(data);
   }
 
   /**
    * Delete with id from Indexed DB
    * @param id
    */
-  async delete(id: string) {}
+  async delete(id: string) {
+    await this.db.table('keys').where('id').equals(id).delete();
+  }
 
   async send(key: Key, toAddress: string, amount: Coin[], privateKey: string) {
     const privKey = this.getPrivKey(key.type, privateKey);

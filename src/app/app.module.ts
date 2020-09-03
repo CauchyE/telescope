@@ -1,5 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { LoadingDialogModule } from 'ng-loading-dialog';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,6 +18,8 @@ import { ToolbarModule } from '@view/toolbar/toolbar.module';
   declarations: [AppComponent, HomeComponent],
   imports: [
     BrowserModule,
+    LoadingDialogModule,
+    MatSnackBarModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     ServiceWorkerModule.register('ngsw-worker.js', {

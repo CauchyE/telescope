@@ -10,7 +10,6 @@ export class CosmosSDKService {
 
   constructor() {
     this.sdk = new CosmosSDK(config.url, config.chain_id);
-
     if (
       config.bech32_prefix?.acc_addr &&
       config.bech32_prefix?.acc_pub &&

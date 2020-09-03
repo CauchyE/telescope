@@ -17,7 +17,7 @@ export class KeysComponent implements OnInit {
 
   getColorCode(key: Key) {
     const hash = crypto
-      .createHash('sha3-256')
+      .createHash('sha256')
       .update(Buffer.from(key.id))
       .digest()
       .toString('hex');

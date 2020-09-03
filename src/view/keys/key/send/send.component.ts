@@ -35,17 +35,22 @@ export class SendComponent implements OnInit {
 
   removeAmount(index: number) {
     this.amount.splice(index, 1);
+    return false;
   }
 
   addAmount() {
     this.amount.push({});
+    return false;
   }
 
   onSubmit(toAddress: string, privateKey: string) {
     this.appSubmit.emit({
       key: this.key!,
       toAddress: toAddress,
-      amount: this.amount,
+      amount: this.amount.map((data) => ({
+        denom: data.denom,
+        amount: data.amount?.toString(),
+      })),
       privateKey: privateKey,
     });
   }

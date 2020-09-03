@@ -30,7 +30,7 @@
       name="mnemonic"
       matInput
       rows="3"
-      style="resize: none;"
+      style="resize: none"
       required
       pattern="^[a-z\s]+$"
       (blur)="onBlurMnemonic(mnemonicRef.value)"
@@ -38,14 +38,32 @@
   </mat-form-field>
   <mat-form-field fxFill>
     <mat-label>Private key</mat-label>
-    <input #privateKeyRef ngModel name="password" matInput readonly required />
-    <button mat-button matSuffix>
-      <mat-icon>copy</mat-icon>
+
+    <input
+      #privateKeyRef
+      ngModel
+      [type]="isPasswordVisible ? 'text' : 'password'"
+      name="privateKey"
+      [(ngModel)]="privateKey"
+      [matAutocomplete]="auto"
+      matInput
+      readonly
+      required
+    />
+    <button mat-button matSuffix (click)="togglePasswordVisibility()">
+      <mat-icon>{{
+        isPasswordVisible ? 'visibility' : 'visibility_off'
+      }}</mat-icon>
+    </button>
+    <button mat-button matSuffix (click)="copyPrivateKey(privateKeyRef.value)">
+      <mat-icon>content_copy</mat-icon>
     </button>
     <mat-hint>
       You must save this as a password using password manager built in the web
       browser.
     </mat-hint>
   </mat-form-field>
-  <button mat-flat-button [disabled]="formRef.invalid">Submit</button>
+  <button mat-flat-button type="submit" [disabled]="formRef.invalid">
+    Submit
+  </button>
 </form>

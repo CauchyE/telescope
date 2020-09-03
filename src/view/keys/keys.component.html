@@ -15,10 +15,9 @@
     <mat-divider></mat-divider>
     <ng-container *ngFor="let key of keys">
       <mat-list-item routerLink="/keys/{{ key.id }}">
-        <div
-          mat-list-icon
-          [ngStyle]="{ 'background-color': getColorCode(key) }"
-        ></div>
+        <mat-icon matListIcon [ngStyle]="{ color: getColorCode(key) }"
+          >circle</mat-icon
+        >
         <span>{{ key.id }}</span>
       </mat-list-item>
       <mat-divider></mat-divider>
