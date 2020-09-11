@@ -10,7 +10,7 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
 import { HomeComponent } from './home/home.component';
-import { ViewModule } from 'src/view/view.module';
+import { ViewModule } from '@view/view.module';
 import { HomeModule } from '@view/home/home.module';
 import { ToolbarModule } from '@view/toolbar/toolbar.module';
 
