@@ -2,7 +2,7 @@
   <mat-drawer
     #drawer
     class="mat-elevation-z16"
-    [mode]="drawerMode$ | async"
+    [mode]="(drawerMode$ | async) || 'over'"
     [opened]="drawerOpened$ | async"
   >
     <mat-toolbar class="mat-elevation-z4 toolbar" color="primary">
