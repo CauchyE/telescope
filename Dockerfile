@@ -5,7 +5,7 @@ COPY . /root/app/
 RUN npm install
 
 RUN npm run config:generate
-RUN npm run build -- --output-path=./dist/out
+RUN npm run build --prod --output-path=./dist/out
 
 FROM nginx:1.15
 
