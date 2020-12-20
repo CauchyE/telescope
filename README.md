@@ -1,7 +1,8 @@
 # Cosmoscan
 
-```shell
-npm i
-vi ./src/config.json
-ng build --prod
+## Run
+
+```bash
+npm run bundle
+docker-compose up -d
 ```
