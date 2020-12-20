@@ -9,10 +9,10 @@ import { PaginatedQueryTxs } from 'cosmos-client/api';
 })
 export class AccountComponent implements OnInit {
   @Input()
-  account?: BaseAccount;
+  account?: BaseAccount | null;
 
   @Input()
-  paginatedTxs?: PaginatedQueryTxs;
+  paginatedTxs?: any; // PaginatedQueryTxs | null;
 
   txColumnKeys = ['height', 'txhash', 'timestamp', 'gas_wanted', 'gas_used'];
 

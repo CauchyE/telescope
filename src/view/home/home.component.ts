@@ -8,7 +8,7 @@ import { PaginatedQueryTxs } from 'cosmos-client/api';
 })
 export class HomeComponent implements OnInit {
   @Input()
-  txs?: PaginatedQueryTxs;
+  txs?: PaginatedQueryTxs | null;
 
   constructor() {}
 

@@ -19,7 +19,7 @@ import { MatDrawerMode, MatSidenav } from '@angular/material/sidenav';
 })
 export class AppComponent implements OnInit {
   @Input()
-  searchValue: string;
+  searchValue: string | null;
 
   @Output()
   appSubmitSearchValue: EventEmitter<string>;

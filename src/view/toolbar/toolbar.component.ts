@@ -9,14 +9,14 @@ import {
 import { NgModel } from '@angular/forms';
 
 @Component({
-  // tslint:disable-next-line
   selector: 'view-toolbar',
   templateUrl: './toolbar.component.html',
   styleUrls: ['./toolbar.component.css'],
 })
 export class ToolbarComponent implements OnInit {
   @Input()
-  searchValue: string;
+  searchValue: string | null;
+
   @Output()
   appSubmitSearchValue: EventEmitter<string>;
 

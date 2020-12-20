@@ -8,7 +8,7 @@ import { Validator } from 'cosmos-client/api';
 })
 export class ValidatorComponent implements OnInit {
   @Input()
-  validator?: Validator | null;
+  validator?: any; // Validator | null;
 
   constructor() {}
 

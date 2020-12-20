@@ -6,7 +6,7 @@
   ></mat-progress-spinner>
 </ng-template>
 <ng-template #loaded>
-  <ng-container *ngIf="keys?.length > 0; then exist; else empty">
+  <ng-container *ngIf="(keys?.length || 0) > 0; then exist; else empty">
   </ng-container>
 </ng-template>
 <ng-template #exist>
