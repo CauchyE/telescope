@@ -9,7 +9,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "config:generate": "ts-node ./scripts/setenv.ts",
-    "bundle":"docker build . -t cosmoscan"
+    "bundle": "docker build . -t cosmoscan"
   },
   "private": true,
   "dependencies": {

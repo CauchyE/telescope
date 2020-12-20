@@ -1,6 +1,0 @@
-{
-  "projects": {
-    "default": "cosmoscan-test",
-    "prod": "cosmoscan-fa85d"
-  }
-}

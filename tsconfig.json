@@ -14,8 +14,9 @@
     "moduleResolution": "node",
     "importHelpers": true,
     "target": "es2015",
-    "typeRoots": ["node_modules/@types"],
+    "module": "es2020",
     "lib": ["es2018", "dom"],
+    "typeRoots": ["node_modules/@types"],
     "paths": {
       "@app/*": ["src/app/*"],
       "@environments/*": ["src/environments/*"],

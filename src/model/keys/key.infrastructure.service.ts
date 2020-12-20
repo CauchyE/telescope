@@ -17,7 +17,7 @@ export class KeyInfrastructureService implements IKeyInfrastructure {
   private db: Dexie;
 
   constructor(private readonly cosmosSDK: CosmosSDKService) {
-    const dbName = environment.indexed_db_name || 'cosmoscan';
+    const dbName = 'cosmoscan';
     this.db = new Dexie(dbName);
     this.db.version(1).stores({
       keys: '++index, &id, type, public_key',
