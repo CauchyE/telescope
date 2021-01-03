@@ -5,10 +5,10 @@ COPY . /root/app/
 RUN npm install
 
 RUN npm run config:generate
-RUN npm run build --prod --output-path=./dist/out
+RUN npm run build --prod
 
 FROM nginx:1.15
 
-COPY --from=build-stage /root/app/dist/out/ /usr/share/nginx/html
+COPY --from=build-stage /root/app/dist/cosmoscan/ /usr/share/nginx/html
 
 COPY ./nginx.conf /etc/nginx/nginx.conf
