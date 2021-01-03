@@ -9,5 +9,3 @@ RUN npm run build --prod
 FROM nginx:1.15
 
 COPY --from=build-stage /root/app/dist/cosmoscan/ /usr/share/nginx/html
-
-COPY ./nginx.conf /etc/nginx/nginx.conf
