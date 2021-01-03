@@ -4,7 +4,6 @@ WORKDIR /root/app
 COPY . /root/app/
 RUN npm install
 
-RUN npm run config:generate
 RUN npm run build --prod
 
 FROM nginx:1.15
