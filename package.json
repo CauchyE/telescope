@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "bundle": "docker build . -t cosmoscan"
+    "bundle": "docker build . -t lcnem/cosmoscan"
   },
   "private": true,
   "dependencies": {
@@ -24,7 +24,7 @@
     "@angular/platform-browser-dynamic": "~11.0.5",
     "@angular/router": "~11.0.5",
     "@angular/service-worker": "~11.0.5",
-    "cosmos-client": "^0.39.2",
+    "cosmos-client": "^0.39.10",
     "dexie": "^3.0.2",
     "dotenv": "^8.2.0",
     "ng-loading-dialog": "^11.0.0",
@@ -36,7 +36,7 @@
     "zone.js": "~0.10.3"
   },
   "devDependencies": {
-    "@angular-builders/custom-webpack": "^10.0.0",
+    "@angular-builders/custom-webpack": "^11.0.0",
     "@angular-devkit/build-angular": "~0.1100.5",
     "@angular/cli": "~11.0.5",
     "@angular/compiler-cli": "~11.0.5",

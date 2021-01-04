@@ -5,9 +5,13 @@ import { Coin } from 'cosmos-client/api';
 import { IKeyInfrastructure } from './key.service';
 import { auth } from 'cosmos-client/x/auth';
 import { bank } from 'cosmos-client/x/bank';
-import { PrivKeySecp256k1, PrivKeyEd25519, AccAddress } from 'cosmos-client';
-import { PrivKeySr25519 } from 'cosmos-client/tendermint/types/sr25519';
-import { CosmosSDKService } from '@model/index';
+import {
+  PrivKeySecp256k1,
+  PrivKeyEd25519,
+  AccAddress,
+  PrivKeySr25519,
+} from 'cosmos-client';
+import { CosmosSDKService } from '@model/cosmos-sdk.service';
 
 @Injectable({
   providedIn: 'root',
