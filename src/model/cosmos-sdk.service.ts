@@ -9,7 +9,12 @@ export class CosmosSDKService {
   sdk: CosmosSDK;
 
   constructor() {
-    this.sdk = new CosmosSDK(config.url, config.chain_id);
+    this.sdk = new CosmosSDK(
+      `${config.url.protocol ? config.url.protocol : location.protocol}//${
+        config.url.hostname ? config.url.hostname : location.hostname
+      }:${config.url.port}`,
+      config.chain_id,
+    );
 
     if (
       config.bech32_prefix?.acc_addr &&
