@@ -13,6 +13,7 @@ import { HomeComponent } from './home/home.component';
 import { ViewModule } from '@view/view.module';
 import { HomeModule } from '@view/home/home.module';
 import { ToolbarModule } from '@view/toolbar/toolbar.module';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -28,6 +29,7 @@ import { ToolbarModule } from '@view/toolbar/toolbar.module';
     ViewModule,
     HomeModule,
     ToolbarModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent],
