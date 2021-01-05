@@ -11,4 +11,7 @@ module.exports = {
     clearImmediate: true,
     setImmediate: true,
   },
+  resolve: {
+    extensions: ['.wasm'],
+  },
 };
