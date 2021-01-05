@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 import { CosmosSDKService } from '@model/index';
 import * as qs from 'querystring';
+import * as config from '../config.json';
 
 @Component({
   selector: 'app-root',
@@ -11,6 +12,7 @@ import * as qs from 'querystring';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
+  config = config;
   searchValue$: Observable<string>;
 
   constructor(private router: Router, public cosmosSDK: CosmosSDKService) {

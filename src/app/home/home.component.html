@@ -1,1 +1,5 @@
-<view-home [txs]="txs$ | async"></view-home>
+<view-home
+  [nodeInfo]="nodeInfo$ | async"
+  [syncing]="syncing$ | async"
+  [txs]="txs$ | async"
+></view-home>

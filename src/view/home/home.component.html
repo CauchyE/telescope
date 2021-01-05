@@ -1,11 +1,28 @@
 <mat-nav-list>
-  <ng-container *ngIf="txs">
-    <ng-container *ngFor="let tx of txs?.txs || []">
+  <h3 matSubheader>Txs</h3>
+  <mat-divider></mat-divider>
+  <ng-container *ngIf="txs === null; then loading; else loaded"></ng-container>
+  <ng-template #loading>
+    <mat-progress-spinner
+      [diameter]="60"
+      [mode]="'indeterminate'"
+    ></mat-progress-spinner>
+  </ng-template>
+  <ng-template #loaded>
+    <ng-container *ngIf="(txs?.txs?.length || 0) > 0; then exist; else empty">
+    </ng-container>
+  </ng-template>
+  <ng-template #exist>
+    <ng-template ngFor let-tx [ngForOf]="txs?.txs || []">
       <mat-list-item routerLink="/txs/{{ tx.hash }}">
         <span>{{ tx.hash }}</span>
         <span fxFlex="auto"></span>
         <span>{{ tx.height }}</span>
       </mat-list-item>
-    </ng-container>
-  </ng-container>
+      <mat-divider></mat-divider>
+    </ng-template>
+  </ng-template>
+  <ng-template #empty>
+    <p class="empty">There is no tx.</p>
+  </ng-template>
 </mat-nav-list>

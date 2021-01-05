@@ -15,6 +15,21 @@
     <mat-nav-list>
       <mat-list-item routerLink="/">Home</mat-list-item>
     </mat-nav-list>
+    <mat-nav-list>
+      <mat-list-item routerLink="/keys">Keys</mat-list-item>
+    </mat-nav-list>
+    <mat-nav-list>
+      <mat-list-item routerLink="/validators">Validators</mat-list-item>
+    </mat-nav-list>
+    <ng-template ngFor let-extension [ngForOf]="extensions">
+      <ng-container *ngIf="extension?.name && extension?.link">
+        <mat-nav-list>
+          <mat-list-item [routerLink]="extension.link">
+            {{ extension.name }}
+          </mat-list-item>
+        </mat-nav-list>
+      </ng-container>
+    </ng-template>
   </mat-drawer>
 
   <mat-drawer-content class="mat-typography">

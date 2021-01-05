@@ -1,29 +1,37 @@
-<ng-container *ngIf="keys === null; then loading; else loaded"> </ng-container>
-<ng-template #loading>
-  <mat-progress-spinner
-    [diameter]="60"
-    [mode]="'indeterminate'"
-  ></mat-progress-spinner>
-</ng-template>
-<ng-template #loaded>
-  <ng-container *ngIf="(keys?.length || 0) > 0; then exist; else empty">
-  </ng-container>
-</ng-template>
-<ng-template #exist>
-  <mat-nav-list>
+<mat-nav-list>
+  <div fxLayout="row">
     <h3 matSubheader>Keys</h3>
-    <mat-divider></mat-divider>
+    <span fxFlex="auto"></span>
+    <button mat-flat-button routerLink="/keys/create" color="accent">
+      <mat-icon>add</mat-icon>
+      <span>Create</span>
+    </button>
+  </div>
+  <mat-divider></mat-divider>
+  <ng-container *ngIf="keys === null; then loading; else loaded">
+  </ng-container>
+  <ng-template #loading>
+    <mat-progress-spinner
+      [diameter]="60"
+      [mode]="'indeterminate'"
+    ></mat-progress-spinner>
+  </ng-template>
+  <ng-template #loaded>
+    <ng-container *ngIf="(keys?.length || 0) > 0; then exist; else empty">
+    </ng-container>
+  </ng-template>
+  <ng-template #exist>
     <ng-container *ngFor="let key of keys">
       <mat-list-item routerLink="/keys/{{ key.id }}">
-        <mat-icon matListIcon [ngStyle]="{ color: getColorCode(key) }"
-          >circle</mat-icon
-        >
+        <mat-icon matListIcon [ngStyle]="{ color: getColorCode(key) }">
+          circle
+        </mat-icon>
         <span>{{ key.id }}</span>
       </mat-list-item>
       <mat-divider></mat-divider>
     </ng-container>
-  </mat-nav-list>
-</ng-template>
-<ng-template #empty>
-  <p class="empty">There is no key.</p>
-</ng-template>
+  </ng-template>
+  <ng-template #empty>
+    <p class="empty">There is no key.</p>
+  </ng-template>
+</mat-nav-list>

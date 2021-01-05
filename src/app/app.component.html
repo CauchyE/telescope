@@ -1,4 +1,5 @@
 <view-app
+  [extensions]="config.extensions"
   [searchValue]="searchValue$ | async"
   (appSubmitSearchValue)="onSubmitSearchValue($event)"
 >
