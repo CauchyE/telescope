@@ -65,7 +65,9 @@ export class HomeComponent implements OnInit {
     );
 
     this.txs$ = timer$.pipe(
-      mergeMap((_) => auth.txsGet(this.cosmosSDK.sdk).then((res) => res.data)),
+      mergeMap((_) =>
+        auth.txsGet(this.cosmosSDK.sdk, 'send').then((res) => res.data),
+      ),
     );
   }
 
