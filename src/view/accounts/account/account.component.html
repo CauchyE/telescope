@@ -1,6 +1,6 @@
 <h2>Account</h2>
 <mat-card>
-  <mat-card-content class="info-container">
+  <mat-card-content>
     <mat-list>
       <mat-list-item>
         <span class="column-name">Sequence:</span>
@@ -31,7 +31,7 @@
 
 <h3>Coins</h3>
 <mat-card>
-  <mat-card-content class="info-container">
+  <mat-card-content>
     <mat-list *ngFor="let coin of account?.coins">
       <mat-list-item>
         <span class="column-name">{{ coin.amount }}</span>
@@ -44,7 +44,7 @@
 
 <h3>Transactions</h3>
 <mat-card>
-  <mat-card-content class="info-container">
+  <mat-card-content>
     <table mat-table [dataSource]="paginatedTxs?.txs" class="table-container">
       <ng-container matColumnDef="height">
         <th mat-header-cell *matHeaderCellDef>height</th>

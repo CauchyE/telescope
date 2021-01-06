@@ -5,32 +5,32 @@
       <mat-list-item>
         <span class="column-name">TxHash:</span>
         <span class="column-value">{{ tx?.txhash }}</span>
-        <mat-divider [inset]="true"></mat-divider>
       </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="column-name">Height: </span>
         <span class="column-value">{{ tx?.height }}</span>
-        <mat-divider [inset]="true"></mat-divider>
       </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="column-name">Gas Used: </span>
         <span class="column-value">{{ tx?.gas_used }}</span>
-        <mat-divider [inset]="true"></mat-divider>
       </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="column-name">Gas Wanted: </span>
         <span class="column-value">{{ tx?.gas_wanted }}</span>
-        <mat-divider [inset]="true"></mat-divider>
       </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="column-name">Timestamp: </span>
         <span class="column-value">{{ tx?.timestamp }}</span>
-        <mat-divider [inset]="true"></mat-divider>
       </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
     </mat-list>
   </mat-card-content>
 </mat-card>
@@ -43,15 +43,15 @@
         <mat-list-item>
           <span class="column-name">Type: </span>
           <span class="column-value">{{ msg.type }}</span>
-          <mat-divider [inset]="true"></mat-divider>
         </mat-list-item>
-        <div *ngFor="let data of msg.value | keyvalue">
+        <mat-divider [inset]="true"></mat-divider>
+        <ng-template ngFor let-data [ngForOf]="msg.value | keyvalue">
           <mat-list-item>
             <span class="column-name">{{ data.key }}</span>
             <span class="column-value">{{ data.value | json }}</span>
-            <mat-divider [inset]="true"></mat-divider>
           </mat-list-item>
-        </div>
+          <mat-divider [inset]="true"></mat-divider>
+        </ng-template>
       </mat-list>
     </mat-card-content>
   </mat-card>
@@ -65,18 +65,18 @@
         <mat-list-item>
           <span class="column-name">Key Type: </span>
           <span class="column-value">{{ sign.pub_key.type }}</span>
-          <mat-divider [inset]="true"></mat-divider>
         </mat-list-item>
+        <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
           <span class="column-name">Public Key: </span>
           <span class="column-value">{{ sign.pub_key.value }}</span>
-          <mat-divider [inset]="true"></mat-divider>
         </mat-list-item>
+        <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
           <span class="column-name">Signature: </span>
           <span class="column-value">{{ sign.signature }}</span>
-          <mat-divider [inset]="true"></mat-divider>
         </mat-list-item>
+        <mat-divider [inset]="true"></mat-divider>
       </mat-list>
     </mat-card-content>
   </mat-card>
@@ -91,14 +91,14 @@
           <mat-list-item>
             <span class="column-name">Type: </span>
             <span class="column-value">{{ event.type }}</span>
-            <mat-divider [inset]="true"></mat-divider>
           </mat-list-item>
+          <mat-divider [inset]="true"></mat-divider>
           <ng-template ngFor let-attr [ngForOf]="event.attributes">
             <mat-list-item>
               <span class="column-name">{{ attr.key }}</span>
               <span class="column-value">{{ attr.value | json }}</span>
-              <mat-divider [inset]="true"></mat-divider>
             </mat-list-item>
+            <mat-divider [inset]="true"></mat-divider>
           </ng-template>
         </mat-list>
       </mat-card-content>
