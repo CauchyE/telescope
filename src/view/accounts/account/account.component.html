@@ -1,50 +1,50 @@
 <h2>Account</h2>
 <mat-card>
-  <mat-card-content>
     <mat-list>
       <mat-list-item>
         <span class="column-name">Sequence:</span>
+        <span fxFlex="auto"></span>
         <span class="column-value">{{ account?.sequence }}</span>
-        <mat-divider [inset]="true"></mat-divider>
       </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="column-name">Account Number: </span>
+        <span fxFlex="auto"></span>
         <span class="column-value">{{ account?.account_number }}</span>
-        <mat-divider [inset]="true"></mat-divider>
       </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="column-name">Address: </span>
+        <span fxFlex="auto"></span>
         <span class="column-value">{{ account?.address?.toBech32() }}</span>
-        <mat-divider [inset]="true"></mat-divider>
       </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="column-name">Public key: </span>
+        <span fxFlex="auto"></span>
         <span class="column-value">{{ account?.public_key }}</span>
-        <mat-divider [inset]="true"></mat-divider>
       </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
     </mat-list>
-  </mat-card-content>
 </mat-card>
 
 <h3>Coins</h3>
 <mat-card>
-  <mat-card-content>
     <mat-list *ngFor="let coin of account?.coins">
       <mat-list-item>
         <span class="column-name">{{ coin.amount }}</span>
+        <span fxFlex="auto"></span>
         <span class="column-value">{{ coin.denom }}</span>
-        <mat-divider [inset]="true"></mat-divider>
       </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
     </mat-list>
-  </mat-card-content>
 </mat-card>
 
 <h3>Transactions</h3>
 <mat-card>
-  <mat-card-content>
     <table mat-table [dataSource]="paginatedTxs?.txs" class="table-container">
       <ng-container matColumnDef="height">
         <th mat-header-cell *matHeaderCellDef>height</th>
@@ -76,5 +76,4 @@
       <tr mat-header-row *matHeaderRowDef="txColumnKeys"></tr>
       <tr mat-row *matRowDef="let row; columns: txColumnKeys"></tr>
     </table>
-  </mat-card-content>
 </mat-card>

@@ -18,11 +18,13 @@
       <mat-list>
         <mat-list-item>
           <span class="column-name">Status: </span>
+          <span fxFlex="auto"></span>
           <span class="column-value">{{ validator?.status }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
           <span class="column-name">Consensus Pubkey:</span>
+          <span fxFlex="auto"></span>
           <span class="column-value">
             {{ validator?.consensus_pubkey }}
           </span>
@@ -30,21 +32,25 @@
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
           <span class="column-name">Tokens: </span>
+          <span fxFlex="auto"></span>
           <span class="column-value">{{ validator?.tokens }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
           <span class="column-name">Delegator Shares: </span>
+          <span fxFlex="auto"></span>
           <span class="column-value">{{ validator?.delegator_shares }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
           <span class="column-name">Unbounding Height: </span>
+          <span fxFlex="auto"></span>
           <span class="column-value">{{ validator?.unbonding_height }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
           <span class="column-name">Min Self Delegation: </span>
+          <span fxFlex="auto"></span>
           <span class="column-value">
             {{ validator?.min_self_delegation }}
           </span>
@@ -52,6 +58,7 @@
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
           <span class="column-name">Unbounding Time: </span>
+          <span fxFlex="auto"></span>
           <span class="column-value">{{ validator?.unbonding_time }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
@@ -65,6 +72,7 @@
       <mat-list>
         <mat-list-item>
           <span class="column-name">Rate: </span>
+          <span fxFlex="auto"></span>
           <span class="column-value">
             {{ validator?.commission?.commission_rates?.rate }}
           </span>
@@ -72,6 +80,7 @@
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
           <span class="column-name">Max Rate: </span>
+          <span fxFlex="auto"></span>
           <span class="column-value">
             {{ validator?.commission?.commission_rates?.max_rate }}
           </span>
@@ -79,6 +88,7 @@
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
           <span class="column-name">Max Change Rate: </span>
+          <span fxFlex="auto"></span>
           <span class="column-value">
             {{ validator?.commission?.commission_rates?.max_change_rate }}
           </span>
@@ -86,6 +96,7 @@
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
           <span class="column-name">Update Time:</span>
+          <span fxFlex="auto"></span>
           <span class="column-value">
             {{ validator?.commission?.commission_rates.update_time }}
           </span>
@@ -108,6 +119,7 @@
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
           <span class="column-name">Identity: </span>
+          <span fxFlex="auto"></span>
           <span class="column-value">
             {{ validator?.description?.identity }}
           </span>
@@ -115,6 +127,7 @@
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
           <span class="column-name">Website: </span>
+          <span fxFlex="auto"></span>
           <span class="column-value">
             {{ validator?.description?.website }}
           </span>
@@ -122,6 +135,7 @@
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
           <span class="column-name">Security Contact: </span>
+          <span fxFlex="auto"></span>
           <span class="column-value">
             {{ validator?.description?.security_contact }}
           </span>
@@ -129,6 +143,7 @@
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
           <span class="column-name">Details: </span>
+          <span fxFlex="auto"></span>
           <span class="column-value">
             {{ validator?.description?.details }}
           </span>
