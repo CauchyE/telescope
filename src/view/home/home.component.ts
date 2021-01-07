@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { MatSelectChange } from '@angular/material/select';
 import { PaginatedQueryTxs } from 'cosmos-client/api';
 
 type NodeInfo = {
@@ -43,9 +44,24 @@ export class HomeComponent implements OnInit {
   syncing?: boolean | null;
 
   @Input()
+  initialMessageAction?: string;
+
+  @Input()
+  messageActions?: string[];
+
+  @Output()
+  appMessageActionChange: EventEmitter<string>;
+
+  @Input()
   txs?: PaginatedQueryTxs | null;
 
-  constructor() {}
+  constructor() {
+    this.appMessageActionChange = new EventEmitter();
+  }
 
   ngOnInit(): void {}
+
+  onMessageActionChange($event: MatSelectChange) {
+    this.appMessageActionChange.emit($event.value);
+  }
 }

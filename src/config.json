@@ -13,5 +13,8 @@
     "cons_addr": "",
     "cons_pub": ""
   },
-  "extensions": [{ "name": "", "link": "" }]
+  "extension": {
+    "navigations": [{ "name": "", "link": "" }],
+    "message_actions": [""]
+  }
 }

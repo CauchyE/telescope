@@ -1,5 +1,7 @@
 <view-home
   [nodeInfo]="nodeInfo$ | async"
   [syncing]="syncing$ | async"
+  [initialMessageAction]="'send'"
+  [messageActions]="messageActions"
   [txs]="txs$ | async"
 ></view-home>

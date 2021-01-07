@@ -8,9 +8,13 @@ import { TxQuery } from 'cosmos-client/api';
 })
 export class TxComponent implements OnInit {
   @Input()
-  tx?: any; //TxQuery | null;
+  tx?: TxQuery | null;
 
   constructor() {}
 
   ngOnInit(): void {}
+
+  constructorName(instance: any) {
+    return instance.constructor.name;
+  }
 }

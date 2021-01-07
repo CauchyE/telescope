@@ -1,11 +1,12 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable, timer } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { BehaviorSubject, combineLatest, Observable, timer } from 'rxjs';
 import { mergeMap, map } from 'rxjs/operators';
 import { auth } from 'cosmos-client/x/auth';
 import { PaginatedQueryTxs } from 'cosmos-client/api';
 import { CosmosSDKService } from '@model/index';
 import { tendermint } from 'cosmos-client';
 import { HttpClient } from '@angular/common/http';
+import * as config from '../../config.json';
 
 type NodeInfo = {
   application_version: {
@@ -41,9 +42,11 @@ type NodeInfo = {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   nodeInfo$: Observable<NodeInfo>; // TODO
   syncing$: Observable<boolean>;
+  messageActions: string[];
+  messageAction$: BehaviorSubject<string>;
   txs$: Observable<PaginatedQueryTxs>;
 
   constructor(private cosmosSDK: CosmosSDKService, private http: HttpClient) {
@@ -64,12 +67,28 @@ export class HomeComponent implements OnInit {
       ),
     );
 
-    this.txs$ = timer$.pipe(
-      mergeMap((_) =>
-        auth.txsGet(this.cosmosSDK.sdk, 'send').then((res) => res.data),
+    this.messageActions = ['send'].concat(
+      config.extension.message_actions.filter(
+        (messageAction) => !!messageAction,
+      ),
+    );
+
+    this.messageAction$ = new BehaviorSubject('send');
+
+    this.txs$ = combineLatest([timer$, this.messageAction$]).pipe(
+      mergeMap(([_, messageAction]) =>
+        auth.txsGet(this.cosmosSDK.sdk, messageAction).then((res) => res.data),
       ),
     );
   }
 
   ngOnInit() {}
+
+  ngOnDestroy() {
+    this.messageAction$.complete();
+  }
+
+  onMessageActionChange($event: string) {
+    this.messageAction$.next($event);
+  }
 }

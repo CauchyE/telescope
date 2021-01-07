@@ -19,7 +19,7 @@ import { MatDrawerMode, MatSidenav } from '@angular/material/sidenav';
 })
 export class AppComponent implements OnInit {
   @Input()
-  extensions?: { name: string; link: string }[];
+  extensionNavigations?: { name: string; link: string }[];
 
   @Input()
   searchValue: string | null;

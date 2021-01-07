@@ -17,7 +17,7 @@
       <mat-list-item routerLink="/keys">Keys</mat-list-item>
       <mat-list-item routerLink="/validators">Validators</mat-list-item>
 
-      <ng-template ngFor let-extension [ngForOf]="extensions">
+      <ng-template ngFor let-extension [ngForOf]="extensionNavigations">
         <ng-container *ngIf="extension?.name && extension?.link">
           <a mat-list-item [href]="extension.link">
             {{ extension.name }}

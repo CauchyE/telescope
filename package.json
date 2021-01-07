@@ -24,7 +24,7 @@
     "@angular/platform-browser-dynamic": "~11.0.5",
     "@angular/router": "~11.0.5",
     "@angular/service-worker": "~11.0.5",
-    "cosmos-client": "^0.39.10",
+    "cosmos-client": "^0.39.12",
     "dexie": "^3.0.2",
     "dotenv": "^8.2.0",
     "ng-loading-dialog": "^11.0.0",
