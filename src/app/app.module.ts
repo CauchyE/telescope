@@ -14,12 +14,14 @@ import { ViewModule } from '@view/view.module';
 import { HomeModule } from '@view/home/home.module';
 import { ToolbarModule } from '@view/toolbar/toolbar.module';
 import { HttpClientModule } from '@angular/common/http';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
   imports: [
     BrowserModule,
     LoadingDialogModule,
+    MatDialogModule,
     MatSnackBarModule,
     AppRoutingModule,
     BrowserAnimationsModule,
@@ -29,7 +31,7 @@ import { HttpClientModule } from '@angular/common/http';
     ViewModule,
     HomeModule,
     ToolbarModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -19,7 +19,10 @@ export class CreateComponent implements OnInit {
   privateKey?: string | null;
 
   @Output()
-  appMnemonic: EventEmitter<string>;
+  appClickCreateMnemonic: EventEmitter<string>;
+
+  @Output()
+  appBlurMnemonic: EventEmitter<string>;
 
   @Output()
   appSubmit: EventEmitter<CreateOnSubmitEvent>;
@@ -30,14 +33,19 @@ export class CreateComponent implements OnInit {
     private clipboard: Clipboard,
     private readonly snackBar: MatSnackBar,
   ) {
-    this.appMnemonic = new EventEmitter();
+    this.appClickCreateMnemonic = new EventEmitter();
+    this.appBlurMnemonic = new EventEmitter();
     this.appSubmit = new EventEmitter();
   }
 
   ngOnInit(): void {}
 
+  onClickCreateMnemonic() {
+    this.appClickCreateMnemonic.emit();
+  }
+
   onBlurMnemonic(mnemonic: string) {
-    this.appMnemonic.next(mnemonic);
+    this.appBlurMnemonic.next(mnemonic);
   }
 
   onSubmit(id: string, type: KeyType, privateKey: string) {

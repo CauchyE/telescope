@@ -6,7 +6,7 @@ import { KeyInfrastructureService } from './key.infrastructure.service';
 export interface IKeyInfrastructure {
   getPrivateKeyFromMnemonic(mnemonic: string): Promise<string>;
   get(id: string): Promise<Key | undefined>;
-  keys(): Promise<Key[]>;
+  list(): Promise<Key[]>;
   set(id: string, type: KeyType, privateKey: string): Promise<void>;
   delete(id: string): Promise<void>;
   send(
@@ -33,8 +33,8 @@ export class KeyService {
     return this.iKeyInfrastructure.get(id);
   }
 
-  keys(): Promise<Key[]> {
-    return this.iKeyInfrastructure.keys();
+  list(): Promise<Key[]> {
+    return this.iKeyInfrastructure.list();
   }
 
   set(id: string, type: KeyType, privateKey: string) {

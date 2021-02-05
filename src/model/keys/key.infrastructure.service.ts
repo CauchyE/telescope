@@ -68,7 +68,7 @@ export class KeyInfrastructureService implements IKeyInfrastructure {
   /**
    * Get all from Indexed DB
    */
-  async keys(): Promise<Key[]> {
+  async list(): Promise<Key[]> {
     return (await this.db.table('keys').toArray()).map((data) => ({
       id: data.id,
       type: data.type,

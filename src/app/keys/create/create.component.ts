@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CreateOnSubmitEvent } from '@view/keys/create/create.component';
 import { KeyService, KeyApplicationService } from '@model/index';
+import * as bip39 from 'bip39';
 
 @Component({
   selector: 'app-create',
@@ -9,17 +10,24 @@ import { KeyService, KeyApplicationService } from '@model/index';
 })
 export class CreateComponent implements OnInit {
   privateKey: string;
+  mnemonic: string;
 
   constructor(
     private readonly keyApplication: KeyApplicationService,
     private readonly key: KeyService,
   ) {
     this.privateKey = '';
+    this.mnemonic = '';
   }
 
   ngOnInit(): void {}
 
-  async onMnemonic(mnemonic: string) {
+  onClickCreateMnemonic() {
+    this.mnemonic = bip39.generateMnemonic();
+    window.alert('You must memory this mnemonic.');
+  }
+
+  async onBlurMnemonic(mnemonic: string) {
     this.privateKey = await this.key.getPrivateKeyFromMnemonic(mnemonic);
   }
 

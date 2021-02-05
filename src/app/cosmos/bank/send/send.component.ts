@@ -1,14 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { SendOnSubmitEvent } from '@view/keys/key/send/send.component';
-import { Observable, from, of } from 'rxjs';
+import { SendOnSubmitEvent } from '@view/cosmos/bank/send/send.component';
+import { Observable } from 'rxjs';
 import { Key, KeyType } from '@model/keys/key.model';
-import { ActivatedRoute } from '@angular/router';
 import { map, mergeMap, filter, tap } from 'rxjs/operators';
-import {
-  KeyService,
-  KeyApplicationService,
-  CosmosSDKService,
-} from '@model/index';
+import { KeyApplicationService, CosmosSDKService } from '@model/index';
 import { Coin } from 'cosmos-client/api';
 import {
   AccAddress,
@@ -17,7 +12,8 @@ import {
   PubKey,
 } from 'cosmos-client';
 import { PubKeySr25519 } from 'cosmos-client/tendermint/types/sr25519';
-import { auth, BaseAccount } from 'cosmos-client/x/auth';
+import { auth } from 'cosmos-client/x/auth';
+import { KeyStoreService } from '@model/keys/key.store.service';
 
 @Component({
   selector: 'app-send',
@@ -25,18 +21,14 @@ import { auth, BaseAccount } from 'cosmos-client/x/auth';
   styleUrls: ['./send.component.css'],
 })
 export class SendComponent implements OnInit {
-  keyID$: Observable<string>;
   key$: Observable<Key | undefined>;
   coins$: Observable<Coin[] | undefined>;
-
   constructor(
-    private readonly route: ActivatedRoute,
     private readonly cosmosSDK: CosmosSDKService,
-    private readonly key: KeyService,
+    private readonly keyStore: KeyStoreService,
     private readonly keyApplication: KeyApplicationService,
   ) {
-    this.keyID$ = this.route.params.pipe(map((params) => params['key_id']));
-    this.key$ = this.keyID$.pipe(mergeMap((keyID) => this.key.get(keyID)));
+    this.key$ = this.keyStore.currentKey$;
 
     const address$ = this.key$.pipe(
       filter((key): key is Key => key !== undefined),
@@ -51,6 +43,8 @@ export class SendComponent implements OnInit {
     );
   }
 
+  ngOnInit(): void {}
+
   private getPublicKey(key: Key): PubKey {
     const publicKeyBuffer = Buffer.from(key.public_key, 'base64');
     switch (key.type) {
@@ -62,7 +56,6 @@ export class SendComponent implements OnInit {
         return new PubKeySr25519(publicKeyBuffer);
     }
   }
-  ngOnInit(): void {}
 
   async onSubmit($event: SendOnSubmitEvent) {
     await this.keyApplication.send(

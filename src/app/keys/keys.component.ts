@@ -11,7 +11,7 @@ import { CosmosSDKService, KeyService } from '@model/index';
 export class KeysComponent implements OnInit {
   keys$: Observable<Key[]>;
   constructor(private readonly key: KeyService) {
-    this.keys$ = from(this.key.keys());
+    this.keys$ = from(this.key.list());
   }
 
   ngOnInit(): void {}
