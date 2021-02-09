@@ -4,6 +4,7 @@ import { Key } from '@model/keys/key.model';
 import { ActivatedRoute } from '@angular/router';
 import { KeyService } from '@model/index';
 import { map, mergeMap } from 'rxjs/operators';
+import { AccAddress, ValAddress } from 'cosmos-client';
 
 @Component({
   selector: 'app-key',
@@ -13,6 +14,8 @@ import { map, mergeMap } from 'rxjs/operators';
 export class KeyComponent implements OnInit {
   keyID$: Observable<string>;
   key$: Observable<Key | undefined>;
+  accAddress$: Observable<AccAddress | undefined>;
+  valAddress$: Observable<ValAddress | undefined>;
 
   constructor(
     private readonly route: ActivatedRoute,

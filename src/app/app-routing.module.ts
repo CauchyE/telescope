@@ -16,7 +16,7 @@ const routes: Routes = [
   {
     path: 'validators',
     loadChildren: () =>
-      import('./validators/validators.module').then(
+      import('./cosmos/staking/validators/validators.module').then(
         (m) => m.AppValidatorsModule,
       ),
   },

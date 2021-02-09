@@ -10,4 +10,4 @@ import { ValidatorsComponent } from './validators.component';
   imports: [CommonModule, RouterModule, FlexLayoutModule, MaterialModule],
   exports: [ValidatorsComponent],
 })
-export class ValidatorsViewModule { }
+export class ValidatorsModule {}
