@@ -3,7 +3,7 @@ import { Observable } from 'rxjs';
 import { Key } from '@model/keys/key.model';
 import { ActivatedRoute } from '@angular/router';
 import { KeyService } from '@model/index';
-import { map, mergeMap } from 'rxjs/operators';
+import { filter, map, mergeMap } from 'rxjs/operators';
 import { AccAddress, ValAddress } from 'cosmos-client';
 
 @Component({
@@ -23,6 +23,17 @@ export class KeyComponent implements OnInit {
   ) {
     this.keyID$ = this.route.params.pipe(map((params) => params['key_id']));
     this.key$ = this.keyID$.pipe(mergeMap((keyID) => this.key.get(keyID)));
+    const pubKey$ = this.key$.pipe(
+      filter((key) => !!key),
+      map((key) => this.key.getPubKey(key!.type, key!.public_key)),
+    );
+
+    this.accAddress$ = pubKey$.pipe(
+      map((key) => AccAddress.fromPublicKey(key)),
+    );
+    this.valAddress$ = pubKey$.pipe(
+      map((key) => ValAddress.fromPublicKey(key)),
+    );
   }
 
   ngOnInit(): void {}

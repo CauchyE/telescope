@@ -1,15 +1,22 @@
 import { Component, OnInit } from '@angular/core';
+import { CosmosSDKService } from '@model/cosmos-sdk.service';
+import { StakingApplicationService } from '@model/cosmos/staking.application.service';
+import { CreateOnSubmitEvent } from '@view/cosmos/staking/delegators/create/create.component';
+import { AccAddress } from 'cosmos-client';
+import { staking } from 'cosmos-client/x/staking';
 
 @Component({
   selector: 'app-create',
   templateUrl: './create.component.html',
-  styleUrls: ['./create.component.css']
+  styleUrls: ['./create.component.css'],
 })
 export class CreateComponent implements OnInit {
+  constructor(
+    private readonly cosmosSDK: CosmosSDKService,
+    private readonly stakingApplication: StakingApplicationService,
+  ) {}
 
-  constructor() { }
+  ngOnInit(): void {}
 
-  ngOnInit(): void {
-  }
-
+  onSubmit($event: CreateOnSubmitEvent) {}
 }

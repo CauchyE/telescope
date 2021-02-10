@@ -46,26 +46,4 @@ export class KeyApplicationService {
 
     await this.router.navigate(['keys', id]);
   }
-
-  async send(key: Key, toAddress: string, amount: Coin[], privateKey: string) {
-    const dialogRef = this.loadingDialog.open('Sending');
-    let txhash: string;
-
-    try {
-      txhash = await this.key.send(key, toAddress, amount, privateKey);
-    } catch {
-      this.snackBar.open('Error has occured', undefined, {
-        duration: 6000,
-      });
-      return;
-    } finally {
-      dialogRef.close();
-    }
-
-    this.snackBar.open('Successfully sent', undefined, {
-      duration: 6000,
-    });
-
-    await this.router.navigate(['txs', txhash]);
-  }
 }

@@ -26,7 +26,7 @@
     "@angular/service-worker": "~11.1.1",
     "@types/bip39": "^3.0.0",
     "bip39": "^3.0.3",
-    "cosmos-client": "^0.39.12",
+    "cosmos-client": "^0.39.13",
     "dexie": "^3.0.2",
     "dotenv": "^8.2.0",
     "ng-loading-dialog": "^11.1.0",

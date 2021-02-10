@@ -10,6 +10,9 @@ import {
   PrivKeyEd25519,
   AccAddress,
   PrivKeySr25519,
+  PubKeySecp256k1,
+  PubKeyEd25519,
+  PubKeySr25519,
 } from 'cosmos-client';
 import { CosmosSDKService } from '@model/cosmos-sdk.service';
 
@@ -27,7 +30,7 @@ export class KeyInfrastructureService implements IKeyInfrastructure {
     });
   }
 
-  private getPrivKey(type: KeyType, privateKey: string) {
+  getPrivKey(type: KeyType, privateKey: string) {
     const privKeyBuffer = Buffer.from(privateKey, 'base64');
     switch (type) {
       case KeyType.SECP256K1:
@@ -36,6 +39,18 @@ export class KeyInfrastructureService implements IKeyInfrastructure {
         return new PrivKeyEd25519(privKeyBuffer);
       case KeyType.SR25519:
         return new PrivKeySr25519(privKeyBuffer);
+    }
+  }
+
+  getPubKey(type: KeyType, publicKey: string) {
+    const pubKeyBuffer = Buffer.from(publicKey, 'base64');
+    switch (type) {
+      case KeyType.SECP256K1:
+        return new PubKeySecp256k1(pubKeyBuffer);
+      case KeyType.ED25519:
+        return new PubKeyEd25519(pubKeyBuffer);
+      case KeyType.SR25519:
+        return new PubKeySr25519(pubKeyBuffer);
     }
   }
 
@@ -105,46 +120,5 @@ export class KeyInfrastructureService implements IKeyInfrastructure {
    */
   async delete(id: string) {
     await this.db.table('keys').where('id').equals(id).delete();
-  }
-
-  async send(key: Key, toAddress: string, amount: Coin[], privateKey: string) {
-    const privKey = this.getPrivKey(key.type, privateKey);
-    const fromAddress = AccAddress.fromPublicKey(privKey.getPubKey());
-    const account = await auth
-      .accountsAddressGet(this.cosmosSDK.sdk, fromAddress)
-      .then((res) => res.data.result);
-
-    const toAddress_ = AccAddress.fromBech32(toAddress);
-
-    const unsignedStdTx = await bank
-      .accountsAddressTransfersPost(this.cosmosSDK.sdk, toAddress_, {
-        base_req: {
-          from: fromAddress.toBech32(),
-          memo: '',
-          chain_id: this.cosmosSDK.sdk.chainID,
-          account_number: account.account_number.toString(),
-          sequence: account.sequence.toString(),
-          gas: '',
-          gas_adjustment: '',
-          fees: [],
-          simulate: false,
-        },
-        amount: amount,
-      })
-      .then((res) => res.data);
-
-    const signedStdTx = auth.signStdTx(
-      this.cosmosSDK.sdk,
-      privKey,
-      unsignedStdTx,
-      account.account_number.toString(),
-      account.sequence.toString(),
-    );
-
-    const result = await auth
-      .txsPost(this.cosmosSDK.sdk, signedStdTx, 'block')
-      .then((res) => res.data);
-
-    return result.txhash || '';
   }
 }
