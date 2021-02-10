@@ -14,11 +14,9 @@ const routes: Routes = [
     loadChildren: () => import('./txs/txs.module').then((m) => m.AppTxsModule),
   },
   {
-    path: 'validators',
+    path: 'cosmos',
     loadChildren: () =>
-      import('./cosmos/staking/validators/validators.module').then(
-        (m) => m.AppValidatorsModule,
-      ),
+      import('./cosmos/cosmos.module').then((m) => m.AppCosmosModule),
   },
   {
     path: 'keys',
