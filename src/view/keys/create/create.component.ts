@@ -58,9 +58,9 @@ export class CreateComponent implements OnInit {
     return false;
   }
 
-  copyPrivateKey(privateKey: string) {
-    if (privateKey.length > 0) {
-      this.clipboard.copy(privateKey);
+  copyClipboard(value: string) {
+    if (value.length > 0) {
+      this.clipboard.copy(value);
       this.snackBar.open('Copied to clipboard', undefined, {
         duration: 3000,
       });

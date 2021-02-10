@@ -15,7 +15,8 @@
     <mat-nav-list>
       <mat-list-item routerLink="/">Home</mat-list-item>
       <mat-list-item routerLink="/keys">Keys</mat-list-item>
-      <mat-list-item routerLink="/validators">Validators</mat-list-item>
+      <mat-list-item routerLink="/cosmos/bank">bank</mat-list-item>
+      <mat-list-item routerLink="/cosmos/staking">staking</mat-list-item>
 
       <ng-template ngFor let-extension [ngForOf]="extensionNavigations">
         <ng-container *ngIf="extension?.name && extension?.link">

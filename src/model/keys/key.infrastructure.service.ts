@@ -1,14 +1,10 @@
 import { Injectable } from '@angular/core';
 import Dexie from 'dexie';
 import { Key, KeyType } from './key.model';
-import { Coin } from 'cosmos-client/api';
 import { IKeyInfrastructure } from './key.service';
-import { auth } from 'cosmos-client/x/auth';
-import { bank } from 'cosmos-client/x/bank';
 import {
   PrivKeySecp256k1,
   PrivKeyEd25519,
-  AccAddress,
   PrivKeySr25519,
   PubKeySecp256k1,
   PubKeyEd25519,
@@ -31,7 +27,7 @@ export class KeyInfrastructureService implements IKeyInfrastructure {
   }
 
   getPrivKey(type: KeyType, privateKey: string) {
-    const privKeyBuffer = Buffer.from(privateKey, 'base64');
+    const privKeyBuffer = Buffer.from(privateKey, 'hex');
     switch (type) {
       case KeyType.SECP256K1:
         return new PrivKeySecp256k1(privKeyBuffer);
@@ -57,7 +53,7 @@ export class KeyInfrastructureService implements IKeyInfrastructure {
   async getPrivateKeyFromMnemonic(mnemonic: string) {
     return (
       await this.cosmosSDK.sdk.generatePrivKeyFromMnemonic(mnemonic)
-    ).toString('base64');
+    ).toString('hex');
   }
 
   /**

@@ -11,6 +11,7 @@
       matInput
       required
       pattern="^[a-z_][a-z_0-9]*$"
+      autocomplete="username"
     />
     <mat-error>^[a-z_][a-z_0-9]*$</mat-error>
   </mat-form-field>
@@ -31,12 +32,27 @@
       matInput
       rows="3"
       style="resize: none"
+      [readOnly]="!typeRef.value"
       required
       pattern="^[a-z\s]+$"
       (blur)="onBlurMnemonic(mnemonicRef.value)"
     ></textarea>
-    <button mat-button color="accent" (click)="onClickCreateMnemonic()">
+    <button
+      mat-button
+      type="button"
+      matSuffix
+      color="accent"
+      (click)="onClickCreateMnemonic()"
+    >
       Create
+    </button>
+    <button
+      mat-button
+      type="button"
+      matSuffix
+      (click)="copyClipboard(privateKeyRef.value)"
+    >
+      <mat-icon>content_copy</mat-icon>
     </button>
   </mat-form-field>
   <mat-form-field fxFill>
@@ -51,13 +67,24 @@
       matInput
       readonly
       required
+      autocomplete="new-password"
     />
-    <button mat-button matSuffix (click)="togglePasswordVisibility()">
+    <button
+      mat-button
+      type="button"
+      matSuffix
+      (click)="togglePasswordVisibility()"
+    >
       <mat-icon>
         {{ isPasswordVisible ? 'visibility' : 'visibility_off' }}
       </mat-icon>
     </button>
-    <button mat-button matSuffix (click)="copyPrivateKey(privateKeyRef.value)">
+    <button
+      mat-button
+      type="button"
+      matSuffix
+      (click)="copyClipboard(privateKeyRef.value)"
+    >
       <mat-icon>content_copy</mat-icon>
     </button>
     <mat-hint>
@@ -65,7 +92,5 @@
       browser.
     </mat-hint>
   </mat-form-field>
-  <button mat-flat-button type="submit" [disabled]="formRef.invalid">
-    Submit
-  </button>
+  <button mat-flat-button [disabled]="formRef.invalid">Submit</button>
 </form>
