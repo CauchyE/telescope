@@ -17,7 +17,14 @@
   </mat-form-field>
   <mat-form-field fxFill>
     <mat-label>Type</mat-label>
-    <mat-select #typeRef ngModel="'secp256k1'" name="type" matInput required>
+    <mat-select
+      #typeRef
+      ngModel
+      [value]="'secp256k1'"
+      name="type"
+      matInput
+      required
+    >
       <mat-option [value]="'secp256k1'">Secp256k1</mat-option>
       <mat-option [value]="'ed25519'" disabled>Ed25519</mat-option>
       <mat-option [value]="'sr25519'" disabled>Sr25519</mat-option>

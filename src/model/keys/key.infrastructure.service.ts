@@ -100,7 +100,7 @@ export class KeyInfrastructureService implements IKeyInfrastructure {
     }
 
     const privKey = this.getPrivKey(type, privateKey);
-    const publicKey = privKey.getPubKey().toBase64();
+    const publicKey = privKey.getPubKey().toBuffer().toString('hex');
 
     const data: Key = {
       id,
