@@ -9,15 +9,15 @@ import * as bip39 from 'bip39';
   styleUrls: ['./create.component.css'],
 })
 export class CreateComponent implements OnInit {
-  privateKey: string;
   mnemonic: string;
+  privateKey: string;
 
   constructor(
     private readonly keyApplication: KeyApplicationService,
     private readonly key: KeyService,
   ) {
-    this.privateKey = '';
     this.mnemonic = '';
+    this.privateKey = '';
   }
 
   ngOnInit(): void {}

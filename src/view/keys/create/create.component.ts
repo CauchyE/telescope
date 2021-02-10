@@ -16,6 +16,9 @@ export type CreateOnSubmitEvent = {
 })
 export class CreateComponent implements OnInit {
   @Input()
+  mnemonic?: string  | null;
+
+  @Input()
   privateKey?: string | null;
 
   @Output()

@@ -27,7 +27,7 @@
     <mat-label>Mnemonic</mat-label>
     <textarea
       #mnemonicRef
-      ngModel
+      [(ngModel)]="mnemonic"
       name="mnemonic"
       matInput
       rows="3"
@@ -44,7 +44,8 @@
       color="accent"
       (click)="onClickCreateMnemonic()"
     >
-      Create
+      <mat-icon>autorenew</mat-icon>
+      <span>create</span>
     </button>
     <button
       mat-button
@@ -53,6 +54,7 @@
       (click)="copyClipboard(privateKeyRef.value)"
     >
       <mat-icon>content_copy</mat-icon>
+      <span>copy</span>
     </button>
   </mat-form-field>
   <mat-form-field fxFill>
@@ -86,6 +88,7 @@
       (click)="copyClipboard(privateKeyRef.value)"
     >
       <mat-icon>content_copy</mat-icon>
+      <span>copy</span>
     </button>
     <mat-hint>
       You must save this as a password using password manager built in the web
