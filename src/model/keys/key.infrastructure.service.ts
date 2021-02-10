@@ -39,7 +39,7 @@ export class KeyInfrastructureService implements IKeyInfrastructure {
   }
 
   getPubKey(type: KeyType, publicKey: string) {
-    const pubKeyBuffer = Buffer.from(publicKey, 'base64');
+    const pubKeyBuffer = Buffer.from(publicKey, 'hex');
     switch (type) {
       case KeyType.SECP256K1:
         return new PubKeySecp256k1(pubKeyBuffer);
