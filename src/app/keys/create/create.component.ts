@@ -28,6 +28,9 @@ export class CreateComponent implements OnInit {
   }
 
   async onBlurMnemonic(mnemonic: string) {
+    if (!mnemonic) {
+      return;
+    }
     this.privateKey = await this.key.getPrivateKeyFromMnemonic(mnemonic);
   }
 
