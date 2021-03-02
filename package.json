@@ -8,7 +8,8 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "bundle": "docker build . -t lcnem/cosmoscan"
+    "bundle": "docker build . -t lcnem/cosmoscan",
+    "prepare": "husky install"
   },
   "private": true,
   "dependencies": {
@@ -43,10 +44,13 @@
     "@angular/cli": "~11.1.4",
     "@angular/compiler-cli": "~11.1.2",
     "@angular/language-service": "~11.1.2",
+    "@commitlint/cli": "^12.0.1",
+    "@commitlint/config-conventional": "^12.0.1",
     "@types/jasmine": "~3.6.0",
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "^12.11.1",
     "codelyzer": "^6.0.0",
+    "husky": "^5.1.2",
     "jasmine-core": "~3.6.0",
     "jasmine-spec-reporter": "~5.0.0",
     "karma": "~5.2.3",
