@@ -13,8 +13,8 @@
           "skipTests": true
         }
       },
-      "root": "",
-      "sourceRoot": "src",
+      "root": "projects/cosmoscan",
+      "sourceRoot": "projects/cosmoscan/src",
       "prefix": "app",
       "architect": {
         "build": {
@@ -24,19 +24,19 @@
               "path": "webpack.config.js"
             },
             "outputPath": "dist/cosmoscan",
-            "index": "src/index.html",
-            "main": "src/main.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.app.json",
+            "index": "projects/cosmoscan/src/index.html",
+            "main": "projects/cosmoscan/src/main.ts",
+            "polyfills": "projects/cosmoscan/src/polyfills.ts",
+            "tsConfig": "projects/cosmoscan/tsconfig.app.json",
             "aot": false,
             "assets": [
-              "src/favicon.ico",
-              "src/assets",
-              "src/manifest.webmanifest"
+              "projects/cosmoscan/src/favicon.ico",
+              "projects/cosmoscan/src/assets",
+              "projects/cosmoscan/src/manifest.webmanifest"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.css"
+              "projects/cosmoscan/src/styles.css"
             ],
             "scripts": []
           },
@@ -44,8 +44,8 @@
             "production": {
               "fileReplacements": [
                 {
-                  "replace": "src/environments/environment.ts",
-                  "with": "src/environments/environment.prod.ts"
+                  "replace": "projects/cosmoscan/src/environments/environment.ts",
+                  "with": "projects/cosmoscan/src/environments/environment.prod.ts"
                 }
               ],
               "optimization": true,
@@ -93,31 +93,29 @@
         "test": {
           "builder": "@angular-builders/custom-webpack:karma",
           "options": {
-            "main": "src/test.ts",
-            "polyfills": "src/polyfills.ts",
-            "tsConfig": "tsconfig.spec.json",
-            "karmaConfig": "karma.conf.js",
+            "main": "projects/cosmoscan/src/test.ts",
+            "polyfills": "projects/cosmoscan/src/polyfills.ts",
+            "tsConfig": "projects/cosmoscan/tsconfig.spec.json",
+            "karmaConfig": "projects/cosmoscan/karma.conf.js",
             "assets": [
-              "src/favicon.ico",
-              "src/assets",
-              "src/manifest.webmanifest"
+              "projects/cosmoscan/src/favicon.ico",
+              "projects/cosmoscan/src/assets",
+              "projects/cosmoscan/src/manifest.webmanifest"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "src/styles.css"
+              "projects/cosmoscan/src/styles.css"
             ],
             "scripts": []
           }
         },
         "lint": {
-          "builder": "@angular-devkit/build-angular:tslint",
+          "builder": "@angular-eslint/builder:lint",
           "options": {
-            "tsConfig": [
-              "tsconfig.app.json",
-              "tsconfig.spec.json",
-              "e2e/tsconfig.json"
-            ],
-            "exclude": ["**/node_modules/**"]
+            "lintFilePatterns": [
+              "projects/cosmoscan/**/*.ts",
+              "projects/cosmoscan/**/*.html"
+            ]
           }
         },
         "e2e": {
