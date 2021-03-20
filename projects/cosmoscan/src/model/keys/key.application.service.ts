@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { LoadingDialogService } from 'ng-loading-dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Coin } from 'cosmos-client/api';
-import { Key, KeyType } from './key.model';
+import { KeyType } from './key.model';
 import { KeyService } from './key.service';
 
 @Injectable({

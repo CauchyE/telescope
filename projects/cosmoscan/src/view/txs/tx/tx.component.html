@@ -4,90 +4,96 @@
     <mat-list-item>
       <span class="column-name">TxHash:</span>
       <span fxFlex="auto"></span>
-      <span class="column-value">{{ tx?.txhash }}</span>
+      <span class="column-value">{{ tx?.tx_response?.txhash }}</span>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
 
     <mat-list-item>
       <span class="column-name">Height: </span>
       <span fxFlex="auto"></span>
-      <span class="column-value">{{ tx?.height }}</span>
+      <span class="column-value">{{ tx?.tx_response?.height }}</span>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
 
     <mat-list-item>
       <span class="column-name">Gas Used: </span>
       <span fxFlex="auto"></span>
-      <span class="column-value">{{ tx?.gas_used }}</span>
+      <span class="column-value">{{ tx?.tx_response?.gas_used }}</span>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
 
     <mat-list-item>
       <span class="column-name">Gas Wanted: </span>
       <span fxFlex="auto"></span>
-      <span class="column-value">{{ tx?.gas_wanted }}</span>
+      <span class="column-value">{{ tx?.tx_response?.gas_wanted }}</span>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
 
     <mat-list-item>
       <span class="column-name">Timestamp: </span>
       <span fxFlex="auto"></span>
-      <span class="column-value">{{ tx?.timestamp }}</span>
+      <span class="column-value">{{ tx?.tx_response?.timestamp }}</span>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
   </mat-list>
 </mat-card>
 
 <h3>Msgs</h3>
-<ng-template ngFor let-msg [ngForOf]="tx?.tx?.msg">
-  <mat-card>
-    <mat-list>
-      <mat-list-item>
-        <span class="column-name">Type: </span>
-        <span fxFlex="auto"></span>
-        <span class="column-value">{{ constructorName(msg) }}</span>
-      </mat-list-item>
-      <mat-divider [inset]="true"></mat-divider>
-      <ng-template ngFor let-data [ngForOf]="msg | keyvalue">
+<ng-template ngFor let-message [ngForOf]="tx?.tx?.body?.messages">
+  <ng-container *ngIf="unpackMsg(message) as msg">
+    <mat-card>
+      <mat-list>
         <mat-list-item>
-          <span class="column-name">{{ data.key }}</span>
+          <span class="column-name">Type: </span>
           <span fxFlex="auto"></span>
-          <span class="column-value">{{ data.value | json }}</span>
+          <span class="column-value">{{ constructorName(msg) }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
-      </ng-template>
-    </mat-list>
-  </mat-card>
+        <ng-template ngFor let-data [ngForOf]="entries(msg)">
+          <mat-list-item>
+            <span class="column-name">{{ data[0] }}</span>
+            <span fxFlex="auto"></span>
+            <span class="column-value">{{ data[1] | json }}</span>
+          </mat-list-item>
+          <mat-divider [inset]="true"></mat-divider>
+        </ng-template>
+      </mat-list>
+    </mat-card>
+  </ng-container>
+
 </ng-template>
 
 <h3>Signatures</h3>
-<ng-template ngFor let-sign [ngForOf]="tx?.tx?.signatures">
-  <mat-card>
-    <mat-list>
-      <mat-list-item>
-        <span class="column-name">Key Type: </span>
-        <span fxFlex="auto"></span>
-        <span class="column-value">{{ constructorName(sign.pub_key) }}</span>
-      </mat-list-item>
-      <mat-divider [inset]="true"></mat-divider>
-      <mat-list-item>
-        <span class="column-name">Public Key: </span>
-        <span fxFlex="auto"></span>
-        <span class="column-value">{{ sign.pub_key?.toString() }}</span>
-      </mat-list-item>
-      <mat-divider [inset]="true"></mat-divider>
-      <mat-list-item>
-        <span class="column-name">Signature: </span>
-        <span fxFlex="auto"></span>
-        <span class="column-value">{{ sign.signature }}</span>
-      </mat-list-item>
-      <mat-divider [inset]="true"></mat-divider>
-    </mat-list>
-  </mat-card>
+<ng-template ngFor let-signerInfo [ngForOf]="tx?.tx?.auth_info?.signer_infos">
+  <ng-container *ngIf="unpackKey(signerInfo.public_key) as pubKey">
+    <mat-card>
+      <mat-list>
+        <mat-list-item>
+          <span class="column-name">Key Type: </span>
+          <span fxFlex="auto"></span>
+          <span class="column-value">{{ constructorName(pubKey) }}</span>
+        </mat-list-item>
+        <mat-divider [inset]="true"></mat-divider>
+        <mat-list-item>
+          <span class="column-name">Public Key: </span>
+          <span fxFlex="auto"></span>
+          <span class="column-value">{{ pubKey?.toString() }}</span>
+        </mat-list-item>
+        <mat-divider [inset]="true"></mat-divider>
+        <mat-list-item>
+          <span class="column-name">Signature: </span>
+          <span fxFlex="auto"></span>
+          <span class="column-value">{{ signerInfo?.mode_info }}</span>
+        </mat-list-item>
+        <mat-divider [inset]="true"></mat-divider>
+      </mat-list>
+    </mat-card>
+  </ng-container>
+  
 </ng-template>
 
 <h3>Logs</h3>
-<ng-template ngFor let-log [ngForOf]="tx?.logs">
+<ng-template ngFor let-log [ngForOf]="tx?.tx_response?.logs">
   <ng-template ngFor let-event [ngForOf]="log.events">
     <mat-card>
       <mat-list>

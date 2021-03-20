@@ -58,7 +58,7 @@ export class BankService {
 
     // sign
     const txBuilder = new cosmosclient.TxBuilder(sdk, txBody, authInfo);
-    const signDoc = txBuilder.signDoc(account.account_number);
+    const signDoc = txBuilder.signDoc(account.account_number!);
     txBuilder.addSignature(privKey, signDoc);
 
     // broadcast

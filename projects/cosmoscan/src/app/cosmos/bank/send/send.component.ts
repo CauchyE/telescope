@@ -34,7 +34,7 @@ export class SendComponent implements OnInit {
 
     this.coins$ = combineLatest([this.cosmosSDK.sdk$, address$]).pipe(
       mergeMap(([sdk, address]) =>
-        rest.cosmos.bank.allBalances(sdk.rest, address.toString()),
+        rest.cosmos.bank.allBalances(sdk.rest, address),
       ),
       map((result) => result.data.balances),
     );

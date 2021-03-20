@@ -11,7 +11,7 @@ import { cosmosclient, cosmos, rest } from 'cosmos-client'
   styleUrls: ['./account.component.css'],
 })
 export class AccountComponent implements OnInit {
-  address$: Observable<string>;
+  address$: Observable<cosmosclient.AccAddress>;
   account$: Observable<cosmos.auth.v1beta1.BaseAccount | unknown | undefined>;
   balances$: Observable<cosmos.base.v1beta1.ICoin[]>
 
@@ -19,7 +19,7 @@ export class AccountComponent implements OnInit {
     private route: ActivatedRoute,
     private cosmosSDK: CosmosSDKService,
   ) {
-    this.address$ = this.route.params.pipe(map((params) => params.address));
+    this.address$ = this.route.params.pipe(map((params) => params['address']), map(addr => cosmosclient.AccAddress.fromString(addr)));
 
     const combined$ = combineLatest([this.cosmosSDK.sdk$, this.address$]);
 
@@ -27,7 +27,7 @@ export class AccountComponent implements OnInit {
       mergeMap(([sdk, address]) =>
         rest.cosmos.auth.account(
           sdk.rest,
-          cosmosclient.AccAddress.fromString(address),
+          address,
         ).then(res => res.data && cosmosclient.codec.unpackAny(res.data)).catch(_ => undefined),
       ),
     );

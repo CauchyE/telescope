@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, from } from 'rxjs';
-import { Key } from '@model/keys/key.model';
-import { CosmosSDKService, KeyService } from '@model/index';
+import { Key } from '../../model/keys/key.model';
+import { KeyService } from '../../model/keys/key.service';
 
 @Component({
   selector: 'app-keys',
@@ -14,5 +14,5 @@ export class KeysComponent implements OnInit {
     this.keys$ = from(this.key.list());
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }

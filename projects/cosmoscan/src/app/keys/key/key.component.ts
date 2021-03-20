@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { Key } from '@model/keys/key.model';
+import { Key } from '../../../model/keys/key.model';
 import { ActivatedRoute } from '@angular/router';
-import { KeyService } from '@model/index';
+import { KeyService } from '../../../model/keys/key.service';
 import { filter, map, mergeMap } from 'rxjs/operators';
-import { AccAddress, ValAddress } from 'cosmos-client';
+import { cosmosclient } from 'cosmos-client';
 
 @Component({
   selector: 'app-key',
@@ -14,8 +14,8 @@ import { AccAddress, ValAddress } from 'cosmos-client';
 export class KeyComponent implements OnInit {
   keyID$: Observable<string>;
   key$: Observable<Key | undefined>;
-  accAddress$: Observable<AccAddress | undefined>;
-  valAddress$: Observable<ValAddress | undefined>;
+  accAddress$: Observable<cosmosclient.AccAddress | undefined>;
+  valAddress$: Observable<cosmosclient.ValAddress | undefined>;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -29,12 +29,12 @@ export class KeyComponent implements OnInit {
     );
 
     this.accAddress$ = pubKey$.pipe(
-      map((key) => AccAddress.fromPublicKey(key)),
+      map((key) => cosmosclient.AccAddress.fromPublicKey(key)),
     );
     this.valAddress$ = pubKey$.pipe(
-      map((key) => ValAddress.fromPublicKey(key)),
+      map((key) => cosmosclient.ValAddress.fromPublicKey(key)),
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }
