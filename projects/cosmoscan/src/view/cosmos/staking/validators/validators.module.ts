@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MaterialModule } from '@view/material.module';
+import { MaterialModule } from '../../../../view/material.module';
 import { ValidatorsComponent } from './validators.component';
 
 @NgModule({
@@ -10,4 +10,4 @@ import { ValidatorsComponent } from './validators.component';
   imports: [CommonModule, RouterModule, FlexLayoutModule, MaterialModule],
   exports: [ValidatorsComponent],
 })
-export class ValidatorsModule {}
+export class ValidatorsModule { }

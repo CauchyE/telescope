@@ -1,10 +1,4 @@
 {
-  "url": {
-    "protocol": "",
-    "hostname": "",
-    "port": 1317
-  },
-  "chain_id": "cosmoshub-3",
   "bech32_prefix": {
     "acc_addr": "",
     "acc_pub": "",
@@ -14,7 +8,14 @@
     "cons_pub": ""
   },
   "extension": {
-    "navigations": [{ "name": "", "link": "" }],
-    "message_actions": [""]
+    "navigations": [
+      {
+        "name": "",
+        "link": ""
+      }
+    ],
+    "message_actions": [
+      ""
+    ]
   }
 }

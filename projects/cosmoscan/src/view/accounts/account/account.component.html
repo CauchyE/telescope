@@ -1,31 +1,31 @@
 <h2>Account</h2>
-<mat-card>
+<mat-card *ngIf="baseAccount">
     <mat-list>
       <mat-list-item>
         <span class="column-name">Sequence:</span>
         <span fxFlex="auto"></span>
-        <span class="column-value">{{ account?.sequence }}</span>
+        <span class="column-value">{{ baseAccount?.sequence }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="column-name">Account Number: </span>
         <span fxFlex="auto"></span>
-        <span class="column-value">{{ account?.account_number }}</span>
+        <span class="column-value">{{ baseAccount?.account_number }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="column-name">Address: </span>
         <span fxFlex="auto"></span>
-        <span class="column-value">{{ account?.address?.toBech32() }}</span>
+        <span class="column-value">{{ baseAccount?.address }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="column-name">Public key: </span>
         <span fxFlex="auto"></span>
-        <span class="column-value">{{ account?.public_key }}</span>
+        <span class="column-value">{{ baseAccount?.pub_key }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
     </mat-list>
@@ -33,17 +33,17 @@
 
 <h3>Coins</h3>
 <mat-card>
-    <mat-list *ngFor="let coin of account?.coins">
+    <mat-list *ngFor="let balance of balances">
       <mat-list-item>
-        <span class="column-name">{{ coin.amount }}</span>
+        <span class="column-name">{{ balance.amount }}</span>
         <span fxFlex="auto"></span>
-        <span class="column-value">{{ coin.denom }}</span>
+        <span class="column-value">{{ balance.denom }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
     </mat-list>
 </mat-card>
 
-<h3>Transactions</h3>
+<!-- <h3>Transactions</h3>
 <mat-card>
     <table mat-table [dataSource]="paginatedTxs?.txs" class="table-container">
       <ng-container matColumnDef="height">
@@ -76,4 +76,4 @@
       <tr mat-header-row *matHeaderRowDef="txColumnKeys"></tr>
       <tr mat-row *matRowDef="let row; columns: txColumnKeys"></tr>
     </table>
-</mat-card>
+</mat-card> -->

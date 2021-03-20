@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Validator } from 'cosmos-client/api';
+import { QueryValidatorResponseIsResponseTypeForTheQueryValidatorRPCMethod } from 'cosmos-client/openapi/api';
 
 @Component({
   selector: 'view-validator',
@@ -8,9 +8,9 @@ import { Validator } from 'cosmos-client/api';
 })
 export class ValidatorComponent implements OnInit {
   @Input()
-  validator?: any; // Validator | null;
+  validator?: QueryValidatorResponseIsResponseTypeForTheQueryValidatorRPCMethod | null;
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }

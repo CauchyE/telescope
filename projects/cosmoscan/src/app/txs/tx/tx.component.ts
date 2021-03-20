@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { map, mergeMap } from 'rxjs/operators';
-import { auth } from 'cosmos-client/x/auth';
-import { TxQuery } from 'cosmos-client/api';
-import { CosmosSDKService } from '@model/index';
+import { cosmos, rest } from 'cosmos-client';
+import { CosmosSDKService } from '../../../model/cosmos-sdk.service';
+import { CosmosTxV1beta1GetTxResponse } from 'cosmos-client/openapi/api';
 
 @Component({
   selector: 'app-transaction',
@@ -13,19 +13,19 @@ import { CosmosSDKService } from '@model/index';
 })
 export class TxComponent implements OnInit {
   txHash$: Observable<string>;
-  tx$: Observable<TxQuery>;
+  tx$: Observable<CosmosTxV1beta1GetTxResponse>;
 
   constructor(
     private route: ActivatedRoute,
     private cosmosSDK: CosmosSDKService,
   ) {
     this.txHash$ = this.route.params.pipe(map((params) => params.tx_hash));
-    this.tx$ = this.txHash$.pipe(
-      mergeMap((hash) =>
-        auth.txsHashGet(this.cosmosSDK.sdk, hash).then((res) => res.data),
+    this.tx$ = combineLatest([this.cosmosSDK.sdk$, this.txHash$]).pipe(
+      mergeMap(([sdk, hash]) =>
+        rest.cosmos.tx.getTx(sdk.rest, hash).then((res) => res.data),
       ),
-    );
+    )
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 }

@@ -4,7 +4,7 @@ import { HomeComponent } from './home.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MaterialModule } from '@view/material.module';
+import { MaterialModule } from '../../view/material.module';
 
 @NgModule({
   declarations: [HomeComponent],
@@ -17,4 +17,4 @@ import { MaterialModule } from '@view/material.module';
   ],
   exports: [HomeComponent],
 })
-export class HomeModule {}
+export class HomeModule { }

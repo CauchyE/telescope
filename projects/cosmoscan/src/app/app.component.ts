@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router, ActivationEnd } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
-import { CosmosSDKService } from '@model/index';
+import { CosmosSDKService } from '../model/cosmos-sdk.service';
 import * as qs from 'querystring';
 import * as config from '../config.json';
 

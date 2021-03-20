@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Coin } from 'cosmos-client/api';
-import { auth } from 'cosmos-client/x/auth';
-import { bank } from 'cosmos-client/x/bank';
-import { AccAddress } from 'cosmos-client';
-import { CosmosSDKService } from '@model/cosmos-sdk.service';
-import { Key } from '@model/keys/key.model';
-import { KeyService } from '@model/keys/key.service';
+import { cosmosclient, cosmos, rest } from 'cosmos-client';
+import { CosmosSDKService } from '../cosmos-sdk.service';
+import { Key } from '../keys/key.model';
+import { KeyService } from '../keys/key.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,46 +11,62 @@ export class BankService {
   constructor(
     private readonly cosmosSDK: CosmosSDKService,
     private readonly key: KeyService,
-  ) {}
+  ) { }
 
-  async send(key: Key, toAddress: string, amount: Coin[], privateKey: string) {
+  async send(key: Key, toAddress: string, amount: cosmos.base.v1beta1.ICoin[], privateKey: string) {
+    const sdk = await this.cosmosSDK.sdk().then(sdk => sdk.rest)
     const privKey = this.key.getPrivKey(key.type, privateKey);
-    const fromAddress = AccAddress.fromPublicKey(privKey.getPubKey());
-    const account = await auth
-      .accountsAddressGet(this.cosmosSDK.sdk, fromAddress)
-      .then((res) => res.data.result);
+    const pubKey = privKey.pubKey();
+    const fromAddress = cosmosclient.AccAddress.fromPublicKey(pubKey);
 
-    const toAddress_ = AccAddress.fromBech32(toAddress);
+    // get account info
+    const account = await rest.cosmos.auth
+      .account(sdk, fromAddress)
+      .then((res) => res.data.account && cosmosclient.codec.unpackAny(res.data.account) as cosmos.auth.v1beta1.IBaseAccount)
+      .catch((_) => undefined);
 
-    const unsignedStdTx = await bank
-      .accountsAddressTransfersPost(this.cosmosSDK.sdk, toAddress_, {
-        base_req: {
-          from: fromAddress.toBech32(),
-          memo: '',
-          chain_id: this.cosmosSDK.sdk.chainID,
-          account_number: account.account_number.toString(),
-          sequence: account.sequence.toString(),
-          gas: '',
-          gas_adjustment: '',
-          fees: [],
-          simulate: false,
+    if (!account) {
+      throw Error('Address not found')
+    }
+
+    // build tx
+    const msgSend = new cosmos.bank.v1beta1.MsgSend({
+      from_address: fromAddress.toString(),
+      to_address: toAddress,
+      amount: amount,
+    });
+
+    const txBody = new cosmos.tx.v1beta1.TxBody({
+      messages: [cosmosclient.codec.packAny(msgSend)],
+    });
+    const authInfo = new cosmos.tx.v1beta1.AuthInfo({
+      signer_infos: [
+        {
+          public_key: cosmosclient.codec.packAny(pubKey),
+          mode_info: {
+            single: {
+              mode: cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_DIRECT,
+            },
+          },
+          sequence: account.sequence,
         },
-        amount: amount,
-      })
-      .then((res) => res.data);
+      ],
+      fee: {
+        gas_limit: cosmosclient.Long.fromString('200000'),
+      },
+    });
 
-    const signedStdTx = auth.signStdTx(
-      this.cosmosSDK.sdk,
-      privKey,
-      unsignedStdTx,
-      account.account_number.toString(),
-      account.sequence.toString(),
-    );
+    // sign
+    const txBuilder = new cosmosclient.TxBuilder(sdk, txBody, authInfo);
+    const signDoc = txBuilder.signDoc(account.account_number);
+    txBuilder.addSignature(privKey, signDoc);
 
-    const result = await auth
-      .txsPost(this.cosmosSDK.sdk, signedStdTx, 'block')
-      .then((res) => res.data);
+    // broadcast
+    const result = await rest.cosmos.tx.broadcastTx(sdk, {
+      tx_bytes: txBuilder.txBytes(),
+      mode: rest.cosmos.tx.BroadcastTxMode.Block,
+    });
 
-    return result.txhash || '';
+    return result.data.tx_response?.txhash || '';
   }
 }

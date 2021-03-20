@@ -1,11 +1,11 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Coin } from 'cosmos-client/api';
-import { Key } from '@model/keys/key.model';
+import { cosmos } from 'cosmos-client';
+import { Key } from '../../../../model/keys/key.model';
 
 export type SendOnSubmitEvent = {
   key: Key;
   toAddress: string;
-  amount: Coin[];
+  amount: cosmos.base.v1beta1.ICoin[];
   privateKey: string;
 };
 
@@ -19,19 +19,19 @@ export class SendComponent implements OnInit {
   key?: Key | null;
 
   @Input()
-  coins?: Coin[] | null;
+  coins?: cosmos.base.v1beta1.ICoin[] | null;
 
   @Output()
   appSubmit: EventEmitter<SendOnSubmitEvent>;
 
-  amount: Coin[];
+  amount: cosmos.base.v1beta1.ICoin[];
 
   constructor() {
     this.appSubmit = new EventEmitter();
     this.amount = [{ denom: '', amount: '' }];
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   removeAmount(index: number) {
     this.amount.splice(index, 1);

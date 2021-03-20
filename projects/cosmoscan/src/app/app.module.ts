@@ -10,9 +10,9 @@ import { ServiceWorkerModule } from '@angular/service-worker';
 import { environment } from '../environments/environment';
 
 import { HomeComponent } from './home/home.component';
-import { ViewModule } from '@view/view.module';
-import { HomeModule } from '@view/home/home.module';
-import { ToolbarModule } from '@view/toolbar/toolbar.module';
+import { ViewModule } from '../view/view.module';
+import { HomeModule } from '../view/home/home.module';
+import { ToolbarModule } from '../view/toolbar/toolbar.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
 
@@ -36,4 +36,4 @@ import { MatDialogModule } from '@angular/material/dialog';
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

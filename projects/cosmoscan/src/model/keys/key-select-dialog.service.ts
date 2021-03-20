@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
-import { KeySelectDialogComponent } from '@view/keys/key-select-dialog/key-select-dialog.component';
 import { first } from 'rxjs/operators';
+import { KeySelectDialogComponent } from '../../view/keys/key-select-dialog/key-select-dialog.component';
 import { Key } from './key.model';
 import { KeyService } from './key.service';
 import { KeyStoreService } from './key.store.service';
@@ -16,7 +16,7 @@ export class KeySelectDialogService {
     private readonly dialog: MatDialog,
     private readonly key: KeyService,
     private readonly keyStore: KeyStoreService,
-  ) {}
+  ) { }
 
   async open() {
     const keys = await this.key.list();

@@ -4,7 +4,7 @@ import { ToolbarComponent } from './toolbar.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MaterialModule } from '@view/material.module';
+import { MaterialModule } from '../../view/material.module';
 
 @NgModule({
   declarations: [ToolbarComponent],
@@ -17,4 +17,4 @@ import { MaterialModule } from '@view/material.module';
   ],
   exports: [ToolbarComponent],
 })
-export class ToolbarModule {}
+export class ToolbarModule { }

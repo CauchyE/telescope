@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Key } from '@model/keys/key.model';
+import { Key } from '../../model/keys/key.model';
 import * as crypto from 'crypto';
 
 @Component({
@@ -11,9 +11,9 @@ export class KeysComponent implements OnInit {
   @Input()
   keys?: Key[] | null;
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   getColorCode(key: Key) {
     const hash = crypto

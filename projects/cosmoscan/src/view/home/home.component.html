@@ -5,35 +5,35 @@
       <mat-list-item>
         <span class="column-name">Network: </span>
         <span fxFlex="auto"></span>
-        <span class="column-value">{{ nodeInfo?.node_info?.network }}</span>
+        <span class="column-value">{{ nodeInfo?.default_node_info?.network }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="column-name">Moniker: </span>
         <span fxFlex="auto"></span>
-        <span class="column-value">{{ nodeInfo?.node_info?.moniker }}</span>
+        <span class="column-value">{{ nodeInfo?.default_node_info?.moniker }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="column-name">ID:</span>
         <span fxFlex="auto"></span>
-        <span class="column-value">{{ nodeInfo?.node_info?.id }}</span>
+        <span class="column-value">{{ nodeInfo?.default_node_info?.default_node_id }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="column-name">Version: </span>
         <span fxFlex="auto"></span>
-        <span class="column-value">{{ nodeInfo?.node_info?.version }}</span>
+        <span class="column-value">{{ nodeInfo?.default_node_info?.version }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="column-name">Channels: </span>
         <span fxFlex="auto"></span>
-        <span class="column-value">{{ nodeInfo?.node_info?.channels }}</span>
+        <span class="column-value">{{ nodeInfo?.default_node_info?.channels }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
     </mat-list>
@@ -65,7 +65,7 @@
         <span class="column-name">Commit: </span>
         <span fxFlex="auto"></span>
         <span class="column-value">
-          {{ nodeInfo?.application_version?.commit }}
+          {{ nodeInfo?.application_version?.git_commit }}
         </span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
@@ -74,7 +74,7 @@
         <span class="column-name">Go: </span>
         <span fxFlex="auto"></span>
         <span class="column-value">
-          {{ nodeInfo?.application_version?.go }}
+          {{ nodeInfo?.application_version?.go_version }}
         </span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
@@ -94,7 +94,7 @@
     </mat-list>
   </mat-card-content>
 </mat-card>
-<mat-nav-list>
+<!-- <mat-nav-list>
   <div fxLayout="row">
     <h3 matSubheader>Txs</h3>
     <span fxFlex="auto"></span>
@@ -134,4 +134,4 @@
   <ng-template #empty>
     <p class="empty">There is no tx.</p>
   </ng-template>
-</mat-nav-list>
+</mat-nav-list> -->

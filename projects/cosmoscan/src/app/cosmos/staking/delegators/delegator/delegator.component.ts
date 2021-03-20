@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { CosmosSDKService } from '@model/cosmos-sdk.service';
-import { AccAddress } from 'cosmos-client';
-import { Delegation, Validator } from 'cosmos-client/api';
-import { staking } from 'cosmos-client/x/staking';
-import { from, Observable } from 'rxjs';
+import { CosmosSDKService } from '../../../../../model/cosmos-sdk.service';
+import { cosmosclient, rest } from 'cosmos-client';
+import { combineLatest, Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
+import { InlineResponse20059, InlineResponse20062 } from 'cosmos-client/openapi/api';
 
 @Component({
   selector: 'app-delegator',
@@ -13,35 +12,34 @@ import { map, mergeMap } from 'rxjs/operators';
   styleUrls: ['./delegator.component.css'],
 })
 export class DelegatorComponent implements OnInit {
-  delegations$: Observable<Delegation[]>;
-  validators$: Observable<Validator[]>;
+  delegations$: Observable<InlineResponse20059>;
+  validators$: Observable<InlineResponse20062>;
 
   constructor(
     private readonly route: ActivatedRoute,
     private readonly cosmosSDK: CosmosSDKService,
   ) {
-    const address$ = this.route.params.pipe(map((params) => params['address']));
+    const address$ = this.route.params.pipe(map((params) => params['address']), map(addr => cosmosclient.AccAddress.fromString(addr)));
 
-    this.delegations$ = address$.pipe(
-      mergeMap((address) =>
-        staking.delegatorsDelegatorAddrDelegationsGet(
-          this.cosmosSDK.sdk,
-          AccAddress.fromBech32(address),
-        ),
+    const combined$ = combineLatest([this.cosmosSDK.sdk$, address$]);
+
+    this.delegations$ = combined$.pipe(
+      mergeMap(([sdk, address]) =>
+        rest.cosmos.staking.delegatorDelegations(sdk.rest, address)
       ),
-      map((res) => res.data.result),
+      map((res) => res.data),
     );
 
-    this.validators$ = address$.pipe(
-      mergeMap((address) =>
-        staking.delegatorsDelegatorAddrValidatorsGet(
-          this.cosmosSDK.sdk,
-          AccAddress.fromBech32(address),
+    this.validators$ = combined$.pipe(
+      mergeMap(([sdk, address]) =>
+        rest.cosmos.staking.delegatorValidators(
+          sdk.rest,
+          address,
         ),
       ),
-      map((res) => res.data.result),
+      map((res) => res.data),
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }

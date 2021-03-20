@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
-import { auth, BaseAccount } from 'cosmos-client/x/auth';
-import { PaginatedQueryTxs } from 'cosmos-client/api';
-import { CosmosSDKService } from '@model/index';
-import { AccAddress } from 'cosmos-client';
+import { CosmosSDKService } from '../../../model/cosmos-sdk.service';
+import { cosmosclient, cosmos, rest } from 'cosmos-client'
 
 @Component({
   selector: 'app-account',
@@ -14,8 +12,8 @@ import { AccAddress } from 'cosmos-client';
 })
 export class AccountComponent implements OnInit {
   address$: Observable<string>;
-  account$: Observable<BaseAccount>;
-  paginatedTxs$: Observable<PaginatedQueryTxs>;
+  account$: Observable<cosmos.auth.v1beta1.BaseAccount | unknown | undefined>;
+  balances$: Observable<cosmos.base.v1beta1.ICoin[]>
 
   constructor(
     private route: ActivatedRoute,
@@ -23,24 +21,26 @@ export class AccountComponent implements OnInit {
   ) {
     this.address$ = this.route.params.pipe(map((params) => params.address));
 
-    this.account$ = this.address$.pipe(
-      mergeMap((address) =>
-        auth.accountsAddressGet(
-          this.cosmosSDK.sdk,
-          AccAddress.fromBech32(address),
-        ),
+    const combined$ = combineLatest([this.cosmosSDK.sdk$, this.address$]);
+
+    this.account$ = combined$.pipe(
+      mergeMap(([sdk, address]) =>
+        rest.cosmos.auth.account(
+          sdk.rest,
+          cosmosclient.AccAddress.fromString(address),
+        ).then(res => res.data && cosmosclient.codec.unpackAny(res.data)).catch(_ => undefined),
       ),
-      map((res) => res.data.result),
     );
 
-    this.paginatedTxs$ = this.address$.pipe(
-      mergeMap((address) =>
-        auth
-          .txsGet(this.cosmosSDK.sdk, undefined, address)
-          .then((res) => res.data),
+    this.balances$ = combined$.pipe(
+      mergeMap(([sdk, address]) =>
+        rest.cosmos.bank.allBalances(
+          sdk.rest,
+          address,
+        ).then(res => res.data.balances || []),
       ),
     );
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 }

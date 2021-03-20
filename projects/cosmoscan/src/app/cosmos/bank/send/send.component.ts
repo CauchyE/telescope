@@ -1,14 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { SendOnSubmitEvent } from '@view/cosmos/bank/send/send.component';
-import { Observable } from 'rxjs';
-import { Key, KeyType } from '@model/keys/key.model';
+import { SendOnSubmitEvent } from '../../../../view/cosmos/bank/send/send.component';
+import { combineLatest, Observable } from 'rxjs';
+import { Key } from '../../../../model/keys/key.model';
 import { map, mergeMap, filter, tap } from 'rxjs/operators';
-import { CosmosSDKService, KeyService } from '@model/index';
-import { Coin } from 'cosmos-client/api';
-import { AccAddress } from 'cosmos-client';
-import { auth } from 'cosmos-client/x/auth';
-import { KeyStoreService } from '@model/keys/key.store.service';
-import { BankApplicationService } from '@model/cosmos/bank.application.service';
+import { CosmosSDKService, } from '../../../../model/cosmos-sdk.service';
+import { cosmos, cosmosclient, rest } from 'cosmos-client';
+import { KeyStoreService } from '../../../../model/keys/key.store.service';
+import { BankApplicationService } from '../../../../model/cosmos/bank.application.service';
+import { KeyService } from '../../../../model/keys/key.service';
 
 @Component({
   selector: 'app-send',
@@ -17,7 +16,7 @@ import { BankApplicationService } from '@model/cosmos/bank.application.service';
 })
 export class SendComponent implements OnInit {
   key$: Observable<Key | undefined>;
-  coins$: Observable<Coin[] | undefined>;
+  coins$: Observable<cosmos.base.v1beta1.ICoin[] | undefined>;
   constructor(
     private readonly cosmosSDK: CosmosSDKService,
     private readonly key: KeyService,
@@ -29,19 +28,19 @@ export class SendComponent implements OnInit {
     const address$ = this.key$.pipe(
       filter((key): key is Key => key !== undefined),
       map((key) =>
-        AccAddress.fromPublicKey(this.key.getPubKey(key!.type, key.public_key)),
+        cosmosclient.AccAddress.fromPublicKey(this.key.getPubKey(key!.type, key.public_key)),
       ),
     );
 
-    this.coins$ = address$.pipe(
-      mergeMap((address) =>
-        auth.accountsAddressGet(this.cosmosSDK.sdk, address),
+    this.coins$ = combineLatest([this.cosmosSDK.sdk$, address$]).pipe(
+      mergeMap(([sdk, address]) =>
+        rest.cosmos.bank.allBalances(sdk.rest, address.toString()),
       ),
-      map((result) => result.data.result.coins),
+      map((result) => result.data.balances),
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   async onSubmit($event: SendOnSubmitEvent) {
     await this.bankApplication.send(
