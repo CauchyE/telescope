@@ -34,7 +34,7 @@ export class CosmosSDKService {
 
     this.restURL$ = new BehaviorSubject(`${location.protocol}//${location.hostname}:1317`);
     this.websocketURL$ = new BehaviorSubject(`${location.protocol.replace('http', 'ws')}://${location.hostname}:26657`);
-    this.chainID$ = new BehaviorSubject('cosmoshub-3');
+    this.chainID$ = new BehaviorSubject(config.chain_id);
     this.sdk$ = combineLatest([this.restURL$, this.websocketURL$, this.chainID$]).pipe(
       map(([restURL, websocketURL, chainID]) => ({
         rest: new cosmosclient.CosmosSDK(restURL, chainID),

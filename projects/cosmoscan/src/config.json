@@ -1,4 +1,5 @@
 {
+  "chain_id": "cosmoshub-3",
   "bech32_prefix": {
     "acc_addr": "",
     "acc_pub": "",
