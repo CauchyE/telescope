@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
-import { CosmosSDKService } from '@model/cosmos-sdk.service';
-import { Key } from '@model/keys/key.model';
-import { KeyService } from '@model/keys/key.service';
-import { AccAddress, ValAddress } from 'cosmos-client';
-import { Coin } from 'cosmos-client/api';
-import { auth } from 'cosmos-client/x/auth';
-import { staking } from 'cosmos-client/x/staking';
+import { CosmosSDKService } from '../cosmos-sdk.service';
+import { Key } from '../keys/key.model';
+import { KeyService } from '../keys/key.service';
+import { cosmosclient, rest, cosmos } from 'cosmos-client';
 
 @Injectable({
   providedIn: 'root',
@@ -14,42 +11,67 @@ export class StakingService {
   constructor(
     private readonly cosmosSDK: CosmosSDKService,
     private readonly key: KeyService,
-  ) {}
+  ) { }
 
   async createDelegator(
     key: Key,
     validatorAddress: string,
-    amount: Coin,
+    amount: cosmos.base.v1beta1.ICoin,
     privateKey: string,
   ) {
+    const sdk = await this.cosmosSDK.sdk().then(sdk => sdk.rest)
     const privKey = this.key.getPrivKey(key.type, privateKey);
-    const fromAddress = AccAddress.fromPublicKey(privKey.getPubKey());
-    const account = await auth
-      .accountsAddressGet(this.cosmosSDK.sdk, fromAddress)
-      .then((res) => res.data.result);
+    const pubKey = privKey.pubKey();
+    const fromAddress = cosmosclient.AccAddress.fromPublicKey(pubKey);
 
-    const valAddress_ = ValAddress.fromBech32(validatorAddress);
+    // get account info
+    const account = await rest.cosmos.auth
+      .account(sdk, fromAddress)
+      .then((res) => res.data.account && cosmosclient.codec.unpackAny(res.data.account) as cosmos.auth.v1beta1.IBaseAccount)
+      .catch((_) => undefined);
 
-    const unsignedStdTx = await staking
-      .delegatorsDelegatorAddrDelegationsPost(this.cosmosSDK.sdk, valAddress_, {
-        delegator_address: fromAddress.toBech32(),
-        validator_address: validatorAddress,
-        delegation: amount,
-      })
-      .then((res) => res.data);
+    if (!account) {
+      throw Error('Address not found')
+    }
 
-    const signedStdTx = auth.signStdTx(
-      this.cosmosSDK.sdk,
-      privKey,
-      unsignedStdTx,
-      account.account_number.toString(),
-      account.sequence.toString(),
-    );
+    // build tx
+    const msgDelegate = new cosmos.staking.v1beta1.MsgDelegate({
+      delegator_address: fromAddress.toString(),
+      validator_address: validatorAddress,
+      amount: amount,
+    });
 
-    const result = await auth
-      .txsPost(this.cosmosSDK.sdk, signedStdTx, 'block')
-      .then((res) => res.data);
+    const txBody = new cosmos.tx.v1beta1.TxBody({
+      messages: [cosmosclient.codec.packAny(msgDelegate)],
+    });
+    const authInfo = new cosmos.tx.v1beta1.AuthInfo({
+      signer_infos: [
+        {
+          public_key: cosmosclient.codec.packAny(pubKey),
+          mode_info: {
+            single: {
+              mode: cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_DIRECT,
+            },
+          },
+          sequence: account.sequence,
+        },
+      ],
+      fee: {
+        gas_limit: cosmosclient.Long.fromString('200000'),
+      },
+    });
 
-    return result.txhash || '';
+    // sign
+    const txBuilder = new cosmosclient.TxBuilder(sdk, txBody, authInfo);
+    const signDoc = txBuilder.signDoc(account.account_number!);
+    txBuilder.addSignature(privKey, signDoc);
+
+    // broadcast
+    const result = await rest.cosmos.tx.broadcastTx(sdk, {
+      tx_bytes: txBuilder.txBytes(),
+      mode: rest.cosmos.tx.BroadcastTxMode.Block,
+    });
+
+    return result.data.tx_response?.txhash || '';
   }
 }

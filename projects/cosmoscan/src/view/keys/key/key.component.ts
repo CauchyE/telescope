@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Key } from '@model/keys/key.model';
-import { AccAddress, ValAddress } from 'cosmos-client';
+import { Key } from '../../../model/keys/key.model';
+import { cosmosclient } from 'cosmos-client';
 
 @Component({
   selector: 'view-key',
@@ -12,12 +12,12 @@ export class KeyComponent implements OnInit {
   key?: Key | null;
 
   @Input()
-  accAddress?: AccAddress | null;
+  accAddress?: cosmosclient.AccAddress | null;
 
   @Input()
-  valAddress?: ValAddress | null;
+  valAddress?: cosmosclient.ValAddress | null;
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }

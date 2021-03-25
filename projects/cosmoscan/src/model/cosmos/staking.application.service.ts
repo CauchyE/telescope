@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Key } from '@model/keys/key.model';
-import { Coin } from 'cosmos-client/api';
+import { Key } from '../keys/key.model';
+import { cosmos } from 'cosmos-client';
 import { LoadingDialogService } from 'ng-loading-dialog';
 import { StakingService } from './staking.service';
 
@@ -15,12 +15,12 @@ export class StakingApplicationService {
     private readonly snackBar: MatSnackBar,
     private readonly loadingDialog: LoadingDialogService,
     private readonly staking: StakingService,
-  ) {}
+  ) { }
 
   async createDelegator(
     key: Key,
     validatorAddress: string,
-    amount: Coin,
+    amount: cosmos.base.v1beta1.ICoin,
     privateKey: string,
   ) {
     const dialogRef = this.loadingDialog.open('Sending');

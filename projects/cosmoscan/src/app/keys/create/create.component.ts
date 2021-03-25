@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { CreateOnSubmitEvent } from '@view/keys/create/create.component';
-import { KeyService, KeyApplicationService } from '@model/index';
+import { CreateOnSubmitEvent } from '../../../view/keys/create/create.component';
+import { KeyService } from '../../../model/keys/key.service';
 import * as bip39 from 'bip39';
+import { KeyApplicationService } from 'projects/cosmoscan/src/model/keys/key.application.service';
 
 @Component({
   selector: 'app-create',
@@ -20,7 +21,7 @@ export class CreateComponent implements OnInit {
     this.privateKey = '';
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onClickCreateMnemonic() {
     this.mnemonic = bip39.generateMnemonic();

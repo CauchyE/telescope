@@ -7,4 +7,4 @@ RUN npm run build -- --prod
 
 FROM nginx:1.15
 
-COPY --from=build-stage /root/app/dist/cosmoscan/ /usr/share/nginx/html
+COPY --from=build-stage /root/app/dist/cosmoscan/ /usr/share/nginx/html/

@@ -1,6 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { staking } from 'cosmos-client/x/staking';
-import { from } from 'rxjs';
 
 @Component({
   selector: 'app-delegators',
@@ -8,7 +6,7 @@ import { from } from 'rxjs';
   styleUrls: ['./delegators.component.css'],
 })
 export class DelegatorsComponent implements OnInit {
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }

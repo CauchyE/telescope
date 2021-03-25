@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { KeyType } from '@model/keys/key.model';
+import { KeyType } from '../../../model/keys/key.model';
 import { Clipboard } from '@angular/cdk/clipboard';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -16,7 +16,7 @@ export type CreateOnSubmitEvent = {
 })
 export class CreateComponent implements OnInit {
   @Input()
-  mnemonic?: string  | null;
+  mnemonic?: string | null;
 
   @Input()
   privateKey?: string | null;
@@ -41,7 +41,7 @@ export class CreateComponent implements OnInit {
     this.appSubmit = new EventEmitter();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onClickCreateMnemonic() {
     this.appClickCreateMnemonic.emit();

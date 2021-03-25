@@ -1,22 +1,31 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { BaseAccount } from 'cosmos-client/x/auth';
-import { PaginatedQueryTxs } from 'cosmos-client/api';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { cosmos } from 'cosmos-client';
 
 @Component({
   selector: 'view-account',
   templateUrl: './account.component.html',
   styleUrls: ['./account.component.css'],
 })
-export class AccountComponent implements OnInit {
+export class AccountComponent implements OnInit, OnChanges {
   @Input()
-  account?: BaseAccount | null;
+  account?: cosmos.auth.v1beta1.BaseAccount | unknown | null;
 
   @Input()
-  paginatedTxs?: any; // PaginatedQueryTxs | null;
+  balances?: cosmos.base.v1beta1.ICoin[] | null;
+
+  baseAccount?: cosmos.auth.v1beta1.BaseAccount
 
   txColumnKeys = ['height', 'txhash', 'timestamp', 'gas_wanted', 'gas_used'];
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
+
+  ngOnChanges() {
+    delete this.baseAccount;
+
+    if (this.account instanceof cosmos.auth.v1beta1.BaseAccount) {
+      this.baseAccount = this.account
+    }
+  }
 }

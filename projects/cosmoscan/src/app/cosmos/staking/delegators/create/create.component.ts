@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { CosmosSDKService } from '@model/cosmos-sdk.service';
-import { StakingApplicationService } from '@model/cosmos/staking.application.service';
-import { CreateOnSubmitEvent } from '@view/cosmos/staking/delegators/create/create.component';
-import { AccAddress } from 'cosmos-client';
-import { staking } from 'cosmos-client/x/staking';
+import { CosmosSDKService } from '../../../../../model/cosmos-sdk.service';
+import { StakingApplicationService } from '../../../../../model/cosmos/staking.application.service';
+import { CreateOnSubmitEvent } from '../../../../../view/cosmos/staking/delegators/create/create.component';
 
 @Component({
   selector: 'app-create',
@@ -14,9 +12,9 @@ export class CreateComponent implements OnInit {
   constructor(
     private readonly cosmosSDK: CosmosSDKService,
     private readonly stakingApplication: StakingApplicationService,
-  ) {}
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
-  onSubmit($event: CreateOnSubmitEvent) {}
+  onSubmit($event: CreateOnSubmitEvent) { }
 }

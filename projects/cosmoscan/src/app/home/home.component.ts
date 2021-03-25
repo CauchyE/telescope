@@ -1,41 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { BehaviorSubject, combineLatest, Observable, timer } from 'rxjs';
+import { combineLatest, Observable, timer } from 'rxjs';
 import { mergeMap, map } from 'rxjs/operators';
-import { auth } from 'cosmos-client/x/auth';
-import { PaginatedQueryTxs } from 'cosmos-client/api';
-import { CosmosSDKService } from '@model/index';
-import { tendermint } from 'cosmos-client';
-import { HttpClient } from '@angular/common/http';
-import * as config from '../../config.json';
-
-type NodeInfo = {
-  application_version: {
-    build_tags: string;
-    client_name: string;
-    commit: string;
-    go: string;
-    name: string;
-    server_name: string;
-    version: string;
-  };
-  node_info: {
-    id: string;
-    moniker: string;
-    protocol_version: {
-      p2p: number;
-      block: number;
-      app: number;
-    };
-    network: string;
-    channels: string;
-    listen_addr: string;
-    version: string;
-    other: {
-      tx_index: string;
-      rpc_address: string;
-    };
-  };
-};
+import { CosmosSDKService } from '../../model/cosmos-sdk.service';
+import { rest } from 'cosmos-client';
+import { InlineResponse20033 } from 'cosmos-client/openapi/api';
 
 @Component({
   selector: 'app-home',
@@ -43,52 +11,30 @@ type NodeInfo = {
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  nodeInfo$: Observable<NodeInfo>; // TODO
+  nodeInfo$: Observable<InlineResponse20033>;
   syncing$: Observable<boolean>;
-  messageActions: string[];
-  messageAction$: BehaviorSubject<string>;
-  txs$: Observable<PaginatedQueryTxs>;
 
-  constructor(private cosmosSDK: CosmosSDKService, private http: HttpClient) {
+  constructor(private cosmosSDK: CosmosSDKService) {
     const timer$ = timer(0, 60 * 1000);
+    const combined$ = combineLatest([timer$, this.cosmosSDK.sdk$]).pipe(map(([_, sdk]) => sdk))
 
-    // TODO
-    this.nodeInfo$ = timer$.pipe(
-      mergeMap((_) =>
-        this.http.get<NodeInfo>(`${this.cosmosSDK.sdk.url}/node_info`),
+    this.nodeInfo$ = combined$.pipe(
+      mergeMap((sdk) =>
+        rest.cosmos.tendermint.getNodeInfo(sdk.rest).then((res) => res.data)
       ),
     );
 
-    this.syncing$ = timer$.pipe(
-      mergeMap((_) =>
-        tendermint
-          .syncingGet(this.cosmosSDK.sdk)
+    this.syncing$ = combined$.pipe(
+      mergeMap((sdk) =>
+        rest.cosmos.tendermint.getSyncing(sdk.rest)
           .then((res) => res.data.syncing || false),
       ),
     );
-
-    this.messageActions = ['send'].concat(
-      config.extension.message_actions.filter(
-        (messageAction) => !!messageAction,
-      ),
-    );
-
-    this.messageAction$ = new BehaviorSubject('send');
-
-    this.txs$ = combineLatest([timer$, this.messageAction$]).pipe(
-      mergeMap(([_, messageAction]) =>
-        auth.txsGet(this.cosmosSDK.sdk, messageAction).then((res) => res.data),
-      ),
-    );
   }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   ngOnDestroy() {
-    this.messageAction$.complete();
-  }
 
-  onMessageActionChange($event: string) {
-    this.messageAction$.next($event);
   }
 }

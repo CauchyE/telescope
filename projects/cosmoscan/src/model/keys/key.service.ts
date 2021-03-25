@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Key, KeyType } from './key.model';
 import { KeyInfrastructureService } from './key.infrastructure.service';
-import { PrivKey, PubKey } from 'cosmos-client';
+import { cosmosclient } from 'cosmos-client';
 
 export interface IKeyInfrastructure {
-  getPrivKey(type: KeyType, privateKey: string): PrivKey;
-  getPubKey(type: KeyType, publicKey: string): PubKey;
+  getPrivKey(type: KeyType, privateKey: string): cosmosclient.PrivKey;
+  getPubKey(type: KeyType, publicKey: string): cosmosclient.PubKey;
   getPrivateKeyFromMnemonic(mnemonic: string): Promise<string>;
   get(id: string): Promise<Key | undefined>;
   list(): Promise<Key[]>;

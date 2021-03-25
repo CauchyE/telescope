@@ -10,11 +10,11 @@
     ></mat-progress-spinner>
   </ng-template>
   <ng-template #loaded>
-    <ng-container *ngIf="(validators?.length || 0) > 0; then exist; else empty">
+    <ng-container *ngIf="(validators?.validators?.length || 0) > 0; then exist; else empty">
     </ng-container>
   </ng-template>
   <ng-template #exist>
-    <ng-container *ngFor="let validator of validators">
+    <ng-container *ngFor="let validator of validators?.validators">
       <mat-list-item routerLink="/validators/{{ validator.operator_address }}">
         <mat-icon matListIcon [ngStyle]="{ color: getColorCode(validator) }">
           circle

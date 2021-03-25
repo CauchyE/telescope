@@ -1,8 +1,7 @@
-version: '3'
+version: "3"
 
 services:
   cosmoscan:
-    container_name: cosmoscan
     image: lcnem/cosmoscan
     # build:
     #   dockerfile: ./Dockerfile

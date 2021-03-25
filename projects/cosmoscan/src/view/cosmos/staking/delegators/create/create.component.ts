@@ -1,11 +1,11 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { Key } from '@model/keys/key.model';
-import { Coin } from 'cosmos-client/api';
+import { Key } from '../../../../../model/keys/key.model';
+import { cosmos } from 'cosmos-client';
 
 export type CreateOnSubmitEvent = {
   key: Key;
   validatorAddress: string;
-  amount: Coin;
+  amount: cosmos.base.v1beta1.ICoin;
   privateKey: string;
 };
 
@@ -19,7 +19,7 @@ export class CreateComponent implements OnInit {
   key?: Key | null;
 
   @Input()
-  coins?: Coin[] | null;
+  coins?: cosmos.base.v1beta1.ICoin[] | null;
 
   @Input()
   bondDenom?: string;
@@ -31,7 +31,7 @@ export class CreateComponent implements OnInit {
     this.appSubmit = new EventEmitter();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onSubmit(validatorAddress: string, amount: string, privateKey: string) {
     this.appSubmit.emit({

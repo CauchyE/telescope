@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
-import { Key } from '@model/keys/key.model';
-import { Coin } from 'cosmos-client/api';
+import { Key } from '../keys/key.model';
+import { cosmos } from 'cosmos-client';
 import { LoadingDialogService } from 'ng-loading-dialog';
 import { BankService } from './bank.service';
 
@@ -15,9 +15,9 @@ export class BankApplicationService {
     private readonly snackBar: MatSnackBar,
     private readonly loadingDialog: LoadingDialogService,
     private readonly bank: BankService,
-  ) {}
+  ) { }
 
-  async send(key: Key, toAddress: string, amount: Coin[], privateKey: string) {
+  async send(key: Key, toAddress: string, amount: cosmos.base.v1beta1.ICoin[], privateKey: string) {
     const dialogRef = this.loadingDialog.open('Sending');
     let txhash: string;
 
