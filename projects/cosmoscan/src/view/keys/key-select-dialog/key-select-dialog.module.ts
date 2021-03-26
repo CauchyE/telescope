@@ -8,5 +8,6 @@ import { MaterialModule } from '../../../view/material.module';
 @NgModule({
   declarations: [KeySelectDialogComponent],
   imports: [CommonModule, RouterModule, FlexLayoutModule, MaterialModule],
+  exports: [KeySelectDialogComponent],
 })
 export class KeySelectDialogModule { }

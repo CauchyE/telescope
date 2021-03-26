@@ -15,6 +15,7 @@ import { HomeModule } from '../view/home/home.module';
 import { ToolbarModule } from '../view/toolbar/toolbar.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
+import { KeySelectDialogModule } from '../view/keys/key-select-dialog/key-select-dialog.module';
 
 @NgModule({
   declarations: [AppComponent, HomeComponent],
@@ -32,6 +33,7 @@ import { MatDialogModule } from '@angular/material/dialog';
     HomeModule,
     ToolbarModule,
     HttpClientModule,
+    KeySelectDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

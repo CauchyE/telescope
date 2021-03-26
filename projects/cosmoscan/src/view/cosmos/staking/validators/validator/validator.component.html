@@ -11,7 +11,7 @@
   </ng-container>
 </ng-template>
 <ng-template #exist>
-  <h2>Validator: {{ validator.operator_address }}</h2>
+  <h2>Validator: {{ validator?.operator_address }}</h2>
 
   <mat-card>
     <mat-card-content>
@@ -91,14 +91,6 @@
           <span fxFlex="auto"></span>
           <span class="column-value">
             {{ validator?.commission?.commission_rates?.max_change_rate }}
-          </span>
-        </mat-list-item>
-        <mat-divider [inset]="true"></mat-divider>
-        <mat-list-item>
-          <span class="column-name">Update Time:</span>
-          <span fxFlex="auto"></span>
-          <span class="column-value">
-            {{ validator?.commission?.commission_rates.update_time }}
           </span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>

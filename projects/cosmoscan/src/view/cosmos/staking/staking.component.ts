@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'view-staking',
@@ -6,7 +6,6 @@ import { Component, Input, OnInit } from '@angular/core';
   styleUrls: ['./staking.component.css'],
 })
 export class StakingComponent implements OnInit {
-
   constructor() { }
 
   ngOnInit(): void { }
