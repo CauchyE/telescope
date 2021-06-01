@@ -8,9 +8,10 @@ import { CreateComponent } from './create/create.component';
 import { KeysModule } from '../../view/keys/keys.module';
 import { KeyModule } from '../../view/keys/key/key.module';
 import { CreateModule } from '../../view/keys/create/create.module';
+import { SignComponent } from './sign/sign.component';
 
 @NgModule({
-  declarations: [KeysComponent, KeyComponent, CreateComponent],
+  declarations: [KeysComponent, KeyComponent, CreateComponent, SignComponent],
   imports: [
     CommonModule,
     KeysRoutingModule,
