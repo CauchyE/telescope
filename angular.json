@@ -28,7 +28,7 @@
             "main": "projects/cosmoscan/src/main.ts",
             "polyfills": "projects/cosmoscan/src/polyfills.ts",
             "tsConfig": "projects/cosmoscan/tsconfig.app.json",
-            "aot": false,
+            "aot": true,
             "assets": [
               "projects/cosmoscan/src/favicon.ico",
               "projects/cosmoscan/src/assets",
@@ -52,7 +52,6 @@
               "outputHashing": "all",
               "sourceMap": false,
               "namedChunks": false,
-              "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
               "buildOptimizer": true,
