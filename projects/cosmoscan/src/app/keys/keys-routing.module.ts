@@ -8,7 +8,7 @@ import { SignComponent } from './sign/sign.component';
 const routes: Routes = [
   { path: '', component: KeysComponent },
   { path: 'create', component: CreateComponent },
-  { path: 'sign', component: SignComponent }
+  { path: 'sign', component: SignComponent },
   { path: ':key_id', component: KeyComponent },
 ];
 
