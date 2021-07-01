@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { cosmosclient } from 'cosmos-client';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
-import * as config from '../config.json';
+import config from '../config.json';
 
 @Injectable({
   providedIn: 'root',

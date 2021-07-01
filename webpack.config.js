@@ -1,17 +1,16 @@
 module.exports = {
-  node: {
-    fs: 'empty',
-    global: true,
-    crypto: true,
-    stream: true,
-    tls: 'empty',
-    net: 'empty',
-    process: true,
-    module: false,
-    clearImmediate: true,
-    setImmediate: true,
-  },
   resolve: {
     extensions: ['.wasm'],
+    fallback: {
+      fs: false,
+      tls: false,
+      net: false,
+      global: 'empty',
+      clearImmediate: 'empty',
+      setImmediate: 'empty',
+      module: false,
+      stream: require.resolve('stream-browserify'),
+      crypto: require.resolve('crypto-browserify'),
+    },
   },
 };
