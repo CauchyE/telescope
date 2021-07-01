@@ -1,1 +1,19 @@
-<p>sign works!</p>
+<form #formRef="ngForm">
+  <mat-form-field fxFill>
+    <mat-label>Data for signing (Hex)</mat-label>
+    <textarea matInput [ngModel]="data" name="data"></textarea>
+  </mat-form-field>
+  <mat-form-field fxFill>
+    <mat-label>Private key</mat-label>
+    <input #privateKeyRef ngModel type="password" name="privateKey" autocomplete="current-password" matInput required />
+  </mat-form-field>
+  <button mat-flat-button>Sign</button>
+
+  <mat-form-field fxFill>
+    <mat-label>Signature (Base58)</mat-label>
+    <textarea matInput readonly [ngModel]="signature" name="signature"></textarea>
+    <button type="button" mat-button matSuffix>
+      <mat-icon>copy</mat-icon>
+    </button>
+  </mat-form-field>
+</form>

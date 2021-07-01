@@ -45,4 +45,8 @@ export class KeyApplicationService {
 
     await this.router.navigate(['keys', id]);
   }
+
+  async sign(data: string, privateKey: string) {
+
+  }
 }
