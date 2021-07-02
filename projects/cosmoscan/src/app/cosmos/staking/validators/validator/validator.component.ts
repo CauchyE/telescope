@@ -4,7 +4,7 @@ import { CosmosSDKService } from '../../../../../model/cosmos-sdk.service';
 import { Observable, of, combineLatest } from 'rxjs';
 import { map, mergeMap, catchError } from 'rxjs/operators';
 import { cosmosclient, rest } from 'cosmos-client';
-import { InlineResponse20063Validator } from 'cosmos-client/openapi/api';
+import { InlineResponse20063Validator } from 'cosmos-client/esm/openapi';
 
 @Component({
   selector: 'app-validator',
