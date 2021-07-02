@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { InlineResponse20062Validators, QueryValidatorsResponseIsResponseTypeForTheQueryValidatorsRPCMethod } from 'cosmos-client/openapi/api';
+import { InlineResponse20062Validators, QueryValidatorsResponseIsResponseTypeForTheQueryValidatorsRPCMethod } from 'cosmos-client/esm/openapi';
 import * as crypto from 'crypto';
 
 @Component({
@@ -11,7 +11,7 @@ export class ValidatorsComponent implements OnInit {
   @Input()
   validators?: QueryValidatorsResponseIsResponseTypeForTheQueryValidatorsRPCMethod | null;
 
-  constructor() {}
+  constructor() { }
 
   ngOnInit(): void {
     setTimeout(() => {

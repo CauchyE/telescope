@@ -3,7 +3,7 @@ import { CosmosSDKService } from '../../../../model/cosmos-sdk.service';
 import { Observable, from } from 'rxjs';
 import { rest } from 'cosmos-client';
 import { map, mergeMap } from 'rxjs/operators';
-import { QueryValidatorsResponseIsResponseTypeForTheQueryValidatorsRPCMethod } from 'cosmos-client/openapi/api';
+import { QueryValidatorsResponseIsResponseTypeForTheQueryValidatorsRPCMethod } from 'cosmos-client/esm/openapi';
 
 @Component({
   selector: 'app-validators',
