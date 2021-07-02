@@ -14,6 +14,7 @@ export class CosmosSDKService {
   sdk$: Observable<{ rest: cosmosclient.CosmosSDK; websocket: cosmosclient.CosmosSDK }>;
 
   constructor() {
+    console.log(config.bech32_prefix);
     if (
       config.bech32_prefix?.acc_addr &&
       config.bech32_prefix?.acc_pub &&
@@ -30,6 +31,7 @@ export class CosmosSDKService {
         consAddr: config.bech32_prefix?.cons_addr,
         consPub: config.bech32_prefix?.cons_addr,
       });
+      console.log(cosmosclient.config.bech32Prefix);
     }
 
     this.restURL$ = new BehaviorSubject(`${location.protocol}//${location.hostname}:1317`);
