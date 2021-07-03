@@ -8,7 +8,7 @@ const config = {
   //   valAddr: '',
   //   valPub: '',
   //   consAddr: '',
-  //   consPub: ','
+  //   consPub: '',
   // },
   // extension: {
   //   navigations: [
