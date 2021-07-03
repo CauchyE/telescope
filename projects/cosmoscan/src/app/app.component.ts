@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
 import { CosmosSDKService } from '../model/cosmos-sdk.service';
 import * as qs from 'querystring';
-import config from '../config.json';
+import { Config, ConfigService } from '../model/config.service';
 
 @Component({
   selector: 'app-root',
@@ -12,10 +12,10 @@ import config from '../config.json';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent {
-  config = config;
   searchValue$: Observable<string>;
+  config: Config;
 
-  constructor(private router: Router, public cosmosSDK: CosmosSDKService) {
+  constructor(private router: Router, public cosmosSDK: CosmosSDKService, private readonly configS: ConfigService) {
     this.searchValue$ = this.router.events.pipe(
       filter((event): event is ActivationEnd => event instanceof ActivationEnd && Object.keys(event.snapshot.params).length > 0),
       map((event) => {
@@ -28,6 +28,7 @@ export class AppComponent {
         return '';
       }),
     );
+    this.config = this.configS.config;
   }
 
   async onSubmitSearchValue(value: string) {
