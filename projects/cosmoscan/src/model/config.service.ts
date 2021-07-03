@@ -4,7 +4,7 @@ export type Config = {
   restURL: string;
   websocketURL: string;
   chainID: string;
-  bech32Prefix: {
+  bech32Prefix?: {
     accAddr: string;
     accPub: string;
     valAddr: string;
@@ -12,7 +12,7 @@ export type Config = {
     consAddr: string;
     consPub: string;
   };
-  extension: {
+  extension?: {
     navigations: {
       name: string;
       link: string;
