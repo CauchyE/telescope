@@ -24,12 +24,16 @@ export class SignComponent implements OnInit {
     this.appSign = new EventEmitter();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onClickButton(data: string, privateKey: string) {
     this.appSign.emit({
       data,
       privateKey,
     });
+  }
+
+  onClickCopyButton(signature: string) {
+    navigator.clipboard.writeText(signature);
   }
 }
