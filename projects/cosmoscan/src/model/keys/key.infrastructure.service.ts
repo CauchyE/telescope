@@ -34,10 +34,15 @@ export class KeyInfrastructureService implements IKeyInfrastructure {
       case KeyType.SECP256K1:
         return new cosmosclient.secp256k1.PubKey({ key: pubKeyBuffer });
       case KeyType.ED25519:
-        throw Error('not supported yet')
+        throw Error('not supported yet');
       case KeyType.SR25519:
-        throw Error('not supported yet')
+        throw Error('not supported yet');
     }
+  }
+
+  sign(type: KeyType, privateKey: string, message: Uint8Array): Uint8Array {
+    const privKey = this.getPrivKey(type, privateKey);
+    return privKey.sign(message);
   }
 
   async getPrivateKeyFromMnemonic(mnemonic: string) {
@@ -46,6 +51,7 @@ export class KeyInfrastructureService implements IKeyInfrastructure {
 
   /**
    * Get one from Indexed DB
+   *
    * @param id
    */
   async get(id: string): Promise<Key | undefined> {
@@ -77,6 +83,7 @@ export class KeyInfrastructureService implements IKeyInfrastructure {
 
   /**
    * Set with id in Indexed DB
+   *
    * @param id
    * @param type
    * @param privateKey
@@ -100,6 +107,7 @@ export class KeyInfrastructureService implements IKeyInfrastructure {
 
   /**
    * Delete with id from Indexed DB
+   *
    * @param id
    */
   async delete(id: string) {

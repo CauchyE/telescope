@@ -3,26 +3,27 @@ import { ActivatedRoute } from '@angular/router';
 import { KeyApplicationService } from 'projects/cosmoscan/src/model/keys/key.application.service';
 import { SignOnSignEvent } from 'projects/cosmoscan/src/view/keys/sign/sign.component';
 import { Observable } from 'rxjs';
-import { first, map } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-sign',
   templateUrl: './sign.component.html',
-  styleUrls: ['./sign.component.css']
+  styleUrls: ['./sign.component.css'],
 })
 export class SignComponent implements OnInit {
   data$: Observable<string>;
   signature: string;
 
-  constructor(private readonly route: ActivatedRoute, private readonly keyApplication: KeyApplicationService) {
-    this.data$ = this.route.params.pipe(map((params) => params['data'] || ''));
+  constructor(private route: ActivatedRoute, private readonly keyApplication: KeyApplicationService) {
+    this.data$ = this.route.queryParams.pipe(map((queryParams) => queryParams.data || ''));
     this.signature = '';
   }
 
   ngOnInit(): void {
+    this.data$.subscribe();
   }
 
-  async onSign(data: SignOnSignEvent) {
-    this.keyApplication.sign(data.data, data.privateKey);
+  onSign(data: SignOnSignEvent) {
+    this.signature = this.keyApplication.sign(data.data, data.privateKey);
   }
 }

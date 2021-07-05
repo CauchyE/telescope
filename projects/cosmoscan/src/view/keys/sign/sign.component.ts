@@ -3,12 +3,12 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 export type SignOnSignEvent = {
   data: string;
   privateKey: string;
-}
+};
 
 @Component({
   selector: 'view-sign',
   templateUrl: './sign.component.html',
-  styleUrls: ['./sign.component.css']
+  styleUrls: ['./sign.component.css'],
 })
 export class SignComponent implements OnInit {
   @Input()
@@ -24,8 +24,7 @@ export class SignComponent implements OnInit {
     this.appSign = new EventEmitter();
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onClickButton(data: string, privateKey: string) {
     this.appSign.emit({
