@@ -44,6 +44,3 @@ testem.log
 # System Files
 .DS_Store
 Thumbs.db
-
-#JPYX unique file
-src/assets/config.js
