@@ -12,7 +12,7 @@
   <mat-form-field fxFill>
     <mat-label>Signature (Base64)</mat-label>
     <textarea matInput readonly #signatureRef [ngModel]="signature" name="signature"></textarea>
-    <button type="button" mat-button matSuffix (click)="onClickCopyButton(signatureRef.value)">
+    <button type="button" mat-button matSuffix [cdkCopyToClipboard]="signatureRef.value">
       <mat-icon>content_copy</mat-icon>
     </button>
   </mat-form-field>

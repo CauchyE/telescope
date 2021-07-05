@@ -32,8 +32,4 @@ export class SignComponent implements OnInit {
       privateKey,
     });
   }
-
-  onClickCopyButton(signature: string) {
-    navigator.clipboard.writeText(signature);
-  }
 }
