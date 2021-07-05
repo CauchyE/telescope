@@ -6,6 +6,7 @@ services:
     # build:
     #   dockerfile: ./Dockerfile
     volumes:
+      - ./config.js:/usr/share/nginx/html/assets/config.js
       - ./nginx.conf:/etc/nginx/nginx.conf
     ports:
       - 80:80
