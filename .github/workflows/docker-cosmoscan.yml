@@ -34,4 +34,4 @@ jobs:
           push: true
           tags: |
             lcnem/cosmoscan:latest
-            lcnem/cosmoscan:${{ github.ref }}
+            lcnem/cosmoscan:${${{ github.ref }}//refs\/tags\//}
