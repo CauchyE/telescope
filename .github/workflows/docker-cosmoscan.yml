@@ -28,10 +28,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm run bundle
+      - name: Setup variables
+        id: variables
+        run: echo "::set-output name=version::${GITHUB_REF##*/}"
       - name: Push to Docker Hub
         uses: docker/build-push-action@v2
         with:
           push: true
           tags: |
             lcnem/cosmoscan:latest
-            lcnem/cosmoscan:${${{ github.ref }}//refs\/tags\//}
+            lcnem/cosmoscan:${{ steps.variables.outputs.version }}
