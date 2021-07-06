@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { InlineResponse20059, InlineResponse20062 } from 'cosmos-client/openapi/api';
+import { InlineResponse20059, InlineResponse20062 } from 'cosmos-client/esm/openapi';
 
 @Component({
   selector: 'view-delegator',

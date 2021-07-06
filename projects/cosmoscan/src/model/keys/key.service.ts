@@ -6,6 +6,7 @@ import { cosmosclient } from 'cosmos-client';
 export interface IKeyInfrastructure {
   getPrivKey(type: KeyType, privateKey: string): cosmosclient.PrivKey;
   getPubKey(type: KeyType, publicKey: string): cosmosclient.PubKey;
+  sign(type: KeyType, privateKey: string, message: Uint8Array): Uint8Array;
   getPrivateKeyFromMnemonic(mnemonic: string): Promise<string>;
   get(id: string): Promise<Key | undefined>;
   list(): Promise<Key[]>;
@@ -28,6 +29,10 @@ export class KeyService {
 
   getPubKey(type: KeyType, publicKey: string) {
     return this.iKeyInfrastructure.getPubKey(type, publicKey);
+  }
+
+  sign(type: KeyType, privateKey: string, message: Uint8Array) {
+    return this.iKeyInfrastructure.sign(type, privateKey, message);
   }
 
   getPrivateKeyFromMnemonic(mnemonic: string) {

@@ -3,7 +3,7 @@ import { combineLatest, Observable, timer } from 'rxjs';
 import { mergeMap, map } from 'rxjs/operators';
 import { CosmosSDKService } from '../../model/cosmos-sdk.service';
 import { rest } from 'cosmos-client';
-import { InlineResponse20033 } from 'cosmos-client/openapi/api';
+import { InlineResponse20033 } from 'cosmos-client/esm/openapi';
 
 @Component({
   selector: 'app-home',

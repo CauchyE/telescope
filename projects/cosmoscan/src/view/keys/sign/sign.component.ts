@@ -1,15 +1,35 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+
+export type SignOnSignEvent = {
+  data: string;
+  privateKey: string;
+};
 
 @Component({
   selector: 'view-sign',
   templateUrl: './sign.component.html',
-  styleUrls: ['./sign.component.css']
+  styleUrls: ['./sign.component.css'],
 })
 export class SignComponent implements OnInit {
+  @Input()
+  data?: string | null;
 
-  constructor() { }
+  @Input()
+  signature?: string | null;
 
-  ngOnInit(): void {
+  @Output()
+  appSign: EventEmitter<SignOnSignEvent>;
+
+  constructor() {
+    this.appSign = new EventEmitter();
   }
 
+  ngOnInit(): void { }
+
+  onClickButton(data: string, privateKey: string) {
+    this.appSign.emit({
+      data,
+      privateKey,
+    });
+  }
 }

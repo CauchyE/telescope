@@ -14,10 +14,7 @@ import { KeyStoreService } from './key.store.service';
   providedIn: 'root',
 })
 export class KeySelectGuard implements CanActivate {
-  constructor(
-    private readonly keyStore: KeyStoreService,
-    private readonly keySelectDialog: KeySelectDialogService,
-  ) {}
+  constructor(private readonly keyStore: KeyStoreService, private readonly keySelectDialog: KeySelectDialogService) { }
 
   canActivate(
     route: ActivatedRouteSnapshot,

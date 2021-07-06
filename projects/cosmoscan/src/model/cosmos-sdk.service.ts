@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { cosmosclient } from 'cosmos-client';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
-import config from '../config.json';
+import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,28 +13,28 @@ export class CosmosSDKService {
   chainID$: BehaviorSubject<string>;
   sdk$: Observable<{ rest: cosmosclient.CosmosSDK; websocket: cosmosclient.CosmosSDK }>;
 
-  constructor() {
+  constructor(private readonly config: ConfigService) {
     if (
-      config.bech32_prefix?.acc_addr &&
-      config.bech32_prefix?.acc_pub &&
-      config.bech32_prefix?.val_addr &&
-      config.bech32_prefix?.val_addr &&
-      config.bech32_prefix?.cons_addr &&
-      config.bech32_prefix?.cons_addr
+      this.config.config.bech32Prefix?.accAddr &&
+      this.config.config.bech32Prefix?.accPub &&
+      this.config.config.bech32Prefix?.valAddr &&
+      this.config.config.bech32Prefix?.valAddr &&
+      this.config.config.bech32Prefix?.consAddr &&
+      this.config.config.bech32Prefix?.consAddr
     ) {
-      cosmosclient.config.bech32Prefix = {
-        accAddr: config.bech32_prefix?.acc_addr,
-        accPub: config.bech32_prefix?.acc_pub,
-        valAddr: config.bech32_prefix?.val_addr,
-        valPub: config.bech32_prefix?.val_addr,
-        consAddr: config.bech32_prefix?.cons_addr,
-        consPub: config.bech32_prefix?.cons_addr,
-      };
+      cosmosclient.config.setBech32Prefix({
+        accAddr: this.config.config.bech32Prefix?.accAddr,
+        accPub: this.config.config.bech32Prefix?.accPub,
+        valAddr: this.config.config.bech32Prefix?.valAddr,
+        valPub: this.config.config.bech32Prefix?.valAddr,
+        consAddr: this.config.config.bech32Prefix?.consAddr,
+        consPub: this.config.config.bech32Prefix?.consAddr,
+      });
     }
 
-    this.restURL$ = new BehaviorSubject(`${location.protocol}//${location.hostname}:1317`);
-    this.websocketURL$ = new BehaviorSubject(`${location.protocol.replace('http', 'ws')}://${location.hostname}:26657`);
-    this.chainID$ = new BehaviorSubject(config.chain_id);
+    this.restURL$ = new BehaviorSubject(this.config.config.restURL);
+    this.websocketURL$ = new BehaviorSubject(this.config.config.websocketURL);
+    this.chainID$ = new BehaviorSubject(this.config.config.chainID);
     this.sdk$ = combineLatest([this.restURL$, this.websocketURL$, this.chainID$]).pipe(
       map(([restURL, websocketURL, chainID]) => ({
         rest: new cosmosclient.CosmosSDK(restURL, chainID),

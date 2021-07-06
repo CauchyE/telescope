@@ -17,6 +17,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 
 @NgModule({
   declarations: [],
@@ -38,6 +39,7 @@ import { MatTableModule } from '@angular/material/table';
     MatSnackBarModule,
     MatToolbarModule,
     MatTableModule,
+    ClipboardModule,
   ],
 })
-export class MaterialModule {}
+export class MaterialModule { }

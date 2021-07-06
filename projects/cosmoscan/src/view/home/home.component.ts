@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { InlineResponse20033 } from 'cosmos-client/openapi/api';
+import { InlineResponse20033 } from 'cosmos-client/esm/openapi';
 
 @Component({
   selector: 'view-home',

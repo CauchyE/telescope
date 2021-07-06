@@ -4,7 +4,7 @@ import { ActivatedRoute } from '@angular/router';
 import { map, mergeMap } from 'rxjs/operators';
 import { rest } from 'cosmos-client';
 import { CosmosSDKService } from '../../../model/cosmos-sdk.service';
-import { CosmosTxV1beta1GetTxResponse } from 'cosmos-client/openapi/api';
+import { CosmosTxV1beta1GetTxResponse } from 'cosmos-client/esm/openapi';
 
 @Component({
   selector: 'app-transaction',
