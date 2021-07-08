@@ -1,14 +1,9 @@
 <ng-container *ngIf="coins === null; then loading; else loaded"></ng-container>
 <ng-template #loading>
-  <mat-progress-spinner
-    [diameter]="60"
-    [mode]="'indeterminate'"
-  ></mat-progress-spinner>
+  <mat-progress-spinner [diameter]="60" [mode]="'indeterminate'"></mat-progress-spinner>
 </ng-template>
 <ng-template #loaded>
-  <ng-container
-    *ngIf="coins?.length || 0 > 0; then exist; else empty"
-  ></ng-container>
+  <ng-container *ngIf="coins?.length || 0 > 0; then exist; else empty"></ng-container>
 </ng-template>
 <ng-template #exist>
   <mat-list>
@@ -24,10 +19,7 @@
     </ng-container>
   </mat-list>
 
-  <form
-    #formRef="ngForm"
-    (submit)="onSubmit(toAddressRef.value, privateKeyRef.value)"
-  >
+  <form #formRef="ngForm" (submit)="onSubmit(toAddressRef.value, privateKeyRef.value)">
     <mat-form-field fxFill>
       <mat-label>To address</mat-label>
       <input #toAddressRef ngModel name="to-address" matInput required />
@@ -41,21 +33,10 @@
         </mat-form-field>
         <mat-form-field fxFlex="auto">
           <mat-label>Amount</mat-label>
-          <input
-            [(ngModel)]="amount[i].amount"
-            name="amount-{{ i }}"
-            matInput
-            type="number"
-            pattern="^\d+$"
-            [min]="0"
-          />
+          <input [(ngModel)]="amount[i].amount" name="amount-{{ i }}" matInput type="number" pattern="^\d+$"
+            [min]="0" />
         </mat-form-field>
-        <button
-          mat-icon-button
-          color="warn"
-          [disabled]="amount.length <= 1"
-          (click)="removeAmount(i)"
-        >
+        <button mat-icon-button color="warn" [disabled]="amount.length <= 1" (click)="removeAmount(i)">
           <mat-icon>close</mat-icon>
         </button>
       </div>
@@ -68,29 +49,14 @@
 
     <mat-form-field fxFill>
       <mat-label>ID</mat-label>
-      <input
-        #idRef
-        type="text"
-        name="id"
-        [ngModel]="key?.id"
-        autocomplete="username"
-        matInput
-        readonly
-      />
+      <input #idRef type="text" name="id" [ngModel]="key?.id" autocomplete="username" matInput readonly />
     </mat-form-field>
     <mat-form-field fxFill>
       <mat-label>Private key</mat-label>
-      <input
-        #privateKeyRef
-        ngModel
-        type="password"
-        name="privateKey"
-        autocomplete="current-password"
-        matInput
-        required
-      />
+      <input #privateKeyRef ngModel type="password" name="privateKey" autocomplete="current-password" matInput
+        required />
     </mat-form-field>
-    <button mat-flat-button [disabled]="formRef.invalid">Send</button>
+    <button mat-flat-button color="accent" [disabled]="formRef.invalid">Send</button>
   </form>
 </ng-template>
 <ng-template #empty>
