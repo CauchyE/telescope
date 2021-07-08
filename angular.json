@@ -90,22 +90,9 @@
           }
         },
         "test": {
-          "builder": "@angular-builders/custom-webpack:karma",
+          "builder": "@angular-builders/jest:run",
           "options": {
-            "main": "projects/cosmoscan/src/test.ts",
-            "polyfills": "projects/cosmoscan/src/polyfills.ts",
-            "tsConfig": "projects/cosmoscan/tsconfig.spec.json",
-            "karmaConfig": "projects/cosmoscan/karma.conf.js",
-            "assets": [
-              "projects/cosmoscan/src/favicon.ico",
-              "projects/cosmoscan/src/assets",
-              "projects/cosmoscan/src/manifest.webmanifest"
-            ],
-            "styles": [
-              "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "projects/cosmoscan/src/styles.css"
-            ],
-            "scripts": []
+            "configPath": "./jest.config.js"
           }
         },
         "lint": {
