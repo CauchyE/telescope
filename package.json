@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
-    "test": "ng test",
+    "test": "npx jest",
     "lint": "ng lint",
     "e2e": "ng e2e",
     "bundle": "docker build . -f ./projects/cosmoscan/Dockerfile -t lcnem/cosmoscan",
