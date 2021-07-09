@@ -8,13 +8,10 @@ import { KeyService } from '../keys/key.service';
   providedIn: 'root',
 })
 export class BankService {
-  constructor(
-    private readonly cosmosSDK: CosmosSDKService,
-    private readonly key: KeyService,
-  ) { }
+  constructor(private readonly cosmosSDK: CosmosSDKService, private readonly key: KeyService) { }
 
   async send(key: Key, toAddress: string, amount: cosmos.base.v1beta1.ICoin[], privateKey: string) {
-    const sdk = await this.cosmosSDK.sdk().then(sdk => sdk.rest)
+    const sdk = await this.cosmosSDK.sdk().then((sdk) => sdk.rest);
     const privKey = this.key.getPrivKey(key.type, privateKey);
     const pubKey = privKey.pubKey();
     const fromAddress = cosmosclient.AccAddress.fromPublicKey(pubKey);
@@ -22,18 +19,18 @@ export class BankService {
     // get account info
     const account = await rest.cosmos.auth
       .account(sdk, fromAddress)
-      .then((res) => res.data.account && cosmosclient.codec.unpackAny(res.data.account) as cosmos.auth.v1beta1.IBaseAccount)
+      .then((res) => res.data.account && (cosmosclient.codec.unpackAny(res.data.account) as cosmos.auth.v1beta1.IBaseAccount))
       .catch((_) => undefined);
 
     if (!account) {
-      throw Error('Address not found')
+      throw Error('Address not found');
     }
 
     // build tx
     const msgSend = new cosmos.bank.v1beta1.MsgSend({
       from_address: fromAddress.toString(),
       to_address: toAddress,
-      amount: amount,
+      amount,
     });
 
     const txBody = new cosmos.tx.v1beta1.TxBody({
