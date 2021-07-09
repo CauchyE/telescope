@@ -19,10 +19,10 @@ export class StakingService {
     // get account info
     const account = await rest.cosmos.auth
       .account(sdk, fromAddress)
-      .then((res) => res.data.account && (cosmosclient.codec.unpackAny(res.data.account) as cosmos.auth.v1beta1.IBaseAccount))
+      .then((res) => res.data.account && (cosmosclient.codec.unpackAny(res.data.account) as cosmos.auth.v1beta1.BaseAccount))
       .catch((_) => undefined);
 
-    if (!account) {
+    if (!(account instanceof cosmos.auth.v1beta1.BaseAccount)) {
       throw Error('Address not found');
     }
 
@@ -55,8 +55,8 @@ export class StakingService {
 
     // sign
     const txBuilder = new cosmosclient.TxBuilder(sdk, txBody, authInfo);
-    const signDoc = txBuilder.signDoc(account.account_number!);
-    txBuilder.addSignature(privKey, signDoc);
+    const signDocBytes = txBuilder.signDocBytes(account.account_number);
+    txBuilder.addSignature(privKey.sign(signDocBytes));
 
     // broadcast
     const result = await rest.cosmos.tx.broadcastTx(sdk, {
