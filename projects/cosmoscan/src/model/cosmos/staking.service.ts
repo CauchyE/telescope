@@ -8,18 +8,10 @@ import { cosmosclient, rest, cosmos } from 'cosmos-client';
   providedIn: 'root',
 })
 export class StakingService {
-  constructor(
-    private readonly cosmosSDK: CosmosSDKService,
-    private readonly key: KeyService,
-  ) { }
+  constructor(private readonly cosmosSDK: CosmosSDKService, private readonly key: KeyService) { }
 
-  async createDelegator(
-    key: Key,
-    validatorAddress: string,
-    amount: cosmos.base.v1beta1.ICoin,
-    privateKey: string,
-  ) {
-    const sdk = await this.cosmosSDK.sdk().then(sdk => sdk.rest)
+  async createDelegator(key: Key, validatorAddress: string, amount: cosmos.base.v1beta1.ICoin, privateKey: string) {
+    const sdk = await this.cosmosSDK.sdk().then((sdk) => sdk.rest);
     const privKey = this.key.getPrivKey(key.type, privateKey);
     const pubKey = privKey.pubKey();
     const fromAddress = cosmosclient.AccAddress.fromPublicKey(pubKey);
@@ -27,18 +19,18 @@ export class StakingService {
     // get account info
     const account = await rest.cosmos.auth
       .account(sdk, fromAddress)
-      .then((res) => res.data.account && cosmosclient.codec.unpackAny(res.data.account) as cosmos.auth.v1beta1.IBaseAccount)
+      .then((res) => res.data.account && (cosmosclient.codec.unpackAny(res.data.account) as cosmos.auth.v1beta1.BaseAccount))
       .catch((_) => undefined);
 
-    if (!account) {
-      throw Error('Address not found')
+    if (!(account instanceof cosmos.auth.v1beta1.BaseAccount)) {
+      throw Error('Address not found');
     }
 
     // build tx
     const msgDelegate = new cosmos.staking.v1beta1.MsgDelegate({
       delegator_address: fromAddress.toString(),
       validator_address: validatorAddress,
-      amount: amount,
+      amount,
     });
 
     const txBody = new cosmos.tx.v1beta1.TxBody({
@@ -63,8 +55,8 @@ export class StakingService {
 
     // sign
     const txBuilder = new cosmosclient.TxBuilder(sdk, txBody, authInfo);
-    const signDoc = txBuilder.signDoc(account.account_number!);
-    txBuilder.addSignature(privKey, signDoc);
+    const signDocBytes = txBuilder.signDocBytes(account.account_number);
+    txBuilder.addSignature(privKey.sign(signDocBytes));
 
     // broadcast
     const result = await rest.cosmos.tx.broadcastTx(sdk, {
