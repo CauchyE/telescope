@@ -21,3 +21,12 @@
     </mat-list-item>
   </mat-card>
 </mat-list>
+
+<mat-nav-list>
+  <mat-card>
+    <mat-list-item routerLink="/accounts/{{ accAddress?.toString() }}">
+      <mat-icon color="accent">account_balance_wallet </mat-icon>
+      Show Account Info
+    </mat-list-item>
+  </mat-card>
+</mat-nav-list>
