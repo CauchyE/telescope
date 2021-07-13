@@ -33,4 +33,4 @@ jobs:
           --header 'Content-Type: application/json' \
           --data-raw '{
             "event_type": "repository-cosmoscan-new-release"
-          }
+          }'
