@@ -26,3 +26,11 @@ jobs:
           tags: |
             lcnem/cosmoscan:${{ steps.variables.outputs.version }}
             lcnem/cosmoscan:latest
+      - name: Create GitHub dispatch event
+        run: |
+          curl --request POST 'https://api.github.com/repos/lcnem/botany/dispatches' \
+          --header 'Authorization: Bearer ${{secrets.REPO_GITHUB_ACCESS_TOKEN}}' \
+          --header 'Content-Type: application/json' \
+          --data-raw '{
+            "event_type": "repository-cosmoscan-new-release"
+          }
