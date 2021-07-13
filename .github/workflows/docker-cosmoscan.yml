@@ -26,10 +26,6 @@ jobs:
           tags: |
             lcnem/cosmoscan:${{ steps.variables.outputs.version }}
             lcnem/cosmoscan:latest
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
       - name: Create GitHub dispatch event
         run: |
           curl --request POST 'https://api.github.com/repos/lcnem/botany/dispatches' \
