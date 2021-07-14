@@ -1,29 +1,29 @@
 import { Injectable } from '@angular/core';
-import {
-  CanActivate,
-  ActivatedRouteSnapshot,
-  RouterStateSnapshot,
-  UrlTree,
-} from '@angular/router';
+import { CanActivate, ActivatedRouteSnapshot, RouterStateSnapshot, UrlTree, Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { KeySelectDialogService } from './key-select-dialog.service';
+import { KeyService } from './key.service';
 import { KeyStoreService } from './key.store.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class KeySelectGuard implements CanActivate {
-  constructor(private readonly keyStore: KeyStoreService, private readonly keySelectDialog: KeySelectDialogService) { }
+  constructor(
+    private readonly router: Router,
+    private readonly key: KeyService,
+    private readonly keyStore: KeyStoreService,
+    private readonly keySelectDialog: KeySelectDialogService,
+  ) { }
 
-  canActivate(
-    route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot,
-  ):
-    | Observable<boolean | UrlTree>
-    | Promise<boolean | UrlTree>
-    | boolean
-    | UrlTree {
+  async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Promise<boolean> {
+    const keys = await this.key.list();
+    if (keys.length === 0) {
+      window.alert('There is no key. Please create.');
+      this.router.navigate(['keys', 'create']);
+      return true;
+    }
     return this.keyStore.currentKey$
       .pipe(first())
       .toPromise()

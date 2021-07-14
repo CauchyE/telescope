@@ -20,14 +20,7 @@ export class KeySelectDialogService {
 
   async open() {
     const keys = await this.key.list();
-    if (keys.length === 0) {
-      window.alert('There is no key. Please create.');
-      this.router.navigate(['keys', 'create']);
-    }
-
-    const currentKey = await this.keyStore.currentKey$
-      .pipe(first())
-      .toPromise();
+    const currentKey = await this.keyStore.currentKey$.pipe(first()).toPromise();
 
     const result: Key | undefined = await this.dialog
       .open(KeySelectDialogComponent, {
