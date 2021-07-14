@@ -1,9 +1,7 @@
 <mat-nav-list>
   <ng-template ngFor let-key [ngForOf]="data.keys">
     <mat-list-item (click)="onClickKey(key)">
-      <mat-icon matListIcon [ngStyle]="{ color: getColorCode(key) }">
-        circle
-      </mat-icon>
+      <mat-icon matListIcon [ngStyle]="{ color: getColorCode(key) }"> circle </mat-icon>
       <span>{{ key.id }}</span>
       <span fxFlex="auto"></span>
       <ng-container *ngIf="data.currentKeyID === key.id">
