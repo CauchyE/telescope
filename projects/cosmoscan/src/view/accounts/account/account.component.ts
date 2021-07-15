@@ -13,7 +13,7 @@ export class AccountComponent implements OnInit, OnChanges {
   @Input()
   balances?: cosmos.base.v1beta1.ICoin[] | null;
 
-  baseAccount?: cosmos.auth.v1beta1.BaseAccount
+  baseAccount?: cosmos.auth.v1beta1.BaseAccount;
 
   txColumnKeys = ['height', 'txhash', 'timestamp', 'gas_wanted', 'gas_used'];
 
@@ -25,7 +25,7 @@ export class AccountComponent implements OnInit, OnChanges {
     delete this.baseAccount;
 
     if (this.account instanceof cosmos.auth.v1beta1.BaseAccount) {
-      this.baseAccount = this.account
+      this.baseAccount = this.account;
     }
   }
 }
