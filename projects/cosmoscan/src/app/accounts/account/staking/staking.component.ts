@@ -26,6 +26,8 @@ export class StakingComponent implements OnInit {
       map((addr) => cosmosclient.AccAddress.fromString(addr)),
     );
     const valAddress$ = accAddress$.pipe(map((addr) => new cosmosclient.ValAddress((addr as any)._value)));
+    // 以下に置き換えられると考えたが、toValAddressが無いというエラー
+    // const valAddress$ = accAddress$.pipe(map((addr) => addr.toValAddress()));
     const combined$ = combineLatest([this.cosmosSDK.sdk$, accAddress$, valAddress$]);
 
     this.commision$ = combined$.pipe(
