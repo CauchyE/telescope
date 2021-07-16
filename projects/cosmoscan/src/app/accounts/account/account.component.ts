@@ -27,12 +27,9 @@ export class AccountComponent implements OnInit {
       mergeMap(([sdk, address]) =>
         rest.cosmos.auth
           .account(sdk.rest, address)
-          .then((res) => {
-            console.log(res);
-            return res.data && cosmosclient.codec.unpackAny(res.data);
-          })
+          .then((res) => res.data && cosmosclient.codec.unpackAny(res.data.account))
           .catch((_) => {
-            console.log(_);
+            console.error(_);
             return undefined;
           }),
       ),
@@ -43,5 +40,5 @@ export class AccountComponent implements OnInit {
     );
   }
 
-  ngOnInit() { }
+  ngOnInit() {}
 }

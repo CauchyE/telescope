@@ -3,7 +3,7 @@
 <mat-card>
   <mat-list *ngFor="let com of commision?.commission?.commission">
     <mat-list-item>
-      <span class="column-name">{{ com.amount }}: </span>
+      <span class="column-name">{{ com.amount }}</span>
       <span fxFlex="auto"></span>
       <span class="column-value">{{ com.denom }}</span>
     </mat-list-item>
@@ -15,7 +15,7 @@
 <mat-card>
   <mat-list *ngFor="let reward of rewards?.rewards?.rewards">
     <mat-list-item>
-      <span class="column-name">{{ reward.amount }}: </span>
+      <span class="column-name">{{ reward.amount }}</span>
       <span fxFlex="auto"></span>
       <span class="column-value">{{ reward.denom }}</span>
     </mat-list-item>

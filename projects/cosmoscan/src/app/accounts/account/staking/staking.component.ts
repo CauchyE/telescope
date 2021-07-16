@@ -25,7 +25,7 @@ export class StakingComponent implements OnInit {
       map((params) => params.address),
       map((addr) => cosmosclient.AccAddress.fromString(addr)),
     );
-    const valAddress$ = accAddress$.pipe(map((addr) => new cosmosclient.ValAddress((addr as any).value)));
+    const valAddress$ = accAddress$.pipe(map((addr) => new cosmosclient.ValAddress((addr as any)._value)));
     const combined$ = combineLatest([this.cosmosSDK.sdk$, accAddress$, valAddress$]);
 
     this.commision$ = combined$.pipe(
@@ -44,5 +44,23 @@ export class StakingComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {
+    // 一時的にデバッグ用に追加
+    this.commision$.subscribe((commision) => {
+      console.log('commision');
+      console.log(commision);
+    });
+
+    // 一時的にデバッグ用に追加
+    this.rewards$.subscribe((rewards) => {
+      console.log('rewards');
+      console.log(rewards);
+    });
+
+    // 一時的にデバッグ用に追加
+    this.description$.subscribe((description) => {
+      console.log('description');
+      console.log(description);
+    });
+  }
 }
