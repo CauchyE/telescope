@@ -1,1 +1,29 @@
-<p>staking works!</p>
+<h2>Validator Commission</h2>
+<h3>Accumulated Commission</h3>
+<mat-card>
+  <mat-list *ngFor="let com of commision?.commission?.commission">
+    <mat-list-item>
+      <span class="column-name">{{ com.amount }}</span>
+      <span fxFlex="auto"></span>
+      <span class="column-value">{{ com.denom }}</span>
+    </mat-list-item>
+    <mat-divider [inset]="true"></mat-divider>
+  </mat-list>
+</mat-card>
+
+<h3>Outstanding Rewards</h3>
+<mat-card>
+  <mat-list *ngFor="let reward of rewards?.rewards?.rewards">
+    <mat-list-item>
+      <span class="column-name">{{ reward.amount }}</span>
+      <span fxFlex="auto"></span>
+      <span class="column-value">{{ reward.denom }}</span>
+    </mat-list-item>
+    <mat-divider [inset]="true"></mat-divider>
+  </mat-list>
+</mat-card>
+
+<!--<h2>Delegator Commission</h2>
+<mat-card>
+  <mat-list></mat-list>
+</mat-card>-->
