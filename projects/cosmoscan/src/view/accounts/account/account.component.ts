@@ -28,8 +28,7 @@ export class AccountComponent implements OnInit, OnChanges {
 
     if (this.account instanceof cosmos.auth.v1beta1.BaseAccount) {
       this.baseAccount = this.account;
-      // 以下のような実装を追加することで、publicKeyを意図通り表示できると考えたが、pub_keyの値がUInt8Arrayの0になっている
-      // 何か根本的にうまくいっていない？
+      // Todo: fix pub_key zero issue
       console.log(this.baseAccount.pub_key?.value);
       if (this.baseAccount.pub_key?.value) {
         this.publicKey = Buffer.from(this.baseAccount.pub_key?.value).toString('base64');
