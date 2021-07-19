@@ -17,7 +17,7 @@ export class TxComponent implements OnInit {
 
   unpackMsg(value: any) {
     try {
-      return cosmosclient.codec.unpackAny(value);
+      return cosmosclient.codec.unpackCosmosAny(value);
     } catch {
       return null;
     }
@@ -25,7 +25,7 @@ export class TxComponent implements OnInit {
 
   unpackKey(value: any) {
     try {
-      return cosmosclient.codec.unpackAny(value) as cosmosclient.PubKey;
+      return cosmosclient.codec.unpackCosmosAny(value) as cosmosclient.PubKey;
     } catch {
       return null;
     }
@@ -36,6 +36,6 @@ export class TxComponent implements OnInit {
   }
 
   entries(value: unknown) {
-    return Object.entries(value as any)
+    return Object.entries(value as any);
   }
 }
