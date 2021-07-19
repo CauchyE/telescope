@@ -19,7 +19,7 @@ export class BankService {
     // get account info
     const account = await rest.cosmos.auth
       .account(sdk, fromAddress)
-      .then((res) => res.data.account && cosmosclient.codec.unpackAny(res.data.account))
+      .then((res) => res.data.account && cosmosclient.codec.unpackCosmosAny(res.data.account))
       .catch((_) => undefined);
 
     if (!(account instanceof cosmos.auth.v1beta1.BaseAccount)) {

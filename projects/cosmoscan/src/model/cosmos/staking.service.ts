@@ -19,7 +19,7 @@ export class StakingService {
     // get account info
     const account = await rest.cosmos.auth
       .account(sdk, fromAddress)
-      .then((res) => res.data.account && (cosmosclient.codec.unpackAny(res.data.account) as cosmos.auth.v1beta1.BaseAccount))
+      .then((res) => res.data.account && (cosmosclient.codec.unpackCosmosAny(res.data.account) as cosmos.auth.v1beta1.BaseAccount))
       .catch((_) => undefined);
 
     if (!(account instanceof cosmos.auth.v1beta1.BaseAccount)) {
