@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { cosmosclient, cosmos, rest } from 'cosmos-client';
+import { cosmosclient, rest, proto } from 'cosmos-client';
 import { CosmosSDKService } from '../cosmos-sdk.service';
 import { Key } from '../keys/key.model';
 import { KeyService } from '../keys/key.service';
@@ -10,7 +10,7 @@ import { KeyService } from '../keys/key.service';
 export class BankService {
   constructor(private readonly cosmosSDK: CosmosSDKService, private readonly key: KeyService) { }
 
-  async send(key: Key, toAddress: string, amount: cosmos.base.v1beta1.ICoin[], privateKey: string) {
+  async send(key: Key, toAddress: string, amount: proto.cosmos.base.v1beta1.ICoin[], privateKey: string) {
     const sdk = await this.cosmosSDK.sdk().then((sdk) => sdk.rest);
     const privKey = this.key.getPrivKey(key.type, privateKey);
     const pubKey = privKey.pubKey();
@@ -22,27 +22,27 @@ export class BankService {
       .then((res) => res.data.account && cosmosclient.codec.unpackCosmosAny(res.data.account))
       .catch((_) => undefined);
 
-    if (!(account instanceof cosmos.auth.v1beta1.BaseAccount)) {
+    if (!(account instanceof proto.cosmos.auth.v1beta1.BaseAccount)) {
       throw Error('Address not found');
     }
 
     // build tx
-    const msgSend = new cosmos.bank.v1beta1.MsgSend({
+    const msgSend = new proto.cosmos.bank.v1beta1.MsgSend({
       from_address: fromAddress.toString(),
       to_address: toAddress,
       amount,
     });
 
-    const txBody = new cosmos.tx.v1beta1.TxBody({
+    const txBody = new proto.cosmos.tx.v1beta1.TxBody({
       messages: [cosmosclient.codec.packAny(msgSend)],
     });
-    const authInfo = new cosmos.tx.v1beta1.AuthInfo({
+    const authInfo = new proto.cosmos.tx.v1beta1.AuthInfo({
       signer_infos: [
         {
           public_key: cosmosclient.codec.packAny(pubKey),
           mode_info: {
             single: {
-              mode: cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_DIRECT,
+              mode: proto.cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_DIRECT,
             },
           },
           sequence: account.sequence,

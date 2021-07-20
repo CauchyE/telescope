@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CosmosSDKService } from '../cosmos-sdk.service';
 import { Key } from '../keys/key.model';
 import { KeyService } from '../keys/key.service';
-import { cosmosclient, rest, cosmos } from 'cosmos-client';
+import { cosmosclient, rest, proto } from 'cosmos-client';
 
 @Injectable({
   providedIn: 'root',
@@ -10,7 +10,7 @@ import { cosmosclient, rest, cosmos } from 'cosmos-client';
 export class StakingService {
   constructor(private readonly cosmosSDK: CosmosSDKService, private readonly key: KeyService) { }
 
-  async createDelegator(key: Key, validatorAddress: string, amount: cosmos.base.v1beta1.ICoin, privateKey: string) {
+  async createDelegator(key: Key, validatorAddress: string, amount: proto.cosmos.base.v1beta1.ICoin, privateKey: string) {
     const sdk = await this.cosmosSDK.sdk().then((sdk) => sdk.rest);
     const privKey = this.key.getPrivKey(key.type, privateKey);
     const pubKey = privKey.pubKey();
@@ -19,30 +19,30 @@ export class StakingService {
     // get account info
     const account = await rest.cosmos.auth
       .account(sdk, fromAddress)
-      .then((res) => res.data.account && (cosmosclient.codec.unpackCosmosAny(res.data.account) as cosmos.auth.v1beta1.BaseAccount))
+      .then((res) => res.data.account && (cosmosclient.codec.unpackCosmosAny(res.data.account) as proto.cosmos.auth.v1beta1.BaseAccount))
       .catch((_) => undefined);
 
-    if (!(account instanceof cosmos.auth.v1beta1.BaseAccount)) {
+    if (!(account instanceof proto.cosmos.auth.v1beta1.BaseAccount)) {
       throw Error('Address not found');
     }
 
     // build tx
-    const msgDelegate = new cosmos.staking.v1beta1.MsgDelegate({
+    const msgDelegate = new proto.cosmos.staking.v1beta1.MsgDelegate({
       delegator_address: fromAddress.toString(),
       validator_address: validatorAddress,
       amount,
     });
 
-    const txBody = new cosmos.tx.v1beta1.TxBody({
+    const txBody = new proto.cosmos.tx.v1beta1.TxBody({
       messages: [cosmosclient.codec.packAny(msgDelegate)],
     });
-    const authInfo = new cosmos.tx.v1beta1.AuthInfo({
+    const authInfo = new proto.cosmos.tx.v1beta1.AuthInfo({
       signer_infos: [
         {
           public_key: cosmosclient.codec.packAny(pubKey),
           mode_info: {
             single: {
-              mode: cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_DIRECT,
+              mode: proto.cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_DIRECT,
             },
           },
           sequence: account.sequence,

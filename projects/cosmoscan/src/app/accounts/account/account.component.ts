@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { combineLatest, Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 import { CosmosSDKService } from '../../../model/cosmos-sdk.service';
-import { cosmosclient, cosmos, rest } from 'cosmos-client';
+import { cosmosclient, rest, proto } from 'cosmos-client';
 
 @Component({
   selector: 'app-account',
@@ -12,8 +12,8 @@ import { cosmosclient, cosmos, rest } from 'cosmos-client';
 })
 export class AccountComponent implements OnInit {
   address$: Observable<cosmosclient.AccAddress>;
-  account$: Observable<cosmos.auth.v1beta1.BaseAccount | unknown | undefined>;
-  balances$: Observable<cosmos.base.v1beta1.ICoin[]>;
+  account$: Observable<proto.cosmos.auth.v1beta1.BaseAccount | unknown | undefined>;
+  balances$: Observable<proto.cosmos.base.v1beta1.ICoin[]>;
 
   constructor(private route: ActivatedRoute, private cosmosSDK: CosmosSDKService) {
     this.address$ = this.route.params.pipe(
