@@ -1,29 +1,29 @@
-<h2>Validator Commission</h2>
-<h3>Accumulated Commission</h3>
+<h2>Delegator Rewards</h2>
+<h3>Total Rewards</h3>
 <mat-card>
-  <mat-list *ngFor="let com of commision?.commission?.commission">
+  <mat-list *ngFor="let ttl of totalrewards?.total">
     <mat-list-item>
-      <span class="column-name">{{ com.amount }}</span>
+      <span class="column-name">{{ ttl.amount }}</span>
       <span fxFlex="auto"></span>
-      <span class="column-value">{{ com.denom }}</span>
+      <span class="column-value">{{ ttl.denom }}</span>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
   </mat-list>
 </mat-card>
 
-<h3>Outstanding Rewards</h3>
+<h3>Rewards by Each Validator</h3>
 <mat-card>
-  <mat-list *ngFor="let reward of rewards?.rewards?.rewards">
+  <mat-list *ngFor="let reward of totalrewards?.rewards">
     <mat-list-item>
-      <span class="column-name">{{ reward.amount }}</span>
+      <span class="column-name">Validator Address: </span>
       <span fxFlex="auto"></span>
-      <span class="column-value">{{ reward.denom }}</span>
+      <span class="column-value">{{ reward.validator_address }}</span>
+    </mat-list-item>
+    <mat-list-item *ngFor="let rew of reward?.reward">
+      <span class="column-name">{{ rew.amount }}</span>
+      <span fxFlex="auto"></span>
+      <span class="column-value">{{ rew.denom }}</span>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
   </mat-list>
 </mat-card>
-
-<!--<h2>Delegator Commission</h2>
-<mat-card>
-  <mat-list></mat-list>
-</mat-card>-->

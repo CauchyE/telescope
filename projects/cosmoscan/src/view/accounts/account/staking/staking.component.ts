@@ -1,8 +1,7 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
-  CosmosDistributionV1beta1QueryValidatorSlashesResponse,
-  InlineResponse20043,
-  QueryValidatorCommissionResponseIsTheResponseTypeForTheQueryValidatorCommissionRPCMethod,
+  CosmosDistributionV1beta1QueryDelegationTotalRewardsResponse,
+  QueryValidatorDelegationsResponseIsResponseTypeForTheQueryValidatorDelegationsRPCMethod,
 } from 'cosmos-client/cjs/openapi/api';
 
 @Component({
@@ -12,11 +11,9 @@ import {
 })
 export class StakingComponent implements OnInit {
   @Input()
-  commision?: QueryValidatorCommissionResponseIsTheResponseTypeForTheQueryValidatorCommissionRPCMethod | null;
+  totalrewards?: CosmosDistributionV1beta1QueryDelegationTotalRewardsResponse | null;
   @Input()
-  rewards?: InlineResponse20043 | null;
-  @Input()
-  description?: CosmosDistributionV1beta1QueryValidatorSlashesResponse | null;
+  eachrewards?: QueryValidatorDelegationsResponseIsResponseTypeForTheQueryValidatorDelegationsRPCMethod | null;
 
   constructor() { }
 
