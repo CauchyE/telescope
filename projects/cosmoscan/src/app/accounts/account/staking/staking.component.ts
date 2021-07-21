@@ -16,7 +16,7 @@ import { map, mergeMap } from 'rxjs/operators';
 })
 export class StakingComponent implements OnInit {
   totalrewards$: Observable<CosmosDistributionV1beta1QueryDelegationTotalRewardsResponse>;
-  eachrewards$: Observable<QueryValidatorDelegationsResponseIsResponseTypeForTheQueryValidatorDelegationsRPCMethod>;
+  //eachrewards$: Observable<QueryValidatorDelegationsResponseIsResponseTypeForTheQueryValidatorDelegationsRPCMethod>;
 
   constructor(private readonly route: ActivatedRoute, private readonly cosmosSDK: CosmosSDKService) {
     const accAddress$ = this.route.params.pipe(
@@ -31,23 +31,27 @@ export class StakingComponent implements OnInit {
       map((res) => res.data),
     );
 
+    /*
     this.eachrewards$ = combined$.pipe(
       mergeMap(([sdk, accAddress, valAddress]) => rest.cosmos.distribution.delegationRewards(sdk.rest, accAddress, valAddress)),
       map((res) => res.data),
     );
+    */
   }
 
   ngOnInit(): void {
     // 一時的にデバッグ用に追加
-    this.totalrewards$.subscribe((commision) => {
-      console.log('commision');
-      console.log(commision);
+    this.totalrewards$.subscribe((totalrewards) => {
+      console.log('totalrewards');
+      console.log(totalrewards);
     });
 
     // 一時的にデバッグ用に追加
-    this.eachrewards$.subscribe((rewards) => {
-      console.log('rewards');
-      console.log(rewards);
+    /*
+    this.eachrewards$.subscribe((eachrewards) => {
+      console.log('eachrewards');
+      console.log(eachrewards);
     });
+    */
   }
 }
