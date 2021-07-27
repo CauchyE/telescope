@@ -1,14 +1,9 @@
-<ng-container *ngIf="validator === null; then loading; else loaded">
-</ng-container>
+<ng-container *ngIf="validator === null; then loading; else loaded"> </ng-container>
 <ng-template #loading>
-  <mat-progress-spinner
-    [diameter]="60"
-    [mode]="'indeterminate'"
-  ></mat-progress-spinner>
+  <mat-progress-spinner [diameter]="60" [mode]="'indeterminate'"></mat-progress-spinner>
 </ng-template>
 <ng-template #loaded>
-  <ng-container *ngIf="validator !== undefined; then exist; else notFound">
-  </ng-container>
+  <ng-container *ngIf="validator !== undefined; then exist; else notFound"> </ng-container>
 </ng-template>
 <ng-template #exist>
   <h2>Validator: {{ validator?.operator_address }}</h2>
@@ -26,7 +21,7 @@
           <span class="column-name">Consensus Pubkey:</span>
           <span fxFlex="auto"></span>
           <span class="column-value">
-            {{ validator?.consensus_pubkey }}
+            {{ publicKey }}
           </span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>

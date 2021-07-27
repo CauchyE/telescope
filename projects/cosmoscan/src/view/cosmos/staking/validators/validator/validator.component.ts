@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { cosmosclient, proto } from 'cosmos-client';
 import { InlineResponse20063Validator } from 'cosmos-client/esm/openapi';
 
 @Component({
@@ -6,11 +7,21 @@ import { InlineResponse20063Validator } from 'cosmos-client/esm/openapi';
   templateUrl: './validator.component.html',
   styleUrls: ['./validator.component.css'],
 })
-export class ValidatorComponent implements OnInit {
+export class ValidatorComponent implements OnInit, OnChanges {
   @Input()
   validator?: InlineResponse20063Validator | null;
+
+  publicKey?: string;
 
   constructor() { }
 
   ngOnInit(): void { }
+
+  ngOnChanges() {
+    const pubKey = cosmosclient.codec.unpackCosmosAny(this.validator?.consensus_pubkey);
+    if (!(pubKey instanceof proto.cosmos.crypto.ed25519.PubKey)) {
+      throw Error('hoge');
+    }
+    this.publicKey = Buffer.from(pubKey.key).toString('hex');
+  }
 }
