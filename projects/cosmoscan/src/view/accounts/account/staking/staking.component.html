@@ -12,6 +12,10 @@
 </mat-card>
 
 <h3>Rewards by Each Validator</h3>
+<!--
+delegationTotalRewardsで報酬の合計値、Valaddress毎の報酬の両方を取得可能
+Validate先が多数にならない現状はすべてのValaddress別の報酬の表示をdelegationTotalRewardsで実装
+-->
 <mat-card>
   <mat-list *ngFor="let reward of totalrewards?.rewards">
     <mat-list-item>
