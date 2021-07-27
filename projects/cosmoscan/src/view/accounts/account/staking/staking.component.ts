@@ -1,8 +1,7 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
-  CosmosDistributionV1beta1QueryValidatorSlashesResponse,
-  InlineResponse20043,
-  QueryValidatorCommissionResponseIsTheResponseTypeForTheQueryValidatorCommissionRPCMethod,
+  CosmosDistributionV1beta1QueryDelegationTotalRewardsResponse,
+  /*QueryValidatorDelegationsResponseIsResponseTypeForTheQueryValidatorDelegationsRPCMethod,*/
 } from 'cosmos-client/cjs/openapi/api';
 
 @Component({
@@ -11,12 +10,16 @@ import {
   styleUrls: ['./staking.component.css'],
 })
 export class StakingComponent implements OnInit {
+  /*
+    delegationTotalRewardsで報酬の合計値、Valaddress毎の報酬の両方を取得可能
+    Valaddress指定で取得するAPI delegationRewardsは現状コメントアウト
+  */
   @Input()
-  commision?: QueryValidatorCommissionResponseIsTheResponseTypeForTheQueryValidatorCommissionRPCMethod | null;
+  totalrewards?: CosmosDistributionV1beta1QueryDelegationTotalRewardsResponse | null;
+  /*
   @Input()
-  rewards?: InlineResponse20043 | null;
-  @Input()
-  description?: CosmosDistributionV1beta1QueryValidatorSlashesResponse | null;
+  eachrewards?: QueryValidatorDelegationsResponseIsResponseTypeForTheQueryValidatorDelegationsRPCMethod | null;
+  */
 
   constructor() { }
 

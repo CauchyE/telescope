@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { cosmosclient, rest } from 'cosmos-client';
 import {
-  CosmosDistributionV1beta1QueryValidatorSlashesResponse,
-  InlineResponse20043,
-  QueryValidatorCommissionResponseIsTheResponseTypeForTheQueryValidatorCommissionRPCMethod,
+  CosmosDistributionV1beta1QueryDelegationTotalRewardsResponse,
+  QueryValidatorDelegationsResponseIsResponseTypeForTheQueryValidatorDelegationsRPCMethod,
 } from 'cosmos-client/cjs/openapi/api';
 import { CosmosSDKService } from 'projects/cosmoscan/src/model/cosmos-sdk.service';
 import { combineLatest, Observable } from 'rxjs';
@@ -16,9 +15,8 @@ import { map, mergeMap } from 'rxjs/operators';
   styleUrls: ['./staking.component.css'],
 })
 export class StakingComponent implements OnInit {
-  commision$: Observable<QueryValidatorCommissionResponseIsTheResponseTypeForTheQueryValidatorCommissionRPCMethod>;
-  rewards$: Observable<InlineResponse20043>;
-  description$: Observable<CosmosDistributionV1beta1QueryValidatorSlashesResponse>;
+  totalrewards$: Observable<CosmosDistributionV1beta1QueryDelegationTotalRewardsResponse>;
+  //eachrewards$: Observable<QueryValidatorDelegationsResponseIsResponseTypeForTheQueryValidatorDelegationsRPCMethod>;
 
   constructor(private readonly route: ActivatedRoute, private readonly cosmosSDK: CosmosSDKService) {
     const accAddress$ = this.route.params.pipe(
@@ -28,39 +26,36 @@ export class StakingComponent implements OnInit {
     const valAddress$ = accAddress$.pipe(map((addr) => addr.toValAddress()));
     const combined$ = combineLatest([this.cosmosSDK.sdk$, accAddress$, valAddress$]);
 
-    this.commision$ = combined$.pipe(
-      mergeMap(([sdk, accAddress, valAddress]) => rest.cosmos.distribution.validatorCommission(sdk.rest, valAddress)),
+    /*
+    delegationTotalRewardsで報酬の合計値、Valaddress毎の報酬の両方を取得可能
+    Valaddress指定で取得するAPI delegationRewardsは現状コメントアウト
+    */
+    this.totalrewards$ = combined$.pipe(
+      mergeMap(([sdk, accAddress]) => rest.cosmos.distribution.delegationTotalRewards(sdk.rest, accAddress)),
       map((res) => res.data),
     );
 
-    this.rewards$ = combined$.pipe(
-      mergeMap(([sdk, accAddress, valAddress]) => rest.cosmos.distribution.validatorOutstandingRewards(sdk.rest, valAddress)),
+    /*
+    this.eachrewards$ = combined$.pipe(
+      mergeMap(([sdk, accAddress, valAddress]) => rest.cosmos.distribution.delegationRewards(sdk.rest, accAddress, valAddress)),
       map((res) => res.data),
     );
-
-    this.description$ = combined$.pipe(
-      mergeMap(([sdk, accAddress, valAddress]) => rest.cosmos.distribution.validatorSlashes(sdk.rest, valAddress, '1', '2')),
-      map((res) => res.data),
-    );
+    */
   }
 
   ngOnInit(): void {
     // 一時的にデバッグ用に追加
-    this.commision$.subscribe((commision) => {
-      console.log('commision');
-      console.log(commision);
+    this.totalrewards$.subscribe((totalrewards) => {
+      console.log('totalrewards');
+      console.log(totalrewards);
     });
 
     // 一時的にデバッグ用に追加
-    this.rewards$.subscribe((rewards) => {
-      console.log('rewards');
-      console.log(rewards);
+    /*
+    this.eachrewards$.subscribe((eachrewards) => {
+      console.log('eachrewards');
+      console.log(eachrewards);
     });
-
-    // 一時的にデバッグ用に追加
-    this.description$.subscribe((description) => {
-      console.log('description');
-      console.log(description);
-    });
+    */
   }
 }
