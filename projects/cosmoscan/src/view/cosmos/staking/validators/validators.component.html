@@ -1,24 +1,17 @@
 <mat-nav-list>
   <h3 matSubheader>Validators</h3>
   <mat-divider></mat-divider>
-  <ng-container *ngIf="validators === null; then loading; else loaded">
-  </ng-container>
+  <ng-container *ngIf="validators === null; then loading; else loaded"> </ng-container>
   <ng-template #loading>
-    <mat-progress-spinner
-      [diameter]="60"
-      [mode]="'indeterminate'"
-    ></mat-progress-spinner>
+    <mat-progress-spinner [diameter]="60" [mode]="'indeterminate'"></mat-progress-spinner>
   </ng-template>
   <ng-template #loaded>
-    <ng-container *ngIf="(validators?.validators?.length || 0) > 0; then exist; else empty">
-    </ng-container>
+    <ng-container *ngIf="(validators?.validators?.length || 0) > 0; then exist; else empty"> </ng-container>
   </ng-template>
   <ng-template #exist>
     <ng-container *ngFor="let validator of validators?.validators">
-      <mat-list-item routerLink="/validators/{{ validator.operator_address }}">
-        <mat-icon matListIcon [ngStyle]="{ color: getColorCode(validator) }">
-          circle
-        </mat-icon>
+      <mat-list-item routerLink="{{ validator.operator_address }}">
+        <mat-icon matListIcon [ngStyle]="{ color: getColorCode(validator) }"> circle </mat-icon>
         <span>{{ validator.operator_address }}</span>
       </mat-list-item>
       <mat-divider></mat-divider>
