@@ -13,10 +13,7 @@ export class HomeComponent implements OnInit {
   @Input()
   syncing?: boolean | null;
 
-  constructor() {
-
-  }
+  constructor() { }
 
   ngOnInit(): void { }
-
 }

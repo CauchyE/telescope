@@ -8,13 +8,7 @@ import { MaterialModule } from '../../view/material.module';
 
 @NgModule({
   declarations: [HomeComponent],
-  imports: [
-    CommonModule,
-    RouterModule,
-    FormsModule,
-    FlexLayoutModule,
-    MaterialModule,
-  ],
+  imports: [CommonModule, RouterModule, FormsModule, FlexLayoutModule, MaterialModule],
   exports: [HomeComponent],
 })
 export class HomeModule { }
