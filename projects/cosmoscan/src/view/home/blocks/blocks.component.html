@@ -1,0 +1,13 @@
+<h2>Latest Blocks</h2>
+<mat-card>
+  <mat-nav-list>
+    <ng-container *ngFor="let block of latestBlocks">
+      <mat-list-item>
+        <span class="column-value">{{ block.result.data.value.block.header.height }}</span>
+        <span fxFlex="auto"></span>
+        <span class="column-value">{{ block.result.data.value.block.header.time }}</span>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </ng-container>
+  </mat-nav-list>
+</mat-card>

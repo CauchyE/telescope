@@ -16,25 +16,14 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   constructor(private cosmosSDK: CosmosSDKService) {
     const timer$ = timer(0, 60 * 1000);
-    const combined$ = combineLatest([timer$, this.cosmosSDK.sdk$]).pipe(map(([_, sdk]) => sdk))
+    const combined$ = combineLatest([timer$, this.cosmosSDK.sdk$]).pipe(map(([_, sdk]) => sdk));
 
-    this.nodeInfo$ = combined$.pipe(
-      mergeMap((sdk) =>
-        rest.cosmos.tendermint.getNodeInfo(sdk.rest).then((res) => res.data)
-      ),
-    );
+    this.nodeInfo$ = combined$.pipe(mergeMap((sdk) => rest.cosmos.tendermint.getNodeInfo(sdk.rest).then((res) => res.data)));
 
-    this.syncing$ = combined$.pipe(
-      mergeMap((sdk) =>
-        rest.cosmos.tendermint.getSyncing(sdk.rest)
-          .then((res) => res.data.syncing || false),
-      ),
-    );
+    this.syncing$ = combined$.pipe(mergeMap((sdk) => rest.cosmos.tendermint.getSyncing(sdk.rest).then((res) => res.data.syncing || false)));
   }
 
   ngOnInit() { }
 
-  ngOnDestroy() {
-
-  }
+  ngOnDestroy() { }
 }

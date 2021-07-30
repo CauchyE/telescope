@@ -16,9 +16,13 @@ import { ToolbarModule } from '../view/toolbar/toolbar.module';
 import { HttpClientModule } from '@angular/common/http';
 import { MatDialogModule } from '@angular/material/dialog';
 import { KeySelectDialogModule } from '../view/keys/key-select-dialog/key-select-dialog.module';
+import { BlocksComponent } from './home/blocks/blocks.component';
+import { BlocksModule } from '../view/home/blocks/blocks.module';
+import { TxsComponent } from './home/txs/txs.component';
+import { TxsModule } from '../view/home/txs/txs.module';
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent],
+  declarations: [AppComponent, HomeComponent, BlocksComponent, TxsComponent],
   imports: [
     BrowserModule,
     LoadingDialogModule,
@@ -34,6 +38,8 @@ import { KeySelectDialogModule } from '../view/keys/key-select-dialog/key-select
     ToolbarModule,
     HttpClientModule,
     KeySelectDialogModule,
+    BlocksModule,
+    TxsModule,
   ],
   providers: [],
   bootstrap: [AppComponent],
