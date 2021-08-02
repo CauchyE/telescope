@@ -8,7 +8,7 @@ import { websocket } from 'cosmos-client';
 })
 export class TxsComponent implements OnInit {
   @Input()
-  latestTxs?: websocket.ResponseSchema[] | null;
+  latestTxs?: websocket.ResponseSchema[] | null | undefined;
 
   constructor() { }
 

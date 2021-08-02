@@ -33,6 +33,8 @@ export class TxsComponent implements OnInit {
         map((data) => {
           if (data.length > 20) {
             data.pop();
+            //data確認のため一時的に追加
+            console.log(data);
           }
           return data;
         }),
@@ -42,6 +44,7 @@ export class TxsComponent implements OnInit {
 
   ngOnInit(): void {
     this.latestTxs$?.subscribe((latestTxs) => {
+      //一時的にデバッグ用に追加
       console.log('latestTxs');
       console.log(latestTxs);
     });
