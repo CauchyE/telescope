@@ -10,6 +10,10 @@ const routes: Routes = [
       import('./accounts/accounts.module').then((m) => m.AppAccountsModule),
   },
   {
+    path: 'blocks',
+    loadChildren: () => import('./blocks/blocks.module').then((m) => m.AppBlocksModule),
+  },
+  {
     path: 'txs',
     loadChildren: () => import('./txs/txs.module').then((m) => m.AppTxsModule),
   },
