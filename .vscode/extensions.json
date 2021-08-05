@@ -5,8 +5,8 @@
     "docsmsft.docs-markdown",
     "docsmsft.docs-yaml",
     "ms-vsliveshare.vsliveshare",
-    "shd101wyy.markdown-preview-enhanced",
     "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
     "angular.ng-template",
     "cyrilletuzi.angular-schematics",
     "stylelint.vscode-stylelint",
@@ -14,10 +14,5 @@
     "toba.vsfire",
     "bradlc.vscode-tailwindcss",
     "zxh404.vscode-proto3"
-  ]
-}
-{
-  "unwantedRecommendations": [
-    "esbenp.prettier-vscode"
   ]
 }
