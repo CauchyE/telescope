@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { VestingComponent } from './vesting.component';
+import { DistributionComponent as DistributionComponent } from './distribution.component';
 import { RouterModule } from '@angular/router';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '../../../material.module';
 
 @NgModule({
-  declarations: [VestingComponent],
+  declarations: [DistributionComponent],
   imports: [CommonModule, RouterModule, FlexLayoutModule, MaterialModule],
-  exports: [VestingComponent],
+  exports: [DistributionComponent],
 })
-export class VestingModule { }
+export class DistributionModule { }

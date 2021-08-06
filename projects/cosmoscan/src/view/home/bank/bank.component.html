@@ -1,0 +1,11 @@
+<h2>Total Supply</h2>
+<mat-card>
+  <mat-list *ngFor="let sup of totalSupply?.supply">
+    <mat-list-item>
+      <span class="column-value">{{ sup.amount }}</span>
+      <span fxFlex="auto"></span>
+      <span class="column-value">{{ sup.denom }}</span>
+      <mat-divider></mat-divider>
+    </mat-list-item>
+  </mat-list>
+</mat-card>

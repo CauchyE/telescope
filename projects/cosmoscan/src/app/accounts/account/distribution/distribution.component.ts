@@ -12,10 +12,10 @@ import { map, mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-vesting',
-  templateUrl: './vesting.component.html',
-  styleUrls: ['./vesting.component.css'],
+  templateUrl: './distribution.component.html',
+  styleUrls: ['./distribution.component.css'],
 })
-export class VestingComponent implements OnInit {
+export class DistributionComponent implements OnInit {
   commision$: Observable<QueryValidatorCommissionResponseIsTheResponseTypeForTheQueryValidatorCommissionRPCMethod>;
   rewards$: Observable<InlineResponse20043>;
   //description$: Observable<CosmosDistributionV1beta1QueryValidatorSlashesResponse>;

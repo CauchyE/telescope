@@ -19,6 +19,7 @@ export class ValidatorComponent implements OnInit {
       map((params) => params.address),
       map((addr) => cosmosclient.ValAddress.fromString(addr)),
     );
+    console.log(validatorAddress$);
 
     const combined$ = combineLatest([this.cosmosSDK.sdk$, validatorAddress$]);
     this.validator$ = combined$.pipe(

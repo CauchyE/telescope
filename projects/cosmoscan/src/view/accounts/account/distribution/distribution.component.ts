@@ -6,11 +6,11 @@ import {
 } from 'cosmos-client/cjs/openapi/api';
 
 @Component({
-  selector: 'app-view-vesting',
-  templateUrl: './vesting.component.html',
-  styleUrls: ['./vesting.component.css'],
+  selector: 'view-distribution',
+  templateUrl: './distribution.component.html',
+  styleUrls: ['./distribution.component.css'],
 })
-export class VestingComponent implements OnInit {
+export class DistributionComponent implements OnInit {
   @Input()
   commision?: QueryValidatorCommissionResponseIsTheResponseTypeForTheQueryValidatorCommissionRPCMethod | null;
   @Input()
