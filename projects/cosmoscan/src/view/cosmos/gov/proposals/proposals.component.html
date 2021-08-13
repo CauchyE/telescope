@@ -1,0 +1,18 @@
+<mat-nav-list>
+  <h3 matSubheader>Proposals</h3>
+  <mat-divider></mat-divider>
+  <ng-container *ngIf="(proposals?.proposals?.length || 0) > 0; then exist; else empty"> </ng-container>
+  <ng-template #exist>
+    <ng-container *ngFor="let proposal of proposals?.proposals">
+      <mat-list-item routerLink="{{ proposal.proposal_id }}">
+        <span class="column-value">{{ proposal.proposal_id }}</span>
+        <span fxFlex="auto"></span>
+        <span class="column-value">{{ proposal.status }}</span>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </ng-container>
+  </ng-template>
+  <ng-template #empty>
+    <p class="empty">There is no proposal.</p>
+  </ng-template>
+</mat-nav-list>
