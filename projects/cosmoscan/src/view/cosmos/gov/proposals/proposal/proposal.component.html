@@ -1,0 +1,121 @@
+<ng-container *ngIf="proposal === null; then loading; else loaded"> </ng-container>
+<ng-template #loading>
+  <mat-progress-spinner [diameter]="60" [mode]="'indeterminate'"></mat-progress-spinner>
+</ng-template>
+<ng-template #loaded>
+  <h2>proposal: {{ proposal?.proposal_id }}</h2>
+
+  <mat-card>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item>
+          <span class="column-name">Status: </span>
+          <span fxFlex="auto"></span>
+          <span class="column-value">{{ proposal?.status }}</span>
+        </mat-list-item>
+        <mat-divider [inset]="true"></mat-divider>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+  <h3>Tally</h3>
+
+  <mat-card>
+    <mat-card-content>
+      <mat-list>
+          <mat-list-item>
+            <span class="column-name">Yes: </span>
+            <span fxFlex="auto"></span>
+            <span class="column-value">{{ tally?.yes }}</span>
+          </mat-list-item>
+          <mat-divider [inset]="true"></mat-divider>
+          <mat-list-item>
+            <span class="column-name">Abstain: </span>
+            <span fxFlex="auto"></span>
+            <span class="column-value">{{ tally?.abstain }}</span>
+          </mat-list-item>
+          <mat-divider [inset]="true"></mat-divider>
+          <mat-list-item>
+            <span class="column-name">No: </span>
+            <span fxFlex="auto"></span>
+            <span class="column-value">{{ tally?.no }}</span>
+          </mat-list-item>
+          <mat-divider [inset]="true"></mat-divider>
+          <mat-list-item>
+            <span class="column-name">No with Veto: </span>
+            <span fxFlex="auto"></span>
+            <span class="column-value">{{ tally?.no_with_veto }}</span>
+          </mat-list-item>
+          <mat-divider [inset]="true"></mat-divider>
+        </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+  <h3>Deposit</h3>
+  <mat-card>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item>
+          <span class="column-name">Submit Time: </span>
+          <span fxFlex="auto"></span>
+          <span class="column-value">{{ proposal?.submit_time }}</span>
+        </mat-list-item>
+        <mat-divider [inset]="true"></mat-divider>
+        <mat-list-item>
+          <span class="column-name">Deposit End Time: </span>
+          <span fxFlex="auto"></span>
+          <span class="column-value">{{ proposal?.deposit_end_time }}</span>
+        </mat-list-item>
+        <mat-divider [inset]="true"></mat-divider>
+
+        <h4>Total Deposit</h4>
+        <mat-list-item *ngFor="let total of proposal?.total_deposit">
+          <span class="column-value">{{ total.amount }}</span>
+          <span fxFlex="auto"></span>
+          <span class="column-value">{{ total.denom }}</span>
+        </mat-list-item>
+        <mat-divider [inset]="true"></mat-divider>
+
+        <ng-container *ngFor="let deposit of deposits">
+          <h4>Depositor: {{ deposit.depositor }}</h4>
+          <mat-list-item *ngFor="let amount of deposit.amount">
+            <span class="column-value">{{ amount.amount }}</span>
+            <span fxFlex="auto"></span>
+            <span class="column-value">{{ amount.denom }}</span>
+          </mat-list-item>
+          <mat-divider [inset]="true"></mat-divider>
+        </ng-container>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+
+  <h3>Vote</h3>
+  <mat-card>
+    <mat-card-content>
+      <mat-list>
+        <mat-list-item>
+          <span class="column-name">Vote Start Time: </span>
+          <span fxFlex="auto"></span>
+          <span class="column-value">{{ proposal?.voting_start_time }}</span>
+        </mat-list-item>
+        <mat-divider [inset]="true"></mat-divider>
+        <mat-list-item>
+          <span class="column-name">Vote End Time: </span>
+          <span fxFlex="auto"></span>
+          <span class="column-value">{{ proposal?.voting_end_time }}</span>
+        </mat-list-item>
+        <mat-divider [inset]="true"></mat-divider>
+
+        <ng-container *ngFor="let vote of votes">
+          <h4>voter: {{ vote.voter }}</h4>
+          <mat-list-item>
+            <span class="column-name">Yes: </span>
+            <span fxFlex="auto"></span>
+            <span class="column-value">{{ vote.option }}</span>
+          </mat-list-item>
+          <mat-divider [inset]="true"></mat-divider>
+        </ng-container>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
+</ng-template>
