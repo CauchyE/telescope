@@ -19,8 +19,9 @@ export class ProposalComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private cosmosSDK: CosmosSDKService) {
     const proposalID$ = this.route.params.pipe(
-      map((params) => params.address),
+      map((params) => params.id),
     );
+    console.log('proposalID');
     console.log(proposalID$);
 
     const combined$ = combineLatest([this.cosmosSDK.sdk$, proposalID$]);
@@ -62,6 +63,22 @@ export class ProposalComponent implements OnInit {
    }
 
   ngOnInit(): void {
+    this.proposal$.subscribe((proposal) => {
+      console.log('proposal');
+      console.log(proposal);
+    });
+    this.deposits$.subscribe((deposits) => {
+      console.log('deposits');
+      console.log(deposits);
+    });
+    this.tally$.subscribe((tally) => {
+      console.log('tally');
+      console.log(tally);
+    });
+    this.votes$.subscribe((votes) => {
+      console.log('votes');
+      console.log(votes);
+    });
   }
 
 }

@@ -13,7 +13,6 @@
           <span fxFlex="auto"></span>
           <span class="column-value">{{ proposal?.status }}</span>
         </mat-list-item>
-        <mat-divider [inset]="true"></mat-divider>
       </mat-list>
     </mat-card-content>
   </mat-card>
@@ -46,7 +45,6 @@
             <span fxFlex="auto"></span>
             <span class="column-value">{{ tally?.no_with_veto }}</span>
           </mat-list-item>
-          <mat-divider [inset]="true"></mat-divider>
         </mat-list>
     </mat-card-content>
   </mat-card>
@@ -66,28 +64,37 @@
           <span fxFlex="auto"></span>
           <span class="column-value">{{ proposal?.deposit_end_time }}</span>
         </mat-list-item>
-        <mat-divider [inset]="true"></mat-divider>
+      </mat-list>
+    </mat-card-content>
+  </mat-card>
 
-        <h4>Total Deposit</h4>
+  <h4>Total Deposit</h4>
+  <mat-card>
+    <mat-card-content>
+      <mat-list>
         <mat-list-item *ngFor="let total of proposal?.total_deposit">
           <span class="column-value">{{ total.amount }}</span>
           <span fxFlex="auto"></span>
           <span class="column-value">{{ total.denom }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
-
-        <ng-container *ngFor="let deposit of deposits">
-          <h4>Depositor: {{ deposit.depositor }}</h4>
-          <mat-list-item *ngFor="let amount of deposit.amount">
-            <span class="column-value">{{ amount.amount }}</span>
-            <span fxFlex="auto"></span>
-            <span class="column-value">{{ amount.denom }}</span>
-          </mat-list-item>
-          <mat-divider [inset]="true"></mat-divider>
-        </ng-container>
       </mat-list>
     </mat-card-content>
   </mat-card>
+
+  <ng-container *ngFor="let deposit of deposits">
+    <h4>Depositor: {{ deposit.depositor }}</h4>
+    <mat-card>
+      <mat-list>
+        <mat-list-item *ngFor="let amount of deposit.amount">
+          <span class="column-value">{{ amount.amount }}</span>
+          <span fxFlex="auto"></span>
+          <span class="column-value">{{ amount.denom }}</span>
+        </mat-list-item>
+        <mat-divider [inset]="true"></mat-divider>
+      </mat-list>
+    </mat-card>
+  </ng-container>
 
   <h3>Vote</h3>
   <mat-card>
@@ -104,18 +111,21 @@
           <span fxFlex="auto"></span>
           <span class="column-value">{{ proposal?.voting_end_time }}</span>
         </mat-list-item>
-        <mat-divider [inset]="true"></mat-divider>
-
-        <ng-container *ngFor="let vote of votes">
-          <h4>voter: {{ vote.voter }}</h4>
-          <mat-list-item>
-            <span class="column-name">Yes: </span>
-            <span fxFlex="auto"></span>
-            <span class="column-value">{{ vote.option }}</span>
-          </mat-list-item>
-          <mat-divider [inset]="true"></mat-divider>
-        </ng-container>
       </mat-list>
     </mat-card-content>
   </mat-card>
+
+  <ng-container *ngFor="let vote of votes">
+    <h4>voter: {{ vote.voter }}</h4>
+    <mat-card>
+      <mat-list>
+        <mat-list-item>
+          <span class="column-name">Yes: </span>
+            <span fxFlex="auto"></span>
+            <span class="column-value">{{ vote.option }}</span>
+        </mat-list-item>
+        <mat-divider [inset]="true"></mat-divider>
+      </mat-list>
+    </mat-card>
+  </ng-container>
 </ng-template>
