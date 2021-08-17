@@ -20,9 +20,14 @@ import { BlocksComponent } from './home/blocks/blocks.component';
 import { BlocksModule } from '../view/home/blocks/blocks.module';
 import { TxsComponent } from './home/txs/txs.component';
 import { TxsModule } from '../view/home/txs/txs.module';
+import { BankComponent } from './home/bank/bank.component';
+import { BankModule } from '../view/home/bank/bank.module';
+import { MintComponent } from './home/mint/mint.component';
+import { MintModule } from '../view/home/mint/mint.module';
+
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, BlocksComponent, TxsComponent],
+  declarations: [AppComponent, HomeComponent, BlocksComponent, TxsComponent, BankComponent, MintComponent],
   imports: [
     BrowserModule,
     LoadingDialogModule,
@@ -40,6 +45,8 @@ import { TxsModule } from '../view/home/txs/txs.module';
     KeySelectDialogModule,
     BlocksModule,
     TxsModule,
+    BankModule,
+    MintModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

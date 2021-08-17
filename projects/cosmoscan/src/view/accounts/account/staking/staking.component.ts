@@ -5,7 +5,7 @@ import {
 } from 'cosmos-client/cjs/openapi/api';
 
 @Component({
-  selector: 'app-view-staking',
+  selector: 'view-staking',
   templateUrl: './staking.component.html',
   styleUrls: ['./staking.component.css'],
 })
