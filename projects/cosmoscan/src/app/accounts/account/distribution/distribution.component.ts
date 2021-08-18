@@ -18,7 +18,7 @@ import { map, mergeMap } from 'rxjs/operators';
 export class DistributionComponent implements OnInit {
   commision$: Observable<QueryValidatorCommissionResponseIsTheResponseTypeForTheQueryValidatorCommissionRPCMethod>;
   rewards$: Observable<InlineResponse20043>;
-  //description$: Observable<CosmosDistributionV1beta1QueryValidatorSlashesResponse>;
+  slashes$: Observable<CosmosDistributionV1beta1QueryValidatorSlashesResponse>;
 
   constructor(private readonly route: ActivatedRoute, private readonly cosmosSDK: CosmosSDKService) {
     const accAddress$ = this.route.params.pipe(
@@ -38,12 +38,10 @@ export class DistributionComponent implements OnInit {
       map((res) => res.data),
     );
 
-    /*
-    this.description$ = combined$.pipe(
+    this.slashes$ = combined$.pipe(
       mergeMap(([sdk, accAddress, valAddress]) => rest.cosmos.distribution.validatorSlashes(sdk.rest, valAddress, '1', '2')),
       map((res) => res.data),
     );
-    */
   }
 
   ngOnInit(): void { }
