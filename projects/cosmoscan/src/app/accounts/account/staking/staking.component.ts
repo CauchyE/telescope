@@ -43,19 +43,5 @@ export class StakingComponent implements OnInit {
     */
   }
 
-  ngOnInit(): void {
-    // 一時的にデバッグ用に追加
-    this.totalrewards$.subscribe((totalrewards) => {
-      console.log('totalrewards');
-      console.log(totalrewards);
-    });
-
-    // 一時的にデバッグ用に追加
-    /*
-    this.eachrewards$.subscribe((eachrewards) => {
-      console.log('eachrewards');
-      console.log(eachrewards);
-    });
-    */
-  }
+  ngOnInit(): void { }
 }

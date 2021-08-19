@@ -22,3 +22,21 @@
     <mat-divider [inset]="true"></mat-divider>
   </mat-list>
 </mat-card>
+
+<h3>Slashing</h3>
+<mat-card>
+  <mat-list *ngFor="let slash of slashes?.slashes">
+    <mat-list-item>
+      <span class="column-name">Validator Period:</span>
+      <span fxFlex="auto"></span>
+      <span class="column-value">{{ slash.validator_period }}</span>
+    </mat-list-item>
+    <mat-divider [inset]="true"></mat-divider>
+    <mat-list-item>
+      <span class="column-name">Fraction:</span>
+      <span fxFlex="auto"></span>
+      <span class="column-value">{{ slash.fraction }}</span>
+    </mat-list-item>
+    <mat-divider [inset]="true"></mat-divider>
+  </mat-list>
+</mat-card>
