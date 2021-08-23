@@ -1,13 +1,25 @@
 <h2>Latest Blocks</h2>
 <mat-card>
   <mat-nav-list>
-    <ng-container *ngFor="let block of latestBlocks">
-      <mat-list-item routerLink="/blocks/{{ block.result.data.value.block.header.height }}">
-        <span class="column-value">{{ block.result.data.value.block.header.height }}</span>
+    <ng-container *ngFor="let latestBlock of latestBlocks">
+      <mat-list-item routerLink="/blocks/{{ latestBlock.result.data.value.block.header.height }}">
+        <span class="column-value">{{ latestBlock.result.data.value.block.header.height }}</span>
         <span fxFlex="auto"></span>
-        <span class="column-value">{{ block.result.data.value.block.header.time }}</span>
+        <span class="column-value">{{ latestBlock.result.data.value.block.header.time }}</span>
       </mat-list-item>
       <mat-divider></mat-divider>
     </ng-container>
+    <ng-container *ngIf="initialBlocks === undefined || null ; then empty; else exist"></ng-container>
+    <ng-template #empty></ng-template>
+    <ng-template #exist>
+      <h3>Existing Block(s)</h3>
+      <mat-divider></mat-divider>
+      <mat-list-item routerLink="/blocks/{{ initialBlocks?.block?.header?.height }}">
+        <span class="column-value">{{ initialBlocks?.block?.header?.height }}</span>
+        <span fxFlex="auto"></span>
+        <span class="column-value">{{ initialBlocks?.block?.header?.time }}</span>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </ng-template>
   </mat-nav-list>
 </mat-card>

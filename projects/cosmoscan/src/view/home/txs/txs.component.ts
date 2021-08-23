@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { websocket } from 'cosmos-client';
+import { CosmosTxV1beta1GetTxsEventResponseTxResponses } from 'cosmos-client/esm/openapi';
 
 @Component({
   selector: 'view-txs',
@@ -8,7 +9,9 @@ import { websocket } from 'cosmos-client';
 })
 export class TxsComponent implements OnInit {
   @Input()
-  latestTxs?: websocket.ResponseSchema[] | null | undefined;
+  initialTxs?: CosmosTxV1beta1GetTxsEventResponseTxResponses[] | undefined | null;
+  @Input()
+  latestTxs?: websocket.ResponseSchema[] | undefined | null;
 
   constructor() { }
 
