@@ -41,9 +41,13 @@ export class BlocksComponent implements OnInit {
         }),
       );
 
+      //暫定的に自動削除用のコードを無効化
+      this.initialBlocks$ = initial;
+      /* websocket有効化後、自動削除を有効に
       this.initialBlocks$ = combineLatest([initial, this.latestBlocks$]).pipe(
         map(([init, latest]) => latest.length === 20 ? undefined : init)
       );
+      //*/
     });
   }
 

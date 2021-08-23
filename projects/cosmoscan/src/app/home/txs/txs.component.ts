@@ -29,12 +29,16 @@ export class TxsComponent implements OnInit {
         params: [`tm.event = 'Tx'`],
       });
 
+      //暫定的に自動削除用のコードを無効化
+      this.initialTxs$ = initial;
+      /* websocket有効化後、自動削除を有効に
       this.initialTxs$ = combineLatest([initial, ws.asObservable()]).pipe(
         map(([init, latest]) => {
           (latest as websocket.ResponseSchema).result.data !== undefined ? (init?.pop()) as CosmosTxV1beta1GetTxsEventResponseTxResponses[] : init;
           return init;
         }),
       );
+      //*/
 
       this.latestTxs$ = ws.asObservable().pipe(
         scan<any>((all, current) => [current, ...all], []),
