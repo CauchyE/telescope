@@ -24,10 +24,12 @@ import { BankComponent } from './home/bank/bank.component';
 import { BankModule } from '../view/home/bank/bank.module';
 import { MintComponent } from './home/mint/mint.component';
 import { MintModule } from '../view/home/mint/mint.module';
+import { DistributionComponent } from './home/distribution/distribution.component';
+import { DistributionModule } from '../view/home/distribution/distribution.module';
 
 
 @NgModule({
-  declarations: [AppComponent, HomeComponent, BlocksComponent, TxsComponent, BankComponent, MintComponent],
+  declarations: [AppComponent, HomeComponent, BlocksComponent, TxsComponent, BankComponent, MintComponent, DistributionComponent],
   imports: [
     BrowserModule,
     LoadingDialogModule,
@@ -47,6 +49,7 @@ import { MintModule } from '../view/home/mint/mint.module';
     TxsModule,
     BankModule,
     MintModule,
+    DistributionModule
   ],
   providers: [],
   bootstrap: [AppComponent],
