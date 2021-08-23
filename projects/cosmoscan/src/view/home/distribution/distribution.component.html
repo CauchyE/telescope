@@ -1,0 +1,11 @@
+<h2>Community Pool</h2>
+<mat-card>
+  <mat-list *ngFor="let pool of communityPool?.pool">
+    <mat-list-item>
+      <span class="column-value">{{ pool.amount }}</span>
+      <span fxFlex="auto"></span>
+      <span class="column-value">{{ pool.denom }}</span>
+      <mat-divider></mat-divider>
+    </mat-list-item>
+  </mat-list>
+</mat-card>
