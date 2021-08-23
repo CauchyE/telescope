@@ -26,7 +26,7 @@ export class BlocksComponent implements OnInit {
         id: '1',
         jsonrpc: '2.0',
         method: 'subscribe',
-        params: [`tm.event = 'NewBlock'`],
+        params: ['tm.event = "NewBlock"'],
       });
 
       this.latestBlocks$ = ws.asObservable().pipe(
