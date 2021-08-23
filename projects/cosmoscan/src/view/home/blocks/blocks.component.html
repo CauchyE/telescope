@@ -9,13 +9,17 @@
       </mat-list-item>
       <mat-divider></mat-divider>
     </ng-container>
-    <!--<ng-container *ngFor="let initialBlock of initialBlocks">-->
+    <ng-container *ngIf="initialBlocks === undefined || null ; then empty; else exist"></ng-container>
+    <ng-template #empty></ng-template>
+    <ng-template #exist>
+      <h3>Existing Block(s)</h3>
+      <mat-divider></mat-divider>
       <mat-list-item routerLink="/blocks/{{ initialBlocks?.block?.header?.height }}">
         <span class="column-value">{{ initialBlocks?.block?.header?.height }}</span>
         <span fxFlex="auto"></span>
         <span class="column-value">{{ initialBlocks?.block?.header?.time }}</span>
       </mat-list-item>
       <mat-divider></mat-divider>
-    <!--</ng-container>-->
+    </ng-template>
   </mat-nav-list>
 </mat-card>

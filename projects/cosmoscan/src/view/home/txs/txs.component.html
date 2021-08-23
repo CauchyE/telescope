@@ -9,13 +9,19 @@
       </mat-list-item>
       <mat-divider></mat-divider>
     </ng-container>
-    <ng-container *ngFor="let initialTx of initialTxs?.tx_responses">
-      <mat-list-item routerLink="/txs/{{ initialTx.txhash }}">
-        <span class="column-value">{{ initialTx.height }}</span>
-        <span fxFlex="auto"></span>
-        <span class="column-value">{{ initialTx.txhash }}</span>
-      </mat-list-item>
-      <mat-divider></mat-divider>
-    </ng-container>
+    <ng-container *ngIf="initialTxs === undefined || null ; then empty; else exist"></ng-container>
+      <ng-template #empty></ng-template>
+      <ng-template #exist>
+        <h3>Existing Transaction(s)</h3>
+        <mat-divider></mat-divider>
+        <ng-container *ngFor="let initialTx of initialTxs">
+          <mat-list-item routerLink="/txs/{{ initialTx.txhash }}">
+            <span class="column-value">{{ initialTx.height }}</span>
+            <span fxFlex="auto"></span>
+            <span class="column-value">{{ initialTx.txhash }}</span>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+        </ng-container>
+    </ng-template>
   </mat-nav-list>
 </mat-card>
