@@ -14,7 +14,7 @@
       <ng-template #exist>
         <h3>Existing Transaction(s)</h3>
         <mat-divider></mat-divider>
-        <ng-container *ngFor="let initialTx of initialTxs">
+        <ng-container *ngFor="let initialTx of initialTxs!.slice().reverse()">
           <mat-list-item routerLink="/txs/{{ initialTx.txhash }}">
             <span class="column-value">{{ initialTx.height }}</span>
             <span fxFlex="auto"></span>
