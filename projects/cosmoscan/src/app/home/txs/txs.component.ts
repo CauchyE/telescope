@@ -34,7 +34,7 @@ export class TxsComponent implements OnInit {
       /* websocket有効化後、自動削除を有効に
       this.initialTxs$ = combineLatest([initial, ws.asObservable()]).pipe(
         map(([init, latest]) => {
-          (latest as websocket.ResponseSchema).result.data !== undefined ? (init?.pop()) as CosmosTxV1beta1GetTxsEventResponseTxResponses[] : init;
+          (latest as websocket.ResponseSchema).result.data !== undefined ? (init?.shift()) as CosmosTxV1beta1GetTxsEventResponseTxResponses[] : init;
           return init;
         }),
       );
