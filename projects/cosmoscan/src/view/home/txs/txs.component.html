@@ -1,15 +1,15 @@
-<h2>Latest Transactions</h2>
-<mat-card>
-  <mat-nav-list>
-    <ng-container *ngFor="let latestTx of latestTxs">
-      <mat-list-item routerLink="/txs/{{ latestTx.result.events['tx.hash'][0] }}">
-        <span class="column-value">{{ latestTx.result.data.value.TxResult.height }}</span>
-        <span fxFlex="auto"></span>
-        <span class="column-value">{{ latestTx.result.events['tx.hash'][0] }}</span>
-      </mat-list-item>
-      <mat-divider></mat-divider>
-    </ng-container>
-    <div class="latest-transactions-scroll">
+<div class="latest-transactions-scroll">
+  <h2>Latest Transactions</h2>
+  <mat-card>
+    <mat-nav-list>
+      <ng-container *ngFor="let latestTx of latestTxs">
+        <mat-list-item routerLink="/txs/{{ latestTx.result.events['tx.hash'][0] }}">
+          <span class="column-value">{{ latestTx.result.data.value.TxResult.height }}</span>
+          <span fxFlex="auto"></span>
+          <span class="column-value">{{ latestTx.result.events['tx.hash'][0] }}</span>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </ng-container>
       <ng-container *ngIf="initialTxs === undefined || null ; then empty; else exist"></ng-container>
         <ng-template #empty></ng-template>
         <ng-template #exist>
@@ -24,6 +24,6 @@
             <mat-divider></mat-divider>
           </ng-container>
       </ng-template>
-    </div>
-  </mat-nav-list>
-</mat-card>
+    </mat-nav-list>
+  </mat-card>
+</div>
