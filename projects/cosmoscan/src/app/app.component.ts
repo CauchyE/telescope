@@ -23,7 +23,7 @@ export class AppComponent {
         if ('address' in event.snapshot.params) {
           return qs.stringify({ address: event.snapshot.params.address });
         } else if ('tx_hash' in event.snapshot.params) {
-          return qs.stringify({ address: event.snapshot.params.tx_hash });
+          return qs.stringify({ txHash: event.snapshot.params.tx_hash });
         }
         return '';
       }),
