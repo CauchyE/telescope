@@ -3,14 +3,19 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/gorilla/mux"
-	"github.com/spf13/cobra"
 	"io/ioutil"
 	"net/http"
 	"os"
 	"strconv"
+	"time"
+
+	"github.com/gorilla/mux"
+	"github.com/spf13/cobra"
+
+	"github.com/robfig/cron/v3"
 )
 
+var cronFlag bool
 var monitor *Monitor
 var rootCmd = &cobra.Command{
 	Use:          "monitor",
@@ -35,8 +40,9 @@ func fetchCmd() *cobra.Command {
 
 func serveCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:  "serve",
-		RunE: runFetch,
+		Use:  "serve [port]",
+		Args: cobra.ExactArgs(1),
+		RunE: runServe,
 	}
 }
 
@@ -45,18 +51,36 @@ func runHealth(cmd *cobra.Command, args []string) error {
 }
 
 func runFetch(cmd *cobra.Command, args []string) error {
-	date, err := NewDate(args[0], args[1], args[2])
+	t, err := time.Parse("2006-01-02", fmt.Sprintf("%s-%s-%s", args[0], args[1], args[2]))
 	if err != nil {
 		return err
 	}
-	return monitor.Fetch(date)
+	return monitor.Fetch(&t)
 }
 
 func runServe(cmd *cobra.Command, args []string) error {
+	port, err := strconv.Atoi(args[0])
+	if err != nil {
+		return err
+	}
+
+	if cronFlag {
+		c := cron.New()
+		c.AddFunc("0 * * * *", func() {
+			monitor.Health()
+		})
+		c.AddFunc("0 0 * * *", func() {
+			now := time.Now()
+			monitor.Fetch(&now)
+		})
+
+		c.Start()
+	}
+
 	router := mux.NewRouter()
 	router.HandleFunc("/list", getHandlerFactory(monitor)).Methods("GET")
 	http.Handle("/", router)
-	http.ListenAndServe(os.Getenv("MONITOR_PORT"), nil)
+	http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
 
 	return nil
 }
@@ -67,14 +91,14 @@ func getHandlerFactory(monitor *Monitor) func(w http.ResponseWriter, r *http.Req
 		year := params["start.year"]
 		month := params["start.month"]
 		day := params["start.day"]
-		start, err := NewDate(year, month, day)
+		start, err := time.Parse("2006-01-02", fmt.Sprintf("%s-%s-%s", year, month, day))
 		if err != nil {
 			fmt.Fprint(w, "error")
 		}
 
 		count, err := strconv.Atoi(params["count"])
 
-		bz, err := monitor.List(start, uint(count))
+		bz, err := monitor.List(&start, uint(count))
 		if err != nil {
 			fmt.Fprint(w, "error")
 		}
@@ -111,6 +135,8 @@ func init() {
 		os.Exit(1)
 	}
 
+	serveCmd().Flags().BoolVar(&cronFlag, "cron", false, "--cron=true")
+
 	rootCmd.AddCommand(
 		healthCmd(),
 		fetchCmd(),
@@ -119,6 +145,7 @@ func init() {
 }
 
 func main() {
+	defer monitor.Close()
 	err := rootCmd.Execute()
 	if err != nil {
 		os.Exit(1)

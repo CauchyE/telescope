@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"time"
 
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/opt"
@@ -19,7 +20,7 @@ type Monitor struct {
 }
 
 type Data struct {
-	BeforeDate *Date
+	BeforeDate *time.Time
 }
 
 func NewMonitor(healthURL string, apiMap map[string]string, slackWebhookURL string, slackChannel string, dbPath string) (*Monitor, error) {
@@ -37,7 +38,11 @@ func NewMonitor(healthURL string, apiMap map[string]string, slackWebhookURL stri
 	}, nil
 }
 
-func (montor *Monitor) Health() error {
+func (monitor *Monitor) Close() {
+	monitor.DB.Close()
+}
+
+func (monitor *Monitor) Health() error {
 	res, err := http.Get(monitor.HealthURL)
 	if err != nil {
 		return err
@@ -52,7 +57,7 @@ func (montor *Monitor) Health() error {
 	return nil
 }
 
-func (monitor *Monitor) Fetch(date *Date) error {
+func (monitor *Monitor) Fetch(t *time.Time) error {
 	result := make(map[string]json.RawMessage)
 
 	// iterate api map
@@ -75,7 +80,7 @@ func (monitor *Monitor) Fetch(date *Date) error {
 	bz, _ := json.MarshalIndent(result, "", "  ")
 
 	// put
-	err := monitor.DB.Put([]byte(date.Format()), bz, &opt.WriteOptions{})
+	err := monitor.DB.Put([]byte(t.Format("")), bz, &opt.WriteOptions{})
 	if err != nil {
 		return err
 	}
@@ -83,9 +88,9 @@ func (monitor *Monitor) Fetch(date *Date) error {
 	return nil
 }
 
-func (monitor *Monitor) List(start *Date, count uint) ([]Data, error) {
+func (monitor *Monitor) List(start *time.Time, count uint) ([]Data, error) {
 	var data []Data
-	key := []byte(start.Format())
+	key := []byte(start.Format("2006-01-02"))
 
 	for i := uint(0); i < count; i++ {
 		bz, err := monitor.DB.Get(key, &opt.ReadOptions{})
@@ -100,7 +105,7 @@ func (monitor *Monitor) List(start *Date, count uint) ([]Data, error) {
 		data = append(data, buffer)
 
 		// set next key to get
-		key = []byte(buffer.BeforeDate.Format())
+		key = []byte(buffer.BeforeDate.Format("2006-01-02"))
 	}
 
 	return data, nil
