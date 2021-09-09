@@ -2,6 +2,7 @@
 <div class="latest-transactions-scroll">
   <mat-card>
     <mat-nav-list>
+      <!--
       <ng-container *ngFor="let latestTx of latestTxs">
         <mat-list-item routerLink="/txs/{{ latestTx.result.events['tx.hash'][0] }}">
           <span class="column-value">{{ latestTx.result.data.value.TxResult.height }}</span>
@@ -10,10 +11,11 @@
         </mat-list-item>
         <mat-divider></mat-divider>
       </ng-container>
-      <ng-container *ngIf="initialTxs === undefined || null ; then empty; else exist"></ng-container>
+      -->
+      <ng-container *ngIf="initialTxs === undefined || null || [] ; then empty; else exist"></ng-container>
         <ng-template #empty></ng-template>
         <ng-template #exist>
-          <h3>Existing Transaction(s)</h3>
+          <h3>Latest Transactions</h3>
           <mat-divider></mat-divider>
           <ng-container *ngFor="let initialTx of initialTxs!.slice().reverse()">
             <mat-list-item routerLink="/txs/{{ initialTx.txhash }}">

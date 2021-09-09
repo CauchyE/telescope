@@ -9,7 +9,7 @@ import { InlineResponse20031 } from 'cosmos-client/esm/openapi';
 })
 export class BlocksComponent implements OnInit {
   @Input()
-  initialBlocks?: InlineResponse20031 | null | undefined;
+  initialBlock?: InlineResponse20031 | null | undefined;
   @Input()
   latestBlocks?: websocket.ResponseSchema[] | null | undefined;
 
