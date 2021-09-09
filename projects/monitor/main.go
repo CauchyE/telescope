@@ -3,11 +3,12 @@ package main
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
-	"os"
-
 	"github.com/gorilla/mux"
 	"github.com/spf13/cobra"
+	"io/ioutil"
+	"net/http"
+	"os"
+	"strconv"
 )
 
 var monitor *Monitor
@@ -17,10 +18,17 @@ var rootCmd = &cobra.Command{
 	SilenceUsage: true,
 }
 
+func healthCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:  "health",
+		RunE: runHealth,
+	}
+}
+
 func fetchCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:  "fetch [\"yyyy/MM/dd\"]",
-		Args: cobra.ExactArgs(1),
+		Use:  "fetch [year] [month] [date]",
+		Args: cobra.ExactArgs(3),
 		RunE: runFetch,
 	}
 }
@@ -32,8 +40,16 @@ func serveCmd() *cobra.Command {
 	}
 }
 
+func runHealth(cmd *cobra.Command, args []string) error {
+	return monitor.Health()
+}
+
 func runFetch(cmd *cobra.Command, args []string) error {
-	return monitor.Fetch(args[0])
+	date, err := NewDate(args[0], args[1], args[2])
+	if err != nil {
+		return err
+	}
+	return monitor.Fetch(date)
 }
 
 func runServe(cmd *cobra.Command, args []string) error {
@@ -48,10 +64,17 @@ func runServe(cmd *cobra.Command, args []string) error {
 func getHandlerFactory(monitor *Monitor) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		params := mux.Vars(r)
-		start := params["start"]
-		count := params["count"]
+		year := params["start.year"]
+		month := params["start.month"]
+		day := params["start.day"]
+		start, err := NewDate(year, month, day)
+		if err != nil {
+			fmt.Fprint(w, "error")
+		}
 
-		bz, err := monitor.List(start, count)
+		count, err := strconv.Atoi(params["count"])
+
+		bz, err := monitor.List(start, uint(count))
 		if err != nil {
 			fmt.Fprint(w, "error")
 		}
@@ -61,17 +84,38 @@ func getHandlerFactory(monitor *Monitor) func(w http.ResponseWriter, r *http.Req
 	}
 }
 
+type Config struct {
+	HealthURL       string            `json:"health_url"`
+	APIMap          map[string]string `json:"api_map"`
+	SlackWebhookURL string            `json:"slack_webhook_url"`
+	SlackChannel    string            `json:"slack_channel"`
+	DBPath          string            `json:"db_path"`
+}
+
 func init() {
+	bz, err := ioutil.ReadFile("./config.json")
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+	var config Config
+	err = json.Unmarshal(bz, &config)
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+
+	monitor, err = NewMonitor(config.HealthURL, config.APIMap, config.SlackWebhookURL, config.SlackChannel, config.DBPath)
+	if err != nil {
+		fmt.Println(err.Error())
+		os.Exit(1)
+	}
+
 	rootCmd.AddCommand(
+		healthCmd(),
 		fetchCmd(),
 		serveCmd(),
 	)
-
-	var err error
-	monitor, err = NewMonitor(os.Getenv("MONITOR_DB_PATH"), os.Getenv("SLACK_WEBHOOK_URL"), os.Getenv("SLACK_CHANNEL"))
-	if err != nil {
-		os.Exit(1)
-	}
 }
 
 func main() {

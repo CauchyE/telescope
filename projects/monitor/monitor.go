@@ -3,39 +3,107 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"io/ioutil"
+	"net/http"
+
 	"github.com/syndtr/goleveldb/leveldb"
 	"github.com/syndtr/goleveldb/leveldb/opt"
-	"net/http"
 )
 
 type Monitor struct {
+	HealthURL       string
+	APIMap          map[string]string
 	SlackWebhookURL string
 	SlackChannel    string
 	DB              *leveldb.DB
 }
 
-type Data struct{}
+type Data struct {
+	BeforeDate *Date
+}
 
-func NewMonitor(dbPath string, slackWebhookURL string, slackChannel string) (*Monitor, error) {
+func NewMonitor(healthURL string, apiMap map[string]string, slackWebhookURL string, slackChannel string, dbPath string) (*Monitor, error) {
 	db, err := leveldb.OpenFile(dbPath, &opt.Options{})
 	if err != nil {
 		return nil, err
 	}
 
 	return &Monitor{
+		HealthURL:       healthURL,
+		APIMap:          apiMap,
 		SlackWebhookURL: slackWebhookURL,
 		SlackChannel:    slackChannel,
 		DB:              db,
 	}, nil
 }
 
-func (monitor *Monitor) Fetch(yyyyMMdd string) error {
+func (montor *Monitor) Health() error {
+	res, err := http.Get(monitor.HealthURL)
+	if err != nil {
+		return err
+	}
+	defer res.Body.Close()
+
+	_, err = ioutil.ReadAll(res.Body)
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
-func (monitor *Monitor) List(start string, count uint32) (*Data, error) {
+func (monitor *Monitor) Fetch(date *Date) error {
+	result := make(map[string]json.RawMessage)
 
-	return &Data{}, nil
+	// iterate api map
+	for k, v := range monitor.APIMap {
+		res, err := http.Get(v)
+		if err != nil {
+			continue
+		}
+		defer res.Body.Close()
+
+		bz, err := ioutil.ReadAll(res.Body)
+		if err != nil {
+			continue
+		}
+
+		// set result
+		result[k] = json.RawMessage(bz)
+	}
+	// unmarshal all results
+	bz, _ := json.MarshalIndent(result, "", "  ")
+
+	// put
+	err := monitor.DB.Put([]byte(date.Format()), bz, &opt.WriteOptions{})
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (monitor *Monitor) List(start *Date, count uint) ([]Data, error) {
+	var data []Data
+	key := []byte(start.Format())
+
+	for i := uint(0); i < count; i++ {
+		bz, err := monitor.DB.Get(key, &opt.ReadOptions{})
+		if err != nil {
+			return nil, err
+		}
+		// unmarshal
+		var buffer Data
+		json.Unmarshal(bz, &buffer)
+
+		// append
+		data = append(data, buffer)
+
+		// set next key to get
+		key = []byte(buffer.BeforeDate.Format())
+	}
+
+	return data, nil
 }
 
 func (monitor *Monitor) postSlack(text string) error {
