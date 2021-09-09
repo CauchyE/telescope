@@ -4,7 +4,7 @@ import { rest, websocket } from 'cosmos-client';
 import { CosmosTxV1beta1GetTxsEventResponseTxResponses } from 'cosmos-client/cjs/openapi/api';
 import { CosmosSDKService } from 'projects/cosmoscan/src/model/cosmos-sdk.service';
 import { Observable } from 'rxjs';
-import { mergeMap } from 'rxjs/operators';
+import { map, mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-txs',
@@ -17,7 +17,8 @@ export class TxsComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private cosmosSDK: CosmosSDKService) {
     this.initialTxs$ = this.cosmosSDK.sdk$.pipe(
-      mergeMap(sdk => rest.cosmos.tx.getTxsEvent(sdk.rest, [`message.module='bank'`]).then((res) => res.data.tx_responses))
+      mergeMap(sdk => rest.cosmos.tx.getTxsEvent(sdk.rest, [`message.module='bank'`]).then((res) => res.data.tx_responses)),
+      map(initialTxs => initialTxs?.reverse())
     );
 
     /*

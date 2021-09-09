@@ -12,12 +12,12 @@
         <mat-divider></mat-divider>
       </ng-container>
       -->
-      <ng-container *ngIf="initialTxs === undefined || null || [] ; then empty; else exist"></ng-container>
+      <ng-container *ngIf="initialTxs === undefined || null ; then empty; else exist"></ng-container>
         <ng-template #empty></ng-template>
         <ng-template #exist>
           <h3>Latest Transactions</h3>
           <mat-divider></mat-divider>
-          <ng-container *ngFor="let initialTx of initialTxs!.slice().reverse()">
+          <ng-container *ngFor="let initialTx of initialTxs">
             <mat-list-item routerLink="/txs/{{ initialTx.txhash }}">
               <span class="column-value">{{ initialTx.height }}</span>
               <span fxFlex="auto"></span>
