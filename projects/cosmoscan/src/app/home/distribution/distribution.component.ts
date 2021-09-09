@@ -22,5 +22,4 @@ export class DistributionComponent implements OnInit {
 
   ngOnInit(): void {
   }
-
 }

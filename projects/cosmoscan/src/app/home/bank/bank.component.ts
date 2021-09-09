@@ -21,12 +21,8 @@ export class BankComponent implements OnInit {
     this.totalSupply$ = combined$.pipe(
       mergeMap((sdk) => rest.cosmos.bank.totalSupply(sdk.rest).then((res) => res.data)
     ));
-   }
-
-  ngOnInit(): void {
-  //一時的にデバッグ用に追加
-  console.log('supply');
-  console.log(this.totalSupply$);
   }
 
+  ngOnInit(): void {
+  }
 }

@@ -3,8 +3,8 @@ import { ActivatedRoute } from '@angular/router';
 import { rest, websocket } from 'cosmos-client';
 import { InlineResponse20031 } from 'cosmos-client/esm/openapi';
 import { CosmosSDKService } from 'projects/cosmoscan/src/model/cosmos-sdk.service';
-import { combineLatest, Observable } from 'rxjs';
-import { first, map, mergeMap, scan } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-blocks',
@@ -12,14 +12,15 @@ import { first, map, mergeMap, scan } from 'rxjs/operators';
   styleUrls: ['./blocks.component.css'],
 })
 export class BlocksComponent implements OnInit {
-  initialBlocks$?: Observable<InlineResponse20031 | undefined>;
+  initialBlock$?: Observable<InlineResponse20031 | undefined>;
   latestBlocks$?: Observable<websocket.RequestSchema[] | websocket.ResponseSchema[]>;
 
   constructor(private route: ActivatedRoute, private cosmosSDK: CosmosSDKService) {
-    const initial = this.cosmosSDK.sdk$.pipe(
+    this.initialBlock$ = this.cosmosSDK.sdk$.pipe(
       mergeMap(sdk => rest.cosmos.tendermint.getLatestBlock(sdk.rest).then((res) => res.data))
     );
 
+    /*
     this.cosmosSDK.websocketURL$.pipe(first()).subscribe((websocketURL) => {
       const ws = websocket.connect(websocketURL);
       ws.next({
@@ -43,12 +44,12 @@ export class BlocksComponent implements OnInit {
 
       //暫定的に自動削除用のコードを無効化
       this.initialBlocks$ = initial;
-      /* websocket有効化後、自動削除を有効に
+      // websocket有効化後、自動削除を有効に
       this.initialBlocks$ = combineLatest([initial, this.latestBlocks$]).pipe(
         map(([init, latest]) => latest.length === 20 ? undefined : init)
       );
-      //*/
     });
+    */
   }
 
   ngOnInit(): void {
