@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { websocket } from 'cosmos-client';
-import { InlineResponse20031 } from 'cosmos-client/esm/openapi';
+import { InlineResponse20032 } from 'cosmos-client/esm/openapi';
 
 @Component({
   selector: 'view-blocks',
@@ -9,9 +8,7 @@ import { InlineResponse20031 } from 'cosmos-client/esm/openapi';
 })
 export class BlocksComponent implements OnInit {
   @Input()
-  initialBlock?: InlineResponse20031 | null | undefined;
-  @Input()
-  latestBlocks?: websocket.ResponseSchema[] | null | undefined;
+  latestBlocks?: InlineResponse20032[] | null | undefined;
 
   constructor() { }
 
