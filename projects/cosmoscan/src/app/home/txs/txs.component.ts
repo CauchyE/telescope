@@ -12,7 +12,7 @@ import { map, mergeMap } from 'rxjs/operators';
   styleUrls: ['./txs.component.css']
 })
 export class TxsComponent implements OnInit {
-  pollingInterval = 5;
+  pollingInterval = 30;
   initialTxs$?: Observable<CosmosTxV1beta1GetTxsEventResponseTxResponses[] | undefined>;
   latestTxs$?: Observable<websocket.RequestSchema[] | websocket.ResponseSchema[]>;
 
