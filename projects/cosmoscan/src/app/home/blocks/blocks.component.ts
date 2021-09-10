@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { rest } from 'cosmos-client';
 import { InlineResponse20031, InlineResponse20032 } from 'cosmos-client/esm/openapi';
 import { CosmosSDKService } from 'projects/cosmoscan/src/model/cosmos-sdk.service';
-import { Observable, of, zip } from 'rxjs';
+import { Observable, of, zip, timer } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
 
 @Component({
@@ -12,12 +12,16 @@ import { catchError, map, mergeMap } from 'rxjs/operators';
   styleUrls: ['./blocks.component.css'],
 })
 export class BlocksComponent implements OnInit {
+  pollingInterval = 5;
   latestBlock$: Observable<InlineResponse20031 | undefined>;
   latestBlockHeight$: Observable<bigint | undefined>;
   latestBlocks$: Observable<InlineResponse20032[] | undefined>;
 
   constructor(private route: ActivatedRoute, private cosmosSDK: CosmosSDKService) {
-    this.latestBlock$ = this.cosmosSDK.sdk$.pipe(
+    const timer$ = timer(0, this.pollingInterval * 1000);
+    // eslint-disable-next-line no-unused-vars
+    const sdk$ = timer$.pipe(mergeMap(_ => this.cosmosSDK.sdk$));
+    this.latestBlock$ = sdk$.pipe(
       mergeMap(sdk => rest.cosmos.tendermint.getLatestBlock(sdk.rest).then((res) => res.data))
     );
     this.latestBlockHeight$ = this.latestBlock$.pipe(
