@@ -3,7 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { rest, websocket } from 'cosmos-client';
 import { CosmosTxV1beta1GetTxsEventResponseTxResponses } from 'cosmos-client/cjs/openapi/api';
 import { CosmosSDKService } from 'projects/cosmoscan/src/model/cosmos-sdk.service';
-import { Observable } from 'rxjs';
+import { Observable, timer } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 
 @Component({
@@ -12,11 +12,15 @@ import { map, mergeMap } from 'rxjs/operators';
   styleUrls: ['./txs.component.css']
 })
 export class TxsComponent implements OnInit {
+  pollingInterval = 30;
   initialTxs$?: Observable<CosmosTxV1beta1GetTxsEventResponseTxResponses[] | undefined>;
   latestTxs$?: Observable<websocket.RequestSchema[] | websocket.ResponseSchema[]>;
 
   constructor(private route: ActivatedRoute, private cosmosSDK: CosmosSDKService) {
-    this.initialTxs$ = this.cosmosSDK.sdk$.pipe(
+    const timer$ = timer(0, this.pollingInterval * 1000);
+    // eslint-disable-next-line no-unused-vars
+    const sdk$ = timer$.pipe(mergeMap(_ => this.cosmosSDK.sdk$));
+    this.initialTxs$ = sdk$.pipe(
       mergeMap(sdk => rest.cosmos.tx.getTxsEvent(sdk.rest, [`message.module='bank'`]).then((res) => res.data.tx_responses)),
       map(initialTxs => initialTxs?.reverse())
     );
