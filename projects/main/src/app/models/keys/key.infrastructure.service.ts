@@ -1,4 +1,4 @@
-import { CosmosSDKService } from '../../app/models/cosmos-sdk.service';
+import { CosmosSDKService } from '../../models/cosmos-sdk.service';
 import { DbService } from '../db.service';
 import { Key, KeyType } from './key.model';
 import { IKeyInfrastructure } from './key.service';

@@ -1,5 +1,5 @@
-import { Key } from '../../app/models/keys/key.model';
-import { KeyService } from '../../app/models/keys/key.service';
+import { Key } from '../../models/keys/key.model';
+import { KeyService } from '../../models/keys/key.service';
 import { Component, OnInit } from '@angular/core';
 import { Observable, from } from 'rxjs';
 

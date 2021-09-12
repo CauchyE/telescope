@@ -1,4 +1,4 @@
-import { CosmosSDKService } from '../../../../app/models/cosmos-sdk.service';
+import { CosmosSDKService } from '../../../../models/cosmos-sdk.service';
 import { Component, OnInit } from '@angular/core';
 import { rest } from 'cosmos-client';
 import { QueryValidatorsResponseIsResponseTypeForTheQueryValidatorsRPCMethod } from 'cosmos-client/esm/openapi';

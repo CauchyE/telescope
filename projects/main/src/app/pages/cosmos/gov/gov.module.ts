@@ -5,8 +5,8 @@ import { ProposalComponent } from './proposals/proposal/proposal.component';
 import { ProposalsComponent } from './proposals/proposals.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { ProposalModule } from 'projects/main/src/view/cosmos/gov/proposals/proposal/proposal.module';
-import { ProposalsModule } from 'projects/main/src/view/cosmos/gov/proposals/proposals.module';
+import { ProposalModule } from 'projects/main/src/app/views/cosmos/gov/proposals/proposal/proposal.module';
+import { ProposalsModule } from 'projects/main/src/app/views/cosmos/gov/proposals/proposals.module';
 
 @NgModule({
   declarations: [GovComponent, ProposalsComponent, ProposalComponent],

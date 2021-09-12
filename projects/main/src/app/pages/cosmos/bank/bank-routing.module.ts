@@ -1,4 +1,4 @@
-import { KeySelectGuard } from '../../../app/models/keys/key-select.guard';
+import { KeySelectGuard } from '../../../models/keys/key-select.guard';
 import { BankComponent } from './bank.component';
 import { SendComponent } from './send/send.component';
 import { NgModule } from '@angular/core';

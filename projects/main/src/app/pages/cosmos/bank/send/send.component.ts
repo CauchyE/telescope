@@ -1,8 +1,8 @@
-import { CosmosSDKService } from '../../../../app/models/cosmos-sdk.service';
-import { BankApplicationService } from '../../../../app/models/cosmos/bank.application.service';
-import { Key } from '../../../../app/models/keys/key.model';
-import { KeyService } from '../../../../app/models/keys/key.service';
-import { KeyStoreService } from '../../../../app/models/keys/key.store.service';
+import { CosmosSDKService } from '../../../../models/cosmos-sdk.service';
+import { BankApplicationService } from '../../../../models/cosmos/bank.application.service';
+import { Key } from '../../../../models/keys/key.model';
+import { KeyService } from '../../../../models/keys/key.service';
+import { KeyStoreService } from '../../../../models/keys/key.store.service';
 import { SendOnSubmitEvent } from '../../../../views/cosmos/bank/send/send.component';
 import { Component, OnInit } from '@angular/core';
 import { cosmosclient, proto, rest } from 'cosmos-client';

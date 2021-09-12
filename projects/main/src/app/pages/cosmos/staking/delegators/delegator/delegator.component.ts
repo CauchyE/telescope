@@ -1,4 +1,4 @@
-import { CosmosSDKService } from '../../../../../app/models/cosmos-sdk.service';
+import { CosmosSDKService } from '../../../../../models/cosmos-sdk.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { cosmosclient, rest } from 'cosmos-client';

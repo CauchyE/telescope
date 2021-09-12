@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { KeyApplicationService } from 'projects/main/src/app/models/keys/key.application.service';
-import { SignOnSignEvent } from 'projects/main/src/view/keys/sign/sign.component';
+import { SignOnSignEvent } from 'projects/main/src/app/views/keys/sign/sign.component';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 

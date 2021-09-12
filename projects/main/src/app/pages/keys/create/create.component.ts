@@ -1,4 +1,4 @@
-import { KeyService } from '../../../app/models/keys/key.service';
+import { KeyService } from '../../../models/keys/key.service';
 import { CreateOnSubmitEvent } from '../../../views/keys/create/create.component';
 import { Component, OnInit } from '@angular/core';
 import * as bip39 from 'bip39';

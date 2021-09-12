@@ -1,5 +1,5 @@
-import { CosmosSDKService } from '../../../../../app/models/cosmos-sdk.service';
-import { StakingApplicationService } from '../../../../../app/models/cosmos/staking.application.service';
+import { CosmosSDKService } from '../../../../../models/cosmos-sdk.service';
+import { StakingApplicationService } from '../../../../../models/cosmos/staking.application.service';
 import { CreateOnSubmitEvent } from '../../../../../views/cosmos/staking/delegators/create/create.component';
 import { Component, OnInit } from '@angular/core';
 

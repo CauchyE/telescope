@@ -1,4 +1,4 @@
-import { Key } from '../../../../app/models/keys/key.model';
+import { Key } from '../../../../models/keys/key.model';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { proto } from 'cosmos-client';
 

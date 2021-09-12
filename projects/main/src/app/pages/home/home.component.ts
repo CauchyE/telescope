@@ -1,4 +1,4 @@
-import { CosmosSDKService } from '../../app/models/cosmos-sdk.service';
+import { CosmosSDKService } from '../../models/cosmos-sdk.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { rest } from 'cosmos-client';
 import { InlineResponse20033 } from 'cosmos-client/esm/openapi';
