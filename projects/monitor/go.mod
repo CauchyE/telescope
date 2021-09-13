@@ -1,4 +1,4 @@
-module github.com/lcnem/cosmoscan/projects/monitor
+module github.com/lcnem/telescope/projects/monitor
 
 go 1.16
 

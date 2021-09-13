@@ -1,92 +1,90 @@
 {
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "cli": {
+    "analytics": "275ee8c7-d031-45f9-ad28-6a789fcbb579",
+    "defaultCollection": "@ngrx/schematics"
+  },
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "cosmoscan": {
+    "main": {
       "projectType": "application",
       "schematics": {
-        "@schematics/angular:component": {
-          "skipTests": true
-        },
-        "@schematics/angular:service": {
-          "skipTests": true
+        "@schematics/angular:application": {
+          "strict": true
         }
       },
-      "root": "projects/cosmoscan",
-      "sourceRoot": "projects/cosmoscan/src",
+      "root": "projects/main",
+      "sourceRoot": "projects/main/src",
       "prefix": "app",
       "architect": {
         "build": {
-          "builder": "@angular-builders/custom-webpack:browser",
+          "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "customWebpackConfig": {
-              "path": "webpack.config.js"
-            },
-            "outputPath": "dist/cosmoscan",
-            "index": "projects/cosmoscan/src/index.html",
-            "main": "projects/cosmoscan/src/main.ts",
-            "polyfills": "projects/cosmoscan/src/polyfills.ts",
-            "tsConfig": "projects/cosmoscan/tsconfig.app.json",
-            "aot": true,
+            "outputPath": "dist/main",
+            "index": "projects/main/src/index.html",
+            "main": "projects/main/src/main.ts",
+            "polyfills": "projects/main/src/polyfills.ts",
+            "tsConfig": "projects/main/tsconfig.app.json",
             "assets": [
-              "projects/cosmoscan/src/favicon.ico",
-              "projects/cosmoscan/src/assets",
-              "projects/cosmoscan/src/manifest.webmanifest"
+              "projects/main/src/favicon.ico",
+              "projects/main/src/assets"
             ],
             "styles": [
               "./node_modules/@angular/material/prebuilt-themes/indigo-pink.css",
-              "projects/cosmoscan/src/styles.css"
+              "projects/main/src/styles.css"
             ],
             "scripts": []
           },
           "configurations": {
             "production": {
-              "fileReplacements": [
-                {
-                  "replace": "projects/cosmoscan/src/environments/environment.ts",
-                  "with": "projects/cosmoscan/src/environments/environment.prod.ts"
-                }
-              ],
-              "optimization": true,
-              "outputHashing": "all",
-              "sourceMap": false,
-              "namedChunks": false,
-              "extractLicenses": true,
-              "vendorChunk": false,
-              "buildOptimizer": true,
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "2mb",
-                  "maximumError": "5mb"
+                  "maximumWarning": "5mb",
+                  "maximumError": "10mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "6kb",
-                  "maximumError": "10kb"
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
                 }
               ],
-              "serviceWorker": true,
-              "ngswConfigPath": "ngsw-config.json"
+              "fileReplacements": [
+                {
+                  "replace": "projects/main/src/environments/environment.ts",
+                  "with": "projects/main/src/environments/environment.prod.ts"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
             }
-          }
+          },
+          "defaultConfiguration": "production"
         },
         "serve": {
-          "builder": "@angular-builders/custom-webpack:dev-server",
-          "options": {
-            "browserTarget": "cosmoscan:build"
-          },
+          "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "cosmoscan:build:production"
+              "browserTarget": "main:build:production"
+            },
+            "development": {
+              "browserTarget": "main:build:development"
             }
-          }
+          },
+          "defaultConfiguration": "development"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "cosmoscan:build"
+            "browserTarget": "main:build"
           }
         },
         "test": {
@@ -99,28 +97,117 @@
           "builder": "@angular-eslint/builder:lint",
           "options": {
             "lintFilePatterns": [
-              "projects/cosmoscan/**/*.ts",
-              "projects/cosmoscan/**/*.html"
+              "projects/main/**/*.ts",
+              "projects/main/**/*.html"
             ]
           }
         },
-        "e2e": {
-          "builder": "@angular-devkit/build-angular:protractor",
+        "cypress-run": {
+          "builder": "@cypress/schematic:cypress",
           "options": {
-            "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "cosmoscan:serve"
+            "devServerTarget": "main:serve",
+            "configFile": "projects/main/cypress.json"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "cosmoscan:serve:production"
+              "devServerTarget": "main:serve:production"
+            }
+          }
+        },
+        "cypress-open": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "watch": true,
+            "headless": false,
+            "configFile": "projects/main/cypress.json"
+          }
+        },
+        "e2e": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "main:serve",
+            "watch": true,
+            "headless": false
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "main:serve:production"
+            }
+          }
+        }
+      }
+    },
+    "shared": {
+      "projectType": "library",
+      "root": "projects/shared",
+      "sourceRoot": "projects/shared/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/shared/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/shared/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/shared/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-builders/jest:run",
+          "options": {
+            "configPath": "./jest.config.js"
+          }
+        },
+        "lint": {
+          "builder": "@angular-eslint/builder:lint",
+          "options": {
+            "lintFilePatterns": [
+              "projects/shared/**/*.ts",
+              "projects/shared/**/*.html"
+            ]
+          }
+        },
+        "cypress-run": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "shared:serve",
+            "configFile": "projects/shared/cypress.json"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "shared:serve:production"
+            }
+          }
+        },
+        "cypress-open": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "watch": true,
+            "headless": false,
+            "configFile": "projects/shared/cypress.json"
+          }
+        },
+        "e2e": {
+          "builder": "@cypress/schematic:cypress",
+          "options": {
+            "devServerTarget": "shared:serve",
+            "watch": true,
+            "headless": false
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "shared:serve:production"
             }
           }
         }
       }
     }
   },
-  "defaultProject": "cosmoscan",
-  "cli": {
-    "analytics": "b7af6576-8981-4382-9f5a-7cdd42521d0d"
-  }
+  "defaultProject": "main"
 }

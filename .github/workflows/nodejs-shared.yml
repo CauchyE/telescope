@@ -3,10 +3,10 @@ name: Node.js CI shared
 on:
   pull_request:
     paths:
-      - "shared/**"
+      - "projects/shared/**"
 
 jobs:
-  shared:
+  build:
     runs-on: ubuntu-latest
 
     strategy:
@@ -25,9 +25,9 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-
+      - run: npm i -g npm
       - run: npm ci
-        working-directory: ./shared
-      - run: npm run build --if-present
-        working-directory: ./shared
-      - run: npm run test
-        working-directory: ./shared
+      - run: npm run build --if-present -- --project=shared
+      - run: npm run test -- --project=shared
+        env:
+          CI: true
