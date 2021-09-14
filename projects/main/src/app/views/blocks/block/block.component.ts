@@ -1,0 +1,19 @@
+import { Component, Input, OnInit } from '@angular/core';
+import { InlineResponse20032 } from 'cosmos-client/esm/openapi';
+import { CosmosBaseTendermintV1beta1GetValidatorSetByHeightResponse } from 'cosmos-client/esm/openapi/api';
+
+@Component({
+  selector: 'view-block',
+  templateUrl: './block.component.html',
+  styleUrls: ['./block.component.css'],
+})
+export class BlockComponent implements OnInit {
+  @Input()
+  block?: InlineResponse20032 | null;
+  @Input()
+  validatorsets?: CosmosBaseTendermintV1beta1GetValidatorSetByHeightResponse | null;
+
+  constructor() {}
+
+  ngOnInit(): void {}
+}

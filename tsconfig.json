@@ -14,16 +14,27 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2015",
+    "paths": {
+      "shared": [
+        "dist/shared/shared",
+        "dist/shared"
+      ],
+      "crypto": [
+        "./node_modules/crypto-browserify"
+      ],
+      "stream": [
+        "./node_modules/stream-browserify"
+      ]
+    },
+    "target": "es2017",
     "module": "es2020",
     "lib": [
       "es2020",
-      "es2018",
       "dom"
-    ],
-    "allowSyntheticDefaultImports": true
+    ]
   },
   "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
     "strictTemplates": true

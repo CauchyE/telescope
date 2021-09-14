@@ -1,12 +1,12 @@
-# Cosmoscan
+# Telescope
 
 ## Run
 
 ```bash
-mkdir cosmoscan
-cd cosmoscan
-curl -L https://raw.githubusercontent.com/lcnem/cosmoscan/main/projects/cosmoscan/config.js.template -o config.js
-curl -O https://raw.githubusercontent.com/lcnem/cosmoscan/main/projects/cosmoscan/docker-compose.yml
-curl -O https://raw.githubusercontent.com/lcnem/cosmoscan/main/projects/cosmoscan/nginx.conf
+mkdir telescope
+cd telescope
+curl -L https://raw.githubusercontent.com/lcnem/telescope/main/projects/main/config.js.template -o config.js
+curl -O https://raw.githubusercontent.com/lcnem/telescope/main/projects/main/docker-compose.yml
+curl -O https://raw.githubusercontent.com/lcnem/telescope/main/projects/main/nginx.conf
 docker-compose up -d
 ```
