@@ -8,7 +8,7 @@ export class DbService {
   db: Dexie;
 
   constructor() {
-    const dbName = 'cosmoscan';
+    const dbName = 'telescope';
     this.db = new Dexie(dbName);
     this.db.version(1).stores({
       keys: '++index, &id, type, public_key',
