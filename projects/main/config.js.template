@@ -1,5 +1,6 @@
 const config = {
   restURL: `${location.protocol}//${location.hostname}:1317`,
+  faucetURL: `${location.protocol}//${location.hostname}:8000`,
   websocketURL: `${location.protocol.replace('http', 'ws')}//${location.hostname}:26657`,
   chainID: 'cosmoshub-3',
   // bech32Prefix: {
@@ -11,12 +12,25 @@ const config = {
   //   consPub: '',
   // },
   // extension: {
+  //   faucet: false,
   //   navigations: [
   //     {
   //       name: '',
   //       link: '',
   //     }
   //   ],
-  //   messageActions: ['']
+  //   messageActions: [''],
+  //   messageModules: [
+  //     'bank', // hit
+  //     'auth',
+  //     'crisis',
+  //     'distribution',
+  //     'evidence',
+  //     'genaccounts',
+  //     'gov',
+  //     'ibc',
+  //     'slashing',
+  //     'staking', // hit
+  //   ],
   // }
 };
