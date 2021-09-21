@@ -1,4 +1,12 @@
-<h2>Latest Transactions</h2>
+<div fxLayout="row" fxLayoutAlign="space-between start">
+  <h2>Latest Transactions</h2>
+  <mat-form-field appearance="fill">
+    <mat-select [(value)]="selectedTxType" (valueChange)="onSelectedTxTypeChanged($event)">
+      <mat-option *ngFor="let txType of txTypeOptions" [value]="txType">{{txType}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
 <div class="latest-transactions-scroll">
   <mat-card>
     <mat-nav-list>
@@ -16,14 +24,6 @@
       <ng-template #empty></ng-template>
       <ng-template #exist>
         <h3>Latest Transactions</h3>
-
-        <mat-form-field appearance="fill">
-          <mat-select [(value)]="selected_tx_group">
-            <mat-option *ngFor="let tx_select of tx_group" [value]="tx_select">{{tx_select}}
-            </mat-option>
-          </mat-select>
-        </mat-form-field>
-
         <mat-divider></mat-divider>
         <ng-container *ngFor="let initialTx of initialTxs">
           <mat-list-item routerLink="/txs/{{ initialTx.txhash }}">

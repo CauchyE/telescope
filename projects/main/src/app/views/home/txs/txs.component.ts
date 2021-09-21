@@ -1,8 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { websocket } from 'cosmos-client';
 import { CosmosTxV1beta1GetTxsEventResponseTxResponses } from 'cosmos-client/esm/openapi';
-import { config } from 'process';
-import { Config, ConfigService } from './../../../models/config.service';
 
 @Component({
   selector: 'view-txs',
@@ -14,15 +12,19 @@ export class TxsComponent implements OnInit {
   initialTxs?: CosmosTxV1beta1GetTxsEventResponseTxResponses[] | undefined | null;
   @Input()
   latestTxs?: websocket.ResponseSchema[] | undefined | null;
-  //@Input()
-  //config?: Config
+  @Input()
+  txTypeOptions?: string[] | undefined | null;
+  @Input()
+  selectedTxType?: string | undefined | null;
 
-  constructor(
-    private readonly config: ConfigService
-  ) { }
+  @Output()
+  selectedTxTypeChanged: EventEmitter<string> = new EventEmitter<string>()
+
+  constructor() { }
 
   ngOnInit(): void { }
 
-  tx_group = this.config.config.extension?.messageModules
-  selected_tx_group = this.tx_group?.[0]
+  onSelectedTxTypeChanged(selectedTxType: string): void {
+    this.selectedTxTypeChanged.emit(selectedTxType)
+  }
 }
