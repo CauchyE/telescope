@@ -13,11 +13,13 @@ export type Config = {
     consPub: string;
   };
   extension?: {
+    faucet: boolean;
     navigations: {
       name: string;
       link: string;
     }[];
     messageActions: string[];
+    messageModules: string[];
   };
 };
 

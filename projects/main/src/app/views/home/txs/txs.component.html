@@ -1,4 +1,12 @@
-<h2>Latest Transactions</h2>
+<div fxLayout="row" fxLayoutAlign="space-between start">
+  <h2>Latest Transactions</h2>
+  <mat-form-field appearance="fill">
+    <mat-select [(value)]="selectedTxType" (valueChange)="onSelectedTxTypeChanged($event)">
+      <mat-option *ngFor="let txType of txTypeOptions" [value]="txType">{{txType}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
 <div class="latest-transactions-scroll">
   <mat-card>
     <mat-nav-list>
@@ -13,18 +21,18 @@
       </ng-container>
       -->
       <ng-container *ngIf="initialTxs === undefined || null ; then empty; else exist"></ng-container>
-        <ng-template #empty></ng-template>
-        <ng-template #exist>
-          <h3>Latest Transactions</h3>
+      <ng-template #empty></ng-template>
+      <ng-template #exist>
+        <h3>Latest Transactions</h3>
+        <mat-divider></mat-divider>
+        <ng-container *ngFor="let initialTx of initialTxs">
+          <mat-list-item routerLink="/txs/{{ initialTx.txhash }}">
+            <span class="column-value">{{ initialTx.height }}</span>
+            <span fxFlex="auto"></span>
+            <span class="column-value">{{ initialTx.txhash }}</span>
+          </mat-list-item>
           <mat-divider></mat-divider>
-          <ng-container *ngFor="let initialTx of initialTxs">
-            <mat-list-item routerLink="/txs/{{ initialTx.txhash }}">
-              <span class="column-value">{{ initialTx.height }}</span>
-              <span fxFlex="auto"></span>
-              <span class="column-value">{{ initialTx.txhash }}</span>
-            </mat-list-item>
-            <mat-divider></mat-divider>
-          </ng-container>
+        </ng-container>
       </ng-template>
     </mat-nav-list>
   </mat-card>
