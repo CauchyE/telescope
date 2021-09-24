@@ -8,6 +8,6 @@ import { BlocksModule } from '../../views/blocks/blocks.module';
 
 @NgModule({
   declarations: [BlockComponent, BlocksComponent],
-  imports: [CommonModule, BlocksRoutingModule, BlockModule,BlocksModule],
+  imports: [CommonModule, BlocksRoutingModule, BlockModule, BlocksModule],
 })
 export class AppBlocksModule {}

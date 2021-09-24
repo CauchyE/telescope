@@ -19,13 +19,11 @@ export class BlocksComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private cosmosSDK: CosmosSDKService) {
     const timer$ = timer(0, this.pollingInterval * 1000);
-    // eslint-disable-next-line no-unused-vars
     const sdk$ = timer$.pipe(mergeMap((_) => this.cosmosSDK.sdk$));
     this.latestBlock$ = sdk$.pipe(
       mergeMap((sdk) => rest.cosmos.tendermint.getLatestBlock(sdk.rest).then((res) => res.data)),
     );
     this.latestBlockHeight$ = this.latestBlock$.pipe(
-      // eslint-disable-next-line no-undef
       map((latestBlock) =>
         latestBlock?.block?.header?.height ? BigInt(latestBlock.block.header.height) : undefined,
       ),
@@ -37,11 +35,8 @@ export class BlocksComponent implements OnInit {
     this.latestBlocks$ = this.latestBlockHeight$.pipe(
       map((latestBlockHeight) =>
         [...Array(20).keys()].map((index) => {
-          if (latestBlockHeight === undefined) {
-            throw Error('latestBlockHeight should not be undfined!');
-          }
-          // eslint-disable-next-line no-undef
-          return latestBlockHeight - BigInt(index);
+          const tempLatestBlockHeight = latestBlockHeight === undefined ? BigInt(0) : latestBlockHeight;
+          return tempLatestBlockHeight - BigInt(index);
         }),
       ),
       mergeMap((blockHeights) =>
