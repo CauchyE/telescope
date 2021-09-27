@@ -117,7 +117,7 @@ func init() {
 		os.Exit(1)
 	}
 
-	monitor, err = NewMonitor(config.HealthURL, config.APIMap, config.SlackWebhookURL, config.SlackChannel, config.DBPath)
+	monitor, err = NewMonitor(config.HealthURL, config.APIMap, config.SlackWebhookURL, config.SlackChannel)
 	if err != nil {
 		fmt.Println(err.Error())
 		os.Exit(1)
