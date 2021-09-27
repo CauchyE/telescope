@@ -13,7 +13,13 @@ export type Config = {
     consPub: string;
   };
   extension?: {
-    faucet: boolean;
+    faucet?: {
+      hasFaucet: boolean;
+      faucetURL: string;
+      denoms: string[];
+      creditAmount: number;
+      maxCredit: number;
+    };
     monitor?: {
       monitorURL: string;
     };
