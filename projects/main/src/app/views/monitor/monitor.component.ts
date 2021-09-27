@@ -1,5 +1,5 @@
+import { Data } from '../../models/monitor.service';
 import { Component, Input, OnInit } from '@angular/core';
-import { Data } from '@angular/router';
 
 @Component({
   selector: 'view-monitor',
