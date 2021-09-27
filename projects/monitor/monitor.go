@@ -21,6 +21,7 @@ type Monitor struct {
 
 type Data struct {
 	BeforeDate *time.Time
+  Result map[string]json.RawMessage
 }
 
 func NewMonitor(healthURL string, apiMap map[string]string, slackWebhookURL string, slackChannel string, dbPath string) (*Monitor, error) {

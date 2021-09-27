@@ -20,6 +20,9 @@ export type Config = {
       creditAmount: number;
       maxCredit: number;
     };
+    monitor?: {
+      monitorURL: string;
+    };
     navigations: {
       name: string;
       link: string;

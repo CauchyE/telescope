@@ -1,0 +1,17 @@
+import { MonitorService, Data } from '../../models/monitor.service';
+import { Component, OnInit } from '@angular/core';
+
+@Component({
+  selector: 'app-monitor',
+  templateUrl: './monitor.component.html',
+  styleUrls: ['./monitor.component.css'],
+})
+export class MonitorComponent implements OnInit {
+  data: Promise<Data[]>;
+
+  constructor(private readonly monitor: MonitorService) {
+    this.data = this.monitor.list();
+  }
+
+  ngOnInit(): void {}
+}
