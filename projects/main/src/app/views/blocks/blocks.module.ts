@@ -12,7 +12,7 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     BlocksComponent
   ],
   imports: [
-    CommonModule,MaterialModule,RouterModule,FlexLayoutModule
+    CommonModule, MaterialModule, RouterModule, FlexLayoutModule
   ],
   exports: [
     BlocksComponent

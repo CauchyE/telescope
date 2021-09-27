@@ -1,1 +1,9 @@
-<view-blocks [latestBlocks]="latestBlocks$ | async"> </view-blocks>
+<view-blocks
+  [latestBlocks]="latestBlocks$ | async"
+  [pageSize]="pageSize$ | async"
+  [pageNumber]="pageNumber$ | async"
+  [pageLength]="pageLength$ | async"
+  [pageSizeOptions]="pageSizeOptions"
+  (pagenationChange)="appPagenationChanged($event)"
+>
+</view-blocks>

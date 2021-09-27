@@ -27,6 +27,13 @@
           </mat-list-item>
           <mat-divider></mat-divider>
         </ng-container>
+        <mat-paginator
+          [length]="pageLength"
+          [pageSize]="pageSize"
+          [pageIndex]="pageNumber ? pageNumber - 1 : 0"
+          [pageSizeOptions]="pageSizeOptions ? pageSizeOptions : []"
+          (page)="onPagenationChange($event)"
+        ></mat-paginator>
       </ng-template>
     </mat-nav-list>
   </mat-card>
