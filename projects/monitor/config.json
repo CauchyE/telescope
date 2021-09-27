@@ -5,6 +5,5 @@
     "outstanding_rewards": "http://localhost:1317/cosmos/distribution/v1beta1/validators/{validator_address}/outstanding_rewards"
   },
   "slack_webhook_url": "",
-  "slack_channel": "",
-  "db_path": ""
+  "slack_channel": ""
 }
