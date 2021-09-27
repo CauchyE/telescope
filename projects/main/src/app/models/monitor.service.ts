@@ -15,7 +15,7 @@ export class MonitorService {
 
   list() {
     return this.http
-      .get<Data>(`${this.config.config.extension?.monitor?.monitorURL}/list`)
+      .get<Data[]>(`${this.config.config.extension?.monitor?.monitorURL}/list`)
       .toPromise();
   }
 }
