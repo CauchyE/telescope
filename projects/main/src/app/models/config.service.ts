@@ -14,6 +14,9 @@ export type Config = {
   };
   extension?: {
     faucet: boolean;
+    monitor?: {
+      monitorURL: string;
+    };
     navigations: {
       name: string;
       link: string;
