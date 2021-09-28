@@ -1,0 +1,11 @@
+<h2>Daily Rewards</h2>
+<mat-card>
+  <mat-list *ngFor="let reward of data">
+    <mat-list-item>
+      <span class="column-name">Amount:</span>
+      <span fxFlex="auto"></span>
+      <span class="column-value">{{ reward.Result }}</span>
+    </mat-list-item>
+    <mat-divider></mat-divider>
+  </mat-list>
+</mat-card>

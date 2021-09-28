@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"time"
 
 	"github.com/syndtr/goleveldb/leveldb"
@@ -21,10 +22,12 @@ type Monitor struct {
 
 type Data struct {
 	BeforeDate *time.Time
+	Result     map[string]json.RawMessage
 }
 
-func NewMonitor(healthURL string, apiMap map[string]string, slackWebhookURL string, slackChannel string, dbPath string) (*Monitor, error) {
-	db, err := leveldb.OpenFile(dbPath, &opt.Options{})
+func NewMonitor(healthURL string, apiMap map[string]string, slackWebhookURL string, slackChannel string) (*Monitor, error) {
+	path := os.ExpandEnv("$HOME/monitor/db")
+	db, err := leveldb.OpenFile(path, &opt.Options{})
 	if err != nil {
 		return nil, err
 	}
