@@ -23,6 +23,10 @@ const routes: Routes = [
     path: 'keys',
     loadChildren: () => import('./pages/keys/keys.module').then((m) => m.AppKeysModule),
   },
+  {
+    path: 'monitor',
+    loadChildren: () => import('./pages/monitor/monitor.module').then((m) => m.AppMonitorModule),
+  },
 ];
 
 @NgModule({
