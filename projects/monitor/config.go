@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"os"
 )
@@ -16,6 +17,7 @@ type Config struct {
 
 func LoadConfig() (*Config, error) {
   path := os.ExpandEnv("$HOME/monitor/config.json")
+  fmt.Println(path)
 	bz, err := ioutil.ReadFile(path)
 	if err != nil {
 		return nil, err
