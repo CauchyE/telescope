@@ -36,4 +36,4 @@ import { LoadingDialogModule } from 'ng-loading-dialog';
   providers: [],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }

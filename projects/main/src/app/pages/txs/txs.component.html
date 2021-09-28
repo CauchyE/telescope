@@ -1,0 +1,7 @@
+<view-txs
+  [latestTxs]="latestTxs$ | async"
+  [txTypeOptions]="txTypeOptions"
+  [selectedTxType]="selectedTxType$ | async"
+  (selectedTxTypeChanged)="appSelectedTxTypeChanged($event)"
+>
+</view-txs>
