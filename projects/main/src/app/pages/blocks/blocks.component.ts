@@ -30,8 +30,6 @@ export class BlocksComponent implements OnInit {
     this.latestBlock$ = sdk$.pipe(
       mergeMap((sdk) => rest.cosmos.tendermint.getLatestBlock(sdk.rest).then((res) => res.data)),
     );
-    // 考え方
-    // Observableな値。BehaviorSubject は値を流しやすい。
     this.latestBlock$.subscribe(
       (latestBlock) => {
         this.latestBlockHeight$.next(
@@ -40,14 +38,17 @@ export class BlocksComponent implements OnInit {
         this.firstBlockHeight$.next(
           latestBlock?.block?.header?.height ? BigInt(latestBlock.block.header.height) : BigInt(0)
         )
+        this.pageLength$.next(
+          latestBlock?.block?.header?.height ? parseInt(latestBlock.block.header.height) : 0
+        )
         this.pageNumber$.next(0)
       }
     )
 
     this.latestBlocks$ = combineLatest([this.firstBlockHeight$, this.pageSize$]).pipe(
-      map(([latestBlockHeight, pageSize]) =>
+      map(([firstBlockHeight, pageSize]) =>
         [...Array(pageSize).keys()].map((index) => {
-          const tempLatestBlockHeight = latestBlockHeight === undefined ? BigInt(0) : latestBlockHeight;
+          const tempLatestBlockHeight = firstBlockHeight === undefined ? BigInt(0) : firstBlockHeight;
           return tempLatestBlockHeight - BigInt(index);
         }),
       ),
@@ -69,36 +70,6 @@ export class BlocksComponent implements OnInit {
         return of(undefined);
       }),
     );
-    /*
-    this.cosmosSDK.websocketURL$.pipe(first()).subscribe((websocketURL) => {
-      const ws = websocket.connect(websocketURL);
-      ws.next({
-        id: '1',
-        jsonrpc: '2.0',
-        method: 'subscribe',
-        params: [`tm.event = 'NewBlock'`],
-      });
-
-      this.latestBlocks$ = ws.asObservable().pipe(
-        scan<any>((all, current) => [current, ...all], []),
-        map((data) => {
-          data[0].result.data === undefined ? data.pop() : data;
-          return data;
-        }),
-        map((data) => {
-          data.length > 20 ? data.pop() : data;
-          return data;
-        }),
-      );
-
-      //暫定的に自動削除用のコードを無効化
-      this.initialBlocks$ = initial;
-      // websocket有効化後、自動削除を有効に
-      this.initialBlocks$ = combineLatest([initial, this.latestBlocks$]).pipe(
-        map(([init, latest]) => latest.length === 20 ? undefined : init)
-      );
-    });
-    */
   }
 
   ngOnInit(): void {}
@@ -107,7 +78,7 @@ export class BlocksComponent implements OnInit {
     this.pageSize$.next(pageEvent.pageSize);
     this.pageNumber$.next(pageEvent.pageIndex + 1);
     this.pageLength$.next(pageEvent.length);
-    const pagenatedBlockHeight = this.latestBlockHeight$.getValue() - BigInt(pageEvent.pageIndex) * BigInt(pageEvent.pageSize);
-    this.firstBlockHeight$.next(pagenatedBlockHeight);
+    const paginatedBlockHeight = this.latestBlockHeight$.getValue() - BigInt(pageEvent.pageIndex) * BigInt(pageEvent.pageSize);
+    this.firstBlockHeight$.next(paginatedBlockHeight);
   }
 }

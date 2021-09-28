@@ -1,7 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { InlineResponse20032 } from 'cosmos-client/esm/openapi';
-import { BehaviorSubject, Observable } from 'rxjs';
 
 @Component({
   selector: 'view-blocks',
