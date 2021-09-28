@@ -4,8 +4,8 @@ services:
   monitor:
     container_name: monitor
     image: lcnem/telescope-monitor
-    ports:
-      - 800:800
+    # ports:
+    #   - 800:800
     #   - 1317:1317
     #   - 9090:9090
     #   - 26656:26656
@@ -13,5 +13,5 @@ services:
     volumes:
       - ~/monitor/config.json:/root/monitor/config.json
     # command: monitor start
-    # network_mode: host
+    network_mode: host
     restart: always
