@@ -4,6 +4,6 @@
     "commission": "http://localhost:1317/cosmos/distribution/v1beta1/validators/{validator_address}/commission",
     "outstanding_rewards": "http://localhost:1317/cosmos/distribution/v1beta1/validators/{validator_address}/outstanding_rewards"
   },
-  "slack_webhook_url": "https://hooks.slack.com/services/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",
-  "slack_channel": "#dev-cosmos"
+  "slack_webhook_url": "",
+  "slack_channel": ""
 }
