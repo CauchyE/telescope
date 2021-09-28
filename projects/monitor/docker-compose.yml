@@ -13,5 +13,5 @@ services:
     volumes:
       - ~/monitor/config.json:/root/monitor/config.json
     # command: monitor start
-    network_mode: host
+    # network_mode: host
     restart: always
