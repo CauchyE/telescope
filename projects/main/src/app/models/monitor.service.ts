@@ -16,7 +16,14 @@ export class MonitorService {
 
   list() {
     return this.http
-      .get<Data[]>(`${this.config.config.extension?.monitor?.monitorURL}/list`)
+      .get<Data[]>(`${this.config.config.extension?.monitor?.monitorURL}/list`, {
+        params: {
+          start_year: '2021',
+          start_month: '09',
+          start_day: '28',
+          count: '1',
+        },
+      })
       .toPromise();
   }
 }
