@@ -83,7 +83,7 @@ func (monitor *Monitor) Fetch(t *time.Time) error {
 	bz, _ := json.MarshalIndent(result, "", "  ")
 
 	// put
-	err := monitor.DB.Put([]byte(t.Format("")), bz, &opt.WriteOptions{})
+	err := monitor.DB.Put([]byte(t.Format("2006-01-02")), bz, &opt.WriteOptions{})
 	if err != nil {
 		return err
 	}
