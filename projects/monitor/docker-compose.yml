@@ -12,6 +12,6 @@ services:
     #   - 26657:26657
     volumes:
       - ~/monitor/config.json:/root/monitor/config.json
-    # command: monitor start
+    command: monitor serve 800
     network_mode: host
     restart: always
