@@ -30,7 +30,7 @@ export class BlocksComponent implements OnInit {
     this.latestBlock$ = sdk$.pipe(
       mergeMap((sdk) => rest.cosmos.tendermint.getLatestBlock(sdk.rest).then((res) => res.data)),
     );
-    // 考え方　
+    // 考え方
     // Observableな値。BehaviorSubject は値を流しやすい。
     this.latestBlock$.subscribe(
       (latestBlock) => {
@@ -103,7 +103,7 @@ export class BlocksComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  appPagenationChanged(pageEvent: PageEvent): void {
+  appPaginationChanged(pageEvent: PageEvent): void {
     this.pageSize$.next(pageEvent.pageSize);
     this.pageNumber$.next(pageEvent.pageIndex + 1);
     this.pageLength$.next(pageEvent.length);

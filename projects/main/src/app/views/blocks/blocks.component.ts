@@ -25,17 +25,17 @@ export class BlocksComponent implements OnInit {
   pageLength?: number | null;
 
   @Output()
-  pagenationChange:EventEmitter<PageEvent>;
+  paginationChange:EventEmitter<PageEvent>;
 
   constructor() {
-    this.pagenationChange = new EventEmitter;
+    this.paginationChange = new EventEmitter;
   }
 
   ngOnInit(): void {
   }
 
-  onPagenationChange(pageEvent: PageEvent): void {
-    this.pagenationChange.emit(pageEvent);
+  onPaginationChange(pageEvent: PageEvent): void {
+    this.paginationChange.emit(pageEvent);
   }
 
 }

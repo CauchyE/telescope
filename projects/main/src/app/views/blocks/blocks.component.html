@@ -32,7 +32,7 @@
           [pageSize]="pageSize"
           [pageIndex]="pageNumber ? pageNumber - 1 : 0"
           [pageSizeOptions]="pageSizeOptions ? pageSizeOptions : []"
-          (page)="onPagenationChange($event)"
+          (page)="onPaginationChange($event)"
         ></mat-paginator>
       </ng-template>
     </mat-nav-list>
