@@ -18,7 +18,7 @@ RUN go version
 # Install minimum necessary dependencies, build Cosmos SDK, remove packages
 RUN apk add --no-cache $PACKAGES
 # RUN make install
-RUN go install .
+RUN GO111MODULE=auto go install .
 
 # Final image
 FROM alpine:edge
