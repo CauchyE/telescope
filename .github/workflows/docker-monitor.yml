@@ -1,4 +1,4 @@
-name: Publish Telescope Docker image
+name: Publish Monitor Docker image
 on:
   release:
     types: [published]
@@ -20,17 +20,9 @@ jobs:
       - name: Push to Docker Hub
         uses: docker/build-push-action@v2
         with:
-          context: .
-          file: ./projects/main/Dockerfile
+          context: ./projects/monitor
+          file: ./projects/monitor/Dockerfile
           push: true
           tags: |
-            lcnem/telescope:${{ steps.variables.outputs.version }}
-            lcnem/telescope:latest
-      - name: Create GitHub dispatch event
-        run: |
-          curl --request POST 'https://api.github.com/repos/lcnem/botany/dispatches' \
-          --header 'Authorization: Bearer ${{secrets.REPO_GITHUB_ACCESS_TOKEN}}' \
-          --header 'Content-Type: application/json' \
-          --data-raw '{
-            "event_type": "repository-telescope-new-release"
-          }'
+            lcnem/telescope-monitor:${{ steps.variables.outputs.version }}
+            lcnem/telescope-monitor:latest

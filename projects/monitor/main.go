@@ -23,7 +23,7 @@ var rootCmd = &cobra.Command{
 }
 
 func timeFromString(year string, month string, day string) (*time.Time, error) {
-	t, err := time.Parse("2006-01-02", fmt.Sprintf("%02s-%02s-%02s", year, month, day))
+	t, err := time.Parse("2006-01-02", fmt.Sprintf("%04s-%02s-%02s", year, month, day))
 	if err != nil {
 		return nil, err
 	}
@@ -64,7 +64,8 @@ func serveCmd() *cobra.Command {
 				return err
 			}
 
-			if cronFlag {
+      // update 1 min
+      if cronFlag {
 				c := cron.New()
 				c.AddFunc("0 * * * *", func() {
 					monitor.Health()
@@ -78,9 +79,10 @@ func serveCmd() *cobra.Command {
 			}
 
 			router := mux.NewRouter()
-			router.HandleFunc("/list", listHandlerFactory(monitor)).Methods("GET")
-			http.Handle("/", router)
-			http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+			router.HandleFunc("/list", listHandlerFactory(monitor)).Queries("start_year","{start_year}").Queries("start_month","{start_month}").Queries("start_day", "{start_day}").Queries("count", "{count}").Methods("GET")
+
+	  	http.Handle("/", router)
+		  http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
 
 			return nil
 		},
@@ -89,24 +91,31 @@ func serveCmd() *cobra.Command {
 
 func listHandlerFactory(monitor *Monitor) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
+    w.Header().Set("Access-Control-Allow-Headers", "*")
+    w.Header().Set("Access-Control-Allow-Origin", "*")
+    w.Header().Set( "Access-Control-Allow-Methods","GET, OPTIONS" )
+
 		params := mux.Vars(r)
-		year := params["start.year"]
-		month := params["start.month"]
-		day := params["start.day"]
+		year := params["start_year"]
+		month := params["start_month"]
+		day := params["start_day"]
+
 		start, err := timeFromString(year, month, day)
 		if err != nil {
 			fmt.Fprint(w, "error")
+      return
 		}
 
-		count, err := strconv.Atoi(params["count"])
+		count, _ := strconv.Atoi(params["count"])
 
 		bz, err := monitor.List(start, uint(count))
 		if err != nil {
 			fmt.Fprint(w, "error")
+      return
 		}
 
 		json, _ := json.MarshalIndent(bz, "", "  ")
-		fmt.Fprint(w, json)
+		fmt.Fprint(w, string(json))
 	}
 }
 
@@ -123,7 +132,8 @@ func init() {
 		os.Exit(1)
 	}
 
-	serveCmd().Flags().BoolVar(&cronFlag, "cron", false, "--cron=true")
+  // default true => false
+	serveCmd().Flags().BoolVar(&cronFlag, "cron", true, "--cron=true")
 
 	rootCmd.AddCommand(
 		healthCmd(),

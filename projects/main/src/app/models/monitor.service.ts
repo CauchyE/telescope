@@ -5,7 +5,7 @@ import { type } from 'os';
 
 export type Data = {
   BeforeDate: string;
-  Result: string;
+  Result: any;
 };
 
 @Injectable({
@@ -14,9 +14,16 @@ export type Data = {
 export class MonitorService {
   constructor(private readonly http: HttpClient, private readonly config: ConfigService) {}
 
-  list() {
+  list(year: number, month: number, day: number, count: number) {
     return this.http
-      .get<Data[]>(`${this.config.config.extension?.monitor?.monitorURL}/list`)
+      .get<Data[]>(`${this.config.config.extension?.monitor?.monitorURL}/list`, {
+        params: {
+          start_year: year,
+          start_month: month,
+          start_day: day,
+          count: count,
+        },
+      })
       .toPromise();
   }
 }
