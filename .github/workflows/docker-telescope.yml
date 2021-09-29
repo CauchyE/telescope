@@ -1,4 +1,4 @@
-name: Publish Docker image
+name: Publish Telescope Docker image
 on:
   release:
     types: [published]
