@@ -5,7 +5,7 @@ import { type } from 'os';
 
 export type Data = {
   BeforeDate: string;
-  Result: string;
+  Result: any;
 };
 
 @Injectable({
