@@ -19,7 +19,6 @@ RUN go version
 RUN apk add --no-cache $PACKAGES
 
 # RUN go install
-ENV GO111MODULE auto
 RUN go install .
 
 # Final image
