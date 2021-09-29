@@ -17,7 +17,8 @@ RUN go version
 
 # Install minimum necessary dependencies, build Cosmos SDK, remove packages
 RUN apk add --no-cache $PACKAGES
-# RUN make install
+
+# RUN go install
 ENV GO111MODULE auto
 RUN go install .
 
