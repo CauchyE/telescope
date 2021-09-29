@@ -11,7 +11,6 @@ export class MonitorComponent implements OnInit {
 
   constructor(private readonly monitor: MonitorService) {
     this.data = this.monitor.list(2021, 9, 28, 1);
-    this.data.then((d) => console.log(d));
   }
 
   ngOnInit(): void {}
