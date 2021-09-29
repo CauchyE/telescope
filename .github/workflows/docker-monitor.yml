@@ -26,5 +26,3 @@ jobs:
           tags: |
             lcnem/telescope-monitor:${{ steps.variables.outputs.version }}
             lcnem/telescope-monitor:latest
-        env:
-          GO111MODULE: auto
