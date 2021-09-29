@@ -1,8 +1,8 @@
 {
-  "health_url": "http://localhost:1317/node_info",
+  "health_url": "http://a.test.jpyx.lcnem.net:1317/node_info",
   "api_map": {
-    "commission": "http://localhost:1317/cosmos/distribution/v1beta1/validators/{validator_address}/commission",
-    "outstanding_rewards": "http://localhost:1317/cosmos/distribution/v1beta1/validators/{validator_address}/outstanding_rewards"
+    "commission": "http://a.test.jpyx.lcnem.net:1317/cosmos/distribution/v1beta1/validators/{validator_address}/commission",
+    "outstanding_rewards": "http://a.test.jpyx.lcnem.net:1317/cosmos/distribution/v1beta1/validators/{validator_address}/outstanding_rewards"
   },
   "slack_webhook_url": "",
   "slack_channel": ""

@@ -32,3 +32,4 @@ jobs:
           tags: |
             lcnem/telescope-monitor:${{ steps.variables.outputs.version }}
             lcnem/telescope-monitor:latest
+          build-args: GO111MODULE=auto
