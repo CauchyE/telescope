@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"os"
@@ -79,11 +80,16 @@ func (monitor *Monitor) Fetch(t *time.Time) error {
 		// set result
 		result[k] = json.RawMessage(bz)
 	}
+  var data Data
+  // 暫定、latest fetch date
+  data.BeforeDate = t
+  data.Result = result
+
 	// unmarshal all results
-	bz, _ := json.MarshalIndent(result, "", "  ")
+	bz, _ := json.MarshalIndent(data, "", "  ")
 
 	// put
-	err := monitor.DB.Put([]byte(t.Format("")), bz, &opt.WriteOptions{})
+	err := monitor.DB.Put([]byte(t.Format("2006-01-02")), bz, &opt.WriteOptions{})
 	if err != nil {
 		return err
 	}
