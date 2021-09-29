@@ -1,29 +1,57 @@
 <h2>Daily Rewards</h2>
 <mat-card>
-  <mat-list *ngFor="let reward of data">
-    <mat-list-item>
-      <span class="column-name">Commission:</span>
-      <span fxFlex="auto"></span>
-      <span class="column-value">{{
-        reward.Result.commission.commission.commission[0].amount
-      }}</span>
-      <span fxFlex="auto"></span>
-      <span class="column-value">{{
-        reward.Result.commission.commission.commission[0].denom
-      }}</span>
-    </mat-list-item>
-    <mat-divider></mat-divider>
-    <mat-list-item>
-      <span class="column-name">Outstanding Rewards:</span>
-      <span fxFlex="auto"></span>
-      <span class="column-value">{{
-        reward.Result.outstanding_rewards.rewards.rewards[0].amount
-      }}</span>
-      <span fxFlex="auto"></span>
-      <span class="column-value">{{
-        reward.Result.outstanding_rewards.rewards.rewards[0].denom
-      }}</span>
-    </mat-list-item>
-    <mat-divider></mat-divider>
-  </mat-list>
+  <ng-container *ngIf="data === null; then loading; else loaded"></ng-container>
+  <ng-template #loading>
+    <mat-progress-spinner [diameter]="60" [mode]="'indeterminate'"></mat-progress-spinner>
+  </ng-template>
+  <ng-template #loaded>
+    <mat-list *ngFor="let reward of data">
+      <ng-container
+        *ngIf="!reward.Result.commission.commission; then commissionEmpty; else commissionExist"
+      ></ng-container>
+      <ng-template #commissionEmpty>
+        <mat-list-item>
+          <span class="column-name">Commission is empty</span>
+          <span fxFlex="auto"></span>
+        </mat-list-item>
+      </ng-template>
+      <ng-template #commissionExist>
+        <mat-list-item>
+          <span class="column-name">Commission:</span>
+          <span fxFlex="auto"></span>
+          <span class="column-value">{{
+            reward.Result.commission.commission.commission[0].amount
+          }}</span>
+          <span fxFlex="auto"></span>
+          <span class="column-value">{{
+            reward.Result.commission.commission.commission[0].denom
+          }}</span>
+        </mat-list-item>
+      </ng-template>
+      <mat-divider></mat-divider>
+      <ng-container
+        *ngIf="!reward.Result.commission.commission; then OutstandEmpty; else OutstandExist"
+      ></ng-container>
+      <ng-template #OutstandEmpty>
+        <mat-list-item>
+          <span class="column-name">Outstanding Rewards is empty</span>
+          <span fxFlex="auto"></span>
+        </mat-list-item>
+      </ng-template>
+      <ng-template #OutstandExist>
+        <mat-list-item>
+          <span class="column-name">Outstanding Rewards:</span>
+          <span fxFlex="auto"></span>
+          <span class="column-value">{{
+            reward.Result.outstanding_rewards.rewards.rewards[0].amount
+          }}</span>
+          <span fxFlex="auto"></span>
+          <span class="column-value">{{
+            reward.Result.outstanding_rewards.rewards.rewards[0].denom
+          }}</span>
+        </mat-list-item>
+      </ng-template>
+      <mat-divider></mat-divider>
+    </mat-list>
+  </ng-template>
 </mat-card>
