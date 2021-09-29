@@ -28,8 +28,15 @@ export class KeySelectGuard implements CanActivate {
       .pipe(first())
       .toPromise()
       .then(async (currentKey) => {
+        currentKey = await this.keySelectDialog.open();
+
+        let count = 0
         while (!currentKey) {
+          if (count > 0) {
+            return false;
+          }
           currentKey = await this.keySelectDialog.open();
+          count++
         }
 
         return true;
