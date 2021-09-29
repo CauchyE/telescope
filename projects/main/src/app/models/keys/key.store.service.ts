@@ -20,23 +20,37 @@ export class KeyStoreService {
   }
 
   async init() {
-    const currentKey: { key_id: string } = await this.db.table('current_keys').get({ id: 'current_key' });
-    if (!currentKey) {
+    try {
+      const currentKey: { key_id: string } = await this.db.table('current_keys').get({ id: 'current_key' });
+      if (!currentKey) {
+        return;
+      }
+
+      const key = await this.key.get(currentKey.key_id);
+      if (!key) {
+        await this.db.table('current_keys').where('id').equals('current_key').delete();
+        return;
+      }
+
+      this.currentKey$.next(key);
+    } catch (error) {
+      console.error(error);
       return;
     }
-
-    const key = await this.key.get(currentKey.key_id);
-    if (!key) {
-      await this.db.table('current_keys').where('id').equals('current_key').delete();
-      return;
-    }
-
-    this.currentKey$.next(key);
   }
 
   async setCurrentKey(key: Key) {
-    await this.db.table('current_keys').put({ id: 'current_key', key_id: key.id });
-    this.currentKey$.next(key);
+    try {
+      await this.db.table('current_keys').where('id').equals('current_key').delete();
+    } catch (error) {
+      console.error(error);
+    }
+    try {
+      await this.db.table('current_keys').put({ id: 'current_key', key_id: key.id });
+      this.currentKey$.next(key);
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   resetCurrentKey() {
