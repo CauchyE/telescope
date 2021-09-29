@@ -4,35 +4,35 @@
     <mat-list>
       <mat-list-item>
         <span class="column-name">Network: </span>
-        <span fxFlex="auto"></span>
+        <span class="flex-auto"></span>
         <span class="column-value">{{ nodeInfo?.default_node_info?.network }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="column-name">Moniker: </span>
-        <span fxFlex="auto"></span>
+        <span class="flex-auto"></span>
         <span class="column-value">{{ nodeInfo?.default_node_info?.moniker }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="column-name">ID:</span>
-        <span fxFlex="auto"></span>
+        <span class="flex-auto"></span>
         <span class="column-value">{{ nodeInfo?.default_node_info?.default_node_id }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="column-name">Version: </span>
-        <span fxFlex="auto"></span>
+        <span class="flex-auto"></span>
         <span class="column-value">{{ nodeInfo?.default_node_info?.version }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="column-name">Channels: </span>
-        <span fxFlex="auto"></span>
+        <span class="flex-auto"></span>
         <span class="column-value">{{ nodeInfo?.default_node_info?.channels }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
@@ -46,14 +46,14 @@
     <mat-list>
       <mat-list-item>
         <span class="column-name">Name:</span>
-        <span fxFlex="auto"></span>
+        <span class="flex-auto"></span>
         <span class="column-value">{{ nodeInfo?.application_version?.name }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="column-name">Version: </span>
-        <span fxFlex="auto"></span>
+        <span class="flex-auto"></span>
         <span class="column-value">
           {{ nodeInfo?.application_version?.version }}
         </span>
@@ -62,7 +62,7 @@
 
       <mat-list-item>
         <span class="column-name">Commit: </span>
-        <span fxFlex="auto"></span>
+        <span class="flex-auto"></span>
         <span class="column-value">
           {{ nodeInfo?.application_version?.git_commit }}
         </span>
@@ -71,7 +71,7 @@
 
       <mat-list-item>
         <span class="column-name">Go: </span>
-        <span fxFlex="auto"></span>
+        <span class="flex-auto"></span>
         <span class="column-value">
           {{ nodeInfo?.application_version?.go_version }}
         </span>
@@ -87,7 +87,7 @@
     <mat-list>
       <mat-list-item>
         <span class="column-name">Syncing: </span>
-        <span fxFlex="auto"></span>
+        <span class="flex-auto"></span>
         <span class="column-value">{{ syncing }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
@@ -95,9 +95,9 @@
   </mat-card-content>
 </mat-card>
 <!-- <mat-nav-list>
-  <div fxLayout="row">
+  <div class="flex flex-row">
     <h3 matSubheader>Txs</h3>
-    <span fxFlex="auto"></span>
+    <span class="flex-auto"></span>
     <mat-form-field>
       <mat-label>Message action type</mat-label>
       <mat-select [value]="initialMessageAction" (selectionChange)="onMessageActionChange($event)">
@@ -125,7 +125,7 @@
     <ng-template ngFor let-tx [ngForOf]="txs?.txs || []">
       <mat-list-item routerLink="/txs/{{ tx.txhash }}">
         <span>{{ tx.txhash }}</span>
-        <span fxFlex="auto"></span>
+        <span class="flex-auto"></span>
         <span>{{ tx.height }}</span>
       </mat-list-item>
       <mat-divider></mat-divider>

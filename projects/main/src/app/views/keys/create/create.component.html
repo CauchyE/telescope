@@ -2,7 +2,7 @@
   #formRef="ngForm"
   (submit)="onSubmit(idRef.value, typeRef.value, privateKeyRef.value)"
 >
-  <mat-form-field fxFill>
+  <mat-form-field class="w-full">
     <mat-label>ID</mat-label>
     <input
       #idRef
@@ -15,7 +15,7 @@
     />
     <mat-error>^[a-z_][a-z_0-9]*$</mat-error>
   </mat-form-field>
-  <mat-form-field fxFill>
+  <mat-form-field class="w-full">
     <mat-label>Type</mat-label>
     <mat-select
       #typeRef
@@ -30,7 +30,7 @@
       <mat-option [value]="'sr25519'" disabled>Sr25519</mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-form-field fxFill>
+  <mat-form-field class="w-full">
     <mat-label>Mnemonic</mat-label>
     <textarea
       #mnemonicRef
@@ -64,7 +64,7 @@
       <span>copy</span>
     </button>
   </mat-form-field>
-  <mat-form-field fxFill>
+  <mat-form-field class="w-full">
     <mat-label>Private key</mat-label>
 
     <input
@@ -103,7 +103,7 @@
     </mat-hint>
   </mat-form-field>
   <br />
-  <button mat-flat-button fxFill color="accent" [disabled]="formRef.invalid">
+  <button mat-flat-button class="w-full" color="accent" [disabled]="formRef.invalid">
     Submit
   </button>
 </form>

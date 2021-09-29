@@ -10,7 +10,7 @@
       <mat-list>
         <mat-list-item>
           <span class="column-name">Status: </span>
-          <span fxFlex="auto"></span>
+          <span class="flex-auto"></span>
           <span class="column-value">{{ proposal?.status }}</span>
         </mat-list-item>
       </mat-list>
@@ -24,25 +24,25 @@
       <mat-list>
           <mat-list-item>
             <span class="column-name">Yes: </span>
-            <span fxFlex="auto"></span>
+            <span class="flex-auto"></span>
             <span class="column-value">{{ tally?.yes }}</span>
           </mat-list-item>
           <mat-divider [inset]="true"></mat-divider>
           <mat-list-item>
             <span class="column-name">Abstain: </span>
-            <span fxFlex="auto"></span>
+            <span class="flex-auto"></span>
             <span class="column-value">{{ tally?.abstain }}</span>
           </mat-list-item>
           <mat-divider [inset]="true"></mat-divider>
           <mat-list-item>
             <span class="column-name">No: </span>
-            <span fxFlex="auto"></span>
+            <span class="flex-auto"></span>
             <span class="column-value">{{ tally?.no }}</span>
           </mat-list-item>
           <mat-divider [inset]="true"></mat-divider>
           <mat-list-item>
             <span class="column-name">No with Veto: </span>
-            <span fxFlex="auto"></span>
+            <span class="flex-auto"></span>
             <span class="column-value">{{ tally?.no_with_veto }}</span>
           </mat-list-item>
         </mat-list>
@@ -55,13 +55,13 @@
       <mat-list>
         <mat-list-item>
           <span class="column-name">Submit Time: </span>
-          <span fxFlex="auto"></span>
+          <span class="flex-auto"></span>
           <span class="column-value">{{ proposal?.submit_time }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
           <span class="column-name">Deposit End Time: </span>
-          <span fxFlex="auto"></span>
+          <span class="flex-auto"></span>
           <span class="column-value">{{ proposal?.deposit_end_time }}</span>
         </mat-list-item>
       </mat-list>
@@ -74,7 +74,7 @@
       <mat-list>
         <mat-list-item *ngFor="let total of proposal?.total_deposit">
           <span class="column-value">{{ total.amount }}</span>
-          <span fxFlex="auto"></span>
+          <span class="flex-auto"></span>
           <span class="column-value">{{ total.denom }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
@@ -88,7 +88,7 @@
       <mat-list>
         <mat-list-item *ngFor="let amount of deposit.amount">
           <span class="column-value">{{ amount.amount }}</span>
-          <span fxFlex="auto"></span>
+          <span class="flex-auto"></span>
           <span class="column-value">{{ amount.denom }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
@@ -102,13 +102,13 @@
       <mat-list>
         <mat-list-item>
           <span class="column-name">Vote Start Time: </span>
-          <span fxFlex="auto"></span>
+          <span class="flex-auto"></span>
           <span class="column-value">{{ proposal?.voting_start_time }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
           <span class="column-name">Vote End Time: </span>
-          <span fxFlex="auto"></span>
+          <span class="flex-auto"></span>
           <span class="column-value">{{ proposal?.voting_end_time }}</span>
         </mat-list-item>
       </mat-list>
@@ -121,7 +121,7 @@
       <mat-list>
         <mat-list-item>
           <span class="column-name">Yes: </span>
-            <span fxFlex="auto"></span>
+            <span class="flex-auto"></span>
             <span class="column-value">{{ vote.option }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>

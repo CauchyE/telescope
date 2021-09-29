@@ -3,35 +3,35 @@
   <mat-list>
     <mat-list-item>
       <span class="column-name">TxHash:</span>
-      <span fxFlex="auto"></span>
+      <span class="flex-auto"></span>
       <span class="column-value">{{ tx?.tx_response?.txhash }}</span>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
 
     <mat-list-item>
       <span class="column-name">Height: </span>
-      <span fxFlex="auto"></span>
+      <span class="flex-auto"></span>
       <span class="column-value">{{ tx?.tx_response?.height }}</span>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
 
     <mat-list-item>
       <span class="column-name">Gas Used: </span>
-      <span fxFlex="auto"></span>
+      <span class="flex-auto"></span>
       <span class="column-value">{{ tx?.tx_response?.gas_used }}</span>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
 
     <mat-list-item>
       <span class="column-name">Gas Wanted: </span>
-      <span fxFlex="auto"></span>
+      <span class="flex-auto"></span>
       <span class="column-value">{{ tx?.tx_response?.gas_wanted }}</span>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
 
     <mat-list-item>
       <span class="column-name">Timestamp: </span>
-      <span fxFlex="auto"></span>
+      <span class="flex-auto"></span>
       <span class="column-value">{{ tx?.tx_response?.timestamp }}</span>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
@@ -45,14 +45,14 @@
       <mat-list>
         <mat-list-item>
           <span class="column-name">Type: </span>
-          <span fxFlex="auto"></span>
+          <span class="flex-auto"></span>
           <span class="column-value">{{ constructorName(msg) }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
         <ng-template ngFor let-data [ngForOf]="entries(msg)">
           <mat-list-item>
             <span class="column-name">{{ data[0] }}</span>
-            <span fxFlex="auto"></span>
+            <span class="flex-auto"></span>
             <span class="column-value">{{ data[1] | json }}</span>
           </mat-list-item>
           <mat-divider [inset]="true"></mat-divider>
@@ -69,19 +69,19 @@
       <mat-list>
         <mat-list-item>
           <span class="column-name">Key Type: </span>
-          <span fxFlex="auto"></span>
+          <span class="flex-auto"></span>
           <span class="column-value">{{ constructorName(pubKey) }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
           <span class="column-name">Public Key: </span>
-          <span fxFlex="auto"></span>
+          <span class="flex-auto"></span>
           <span class="column-value">{{ pubKey?.toString() }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
           <span class="column-name">Signature: </span>
-          <span fxFlex="auto"></span>
+          <span class="flex-auto"></span>
           <span class="column-value">{{ signerInfo?.mode_info }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
@@ -97,14 +97,14 @@
       <mat-list>
         <mat-list-item>
           <span class="column-name">Type: </span>
-          <span fxFlex="auto"></span>
+          <span class="flex-auto"></span>
           <span class="column-value">{{ event.type }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
         <ng-template ngFor let-attr [ngForOf]="event.attributes">
           <mat-list-item>
             <span class="column-name">{{ attr.key }}</span>
-            <span fxFlex="auto"></span>
+            <span class="flex-auto"></span>
             <span class="column-value">{{ attr.value | json }}</span>
           </mat-list-item>
           <mat-divider [inset]="true"></mat-divider>

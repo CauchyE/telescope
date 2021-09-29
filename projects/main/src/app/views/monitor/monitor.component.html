@@ -12,17 +12,17 @@
       <ng-template #commissionEmpty>
         <mat-list-item>
           <span class="column-name">Commission is empty</span>
-          <span fxFlex="auto"></span>
+          <span class="flex-auto"></span>
         </mat-list-item>
       </ng-template>
       <ng-template #commissionExist>
         <mat-list-item>
           <span class="column-name">Commission:</span>
-          <span fxFlex="auto"></span>
+          <span class="flex-auto"></span>
           <span class="column-value">{{
             reward.Result.commission.commission.commission[0].amount
           }}</span>
-          <span fxFlex="auto"></span>
+          <span class="flex-auto"></span>
           <span class="column-value">{{
             reward.Result.commission.commission.commission[0].denom
           }}</span>
@@ -35,17 +35,17 @@
       <ng-template #OutstandEmpty>
         <mat-list-item>
           <span class="column-name">Outstanding Rewards is empty</span>
-          <span fxFlex="auto"></span>
+          <span class="flex-auto"></span>
         </mat-list-item>
       </ng-template>
       <ng-template #OutstandExist>
         <mat-list-item>
           <span class="column-name">Outstanding Rewards:</span>
-          <span fxFlex="auto"></span>
+          <span class="flex-auto"></span>
           <span class="column-value">{{
             reward.Result.outstanding_rewards.rewards.rewards[0].amount
           }}</span>
-          <span fxFlex="auto"></span>
+          <span class="flex-auto"></span>
           <span class="column-value">{{
             reward.Result.outstanding_rewards.rewards.rewards[0].denom
           }}</span>
