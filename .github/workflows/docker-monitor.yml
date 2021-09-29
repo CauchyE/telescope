@@ -26,11 +26,3 @@ jobs:
           tags: |
             lcnem/telescope-monitor:${{ steps.variables.outputs.version }}
             lcnem/telescope-monitor:latest
-      - name: Create GitHub dispatch event
-        run: |
-          curl --request POST 'https://api.github.com/repos/lcnem/botany/dispatches' \
-          --header 'Authorization: Bearer ${{secrets.REPO_GITHUB_ACCESS_TOKEN}}' \
-          --header 'Content-Type: application/json' \
-          --data-raw '{
-            "event_type": "repository-telescope-new-release"
-          }'
