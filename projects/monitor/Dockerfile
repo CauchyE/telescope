@@ -1,7 +1,6 @@
 # Simple usage with a mounted data directory:
-# > docker build -t monitor .
-# > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.telescope:/root/.telescope telescope monitor init
-# > docker run -it -p 26656:26656 -p 26657:26657 -v ~/.telescope:/root/.telescope telescope monitor start
+# > docker build -t telescope-monitor .
+# > docker run -it  -v ~/.telescope:/root/.telescope monitor serve 9000
 FROM golang:1.16-alpine AS build-env
 
 # Set up dependencies
