@@ -1,5 +1,26 @@
 <h2>Daily Rewards</h2>
 <mat-card>
+  <form #formRef="ngForm">
+    <mat-form-field fxFill>
+      <mat-label>Choose a Start Date</mat-label>
+      <input #dateRef [ngModel]="startDate" name="startDate" matInput [matDatepicker]="picker" />
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <mat-form-field fxFill>
+      <mat-label>Input Count</mat-label>
+      <input
+        #countRef
+        [ngModel]="count"
+        type="number"
+        name="count"
+        matInput
+        pattern="^[1-9][0-9]*$"
+      />
+    </mat-form-field>
+  </form>
+
   <ng-container *ngIf="data === null; then loading; else loaded"></ng-container>
   <ng-template #loading>
     <mat-progress-spinner [diameter]="60" [mode]="'indeterminate'"></mat-progress-spinner>

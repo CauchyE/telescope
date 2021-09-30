@@ -8,6 +8,12 @@ import { Component, Input, OnInit } from '@angular/core';
 })
 export class MonitorComponent implements OnInit {
   @Input()
+  startDate?: Date | null;
+
+  @Input()
+  count?: number | null;
+
+  @Input()
   data?: Data[] | null;
 
   constructor() {}
