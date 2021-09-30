@@ -1,6 +1,8 @@
 import { MonitorService, Data } from '../../models/monitor.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-monitor',
@@ -8,20 +10,34 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./monitor.component.css'],
 })
 export class MonitorComponent implements OnInit {
-  data: Promise<Data[]>;
-  startDate: Date;
-  count: number;
+  data: Observable<Data[]>;
+  startDate$: BehaviorSubject<Date> = new BehaviorSubject(new Date());
+  count$: BehaviorSubject<number> = new BehaviorSubject(1);
 
   constructor(private route: ActivatedRoute, private readonly monitor: MonitorService) {
-    this.startDate = new Date();
-    this.startDate.setDate(this.startDate.getDate() - 1);
-    this.count = 1;
-
-    const year = this.startDate.getFullYear();
-    const month = this.startDate.getMonth() + 1;
-    const day = this.startDate.getDate();
-    this.data = this.monitor.list(year, month, day, this.count);
+    this.data = combineLatest([this.startDate$.asObservable(), this.count$.asObservable()]).pipe(
+      mergeMap(([start, count]) =>
+        this.monitor.list(start.getFullYear(), start.getMonth(), start.getDate(), count),
+      ),
+    );
   }
 
   ngOnInit(): void {}
+
+  appStartParamChanged(startDate: Date): void {
+    this.startDate$.next(startDate);
+    this.data = combineLatest([this.startDate$.asObservable(), this.count$.asObservable()]).pipe(
+      mergeMap(([start, count]) =>
+        this.monitor.list(start.getFullYear(), start.getMonth(), start.getDate(), count),
+      ),
+    );
+  }
+  appCountParamChanged(count: number): void {
+    this.count$.next(count);
+    this.data = combineLatest([this.startDate$.asObservable(), this.count$.asObservable()]).pipe(
+      mergeMap(([start, count]) =>
+        this.monitor.list(start.getFullYear(), start.getMonth(), start.getDate(), count),
+      ),
+    );
+  }
 }
