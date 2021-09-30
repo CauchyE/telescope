@@ -8,7 +8,6 @@ module.exports = {
   theme: {
     extend: {
       screens: {
-        // xs:w-10で、480px幅以上で、w-10のスタイルが適用されるようになる
         xs: '600px'
       },
     },
