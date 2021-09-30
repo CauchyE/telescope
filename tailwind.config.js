@@ -6,7 +6,12 @@ module.exports = {
   purge: ['./src/**/*.{html,ts}'],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        // xs:w-10で、480px幅以上で、w-10のスタイルが適用されるようになる
+        xs: '600px'
+      },
+    },
   },
   variants: {
     extend: {},
