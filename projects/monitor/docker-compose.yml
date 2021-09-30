@@ -6,10 +6,6 @@ services:
     image: lcnem/telescope-monitor
     # ports:
     #   - 9000:9000
-    #   - 1317:1317
-    #   - 9090:9090
-    #   - 26656:26656
-    #   - 26657:26657
     volumes:
       - ~/monitor/config.json:/root/monitor/config.json
     command: monitor serve 9000
