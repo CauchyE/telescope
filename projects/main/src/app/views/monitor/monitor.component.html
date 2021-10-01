@@ -33,54 +33,59 @@
   <ng-template #loading>
     <mat-progress-spinner [diameter]="60" [mode]="'indeterminate'"></mat-progress-spinner>
   </ng-template>
+  <ng-template #empty>
+    <p>Empty</p>
+  </ng-template>
   <ng-template #loaded>
-    <mat-list *ngFor="let reward of data">
-      <ng-container
-        *ngIf="!reward.result.commission.commission; then commissionEmpty; else commissionExist"
-      ></ng-container>
-      <ng-template #commissionEmpty>
-        <mat-list-item>
-          <span class="column-name">Commission is empty</span>
-          <span fxFlex="auto"></span>
-        </mat-list-item>
-      </ng-template>
-      <ng-template #commissionExist>
-        <mat-list-item>
-          <span class="column-name">Commission:</span>
-          <span fxFlex="auto"></span>
-          <span class="column-value">{{
-            reward.result.commission.commission.commission[0].amount
-          }}</span>
-          <span fxFlex="auto"></span>
-          <span class="column-value">{{
-            reward.result.commission.commission.commission[0].denom
-          }}</span>
-        </mat-list-item>
-      </ng-template>
-      <mat-divider></mat-divider>
-      <ng-container
-        *ngIf="!reward.result.commission.commission; then OutstandEmpty; else OutstandExist"
-      ></ng-container>
-      <ng-template #OutstandEmpty>
-        <mat-list-item>
-          <span class="column-name">Outstanding Rewards is empty</span>
-          <span fxFlex="auto"></span>
-        </mat-list-item>
-      </ng-template>
-      <ng-template #OutstandExist>
-        <mat-list-item>
-          <span class="column-name">Outstanding Rewards:</span>
-          <span fxFlex="auto"></span>
-          <span class="column-value">{{
-            reward.result.outstanding_rewards.rewards.rewards[0].amount
-          }}</span>
-          <span fxFlex="auto"></span>
-          <span class="column-value">{{
-            reward.result.outstanding_rewards.rewards.rewards[0].denom
-          }}</span>
-        </mat-list-item>
-      </ng-template>
-      <mat-divider></mat-divider>
-    </mat-list>
+    <ng-container *ngIf="(data || []).length > 0; else empty">
+      <mat-list *ngFor="let reward of data">
+        <ng-container
+          *ngIf="!reward.result.commission.commission; then commissionEmpty; else commissionExist"
+        ></ng-container>
+        <ng-template #commissionEmpty>
+          <mat-list-item>
+            <span class="column-name">Commission is empty</span>
+            <span fxFlex="auto"></span>
+          </mat-list-item>
+        </ng-template>
+        <ng-template #commissionExist>
+          <mat-list-item>
+            <span class="column-name">Commission:</span>
+            <span fxFlex="auto"></span>
+            <span class="column-value">{{
+              reward.result.commission.commission.commission[0].amount
+            }}</span>
+            <span fxFlex="auto"></span>
+            <span class="column-value">{{
+              reward.result.commission.commission.commission[0].denom
+            }}</span>
+          </mat-list-item>
+        </ng-template>
+        <mat-divider></mat-divider>
+        <ng-container
+          *ngIf="!reward.result.commission.commission; then OutstandEmpty; else OutstandExist"
+        ></ng-container>
+        <ng-template #OutstandEmpty>
+          <mat-list-item>
+            <span class="column-name">Outstanding Rewards is empty</span>
+            <span fxFlex="auto"></span>
+          </mat-list-item>
+        </ng-template>
+        <ng-template #OutstandExist>
+          <mat-list-item>
+            <span class="column-name">Outstanding Rewards:</span>
+            <span fxFlex="auto"></span>
+            <span class="column-value">{{
+              reward.result.outstanding_rewards.rewards.rewards[0].amount
+            }}</span>
+            <span fxFlex="auto"></span>
+            <span class="column-value">{{
+              reward.result.outstanding_rewards.rewards.rewards[0].denom
+            }}</span>
+          </mat-list-item>
+        </ng-template>
+        <mat-divider></mat-divider>
+      </mat-list>
+    </ng-container>
   </ng-template>
 </mat-card>
