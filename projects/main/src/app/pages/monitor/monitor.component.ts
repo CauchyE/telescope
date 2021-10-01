@@ -17,7 +17,7 @@ export class MonitorComponent implements OnInit {
   constructor(private route: ActivatedRoute, private readonly monitor: MonitorService) {
     this.data = combineLatest([this.startDate$.asObservable(), this.count$.asObservable()]).pipe(
       mergeMap(([start, count]) =>
-        this.monitor.list(start.getFullYear(), start.getMonth(), start.getDate(), count),
+        this.monitor.list(start.getFullYear(), start.getMonth() + 1, start.getDate(), count),
       ),
     );
   }
@@ -26,18 +26,9 @@ export class MonitorComponent implements OnInit {
 
   appStartParamChanged(startDate: Date): void {
     this.startDate$.next(startDate);
-    this.data = combineLatest([this.startDate$.asObservable(), this.count$.asObservable()]).pipe(
-      mergeMap(([start, count]) =>
-        this.monitor.list(start.getFullYear(), start.getMonth(), start.getDate(), count),
-      ),
-    );
   }
+
   appCountParamChanged(count: number): void {
     this.count$.next(count);
-    this.data = combineLatest([this.startDate$.asObservable(), this.count$.asObservable()]).pipe(
-      mergeMap(([start, count]) =>
-        this.monitor.list(start.getFullYear(), start.getMonth(), start.getDate(), count),
-      ),
-    );
   }
 }
