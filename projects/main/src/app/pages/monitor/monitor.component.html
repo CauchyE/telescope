@@ -1,5 +1,5 @@
 <view-monitor
-  [data]="data | async"
+  [data]="data$ | async"
   [startDate]="startDate$ | async"
   [count]="count$ | async"
   (startParamChanged)="appStartParamChanged($event)"

@@ -23,6 +23,7 @@ type Monitor struct {
 
 type Data struct {
 	BeforeDate *time.Time                 `json:"before_date"`
+	Date       *time.Time                 `json:"date"`
 	Result     map[string]json.RawMessage `json:"result"`
 }
 
@@ -85,8 +86,12 @@ func (monitor *Monitor) Fetch() error {
 		// set result
 		result[k] = json.RawMessage(bz)
 	}
+
+	lastFetchDate := monitor.GetLastFetchDate()
+
 	data := Data{
-		BeforeDate: &now,
+		BeforeDate: lastFetchDate,
+		Date:       &now,
 		Result:     result,
 	}
 
@@ -102,8 +107,8 @@ func (monitor *Monitor) Fetch() error {
 	return nil
 }
 
-func (monitor *Monitor) GetData(time *time.Time) (*Data, error) {
-	key := []byte(time.Format("2006-01-02"))
+func (monitor *Monitor) GetData(t *time.Time) (*Data, error) {
+	key := []byte(t.Format(time.RFC3339))
 	bz, err := monitor.DB.Get(key, &opt.ReadOptions{})
 	if err != nil {
 		return nil, err
@@ -118,8 +123,8 @@ func (monitor *Monitor) GetData(time *time.Time) (*Data, error) {
 	return &data, nil
 }
 
-func (monitor *Monitor) SetData(time *time.Time, data *Data) error {
-	key := []byte(time.Format("2006-01-02"))
+func (monitor *Monitor) SetData(t *time.Time, data *Data) error {
+	key := []byte(t.Format(time.RFC3339))
 	bz, _ := json.MarshalIndent(data, "", "  ")
 
 	err := monitor.DB.Put(key, bz, &opt.WriteOptions{})
@@ -130,24 +135,24 @@ func (monitor *Monitor) SetData(time *time.Time, data *Data) error {
 	return nil
 }
 
-func (monitor *Monitor) GetLastFetchDate() (*time.Time, error) {
+func (monitor *Monitor) GetLastFetchDate() *time.Time {
 	key := []byte("last_fetch_date")
 	bz, err := monitor.DB.Get(key, &opt.ReadOptions{})
 	if err != nil {
-		return nil, err
+		return nil
 	}
-	lastFetchDate, err := time.Parse("2006-01-02", string(bz))
+	lastFetchDate, err := time.Parse(time.RFC3339, string(bz))
 
 	if err != nil {
-		return nil, err
+		return nil
 	}
 
-	return &lastFetchDate, nil
+	return &lastFetchDate
 }
 
 func (monitor *Monitor) SetLastFetchDate(t *time.Time) error {
 	key := []byte("last_fetch_date")
-	bz := []byte(t.Format("2006-01-02"))
+	bz := []byte(t.Format(time.RFC3339))
 	err := monitor.DB.Put(key, bz, &opt.WriteOptions{})
 	if err != nil {
 		return err
@@ -157,29 +162,26 @@ func (monitor *Monitor) SetLastFetchDate(t *time.Time) error {
 }
 
 func (monitor *Monitor) List(start *time.Time, count uint) ([]Data, error) {
-	lastFetchDate, err := monitor.GetLastFetchDate()
-	if err != nil {
-		return nil, err
-	}
-	var data []Data
+	data := []Data{}
+	lastFetchDate := monitor.GetLastFetchDate()
 
 	for {
+		if lastFetchDate == nil || lastFetchDate.Before(*start) {
+			break
+		}
 		datum, err := monitor.GetData(lastFetchDate)
 		if err != nil {
-			return nil, err
+			return data, err
 		}
 		data = append(data, *datum)
 
-		if datum.BeforeDate == nil || datum.BeforeDate.After(*start) {
-			break
-		}
 		lastFetchDate = datum.BeforeDate
 	}
 
 	length := len(data)
 	cnt := int(count)
 	if length > cnt {
-		data = data[length-cnt : length-1]
+		data = data[length-1-cnt : length-1]
 	}
 
 	return data, nil

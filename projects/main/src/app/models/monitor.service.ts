@@ -4,8 +4,9 @@ import { Injectable } from '@angular/core';
 import { type } from 'os';
 
 export type Data = {
-  BeforeDate: string;
-  Result: any;
+  before_date: string;
+  date: string;
+  result: { [key: string]: any };
 };
 
 @Injectable({

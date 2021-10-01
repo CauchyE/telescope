@@ -3,7 +3,14 @@
   <form #formRef="ngForm">
     <mat-form-field fxFill>
       <mat-label>Choose a Start Date</mat-label>
-      <input #dateRef [ngModel]="startDate" name="startDate" matInput [matDatepicker]="picker" />
+      <input
+        #dateRef
+        [ngModel]="startDate"
+        name="startDate"
+        matInput
+        [matDatepicker]="picker"
+        (ngModelChange)="onStartParamChanged($event)"
+      />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
@@ -17,6 +24,7 @@
         name="count"
         matInput
         pattern="^[1-9][0-9]*$"
+        (ngModelChange)="onCountParamChanged($event)"
       />
     </mat-form-field>
   </form>
@@ -28,7 +36,7 @@
   <ng-template #loaded>
     <mat-list *ngFor="let reward of data">
       <ng-container
-        *ngIf="!reward.Result.commission.commission; then commissionEmpty; else commissionExist"
+        *ngIf="!reward.result.commission.commission; then commissionEmpty; else commissionExist"
       ></ng-container>
       <ng-template #commissionEmpty>
         <mat-list-item>
@@ -41,17 +49,17 @@
           <span class="column-name">Commission:</span>
           <span fxFlex="auto"></span>
           <span class="column-value">{{
-            reward.Result.commission.commission.commission[0].amount
+            reward.result.commission.commission.commission[0].amount
           }}</span>
           <span fxFlex="auto"></span>
           <span class="column-value">{{
-            reward.Result.commission.commission.commission[0].denom
+            reward.result.commission.commission.commission[0].denom
           }}</span>
         </mat-list-item>
       </ng-template>
       <mat-divider></mat-divider>
       <ng-container
-        *ngIf="!reward.Result.commission.commission; then OutstandEmpty; else OutstandExist"
+        *ngIf="!reward.result.commission.commission; then OutstandEmpty; else OutstandExist"
       ></ng-container>
       <ng-template #OutstandEmpty>
         <mat-list-item>
@@ -64,11 +72,11 @@
           <span class="column-name">Outstanding Rewards:</span>
           <span fxFlex="auto"></span>
           <span class="column-value">{{
-            reward.Result.outstanding_rewards.rewards.rewards[0].amount
+            reward.result.outstanding_rewards.rewards.rewards[0].amount
           }}</span>
           <span fxFlex="auto"></span>
           <span class="column-value">{{
-            reward.Result.outstanding_rewards.rewards.rewards[0].denom
+            reward.result.outstanding_rewards.rewards.rewards[0].denom
           }}</span>
         </mat-list-item>
       </ng-template>
