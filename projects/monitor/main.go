@@ -62,10 +62,10 @@ func serveCmd() *cobra.Command {
 			// update 1 min
 			if cronFlag {
 				c := cron.New()
-				c.AddFunc("0 * * * *", func() {
+				c.AddFunc("* * * * *", func() {
 					monitor.Health()
 				})
-				c.AddFunc("0 0 * * *", func() {
+				c.AddFunc("* * * * *", func() {
 					monitor.Fetch()
 				})
 
@@ -100,16 +100,21 @@ func listHandlerFactory(monitor *Monitor) func(w http.ResponseWriter, r *http.Re
 			return
 		}
 
-		count, _ := strconv.Atoi(params["count"])
-
-		bz, err := monitor.List(start, uint(count))
+		count, err := strconv.Atoi(params["count"])
 		if err != nil {
 			fmt.Fprint(w, "error: count must be specified in query parameters")
 			return
 		}
 
-		json, _ := json.MarshalIndent(bz, "", "  ")
-		fmt.Fprint(w, string(json))
+		data, _ := monitor.List(start, uint(count))
+		// if err != nil {
+		// 	fmt.Fprint(w, "error: unexpected error")
+		// 	return
+		// }
+
+		json, _ := json.MarshalIndent(data, "", "  ")
+		jsonStr := string(json)
+		fmt.Fprint(w, jsonStr)
 	}
 }
 
