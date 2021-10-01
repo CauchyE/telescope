@@ -1,15 +1,14 @@
 <h2>Daily Rewards</h2>
 <mat-card>
-  <form #formRef="ngForm">
+  <form #formRef="ngForm" (submit)="onSubmit(dateRef.value, countRef.value)">
     <mat-form-field fxFill>
       <mat-label>Choose a Start Date</mat-label>
       <input
-        #dateRef
+        #dateRef="ngModel"
         [ngModel]="startDate"
         name="startDate"
         matInput
         [matDatepicker]="picker"
-        (ngModelChange)="onStartParamChanged($event)"
       />
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-datepicker #picker></mat-datepicker>
@@ -18,74 +17,61 @@
     <mat-form-field fxFill>
       <mat-label>Input Count</mat-label>
       <input
-        #countRef
+        #countRef="ngModel"
         [ngModel]="count"
         type="number"
         name="count"
         matInput
         pattern="^[1-9][0-9]*$"
-        (ngModelChange)="onCountParamChanged($event)"
       />
     </mat-form-field>
+    <br />
+    <button mat-flat-button fxFill color="accent">Submit</button>
   </form>
+</mat-card>
 
-  <ng-container *ngIf="data === null; then loading; else loaded"></ng-container>
-  <ng-template #loading>
-    <mat-progress-spinner [diameter]="60" [mode]="'indeterminate'"></mat-progress-spinner>
-  </ng-template>
-  <ng-template #empty>
-    <p>Empty</p>
-  </ng-template>
-  <ng-template #loaded>
-    <ng-container *ngIf="(data || []).length > 0; else empty">
-      <mat-list *ngFor="let reward of data">
-        <ng-container
-          *ngIf="!reward.result.commission.commission; then commissionEmpty; else commissionExist"
-        ></ng-container>
-        <ng-template #commissionEmpty>
-          <mat-list-item>
-            <span class="column-name">Commission is empty</span>
-            <span fxFlex="auto"></span>
-          </mat-list-item>
-        </ng-template>
-        <ng-template #commissionExist>
-          <mat-list-item>
-            <span class="column-name">Commission:</span>
-            <span fxFlex="auto"></span>
-            <span class="column-value">{{
-              reward.result.commission.commission.commission[0].amount
-            }}</span>
-            <span fxFlex="auto"></span>
-            <span class="column-value">{{
-              reward.result.commission.commission.commission[0].denom
-            }}</span>
-          </mat-list-item>
-        </ng-template>
+<ng-container *ngIf="data === null; then loading; else loaded"></ng-container>
+<ng-template #loading>
+  <mat-progress-spinner [diameter]="60" [mode]="'indeterminate'"></mat-progress-spinner>
+</ng-template>
+<ng-template #empty>
+  <p>Empty</p>
+</ng-template>
+<ng-template #loaded>
+  <ng-container *ngIf="(data || []).length > 0; else empty">
+    <mat-card *ngFor="let reward of data">
+      <mat-list>
+        <mat-list-item>
+          <span class="column-name">Date:</span>
+          <span fxFlex="auto"></span>
+          <span class="column-value">{{ reward.date }}</span>
+        </mat-list-item>
         <mat-divider></mat-divider>
-        <ng-container
-          *ngIf="!reward.result.commission.commission; then OutstandEmpty; else OutstandExist"
-        ></ng-container>
-        <ng-template #OutstandEmpty>
-          <mat-list-item>
-            <span class="column-name">Outstanding Rewards is empty</span>
-            <span fxFlex="auto"></span>
-          </mat-list-item>
-        </ng-template>
-        <ng-template #OutstandExist>
-          <mat-list-item>
-            <span class="column-name">Outstanding Rewards:</span>
-            <span fxFlex="auto"></span>
-            <span class="column-value">{{
-              reward.result.outstanding_rewards.rewards.rewards[0].amount
-            }}</span>
-            <span fxFlex="auto"></span>
-            <span class="column-value">{{
-              reward.result.outstanding_rewards.rewards.rewards[0].denom
-            }}</span>
-          </mat-list-item>
-        </ng-template>
+        <mat-list-item>
+          <span class="column-name">Commission:</span>
+          <span fxFlex="auto"></span>
+          <span class="column-value">{{
+            reward.result.commission.commission.commission[0].amount
+          }}</span>
+          <span fxFlex="auto"></span>
+          <span class="column-value">{{
+            reward.result.commission.commission.commission[0].denom
+          }}</span>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+        <mat-list-item>
+          <span class="column-name">Outstanding Rewards:</span>
+          <span fxFlex="auto"></span>
+          <span class="column-value">{{
+            reward.result.outstanding_rewards.rewards.rewards[0].amount
+          }}</span>
+          <span fxFlex="auto"></span>
+          <span class="column-value">{{
+            reward.result.outstanding_rewards.rewards.rewards[0].denom
+          }}</span>
+        </mat-list-item>
         <mat-divider></mat-divider>
       </mat-list>
-    </ng-container>
-  </ng-template>
-</mat-card>
+    </mat-card>
+  </ng-container>
+</ng-template>

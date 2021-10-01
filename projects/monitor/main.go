@@ -62,10 +62,10 @@ func serveCmd() *cobra.Command {
 			// update 1 min
 			if cronFlag {
 				c := cron.New()
-				c.AddFunc("* * * * *", func() {
+				c.AddFunc("0 * * * *", func() {
 					monitor.Health()
 				})
-				c.AddFunc("* * * * *", func() {
+				c.AddFunc("0 0 * * *", func() {
 					monitor.Fetch()
 				})
 
@@ -103,6 +103,11 @@ func listHandlerFactory(monitor *Monitor) func(w http.ResponseWriter, r *http.Re
 		count, err := strconv.Atoi(params["count"])
 		if err != nil {
 			fmt.Fprint(w, "error: count must be specified in query parameters")
+			return
+		}
+
+		if count < 1 {
+			fmt.Fprint(w, "error: count must be greater than 0")
 			return
 		}
 

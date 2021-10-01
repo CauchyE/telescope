@@ -26,10 +26,8 @@ export class MonitorComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  onStartParamChanged(startDate: Date): void {
+  onSubmit(startDate: Date, count: number) {
     this.startParamChanged.emit(startDate);
-  }
-  onCountParamChanged(count: number): void {
     this.countParamChanged.emit(count);
   }
 }
