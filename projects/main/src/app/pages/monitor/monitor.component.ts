@@ -36,6 +36,8 @@ export class MonitorComponent implements OnInit {
   }
 
   appCountParamChanged(count: number): void {
-    this.count$.next(count);
+    if (count !== null) {
+      this.count$.next(count);
+    }
   }
 }

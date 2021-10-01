@@ -106,6 +106,11 @@ func listHandlerFactory(monitor *Monitor) func(w http.ResponseWriter, r *http.Re
 			return
 		}
 
+		if count < 1 {
+			fmt.Fprint(w, "error: count must be greater than 0")
+			return
+		}
+
 		data, _ := monitor.List(start, uint(count))
 		// if err != nil {
 		// 	fmt.Fprint(w, "error: unexpected error")
