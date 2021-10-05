@@ -3,10 +3,22 @@ import { MonitorComponent } from './monitor.component';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import { FormsModule } from '@angular/forms';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [MonitorComponent],
-  imports: [CommonModule, FlexLayoutModule, MaterialModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    FormsModule,
+    FlexLayoutModule,
+    MaterialModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+  ],
   exports: [MonitorComponent],
 })
 export class MonitorModule {}

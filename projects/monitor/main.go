@@ -42,14 +42,9 @@ func healthCmd() *cobra.Command {
 
 func fetchCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:  "fetch [year] [month] [date]",
-		Args: cobra.ExactArgs(3),
+		Use: "fetch",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			t, err := timeFromString(args[0], args[1], args[2])
-			if err != nil {
-				return err
-			}
-			return monitor.Fetch(t)
+			return monitor.Fetch()
 		},
 	}
 }
@@ -64,25 +59,24 @@ func serveCmd() *cobra.Command {
 				return err
 			}
 
-      // update 1 min
-      if cronFlag {
+			// update 1 min
+			if cronFlag {
 				c := cron.New()
 				c.AddFunc("0 * * * *", func() {
 					monitor.Health()
 				})
 				c.AddFunc("0 0 * * *", func() {
-					now := time.Now()
-					monitor.Fetch(&now)
+					monitor.Fetch()
 				})
 
 				c.Start()
 			}
 
 			router := mux.NewRouter()
-			router.HandleFunc("/list", listHandlerFactory(monitor)).Queries("start_year","{start_year}").Queries("start_month","{start_month}").Queries("start_day", "{start_day}").Queries("count", "{count}").Methods("GET")
+			router.HandleFunc("/list", listHandlerFactory(monitor)).Queries("start_year", "{start_year}").Queries("start_month", "{start_month}").Queries("start_day", "{start_day}").Queries("count", "{count}").Methods("GET")
 
-	  	http.Handle("/", router)
-		  http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
+			http.Handle("/", router)
+			http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
 
 			return nil
 		},
@@ -91,9 +85,9 @@ func serveCmd() *cobra.Command {
 
 func listHandlerFactory(monitor *Monitor) func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
-    w.Header().Set("Access-Control-Allow-Headers", "*")
-    w.Header().Set("Access-Control-Allow-Origin", "*")
-    w.Header().Set( "Access-Control-Allow-Methods","GET, OPTIONS" )
+		w.Header().Set("Access-Control-Allow-Headers", "*")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "GET, OPTIONS")
 
 		params := mux.Vars(r)
 		year := params["start_year"]
@@ -102,20 +96,30 @@ func listHandlerFactory(monitor *Monitor) func(w http.ResponseWriter, r *http.Re
 
 		start, err := timeFromString(year, month, day)
 		if err != nil {
-			fmt.Fprint(w, "error")
-      return
+			fmt.Fprint(w, "error: start_year, start_month, start_day must be specified in query parameters")
+			return
 		}
 
-		count, _ := strconv.Atoi(params["count"])
-
-		bz, err := monitor.List(start, uint(count))
+		count, err := strconv.Atoi(params["count"])
 		if err != nil {
-			fmt.Fprint(w, "error")
-      return
+			fmt.Fprint(w, "error: count must be specified in query parameters")
+			return
 		}
 
-		json, _ := json.MarshalIndent(bz, "", "  ")
-		fmt.Fprint(w, string(json))
+		if count < 1 {
+			fmt.Fprint(w, "error: count must be greater than 0")
+			return
+		}
+
+		data, _ := monitor.List(start, uint(count))
+		// if err != nil {
+		// 	fmt.Fprint(w, "error: unexpected error")
+		// 	return
+		// }
+
+		json, _ := json.MarshalIndent(data, "", "  ")
+		jsonStr := string(json)
+		fmt.Fprint(w, jsonStr)
 	}
 }
 
@@ -132,7 +136,7 @@ func init() {
 		os.Exit(1)
 	}
 
-  // default true => false
+	// default true => false
 	serveCmd().Flags().BoolVar(&cronFlag, "cron", true, "--cron=true")
 
 	rootCmd.AddCommand(

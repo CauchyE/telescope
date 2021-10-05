@@ -1,11 +1,11 @@
-import { Config, ConfigService } from './config.service';
+import { ConfigService } from './config.service';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { type } from 'os';
 
 export type Data = {
-  BeforeDate: string;
-  Result: any;
+  before_date: string;
+  date: string;
+  result: { [key: string]: any };
 };
 
 @Injectable({
