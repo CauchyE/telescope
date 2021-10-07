@@ -5,10 +5,9 @@ import {
   Input,
   Output,
   EventEmitter,
+  NgZone,
 } from '@angular/core';
-import { Observable, combineLatest } from 'rxjs';
-import { MediaObserver } from '@angular/flex-layout';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, combineLatest } from 'rxjs';
 import { Router, NavigationEnd } from '@angular/router';
 import { MatDrawerMode, MatSidenav } from '@angular/material/sidenav';
 
@@ -30,28 +29,22 @@ export class AppComponent implements OnInit {
   @ViewChild('sidenav')
   sidenav!: MatSidenav;
 
-  drawerMode$: Observable<MatDrawerMode>;
-  drawerOpened$: Observable<boolean>;
+  drawerMode$: BehaviorSubject<MatDrawerMode> = new BehaviorSubject(
+    'side' as MatDrawerMode
+  );
 
-  constructor(private router: Router, private mediaObserver: MediaObserver) {
+  drawerOpened$ = new BehaviorSubject(true);
+
+  constructor(private router: Router, private ngZone: NgZone) {
+
     this.searchValue = '';
     this.appSubmitSearchValue = new EventEmitter();
 
-    this.drawerMode$ = this.mediaObserver
-      .asObservable()
-      .pipe(
-        map((changes) =>
-          changes.find((change) => change.mqAlias === 'xs') ? 'over' : 'side',
-        ),
-      );
-
-    this.drawerOpened$ = this.mediaObserver
-      .asObservable()
-      .pipe(
-        map((changes) =>
-          changes.find((change) => change.mqAlias === 'xs') ? false : true,
-        ),
-      );
+    window.onresize = (e) => {
+      ngZone.run(() => {
+        this.handleResizeWindow(window.innerWidth);
+      });
+    };
 
     combineLatest([this.drawerMode$, this.router.events]).subscribe(
       ([drawerMode, event]) => {
@@ -62,7 +55,17 @@ export class AppComponent implements OnInit {
     );
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.handleResizeWindow(window.innerWidth);
+  }
+
+  handleResizeWindow(width: number): void {
+    if (width < 600) {
+      this.drawerOpened$.next(false);
+    } else {
+      this.drawerOpened$.next(true);
+    }
+  }
 
   onSubmitSearchValue(value: string) {
     this.appSubmitSearchValue.emit(value);
