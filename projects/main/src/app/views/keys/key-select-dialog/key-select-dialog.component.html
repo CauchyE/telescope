@@ -3,7 +3,7 @@
     <mat-list-item (click)="onClickKey(key)">
       <mat-icon matListIcon [ngStyle]="{ color: getColorCode(key) }"> circle </mat-icon>
       <span>{{ key.id }}</span>
-      <span fxFlex="auto"></span>
+      <span class="flex-auto"></span>
       <ng-container *ngIf="data.currentKeyID === key.id">
         <mat-icon color="primary">check</mat-icon>
       </ng-container>

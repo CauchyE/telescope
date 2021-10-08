@@ -6,7 +6,7 @@
     <ng-container *ngFor="let proposal of proposals?.proposals">
       <mat-list-item routerLink="{{ proposal.proposal_id }}">
         <span class="column-value">{{ proposal.proposal_id }}</span>
-        <span fxFlex="auto"></span>
+        <span class="flex-auto"></span>
         <span class="column-value">{{ proposal.status }}</span>
       </mat-list-item>
       <mat-divider></mat-divider>

@@ -1,4 +1,4 @@
-<div fxLayout="row" fxLayoutAlign="space-between start">
+<div class="flex flex-row justify-between content-start items-start">
   <h2>Latest Transactions</h2>
   <mat-form-field appearance="fill">
     <mat-select [(value)]="selectedTxType" (valueChange)="onSelectedTxTypeChanged($event)">
@@ -14,7 +14,7 @@
       <ng-container *ngFor="let latestTx of latestTxs">
         <mat-list-item routerLink="/txs/{{ latestTx.result.events['tx.hash'][0] }}">
           <span class="column-value">{{ latestTx.result.data.value.TxResult.height }}</span>
-          <span fxFlex="auto"></span>
+          <span class="flex-auto"></span>
           <span class="column-value">{{ latestTx.result.events['tx.hash'][0] }}</span>
         </mat-list-item>
         <mat-divider></mat-divider>
@@ -28,7 +28,7 @@
         <ng-container *ngFor="let initialTx of initialTxs">
           <mat-list-item routerLink="/txs/{{ initialTx.txhash }}">
             <span class="column-value">{{ initialTx.height }}</span>
-            <span fxFlex="auto"></span>
+            <span class="flex-auto"></span>
             <span class="column-value">{{ initialTx.txhash }}</span>
           </mat-list-item>
           <mat-divider></mat-divider>

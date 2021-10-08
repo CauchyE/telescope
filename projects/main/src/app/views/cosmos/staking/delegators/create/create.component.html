@@ -17,7 +17,7 @@
     <ng-container *ngFor="let coin of coins">
       <mat-list-item>
         <span>{{ coin?.denom }}</span>
-        <span fxFlex="auto"> </span>
+        <span class="flex-auto"> </span>
         <span>{{ coin?.amount }}</span>
       </mat-list-item>
       <mat-divider></mat-divider>
@@ -30,7 +30,7 @@
       onSubmit(validatorAddressRef.value, amountRef.value, privateKeyRef.value)
     "
   >
-    <mat-form-field fxFill>
+    <mat-form-field class="w-full">
       <mat-label>Validator address</mat-label>
       <input
         #validatorAddressRef
@@ -41,11 +41,11 @@
       />
     </mat-form-field>
 
-    <mat-form-field fxFlex="auto">
+    <mat-form-field class="w-full">
       <mat-label>Denom</mat-label>
       <input matInput readonly [ngModel]="bondDenom" name="denom" />
     </mat-form-field>
-    <mat-form-field fxFlex="auto">
+    <mat-form-field class="w-full">
       <mat-label>Amount</mat-label>
       <input
         #amountRef
@@ -59,7 +59,7 @@
     >=
     <mat-checkbox required>Confirm</mat-checkbox>
 
-    <mat-form-field fxFill>
+    <mat-form-field class="w-full">
       <mat-label>ID</mat-label>
       <input
         #idRef
@@ -71,7 +71,7 @@
         readonly
       />
     </mat-form-field>
-    <mat-form-field fxFill>
+    <mat-form-field class="w-full">
       <mat-label>Private key</mat-label>
       <input
         #privateKeyRef

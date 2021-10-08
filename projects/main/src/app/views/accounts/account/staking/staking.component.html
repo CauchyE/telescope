@@ -4,7 +4,7 @@
   <mat-list *ngFor="let ttl of totalrewards?.total">
     <mat-list-item>
       <span class="column-name">{{ ttl.amount }}</span>
-      <span fxFlex="auto"></span>
+      <span class="flex-auto"></span>
       <span class="column-value">{{ ttl.denom }}</span>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
@@ -20,12 +20,12 @@ Validate先が多数にならない現状はすべてのValaddress別の報酬�
   <mat-list *ngFor="let reward of totalrewards?.rewards">
     <mat-list-item>
       <span class="column-name">Validator Address: </span>
-      <span fxFlex="auto"></span>
+      <span class="flex-auto"></span>
       <span class="column-value">{{ reward.validator_address }}</span>
     </mat-list-item>
     <mat-list-item *ngFor="let rew of reward?.reward">
       <span class="column-name">{{ rew.amount }}</span>
-      <span fxFlex="auto"></span>
+      <span class="flex-auto"></span>
       <span class="column-value">{{ rew.denom }}</span>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
