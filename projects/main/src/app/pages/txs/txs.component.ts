@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
 import { rest } from 'cosmos-client';
 import { CosmosTxV1beta1GetTxsEventResponseTxResponses } from 'cosmos-client/esm/openapi/api';
@@ -13,6 +14,19 @@ import { map, mergeMap } from 'rxjs/operators';
   styleUrls: ['./txs.component.css']
 })
 export class TxsComponent implements OnInit {
+
+  pageSizeOptions = [5, 10, 20];
+  pageSize$: BehaviorSubject<number> = new BehaviorSubject(10);
+  pageNumber$: BehaviorSubject<number> = new BehaviorSubject(1);
+  pageLength$: BehaviorSubject<number> = new BehaviorSubject(1000);
+
+  //latestBlock$: Observable<InlineResponse20031 | undefined>;
+  // ==>latestTxs相当
+  latestTxHeight$ = new BehaviorSubject(BigInt(20));
+  //latestBlocks$: Observable<InlineResponse20032[] | undefined>;
+  firstTxHeight$ = new BehaviorSubject(BigInt(20));
+  num_: bigint | undefined
+
   pollingInterval = 30;
   latestTxs$?: Observable<CosmosTxV1beta1GetTxsEventResponseTxResponses[] | undefined>;
   txTypeOptions?: string[];
@@ -24,6 +38,29 @@ export class TxsComponent implements OnInit {
     const sdk$ = timer$.pipe(mergeMap((_) => this.cosmosSDK.sdk$));
     this.latestTxs$ = combineLatest([sdk$, this.selectedTxType$]).pipe(
       mergeMap(([sdk, selectedTxType]) => {
+        //get_max_num
+        //var num_: bigint | undefined
+        rest.cosmos.tx
+          .getTxsEvent(
+            sdk.rest,
+            [`message.module='${selectedTxType}'`],
+            undefined, // Todo: for pagination
+            undefined, // Todo: for pagination
+            undefined, // Todo: for pagination
+          )
+          .then((res) => {
+            const arr = res.data.tx_responses;
+            if (arr === undefined) {
+            } else {
+              this.num_ = BigInt(arr.length)
+            }
+            console.log("txs_no_number", this.num_)
+            console.log("latestTxHeight$", this.latestTxHeight$.getValue())
+            console.log("pageSize$", this.pageSize$.getValue())
+            console.log("pageNumber$", this.pageNumber$.getValue())
+            console.log("pageLength$", this.pageLength$.getValue())
+          })
+
         return rest.cosmos.tx
           .getTxsEvent(
             sdk.rest,
@@ -44,5 +81,14 @@ export class TxsComponent implements OnInit {
 
   appSelectedTxTypeChanged(selectedTxType: string): void {
     this.selectedTxType$.next(selectedTxType);
+  }
+
+  appPaginationChanged(pageEvent: PageEvent): void {
+    this.pageSize$.next(pageEvent.pageSize);
+    this.pageNumber$.next(pageEvent.pageIndex + 1);
+    //this.pageLength$.next(pageEvent.length);
+    this.pageLength$.next(pageEvent.length);
+    const paginatedTxHeight = this.latestTxHeight$.getValue() - BigInt(pageEvent.pageIndex) * BigInt(pageEvent.pageSize);
+    this.firstTxHeight$.next(paginatedTxHeight);
   }
 }
