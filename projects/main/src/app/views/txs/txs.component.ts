@@ -5,11 +5,11 @@ import { CosmosTxV1beta1GetTxsEventResponseTxResponses } from 'cosmos-client/esm
 @Component({
   selector: 'view-txs',
   templateUrl: './txs.component.html',
-  styleUrls: ['./txs.component.css']
+  styleUrls: ['./txs.component.css'],
 })
 export class TxsComponent implements OnInit {
   @Input()
-  latestTxs?: CosmosTxV1beta1GetTxsEventResponseTxResponses[] | null;
+  txs?: CosmosTxV1beta1GetTxsEventResponseTxResponses[] | null;
   @Input()
   txTypeOptions?: string[] | null;
   @Input()
@@ -30,10 +30,10 @@ export class TxsComponent implements OnInit {
   paginationChange: EventEmitter<PageEvent>;
 
   constructor() {
-    this.paginationChange = new EventEmitter;
+    this.paginationChange = new EventEmitter();
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   onSelectedTxTypeChanged(selectedTxType: string): void {
     this.selectedTxTypeChanged.emit(selectedTxType);
