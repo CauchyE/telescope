@@ -9,7 +9,7 @@ import { CosmosTxV1beta1GetTxsEventResponseTxResponses } from 'cosmos-client/esm
 })
 export class TxsComponent implements OnInit {
   @Input()
-  latestTxs?: CosmosTxV1beta1GetTxsEventResponseTxResponses[] | null;
+  txs?: CosmosTxV1beta1GetTxsEventResponseTxResponses[] | null;
   @Input()
   txTypeOptions?: string[] | null;
   @Input()
