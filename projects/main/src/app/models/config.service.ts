@@ -16,10 +16,10 @@ export type Config = {
     faucet?: {
       hasFaucet: boolean;
       faucetURL: string;
-      denoms: string[];
+      denom: string;
       creditAmount: number;
       maxCredit: number;
-    };
+    }[];
     monitor?: {
       monitorURL: string;
     };

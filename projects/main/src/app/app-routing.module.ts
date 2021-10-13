@@ -27,6 +27,10 @@ const routes: Routes = [
     path: 'monitor',
     loadChildren: () => import('./pages/monitor/monitor.module').then((m) => m.AppMonitorModule),
   },
+  {
+    path: 'faucet',
+    loadChildren: () => import('./pages/faucet/faucet.module').then((m) => m.AppFaucetModule),
+  },
 ];
 
 @NgModule({

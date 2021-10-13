@@ -36,11 +36,10 @@ export class AppComponent {
       }),
     );
     this.config = this.configS.config;
-    const prefix = this.config.bech32Prefix?.accAddr;
-    if (this.config.extension?.faucet !== undefined && prefix !== undefined) {
-      this.config.extension.navigations.push({
+    if (this.config.extension?.faucet !== undefined) {
+      this.config.extension.navigations.unshift({
         name: 'Faucet',
-        link: `/${prefix}/faucet`,
+        link: '/faucet',
       });
     }
   }
