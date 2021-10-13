@@ -36,12 +36,9 @@ export class TxsComponent implements OnInit {
     const timer$ = timer(0, this.pollingInterval * 1000);
     const sdk$ = timer$.pipe(mergeMap((_) => this.cosmosSDK.sdk$));
 
-    this.txsTotalCount$ = combineLatest([
-      sdk$,
-      this.selectedTxType$,
-    ]).pipe(
+    this.txsTotalCount$ = combineLatest([sdk$, this.selectedTxType$]).pipe(
       switchMap(([sdk, selectedTxType]) => {
-        console.log("switch")
+        console.log('switch');
         return rest.cosmos.tx
           .getTxsEvent(
             sdk.rest,
@@ -56,7 +53,7 @@ export class TxsComponent implements OnInit {
           )
           .catch((error) => {
             console.error(error);
-            console.log("kokode_Error")
+            console.log('kokode_Error');
             return BigInt(0);
           });
       }),
@@ -65,7 +62,11 @@ export class TxsComponent implements OnInit {
       this.pageLength$.next(parseInt(txsTotalCount.toString()));
     });
 
-    this.txsPageOffset$ = combineLatest([this.pageNumber$, this.pageSize$, this.txsTotalCount$]).pipe(
+    this.txsPageOffset$ = combineLatest([
+      this.pageNumber$,
+      this.pageSize$,
+      this.txsTotalCount$,
+    ]).pipe(
       map(([pageNumber, pageSize, txsTotalCount]) => {
         const pageOffset = txsTotalCount - BigInt(pageSize) * BigInt(pageNumber);
         return pageOffset;
@@ -78,40 +79,42 @@ export class TxsComponent implements OnInit {
       this.pageSize$.asObservable(),
       this.txsPageOffset$,
       this.txsTotalCount$,
-    ]).pipe(
-      filter(
-        ([_sdk, _selectedTxType, _pageSize, _pageOffset, txTotalCount]) =>
-          txTotalCount !== BigInt(0),
-      ),
-      switchMap(([sdk, selectedTxType, pageSize, pageOffset, _txTotalCount]) => {
-        //concatMap(([sdk, selectedTxType, pageSize, pageOffset, _txTotalCount]) => {
-        const pageOffsetX = pageOffset < 1 ? BigInt(1) : pageOffset
-        const pageSizeX = pageOffset < 1 ? pageOffset + BigInt(pageSize) : BigInt(pageSize)
-        console.log("offsetX", pageOffsetX)
-        console.log("offset", pageOffset)
+    ])
+      .pipe(
+        filter(
+          ([_sdk, _selectedTxType, _pageSize, _pageOffset, txTotalCount]) =>
+            txTotalCount !== BigInt(0),
+        ),
+        switchMap(([sdk, selectedTxType, pageSize, pageOffset, _txTotalCount]) => {
+          //concatMap(([sdk, selectedTxType, pageSize, pageOffset, _txTotalCount]) => {
+          const pageOffsetX = pageOffset < 1 ? BigInt(1) : pageOffset;
+          const pageSizeX = pageOffset < 1 ? pageOffset + BigInt(pageSize) : BigInt(pageSize);
+          console.log('offsetX', pageOffsetX);
+          console.log('offset', pageOffset);
 
-        return rest.cosmos.tx
-          .getTxsEvent(
-            sdk.rest,
-            [`message.module='${selectedTxType}'`],
-            undefined,
-            pageOffsetX,
-            pageSizeX,
-            true,
-          )
-          .then((res) => {
-            return res.data.tx_responses;
-          })
-          .catch((error) => {
-            console.error(error);
-            console.log("kokode_Error_dayo")
-            return;
-          });
-      }),
-    ).pipe(map((latestTxs) => latestTxs?.reverse()));
+          return rest.cosmos.tx
+            .getTxsEvent(
+              sdk.rest,
+              [`message.module='${selectedTxType}'`],
+              undefined,
+              pageOffsetX,
+              pageSizeX,
+              true,
+            )
+            .then((res) => {
+              return res.data.tx_responses;
+            })
+            .catch((error) => {
+              console.error(error);
+              console.log('kokode_Error_dayo');
+              return;
+            });
+        }),
+      )
+      .pipe(map((latestTxs) => latestTxs?.reverse()));
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   appSelectedTxTypeChanged(selectedTxType: string): void {
     this.selectedTxType$.next(selectedTxType);
