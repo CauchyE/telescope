@@ -38,7 +38,6 @@ export class TxsComponent implements OnInit {
 
     this.txsTotalCount$ = combineLatest([sdk$, this.selectedTxType$]).pipe(
       switchMap(([sdk, selectedTxType]) => {
-        console.log('switch');
         return rest.cosmos.tx
           .getTxsEvent(
             sdk.rest,
@@ -53,7 +52,6 @@ export class TxsComponent implements OnInit {
           )
           .catch((error) => {
             console.error(error);
-            console.log('kokode_Error');
             return BigInt(0);
           });
       }),
@@ -86,11 +84,8 @@ export class TxsComponent implements OnInit {
             txTotalCount !== BigInt(0),
         ),
         switchMap(([sdk, selectedTxType, pageSize, pageOffset, _txTotalCount]) => {
-          //concatMap(([sdk, selectedTxType, pageSize, pageOffset, _txTotalCount]) => {
           const pageOffsetX = pageOffset < 1 ? BigInt(1) : pageOffset;
           const pageSizeX = pageOffset < 1 ? pageOffset + BigInt(pageSize) : BigInt(pageSize);
-          console.log('offsetX', pageOffsetX);
-          console.log('offset', pageOffset);
 
           return rest.cosmos.tx
             .getTxsEvent(
@@ -106,7 +101,6 @@ export class TxsComponent implements OnInit {
             })
             .catch((error) => {
               console.error(error);
-              console.log('kokode_Error_dayo');
               return;
             });
         }),
