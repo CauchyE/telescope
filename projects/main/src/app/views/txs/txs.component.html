@@ -1,5 +1,5 @@
 <div class="flex flex-row justify-between content-start items-start">
-  <h2>Latest Transactions</h2>
+  <h2>Transactions</h2>
   <mat-form-field appearance="fill">
     <mat-select [(value)]="selectedTxType" (valueChange)="onSelectedTxTypeChanged($event)">
       <mat-option *ngFor="let txType of txTypeOptions" [value]="txType">{{txType}}
@@ -7,22 +7,29 @@
     </mat-select>
   </mat-form-field>
 </div>
-<div class="latest-transactions-scroll">
+<div>
   <mat-card>
     <mat-nav-list>
-      <ng-container *ngIf="latestTxs === undefined || null ; then empty; else exist"></ng-container>
+      <ng-container *ngIf="txs === undefined || null ; then empty; else exist"></ng-container>
       <ng-template #empty></ng-template>
       <ng-template #exist>
-        <h3>Latest Transactions</h3>
+        <mat-list-item>
+          <span class="break-all truncate pr-4">Block Height</span>
+          <span class="flex-auto"></span>
+          <span class="break-all truncate">Tx Hash</span>
+        </mat-list-item>
         <mat-divider></mat-divider>
-        <ng-container *ngFor="let latestTx of latestTxs">
-          <mat-list-item routerLink="/txs/{{ latestTx.txhash }}">
-            <span class="column-value">{{ latestTx.height }}</span>
+        <ng-container *ngFor="let tx of txs">
+          <mat-list-item routerLink="/txs/{{ tx.txhash }}">
+            <span class="pr-4">{{ tx.height }}</span>
             <span class="flex-auto"></span>
-            <span class="column-value">{{ latestTx.txhash }}</span>
+            <span class="break-all truncate">{{ tx.txhash }}</span>
           </mat-list-item>
           <mat-divider></mat-divider>
         </ng-container>
+        <mat-paginator [length]="pageLength" [pageSize]="pageSize" [pageIndex]="pageNumber ? pageNumber - 1 : 0"
+          [pageSizeOptions]="pageSizeOptions ? pageSizeOptions : []" (page)="onPaginationChange($event)">
+        </mat-paginator>
       </ng-template>
     </mat-nav-list>
   </mat-card>

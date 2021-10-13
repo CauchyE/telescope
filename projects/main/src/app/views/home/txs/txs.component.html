@@ -7,7 +7,7 @@
     </mat-select>
   </mat-form-field>
 </div>
-<div class="latest-transactions-scroll">
+<div class="overflow-scroll h-80">
   <mat-card>
     <mat-nav-list>
       <!--
@@ -23,13 +23,17 @@
       <ng-container *ngIf="initialTxs === undefined || null ; then empty; else exist"></ng-container>
       <ng-template #empty></ng-template>
       <ng-template #exist>
-        <h3>Latest Transactions</h3>
+        <mat-list-item>
+          <span class="break-all truncate pr-4">Block Height</span>
+          <span class="flex-auto"></span>
+          <span class="break-all truncate">Tx Hash</span>
+        </mat-list-item>
         <mat-divider></mat-divider>
         <ng-container *ngFor="let initialTx of initialTxs">
           <mat-list-item routerLink="/txs/{{ initialTx.txhash }}">
-            <span class="column-value">{{ initialTx.height }}</span>
+            <span class="pr-4">{{ initialTx.height }}</span>
             <span class="flex-auto"></span>
-            <span class="column-value">{{ initialTx.txhash }}</span>
+            <span class="break-all truncate">{{ initialTx.txhash }}</span>
           </mat-list-item>
           <mat-divider></mat-divider>
         </ng-container>
