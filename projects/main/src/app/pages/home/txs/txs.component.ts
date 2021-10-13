@@ -17,6 +17,7 @@ export class TxsComponent implements OnInit {
   initialTxs$?: Observable<CosmosTxV1beta1GetTxsEventResponseTxResponses[] | undefined>;
   latestTxs$?: Observable<websocket.RequestSchema[] | websocket.ResponseSchema[]>;
   txTypeOptions?: string[];
+  txsTotalCount$: Observable<bigint>;
   selectedTxType$: BehaviorSubject<string> = new BehaviorSubject('bank');
 
   constructor(private route: ActivatedRoute, private cosmosSDK: CosmosSDKService, private configService: ConfigService) {
@@ -24,14 +25,57 @@ export class TxsComponent implements OnInit {
     const timer$ = timer(0, this.pollingInterval * 1000);
     // eslint-disable-next-line no-unused-vars
     const sdk$ = timer$.pipe(mergeMap((_) => this.cosmosSDK.sdk$));
-    this.initialTxs$ = combineLatest([sdk$, this.selectedTxType$]).pipe(
-      mergeMap(([sdk, selectedTxType]) =>
-        rest.cosmos.tx
-          .getTxsEvent(sdk.rest, [`message.module='${selectedTxType}'`])
-          .then((res) => res.data.tx_responses),
-      ),
-      map((initialTxs) => initialTxs?.reverse()),
+
+    this.txsTotalCount$ = combineLatest([sdk$, this.selectedTxType$]).pipe(
+      mergeMap(([sdk, selectedTxType]) => {
+        return rest.cosmos.tx
+          .getTxsEvent(
+            sdk.rest,
+            [`message.module='${selectedTxType}'`],
+            undefined,
+            undefined,
+            undefined,
+            true,
+          )
+          .then((res) =>
+            res.data.pagination?.total ? BigInt(res.data.pagination?.total) : BigInt(0),
+          )
+          .catch((error) => {
+            console.error(error);
+            return BigInt(0);
+          });
+      })
     );
+    this.initialTxs$ = combineLatest([
+      sdk$,
+      this.selectedTxType$,
+      this.txsTotalCount$,
+    ]).pipe(
+      mergeMap(([sdk, selectedTxType, txsTotalCount]) => {
+        const pageSize = BigInt(100);
+        const Offset = txsTotalCount - pageSize;
+        if (Offset <= 0) {
+          return [];
+        }
+        return rest.cosmos.tx
+          .getTxsEvent(
+            sdk.rest,
+            [`message.module='${selectedTxType}'`],
+            undefined,
+            Offset,
+            pageSize,
+            true,
+          )
+          .then((res) => {
+            return res.data.tx_responses
+          })
+          .catch((error) => {
+            console.error(error);
+            return [];
+          });
+      })
+    )
+      .pipe(map((latestTxs) => latestTxs?.reverse()));
 
     /*
     this.cosmosSDK.websocketURL$.pipe(first()).subscribe((websocketURL) => {
@@ -70,7 +114,7 @@ export class TxsComponent implements OnInit {
     */
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   appSelectedTxTypeChanged(selectedTxType: string): void {
     this.selectedTxType$.next(selectedTxType);
