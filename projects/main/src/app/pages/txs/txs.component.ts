@@ -36,8 +36,13 @@ export class TxsComponent implements OnInit {
     const timer$ = timer(0, this.pollingInterval * 1000);
     const sdk$ = timer$.pipe(mergeMap((_) => this.cosmosSDK.sdk$));
 
-    this.txsTotalCount$ = combineLatest([sdk$, this.selectedTxType$]).pipe(
-      switchMap(([sdk, selectedTxType]) => {
+    this.txsTotalCount$ = combineLatest([
+      sdk$,
+      this.pageNumber$,
+      this.pageSize$,
+      this.selectedTxType$,
+    ]).pipe(
+      switchMap(([sdk, _pageNumber, _pageSize, selectedTxType]) => {
         return rest.cosmos.tx
           .getTxsEvent(
             sdk.rest,
@@ -88,6 +93,10 @@ export class TxsComponent implements OnInit {
           const modifiedPageSize =
             pageOffset < 1 ? pageOffset + BigInt(pageSize) : BigInt(pageSize);
 
+          if (modifiedPageOffset <= 0 || modifiedPageSize <= 0) {
+            return [];
+          }
+
           return rest.cosmos.tx
             .getTxsEvent(
               sdk.rest,
@@ -102,7 +111,7 @@ export class TxsComponent implements OnInit {
             })
             .catch((error) => {
               console.error(error);
-              return;
+              return [];
             });
         }),
       )
