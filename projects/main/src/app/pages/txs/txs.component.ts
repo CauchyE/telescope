@@ -6,7 +6,7 @@ import { CosmosTxV1beta1GetTxsEventResponseTxResponses } from 'cosmos-client/esm
 import { ConfigService } from 'projects/main/src/app/models/config.service';
 import { CosmosSDKService } from 'projects/main/src/app/models/cosmos-sdk.service';
 import { BehaviorSubject, combineLatest, Observable, timer } from 'rxjs';
-import { filter, map, mergeMap, switchMap, concatMap } from 'rxjs/operators';
+import { filter, map, mergeMap, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-txs',
