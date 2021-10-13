@@ -84,16 +84,17 @@ export class TxsComponent implements OnInit {
             txTotalCount !== BigInt(0),
         ),
         switchMap(([sdk, selectedTxType, pageSize, pageOffset, _txTotalCount]) => {
-          const pageOffsetX = pageOffset < 1 ? BigInt(1) : pageOffset;
-          const pageSizeX = pageOffset < 1 ? pageOffset + BigInt(pageSize) : BigInt(pageSize);
+          const modifiedPageOffset = pageOffset < 1 ? BigInt(1) : pageOffset;
+          const modifiedPageSize =
+            pageOffset < 1 ? pageOffset + BigInt(pageSize) : BigInt(pageSize);
 
           return rest.cosmos.tx
             .getTxsEvent(
               sdk.rest,
               [`message.module='${selectedTxType}'`],
               undefined,
-              pageOffsetX,
-              pageSizeX,
+              modifiedPageOffset,
+              modifiedPageSize,
               true,
             )
             .then((res) => {
