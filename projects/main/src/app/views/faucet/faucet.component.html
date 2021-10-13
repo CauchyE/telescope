@@ -1,0 +1,31 @@
+<h2>Faucet</h2>
+<form #formRef="ngForm" (submit)="onPostFaucetRequested(addressRef.value, amountRef.value)">
+  <div class="flex flex-col">
+    <mat-form-field>
+      <mat-label>Select Denom</mat-label>
+      <mat-select [(value)]="denom" (valueChange)="onSelectedDenomChanged($event)">
+        <ng-container *ngFor="let eachDenom of denoms">
+          <mat-option value="{{eachDenom}}">{{eachDenom}}</mat-option>
+        </ng-container>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Address</mat-label>
+      <input matNativeControl #addressRef name="address" [(ngModel)]="address" required />
+      <mat-error>Required!</mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Amount({{ denom }})</mat-label>
+      <input matNativeControl #amountRef name="amount" [(ngModel)]="amount" [min]="1"
+        [max]="creditAmount ? creditAmount : 0" (focus)="focusAmount = true" (focusout)="focusAmount = false"
+        required />
+      <span matSuffix>{{ denom }}</span>
+      <mat-hint *ngIf="focusAmount">Limit 1-{{ creditAmount }} (per account)</mat-hint>
+      <mat-error>Limit 1-{{ creditAmount }} (per account)!</mat-error>
+    </mat-form-field>
+
+    <button mat-flat-button color="accent" [disabled]="formRef.invalid">Claim</button>
+  </div>
+</form>

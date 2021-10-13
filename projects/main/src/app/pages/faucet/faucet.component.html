@@ -1,0 +1,10 @@
+<app-view-faucet
+  [denoms]="denoms"
+  [address]="address$ | async"
+  [denom]="denom$ | async"
+  [amount]="amount$ | async"
+  [creditAmount]="creditAmount$ | async"
+  [maxCredit]="maxCredit$ | async"
+  (postFaucetRequested)="appPostFaucetRequested($event)"
+  (selectedDenomChanged)="appSelectedDenomChange($event)"
+></app-view-faucet>
