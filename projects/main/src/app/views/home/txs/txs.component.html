@@ -10,17 +10,7 @@
 <div class="overflow-scroll h-80">
   <mat-card>
     <mat-nav-list>
-      <!--
-      <ng-container *ngFor="let latestTx of latestTxs">
-        <mat-list-item routerLink="/txs/{{ latestTx.result.events['tx.hash'][0] }}">
-          <span class="column-value">{{ latestTx.result.data.value.TxResult.height }}</span>
-          <span class="flex-auto"></span>
-          <span class="column-value">{{ latestTx.result.events['tx.hash'][0] }}</span>
-        </mat-list-item>
-        <mat-divider></mat-divider>
-      </ng-container>
-      -->
-      <ng-container *ngIf="initialTxs === undefined || null ; then empty; else exist"></ng-container>
+      <ng-container *ngIf="txs === undefined || null ; then empty; else exist"></ng-container>
       <ng-template #empty></ng-template>
       <ng-template #exist>
         <mat-list-item>
@@ -29,11 +19,11 @@
           <span class="break-all truncate">Tx Hash</span>
         </mat-list-item>
         <mat-divider></mat-divider>
-        <ng-container *ngFor="let initialTx of initialTxs">
-          <mat-list-item routerLink="/txs/{{ initialTx.txhash }}">
-            <span class="pr-4">{{ initialTx.height }}</span>
+        <ng-container *ngFor="let tx of txs">
+          <mat-list-item routerLink="/txs/{{ tx.txhash }}">
+            <span class="pr-4">{{ tx.height }}</span>
             <span class="flex-auto"></span>
-            <span class="break-all truncate">{{ initialTx.txhash }}</span>
+            <span class="break-all truncate">{{ tx.txhash }}</span>
           </mat-list-item>
           <mat-divider></mat-divider>
         </ng-container>
