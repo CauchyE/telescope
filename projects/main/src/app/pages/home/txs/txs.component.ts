@@ -5,7 +5,7 @@ import { CosmosTxV1beta1GetTxsEventResponseTxResponses } from 'cosmos-client/esm
 import { ConfigService } from 'projects/main/src/app/models/config.service';
 import { CosmosSDKService } from 'projects/main/src/app/models/cosmos-sdk.service';
 import { BehaviorSubject, combineLatest, Observable, timer } from 'rxjs';
-import { map, mergeMap } from 'rxjs/operators';
+import { filter, map, mergeMap, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-txs',
@@ -16,7 +16,10 @@ export class TxsComponent implements OnInit {
   pollingInterval = 30;
   txs$?: Observable<CosmosTxV1beta1GetTxsEventResponseTxResponses[] | undefined>;
   txTypeOptions?: string[];
+  pageSize$: BehaviorSubject<number> = new BehaviorSubject(20);
+  pageNumber$: BehaviorSubject<number> = new BehaviorSubject(1);
   txsTotalCount$: Observable<bigint>;
+  txsPageOffset$: Observable<bigint>;
   selectedTxType$: BehaviorSubject<string> = new BehaviorSubject('bank');
 
   constructor(
@@ -28,8 +31,13 @@ export class TxsComponent implements OnInit {
     const timer$ = timer(0, this.pollingInterval * 1000);
     const sdk$ = timer$.pipe(mergeMap((_) => this.cosmosSDK.sdk$));
 
-    this.txsTotalCount$ = combineLatest([sdk$, this.selectedTxType$]).pipe(
-      mergeMap(([sdk, selectedTxType]) => {
+    this.txsTotalCount$ = combineLatest([
+      sdk$,
+      this.pageNumber$,
+      this.pageSize$,
+      this.selectedTxType$,
+    ]).pipe(
+      switchMap(([sdk, _pageNumber, _pageSize, selectedTxType]) => {
         return rest.cosmos.tx
           .getTxsEvent(
             sdk.rest,
@@ -48,20 +56,44 @@ export class TxsComponent implements OnInit {
           });
       }),
     );
-    this.txs$ = combineLatest([sdk$, this.selectedTxType$, this.txsTotalCount$]).pipe(
-      mergeMap(([sdk, selectedTxType, txsTotalCount]) => {
-        const pageSize = BigInt(100);
-        const Offset = txsTotalCount - pageSize;
-        if (Offset <= 0) {
+
+    this.txsPageOffset$ = combineLatest([
+      this.pageNumber$,
+      this.pageSize$,
+      this.txsTotalCount$,
+    ]).pipe(
+      map(([pageNumber, pageSize, txsTotalCount]) => {
+        const pageOffset = txsTotalCount - BigInt(pageSize) * BigInt(pageNumber);
+        return pageOffset;
+      }),
+    );
+
+    this.txs$ = combineLatest([
+      sdk$,
+      this.selectedTxType$,
+      this.pageSize$.asObservable(),
+      this.txsPageOffset$,
+      this.txsTotalCount$,
+    ]).pipe(
+      filter(
+        ([_sdk, _selectedTxType, _pageSize, _pageOffset, txTotalCount]) =>
+          txTotalCount !== BigInt(0),
+      ),
+      switchMap(([sdk, selectedTxType, pageSize, pageOffset, _txsTotalCount]) => {
+        const modifiedPageOffset = pageOffset < 1 ? BigInt(1) : pageOffset;
+        const modifiedPageSize = pageOffset < 1 ? pageOffset + BigInt(pageSize) : BigInt(pageSize);
+
+        if (modifiedPageOffset <= 0 || modifiedPageSize <= 0) {
           return [];
         }
+
         return rest.cosmos.tx
           .getTxsEvent(
             sdk.rest,
             [`message.module='${selectedTxType}'`],
             undefined,
-            Offset,
-            pageSize,
+            modifiedPageOffset,
+            modifiedPageSize,
             true,
           )
           .then((res) => {

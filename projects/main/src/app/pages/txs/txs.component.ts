@@ -82,40 +82,38 @@ export class TxsComponent implements OnInit {
       this.pageSize$.asObservable(),
       this.txsPageOffset$,
       this.txsTotalCount$,
-    ])
-      .pipe(
-        filter(
-          ([_sdk, _selectedTxType, _pageSize, _pageOffset, txTotalCount]) =>
-            txTotalCount !== BigInt(0),
-        ),
-        switchMap(([sdk, selectedTxType, pageSize, pageOffset, _txTotalCount]) => {
-          const modifiedPageOffset = pageOffset < 1 ? BigInt(1) : pageOffset;
-          const modifiedPageSize =
-            pageOffset < 1 ? pageOffset + BigInt(pageSize) : BigInt(pageSize);
+    ]).pipe(
+      filter(
+        ([_sdk, _selectedTxType, _pageSize, _pageOffset, txTotalCount]) =>
+          txTotalCount !== BigInt(0),
+      ),
+      switchMap(([sdk, selectedTxType, pageSize, pageOffset, _txTotalCount]) => {
+        const modifiedPageOffset = pageOffset < 1 ? BigInt(1) : pageOffset;
+        const modifiedPageSize = pageOffset < 1 ? pageOffset + BigInt(pageSize) : BigInt(pageSize);
 
-          if (modifiedPageOffset <= 0 || modifiedPageSize <= 0) {
+        if (modifiedPageOffset <= 0 || modifiedPageSize <= 0) {
+          return [];
+        }
+
+        return rest.cosmos.tx
+          .getTxsEvent(
+            sdk.rest,
+            [`message.module='${selectedTxType}'`],
+            undefined,
+            modifiedPageOffset,
+            modifiedPageSize,
+            true,
+          )
+          .then((res) => {
+            return res.data.tx_responses;
+          })
+          .catch((error) => {
+            console.error(error);
             return [];
-          }
-
-          return rest.cosmos.tx
-            .getTxsEvent(
-              sdk.rest,
-              [`message.module='${selectedTxType}'`],
-              undefined,
-              modifiedPageOffset,
-              modifiedPageSize,
-              true,
-            )
-            .then((res) => {
-              return res.data.tx_responses;
-            })
-            .catch((error) => {
-              console.error(error);
-              return [];
-            });
-        }),
-      )
-      .pipe(map((latestTxs) => latestTxs?.reverse()));
+          });
+      }),
+      map((latestTxs) => latestTxs?.reverse()),
+    );
   }
 
   ngOnInit(): void {}
