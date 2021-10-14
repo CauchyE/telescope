@@ -62,7 +62,7 @@ func serveCmd() *cobra.Command {
 			// update 1 min
 			if cronFlag {
 				c := cron.New()
-				c.AddFunc("0 * * * *", func() {
+				c.AddFunc("* * * * *", func() {
 					monitor.Health()
 				})
 				c.AddFunc("0 0 * * *", func() {
