@@ -14,7 +14,7 @@ import { map, mergeMap } from 'rxjs/operators';
 })
 export class TxsComponent implements OnInit {
   pollingInterval = 30;
-  initialTxs$?: Observable<CosmosTxV1beta1GetTxsEventResponseTxResponses[] | undefined>;
+  txs$?: Observable<CosmosTxV1beta1GetTxsEventResponseTxResponses[] | undefined>;
   txTypeOptions?: string[];
   txsTotalCount$: Observable<bigint>;
   selectedTxType$: BehaviorSubject<string> = new BehaviorSubject('bank');
@@ -48,33 +48,32 @@ export class TxsComponent implements OnInit {
           });
       }),
     );
-    this.initialTxs$ = combineLatest([sdk$, this.selectedTxType$, this.txsTotalCount$])
-      .pipe(
-        mergeMap(([sdk, selectedTxType, txsTotalCount]) => {
-          const pageSize = BigInt(100);
-          const Offset = txsTotalCount - pageSize;
-          if (Offset <= 0) {
+    this.txs$ = combineLatest([sdk$, this.selectedTxType$, this.txsTotalCount$]).pipe(
+      mergeMap(([sdk, selectedTxType, txsTotalCount]) => {
+        const pageSize = BigInt(100);
+        const Offset = txsTotalCount - pageSize;
+        if (Offset <= 0) {
+          return [];
+        }
+        return rest.cosmos.tx
+          .getTxsEvent(
+            sdk.rest,
+            [`message.module='${selectedTxType}'`],
+            undefined,
+            Offset,
+            pageSize,
+            true,
+          )
+          .then((res) => {
+            return res.data.tx_responses;
+          })
+          .catch((error) => {
+            console.error(error);
             return [];
-          }
-          return rest.cosmos.tx
-            .getTxsEvent(
-              sdk.rest,
-              [`message.module='${selectedTxType}'`],
-              undefined,
-              Offset,
-              pageSize,
-              true,
-            )
-            .then((res) => {
-              return res.data.tx_responses;
-            })
-            .catch((error) => {
-              console.error(error);
-              return [];
-            });
-        }),
-      )
-      .pipe(map((latestTxs) => latestTxs?.reverse()));
+          });
+      }),
+      map((txs) => txs?.reverse()),
+    );
   }
 
   ngOnInit(): void {}

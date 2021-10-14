@@ -8,7 +8,7 @@ import { CosmosTxV1beta1GetTxsEventResponseTxResponses } from 'cosmos-client/esm
 })
 export class TxsComponent implements OnInit {
   @Input()
-  initialTxs?: CosmosTxV1beta1GetTxsEventResponseTxResponses[] | undefined | null;
+  txs?: CosmosTxV1beta1GetTxsEventResponseTxResponses[] | undefined | null;
   @Input()
   txTypeOptions?: string[] | undefined | null;
   @Input()
