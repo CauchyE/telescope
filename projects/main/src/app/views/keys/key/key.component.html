@@ -28,7 +28,7 @@
     <ng-container *ngFor="let faucet of faucets">
       <mat-nav-list>
         <mat-list-item routerLink="/faucet"
-          [queryParams]='{ address:accAddress?.toString(),denom:faucet.denom,amount:faucet.creditAmount }'>
+          [queryParams]="{ address:accAddress?.toString(),denom:faucet.denom,amount:faucet.creditAmount }">
           <mat-icon color="accent">clean_hands</mat-icon>
           Go to Faucet of {{ faucet.denom }}
         </mat-list-item>
