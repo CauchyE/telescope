@@ -22,20 +22,26 @@
   </mat-card>
 </mat-list>
 
+<mat-card>
+  <ng-container *ngIf="faucets; then existFaucets; else emptyFaucets"></ng-container>
+  <ng-template #existFaucets>
+    <ng-container *ngFor="let faucet of faucets">
+      <mat-nav-list>
+        <mat-list-item routerLink="/faucet">
+          <mat-icon color="accent">clean_hands</mat-icon>
+          Go to Faucet of {{ faucet.denom }}
+        </mat-list-item>
+      </mat-nav-list>
+    </ng-container>
+  </ng-template>
+  <ng-template #emptyFaucets></ng-template>
+</mat-card>
+
 <mat-nav-list>
   <mat-card>
     <mat-list-item routerLink="/accounts/{{ accAddress?.toString() }}">
       <mat-icon color="accent">account_balance_wallet </mat-icon>
       Show Account Info
-    </mat-list-item>
-  </mat-card>
-</mat-nav-list>
-
-<mat-nav-list>
-  <mat-card>
-    <mat-list-item routerLink="/faucet">
-      <mat-icon color="accent">add_box</mat-icon>
-      Go faucet
     </mat-list-item>
   </mat-card>
 </mat-nav-list>
