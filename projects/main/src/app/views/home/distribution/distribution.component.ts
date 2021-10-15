@@ -10,7 +10,11 @@ export class DistributionComponent implements OnInit {
   @Input()
   communityPool?: CosmosDistributionV1beta1QueryCommunityPoolResponse | null;
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
+
+  toSixDecimal(num: string | undefined): string {
+    return Number(num).toFixed(6)
+  }
 }
