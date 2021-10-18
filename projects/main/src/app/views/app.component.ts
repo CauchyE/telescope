@@ -18,7 +18,7 @@ export class AppComponent implements OnInit {
   @Output()
   appSubmitSearchValue: EventEmitter<string>;
 
-  @ViewChild('sidenav')
+  @ViewChild('drawer')
   sidenav!: MatSidenav;
 
   drawerMode$: BehaviorSubject<MatDrawerMode> = new BehaviorSubject('side' as MatDrawerMode);
