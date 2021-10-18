@@ -13,7 +13,18 @@ const config = {
   //   consPub: '',
   // },
   // extension: {
-  //   faucet: false,
+  //   faucet: [
+  //     {
+  //       hasFaucet: false,
+  //       faucetURL: `${location.protocol}//${location.hostname}:8000`,
+  //       denom: '',
+  //       creditAmount: 0, // amount to credit in max request
+  //       maxCredit: 0, // account has already maxCredit balance cannot claim anymore
+  //     }
+  //   ],
+  //   monitor: {
+  //     monitorURL: `${location.protocol}//${location.hostname}:9000`,
+  //   },
   //   navigations: [
   //     {
   //       name: '',
