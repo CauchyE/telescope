@@ -50,7 +50,6 @@ export class KeyComponent implements OnInit {
 
     this.balances$ = combineLatest([this.cosmosSDK.sdk$, this.accAddress$]).pipe(
       mergeMap(([sdk, address]) => {
-        console.log('address', address);
         if (address === undefined) {
           return [];
         }

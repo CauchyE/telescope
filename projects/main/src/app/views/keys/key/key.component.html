@@ -22,21 +22,27 @@
   </mat-card>
 </mat-list>
 
-<mat-card>
-  <ng-container *ngIf="faucets; then existFaucets; else emptyFaucets"></ng-container>
-  <ng-template #existFaucets>
-    <ng-container *ngFor="let faucet of faucets">
-      <mat-nav-list>
-        <mat-list-item routerLink="/faucet"
-          [queryParams]="{ address:accAddress?.toString(),denom:faucet.denom,amount:faucet.creditAmount }">
+<ng-container *ngIf="faucets; then existFaucets; else emptyFaucets"></ng-container>
+<ng-template #existFaucets>
+  <mat-nav-list>
+    <mat-card>
+      <ng-container *ngFor="let faucet of faucets">
+        <mat-list-item
+          routerLink="/faucet"
+          [queryParams]="{
+            address: accAddress?.toString(),
+            denom: faucet.denom,
+            amount: faucet.creditAmount
+          }"
+        >
           <mat-icon color="accent">clean_hands</mat-icon>
           Go to Faucet of {{ faucet.denom }}
         </mat-list-item>
-      </mat-nav-list>
-    </ng-container>
-  </ng-template>
-  <ng-template #emptyFaucets></ng-template>
-</mat-card>
+      </ng-container>
+    </mat-card>
+  </mat-nav-list>
+</ng-template>
+<ng-template #emptyFaucets></ng-template>
 
 <mat-nav-list>
   <mat-card>
