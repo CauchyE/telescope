@@ -17,6 +17,17 @@ export class KeyComponent implements OnInit {
   @Input()
   valAddress?: cosmosclient.ValAddress | null;
 
+  @Input()
+  faucets?:
+    | {
+        hasFaucet: boolean;
+        faucetURL: string;
+        denom: string;
+        creditAmount: number;
+        maxCredit: number;
+      }[]
+    | null;
+
   constructor() {}
 
   ngOnInit(): void {}
