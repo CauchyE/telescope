@@ -3,21 +3,21 @@
 <mat-list>
   <mat-card>
     <mat-list-item>
-      <span>Public Key</span>
+      <span class="whitespace-nowrap">Public Key:</span>
       <span class="flex-auto"></span>
-      <span>{{ key?.public_key }}</span>
+      <span class="ml-2 break-all text-xs md:text-base">{{ key?.public_key }}</span>
     </mat-list-item>
     <mat-divider></mat-divider>
     <mat-list-item>
-      <span>AccAddress</span>
+      <span class="whitespace-nowrap">AccAddress:</span>
       <span class="flex-auto"></span>
-      <span>{{ accAddress?.toString() }}</span>
+      <span class="ml-2 break-all text-xs sm:text-base">{{ accAddress?.toString() }}</span>
     </mat-list-item>
     <mat-divider></mat-divider>
     <mat-list-item>
-      <span>ValAddress</span>
+      <span class="whitespace-nowrap">ValAddress:</span>
       <span class="flex-auto"></span>
-      <span>{{ valAddress?.toString() }}</span>
+      <span class="ml-2 break-all text-xs sm:text-base">{{ valAddress?.toString() }}</span>
     </mat-list-item>
   </mat-card>
 </mat-list>
@@ -27,14 +27,11 @@
   <mat-nav-list>
     <mat-card>
       <ng-container *ngFor="let faucet of faucets">
-        <mat-list-item
-          routerLink="/faucet"
-          [queryParams]="{
+        <mat-list-item routerLink="/faucet" [queryParams]="{
             address: accAddress?.toString(),
             denom: faucet.denom,
             amount: faucet.creditAmount
-          }"
-        >
+          }">
           <mat-icon color="accent">clean_hands</mat-icon>
           Go to Faucet of {{ faucet.denom }}
         </mat-list-item>
