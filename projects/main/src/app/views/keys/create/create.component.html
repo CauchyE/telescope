@@ -1,30 +1,12 @@
-<form
-  #formRef="ngForm"
-  (submit)="onSubmit(idRef.value, typeRef.value, privateKeyRef.value)"
->
+<form #formRef="ngForm" (submit)="onSubmit(idRef.value, typeRef.value, privateKeyRef.value)">
   <mat-form-field class="w-full">
     <mat-label>ID</mat-label>
-    <input
-      #idRef
-      ngModel
-      name="id"
-      matInput
-      required
-      pattern="^[a-z_][a-z_0-9]*$"
-      autocomplete="username"
-    />
+    <input #idRef ngModel name="id" matInput required pattern="^[a-z_][a-z_0-9]*$" autocomplete="username" />
     <mat-error>^[a-z_][a-z_0-9]*$</mat-error>
   </mat-form-field>
   <mat-form-field class="w-full">
     <mat-label>Type</mat-label>
-    <mat-select
-      #typeRef
-      ngModel
-      [value]="'secp256k1'"
-      name="type"
-      matInput
-      required
-    >
+    <mat-select #typeRef ngModel [value]="'secp256k1'" name="type" matInput required>
       <mat-option [value]="'secp256k1'">Secp256k1</mat-option>
       <mat-option [value]="'ed25519'" disabled>Ed25519</mat-option>
       <mat-option [value]="'sr25519'" disabled>Sr25519</mat-option>
@@ -32,68 +14,27 @@
   </mat-form-field>
   <mat-form-field class="w-full">
     <mat-label>Mnemonic</mat-label>
-    <textarea
-      #mnemonicRef
-      [(ngModel)]="mnemonic"
-      name="mnemonic"
-      matInput
-      rows="3"
-      style="resize: none"
-      [readOnly]="!typeRef.value"
-      required
-      pattern="^[a-z\s]+$"
-      (blur)="onBlurMnemonic(mnemonicRef.value)"
-    ></textarea>
-    <button
-      mat-button
-      type="button"
-      matSuffix
-      color="accent"
-      (click)="onClickCreateMnemonic()"
-    >
+    <textarea #mnemonicRef [(ngModel)]="mnemonic" name="mnemonic" matInput rows="3" style="resize: none"
+      [readOnly]="!typeRef.value" required pattern="^[a-z\s]+$" (blur)="onBlurMnemonic(mnemonicRef.value)"></textarea>
+    <button mat-button type="button" matSuffix color="accent" (click)="onClickCreateMnemonic()">
       <mat-icon>autorenew</mat-icon>
       <span>create</span>
     </button>
-    <button
-      mat-button
-      type="button"
-      matSuffix
-      (click)="copyClipboard(mnemonicRef.value)"
-    >
+    <button mat-button type="button" matSuffix (click)="copyClipboard(mnemonicRef.value)">
       <mat-icon>content_copy</mat-icon>
       <span>copy</span>
     </button>
   </mat-form-field>
-  <mat-form-field class="w-full">
+  <mat-form-field class="w-full mb-4 xs:mb-0">
     <mat-label>Private key</mat-label>
-
-    <input
-      #privateKeyRef
-      ngModel
-      [type]="isPasswordVisible ? 'text' : 'password'"
-      name="password"
-      [(ngModel)]="privateKey"
-      matInput
-      readonly
-      required
-      autocomplete="new-password"
-    />
-    <button
-      mat-button
-      type="button"
-      matSuffix
-      (click)="togglePasswordVisibility()"
-    >
+    <input #privateKeyRef ngModel [type]="isPasswordVisible ? 'text' : 'password'" name="password"
+      [(ngModel)]="privateKey" matInput readonly required autocomplete="new-password" />
+    <button mat-button type="button" matSuffix (click)="togglePasswordVisibility()">
       <mat-icon>
         {{ isPasswordVisible ? 'visibility' : 'visibility_off' }}
       </mat-icon>
     </button>
-    <button
-      mat-button
-      type="button"
-      matSuffix
-      (click)="copyClipboard(privateKeyRef.value)"
-    >
+    <button mat-button type="button" matSuffix (click)="copyClipboard(privateKeyRef.value)">
       <mat-icon>content_copy</mat-icon>
       <span>copy</span>
     </button>
@@ -102,7 +43,7 @@
       browser.
     </mat-hint>
   </mat-form-field>
-  <br />
+  <!--<br />-->
   <button mat-flat-button class="w-full" color="accent" [disabled]="formRef.invalid">
     Submit
   </button>
