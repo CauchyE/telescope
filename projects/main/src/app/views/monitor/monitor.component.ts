@@ -14,20 +14,19 @@ export class MonitorComponent implements OnInit {
   count?: number | null;
 
   @Input()
-  data?: Data[] | null;
+  dataArray?: Data[] | null;
 
   @Output()
-  startParamChanged: EventEmitter<Date> = new EventEmitter<Date>();
-
-  @Output()
-  countParamChanged: EventEmitter<number> = new EventEmitter<number>();
+  searchCriteriaChanged = new EventEmitter<{ startDate: Date; count: number }>();
 
   constructor() {}
 
   ngOnInit(): void {}
 
   onSubmit(startDate: Date, count: number) {
-    this.startParamChanged.emit(startDate);
-    this.countParamChanged.emit(count);
+    this.searchCriteriaChanged.emit({
+      startDate,
+      count,
+    });
   }
 }
