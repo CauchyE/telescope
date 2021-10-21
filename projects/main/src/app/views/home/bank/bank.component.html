@@ -2,7 +2,7 @@
 <mat-card>
   <mat-list *ngFor="let sup of totalSupply?.supply">
     <mat-list-item>
-      <span class="column-value">{{ sup.amount }}</span>
+      <span class="column-value">{{ sup.amount | number:'1.0-0' }}</span>
       <span class="flex-auto"></span>
       <span class="column-value">{{ sup.denom }}</span>
       <mat-divider></mat-divider>

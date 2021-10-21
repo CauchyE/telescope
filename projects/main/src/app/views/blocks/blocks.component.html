@@ -15,7 +15,9 @@
           <mat-list-item routerLink="/blocks/{{ latestBlock?.block?.header?.height }}">
             <span class="pr-4">{{ latestBlock?.block?.header?.height }}</span>
             <span class="flex-auto"></span>
-            <span class="break-all truncate">{{ latestBlock?.block?.header?.time }}</span>
+            <span class="break-all text-sm xs:text-base">
+              {{ latestBlock?.block?.header?.time | date : 'yyyy-M-d a h:mm:ss z' }}
+            </span>
           </mat-list-item>
           <mat-divider></mat-divider>
         </ng-container>

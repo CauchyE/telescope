@@ -2,48 +2,50 @@
 <mat-card>
   <mat-list>
     <mat-list-item>
-      <span class="column-name">BlockHash:</span>
+      <span class="whitespace-nowrap">BlockHash:</span>
       <span class="flex-auto"></span>
-      <span class="column-value">{{ block?.block_id?.hash }}</span>
+      <span class="ml-2 break-all text-xs xs:text-base">{{ block?.block_id?.hash }}</span>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
 
     <mat-list-item>
-      <span class="column-name">BlockHeight:</span>
+      <span class="whitespace-nowrap">BlockHeight:</span>
       <span class="flex-auto"></span>
-      <span class="column-value">{{ block?.block?.header?.height }}</span>
+      <span class="ml-2 break-all text-sm xs:text-base">{{ block?.block?.header?.height }}</span>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
 
     <mat-list-item>
-      <span class="column-name">Timestamp:</span>
+      <span class="whitespace-nowrap">Timestamp:</span>
       <span class="flex-auto"></span>
-      <span class="column-value">{{ block?.block?.header?.time }}</span>
+      <span class="ml-2 break-all text-sm xs:text-base">
+        {{ block?.block?.header?.time | date : 'yyyy-M-d a h:mm:ss z' }}
+      </span>
     </mat-list-item>
     <mat-divider [inset]="true"></mat-divider>
   </mat-list>
 </mat-card>
 
 <h3>Validatorsets</h3>
-<ng-container *ngFor = "let validatorset of validatorsets?.validators">
+<ng-container *ngFor="let validatorset of validatorsets?.validators">
   <mat-card>
     <mat-list>
       <mat-list-item>
-        <span class="column-name">Address:</span>
+        <span class="whitespace-nowrap">Address:</span>
         <span class="flex-auto"></span>
-        <span class="column-value">{{ validatorset.address }}</span>
+        <span class="ml-2 break-all text-sm xs:text-base">{{ validatorset.address }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
       <mat-list-item>
-        <span class="column-name">Voting Power:</span>
+        <span class="whitespace-nowrap">Voting Power:</span>
         <span class="flex-auto"></span>
-        <span class="column-value">{{ validatorset.voting_power }}</span>
+        <span class="ml-2 break-all text-sm xs:text-base">{{ validatorset.voting_power }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
       <mat-list-item>
-        <span class="column-name">Proposer Priority:</span>
+        <span class="whitespace-nowrap">Proposer Priority:</span>
         <span class="flex-auto"></span>
-        <span class="column-value">{{ validatorset.proposer_priority }}</span>
+        <span class="ml-2 break-all text-sm xs:text-base">{{ validatorset.proposer_priority }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
     </mat-list>

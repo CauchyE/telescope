@@ -2,7 +2,7 @@
 <mat-card>
   <mat-list *ngFor="let pool of communityPool?.pool">
     <mat-list-item>
-      <span class="column-value">{{ pool.amount }}</span>
+      <span class="column-value">{{ pool.amount | number:'1.6-6' }}</span>
       <span class="flex-auto"></span>
       <span class="column-value">{{ pool.denom }}</span>
       <mat-divider></mat-divider>

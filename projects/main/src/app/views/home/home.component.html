@@ -40,7 +40,7 @@
   </mat-card-content>
 </mat-card>
 
-<h3>Application version</h3>
+<h2>Application version</h2>
 <mat-card>
   <mat-card-content>
     <mat-list>
@@ -52,27 +52,27 @@
       <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
-        <span class="column-name">Version: </span>
+        <span class="whitespace-nowrap">Version: </span>
         <span class="flex-auto"></span>
-        <span class="column-value">
+        <span class="ml-2 break-all text-sm xs:text-base">
           {{ nodeInfo?.application_version?.version }}
         </span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
-        <span class="column-name">Commit: </span>
+        <span class="whitespace-nowrap">Commit: </span>
         <span class="flex-auto"></span>
-        <span class="column-value">
+        <span class="ml-2 break-all text-sm xs:text-base">
           {{ nodeInfo?.application_version?.git_commit }}
         </span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
-        <span class="column-name">Go: </span>
+        <span class="whitespace-nowrap">Go: </span>
         <span class="flex-auto"></span>
-        <span class="column-value">
+        <span class="ml-2 break-all text-sm xs:text-base">
           {{ nodeInfo?.application_version?.go_version }}
         </span>
       </mat-list-item>
@@ -81,7 +81,7 @@
   </mat-card-content>
 </mat-card>
 
-<h3>Syncing</h3>
+<h2>Syncing</h2>
 <mat-card>
   <mat-card-content>
     <mat-list>
