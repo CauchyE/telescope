@@ -30,7 +30,7 @@
   </form>
 </mat-card>
 
-<ng-container *ngIf="data === null; then loading; else loaded"></ng-container>
+<ng-container *ngIf="dataArray === null; then loading; else loaded"></ng-container>
 <ng-template #loading>
   <mat-progress-spinner [diameter]="60" [mode]="'indeterminate'"></mat-progress-spinner>
 </ng-template>
@@ -38,24 +38,24 @@
   <p>Empty</p>
 </ng-template>
 <ng-template #loaded>
-  <ng-container *ngIf="(data || []).length > 0; else empty">
-    <mat-card *ngFor="let reward of data">
+  <ng-container *ngIf="(dataArray || []).length > 0; else empty">
+    <mat-card *ngFor="let data of dataArray">
       <mat-list>
         <mat-list-item>
           <span class="column-name">Date:</span>
           <span class="flex-auto"></span>
-          <span class="column-value">{{ reward.date }}</span>
+          <span class="column-value">{{ data.date }}</span>
         </mat-list-item>
         <mat-divider></mat-divider>
         <mat-list-item>
           <span class="column-name">Commission:</span>
           <span class="flex-auto"></span>
           <span class="column-value">{{
-            reward.result.commission.commission.commission[0].amount
+            data.result.commission.commission.commission[0].amount
           }}</span>
           <span class="flex-auto"></span>
           <span class="column-value">{{
-            reward.result.commission.commission.commission[0].denom
+            data.result.commission.commission.commission[0].denom
           }}</span>
         </mat-list-item>
         <mat-divider></mat-divider>
@@ -63,11 +63,11 @@
           <span class="column-name">Outstanding Rewards:</span>
           <span class="flex-auto"></span>
           <span class="column-value">{{
-            reward.result.outstanding_rewards.rewards.rewards[0].amount
+            data.result.outstanding_rewards.rewards.rewards[0].amount
           }}</span>
           <span class="flex-auto"></span>
           <span class="column-value">{{
-            reward.result.outstanding_rewards.rewards.rewards[0].denom
+            data.result.outstanding_rewards.rewards.rewards[0].denom
           }}</span>
         </mat-list-item>
         <mat-divider></mat-divider>
