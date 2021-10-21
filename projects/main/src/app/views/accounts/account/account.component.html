@@ -1,35 +1,43 @@
 <h2>Account Info</h2>
-<mat-card *ngIf="baseAccount">
-  <mat-list>
-    <mat-list-item>
-      <span class="column-name">Sequence:</span>
-      <span class="flex-auto"></span>
-      <span class="column-value">{{ baseAccount?.sequence }}</span>
-    </mat-list-item>
-    <mat-divider [inset]="true"></mat-divider>
+<ng-container *ngIf="baseAccount === undefined || null ; then empty; else exist"></ng-container>
 
-    <mat-list-item>
-      <span class="column-name">Account Number: </span>
-      <span class="flex-auto"></span>
-      <span class="column-value">{{ baseAccount?.account_number }}</span>
-    </mat-list-item>
-    <mat-divider [inset]="true"></mat-divider>
+<ng-template #empty>
+  <p>*This account dose not have any denoms</p>
+</ng-template>
 
-    <mat-list-item>
-      <span class="column-name">Address: </span>
-      <span class="flex-auto"></span>
-      <span class="column-value">{{ baseAccount?.address }}</span>
-    </mat-list-item>
-    <mat-divider [inset]="true"></mat-divider>
+<ng-template #exist>
+  <mat-card *ngIf="baseAccount">
+    <mat-list>
+      <mat-list-item>
+        <span class="column-name">Sequence:</span>
+        <span class="flex-auto"></span>
+        <span class="column-value">{{ baseAccount?.sequence }}</span>
+      </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
 
-    <mat-list-item>
-      <span class="column-name">Public key: </span>
-      <span class="flex-auto"></span>
-      <span class="column-value">{{ publicKey }}</span>
-    </mat-list-item>
-    <mat-divider [inset]="true"></mat-divider>
-  </mat-list>
-</mat-card>
+      <mat-list-item>
+        <span class="column-name">Account Number: </span>
+        <span class="flex-auto"></span>
+        <span class="column-value">{{ baseAccount?.account_number }}</span>
+      </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
+
+      <mat-list-item>
+        <span class="column-name">Address: </span>
+        <span class="flex-auto"></span>
+        <span class="column-value">{{ baseAccount?.address }}</span>
+      </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
+
+      <mat-list-item>
+        <span class="column-name">Public key: </span>
+        <span class="flex-auto"></span>
+        <span class="column-value">{{ publicKey }}</span>
+      </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
+    </mat-list>
+  </mat-card>
+</ng-template>
 
 <h2>Coins</h2>
 <mat-card>

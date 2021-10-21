@@ -1,4 +1,13 @@
 <h2>Delegator Rewards</h2>
+
+<ng-container *ngIf="totalrewards?.total === undefined || []; then empty_ttl; else exist_ttl">
+</ng-container>
+<ng-template #empty_ttl>
+  <p>*This account dose not have any rewards</p>
+</ng-template>
+<ng-template #exist_ttl>
+</ng-template>
+
 <h3>Total Rewards</h3>
 <mat-card>
   <mat-list *ngFor="let ttl of totalrewards?.total">
@@ -10,6 +19,14 @@
     <mat-divider [inset]="true"></mat-divider>
   </mat-list>
 </mat-card>
+
+<ng-container *ngIf="totalrewards?.rewards === undefined || null || []; then empty_rev; else exist_rev">
+</ng-container>
+<ng-template #empty_rev>
+  <p>*This account dose not have any rewards from validator</p>
+</ng-template>
+<ng-template #exist_rev>
+</ng-template>
 
 <h3>Rewards by Each Validator</h3>
 <!--

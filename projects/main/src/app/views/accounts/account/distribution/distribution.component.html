@@ -1,4 +1,13 @@
 <h2>Validator Rewards</h2>
+
+<ng-container *ngIf="commision?.commission?.commission === undefined || []; then empty; else exist">
+</ng-container>
+<ng-template #empty>
+  <p>*This account dose not have commision</p>
+</ng-template>
+<ng-template #exist>
+</ng-template>
+
 <h3>Accumulated Commission</h3>
 <mat-card>
   <mat-list *ngFor="let com of commision?.commission?.commission">
@@ -11,6 +20,14 @@
   </mat-list>
 </mat-card>
 
+<ng-container *ngIf="rewards?.rewards?.rewards === undefined || null || []; then empty_rewards; else exist_rewards">
+</ng-container>
+<ng-template #empty_rewards>
+  <p>*This account dose not have any rewards</p>
+</ng-template>
+<ng-template #exist_rewards>
+</ng-template>
+
 <h3>Outstanding Rewards</h3>
 <mat-card>
   <mat-list *ngFor="let reward of rewards?.rewards?.rewards">
@@ -22,6 +39,14 @@
     <mat-divider [inset]="true"></mat-divider>
   </mat-list>
 </mat-card>
+
+<ng-container *ngIf="slashes?.slashes === undefined || null || []; then empty_slash; else exist_slash">
+</ng-container>
+<ng-template #empty_slash>
+  <p>*This account dose not have any slashes</p>
+</ng-template>
+<ng-template #exist_slash>
+</ng-template>
 
 <h3>Slashing</h3>
 <mat-card>
