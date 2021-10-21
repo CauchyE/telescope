@@ -25,7 +25,7 @@
       <span>copy</span>
     </button>
   </mat-form-field>
-  <mat-form-field class="w-full mb-4 xs:mb-0">
+  <mat-form-field class="w-full mb-4 md:mb-0">
     <mat-label>Private key</mat-label>
     <input #privateKeyRef ngModel [type]="isPasswordVisible ? 'text' : 'password'" name="password"
       [(ngModel)]="privateKey" matInput readonly required autocomplete="new-password" />
