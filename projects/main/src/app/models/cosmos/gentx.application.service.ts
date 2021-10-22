@@ -1,4 +1,5 @@
 import { Key } from '../keys/key.model';
+import { GentxData } from './gentx.model';
 import { GentxService } from './gentx.service';
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -17,20 +18,7 @@ export class GentxApplicationService {
   // Todo: gentx should be refactor with GentxData interface or type.
   async gentx(
     key: Key | undefined,
-    privateKey: string,
-    moniker: string,
-    identity: string,
-    website: string,
-    security_contact: string,
-    details: string,
-    rate: string,
-    max_rate: string,
-    max_change_rate: string,
-    min_self_delegation: string,
-    delegator_address: string,
-    validator_address: string,
-    denom: string,
-    amount: string,
+    gentxData: GentxData,
   ): Promise<{ [k: string]: any } | undefined> {
     if (key === undefined) {
       this.snackBar.open('Error has occur', undefined, { duration: 6000 });
@@ -43,24 +31,9 @@ export class GentxApplicationService {
     let gentxResult: { [k: string]: any } | undefined;
 
     try {
-      gentxResult = await this.gentxService.gentx(
-        key,
-        privateKey,
-        moniker,
-        identity,
-        website,
-        security_contact,
-        details,
-        rate,
-        max_rate,
-        max_change_rate,
-        min_self_delegation,
-        delegator_address,
-        validator_address,
-        denom,
-        amount,
-      );
+      gentxResult = await this.gentxService.gentx(key, gentxData);
     } catch (error) {
+      console.error(error);
       this.snackBar.open('Error has occur', undefined, { duration: 6000 });
       return undefined;
     } finally {

@@ -13,8 +13,11 @@
   delegatorAddressRef.value,
   validatorAddressRef.value,
   denomRef.value,
-  amountRef.value
-)">
+  amountRef.value,
+  ipRef.value,
+  nodeIdRef.value,
+  pubkeyRef.value)"
+>
   <mat-form-field class="w-full">
     <mat-label>Moniker</mat-label>
     <input
@@ -151,6 +154,39 @@
       name="amount"
       matInput
       type="text"
+      required
+    />
+  </mat-form-field>
+  <mat-form-field class="w-full">
+    <mat-label>IP or Domain</mat-label>
+    <input
+      #ipRef
+      [(ngModel)]="ip"
+      type="text"
+      name="ip"
+      matInput
+      required
+    />
+  </mat-form-field>
+  <mat-form-field class="w-full">
+    <mat-label>Node id</mat-label>
+    <input
+      #nodeIdRef
+      [(ngModel)]="node_id"
+      type="text"
+      name="node_id"
+      matInput
+      required
+    />
+  </mat-form-field>
+  <mat-form-field class="w-full">
+    <mat-label>Tendermint public key</mat-label>
+    <input
+      #pubkeyRef
+      [(ngModel)]="pubkey"
+      type="text"
+      name="pubkey"
+      matInput
       required
     />
   </mat-form-field>

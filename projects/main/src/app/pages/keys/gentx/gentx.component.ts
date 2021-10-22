@@ -1,8 +1,8 @@
 import { GentxApplicationService } from '../../../models/cosmos/gentx.application.service';
+import { GentxData } from '../../../models/cosmos/gentx.model';
 import { Key } from '../../../models/keys/key.model';
 import { KeyService } from '../../../models/keys/key.service';
 import { KeyStoreService } from '../../../models/keys/key.store.service';
-import { GentxData } from '../../../views/keys/gentx/gentx.component';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
@@ -28,6 +28,9 @@ export class GentxComponent implements OnInit {
   validator_address$: Observable<string>;
   denom$: Observable<string>;
   amount$: Observable<string>;
+  ip$: Observable<string>;
+  node_id$: Observable<string>;
+  pubkey$: Observable<string>;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -88,32 +91,27 @@ export class GentxComponent implements OnInit {
       filter((queryParams) => queryParams.amount),
       map((queryParams) => queryParams.amount),
     );
+    this.ip$ = this.route.queryParams.pipe(
+      filter((queryParams) => queryParams.ip),
+      map((queryParams) => queryParams.ip),
+    );
+    this.node_id$ = this.route.queryParams.pipe(
+      filter((queryParams) => queryParams.node_id),
+      map((queryParams) => queryParams.node_id),
+    );
+    this.pubkey$ = this.route.queryParams.pipe(
+      filter((queryParams) => queryParams.pubkey),
+      map((queryParams) => queryParams.pubkey),
+    );
   }
 
   ngOnInit(): void {}
 
   async appSubmitGentx(gentxData: GentxData): Promise<void> {
     this.key$.subscribe(async (key) => {
-      // Todo: gentx should be refactor with GentxData interface or type.
-      const gentxJson = await this.gentxApplicationService.gentx(
-        key,
-        gentxData.privateKey,
-        gentxData.moniker,
-        gentxData.identity,
-        gentxData.website,
-        gentxData.security_contact,
-        gentxData.details,
-        gentxData.rate,
-        gentxData.max_rate,
-        gentxData.max_change_rate,
-        gentxData.min_self_delegation,
-        gentxData.delegator_address,
-        gentxData.validator_address,
-        gentxData.denom,
-        gentxData.amount,
-      );
+      const gentxJson = await this.gentxApplicationService.gentx(key, gentxData);
       console.log('gentxJson', gentxJson);
-      const gentxString = JSON.stringify(gentxJson);
+      const gentxString = JSON.stringify(gentxJson); // Todo: Error occur here. Because gentxJson contains Uint8Array.
       console.log('gentxString', gentxString);
     });
   }

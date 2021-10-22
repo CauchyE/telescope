@@ -1,22 +1,6 @@
+import { GentxData } from '../../../models/cosmos/gentx.model';
 import { Key } from '../../../models/keys/key.model';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-
-export interface GentxData {
-  privateKey: string;
-  moniker: string;
-  identity: string;
-  website: string;
-  security_contact: string;
-  details: string;
-  rate: string;
-  max_rate: string;
-  max_change_rate: string;
-  min_self_delegation: string;
-  delegator_address: string;
-  validator_address: string;
-  denom: string;
-  amount: string;
-}
 
 @Component({
   selector: 'app-view-gentx',
@@ -38,6 +22,9 @@ export class GentxComponent implements OnInit {
   @Input() validator_address?: string | null;
   @Input() denom?: string | null;
   @Input() amount?: string | null;
+  @Input() ip?: string | null;
+  @Input() node_id?: string | null;
+  @Input() pubkey?: string | null;
 
   @Output() submitGentx = new EventEmitter<GentxData>();
 
@@ -60,6 +47,9 @@ export class GentxComponent implements OnInit {
     validator_address: string,
     denom: string,
     amount: string,
+    ip: string,
+    node_id: string,
+    pubkey: string,
   ): Promise<void> {
     this.submitGentx.emit({
       privateKey,
@@ -76,6 +66,9 @@ export class GentxComponent implements OnInit {
       validator_address,
       denom,
       amount,
+      ip,
+      node_id,
+      pubkey,
     });
   }
 }
