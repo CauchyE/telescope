@@ -15,7 +15,6 @@ export class GentxApplicationService {
     private readonly snackBar: MatSnackBar,
   ) {}
 
-  // Todo: gentx should be refactor with GentxData interface or type.
   async gentx(
     key: Key | undefined,
     gentxData: GentxData,
