@@ -40,6 +40,7 @@ export class AppComponent {
       this.config.extension.navigations.unshift({
         name: 'Faucet',
         link: '/faucet',
+        icon: 'clean_hands',
       });
     }
   }
