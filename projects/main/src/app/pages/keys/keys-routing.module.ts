@@ -1,3 +1,4 @@
+import { KeySelectGuard } from '../../models/keys/key-select.guard';
 import { CreateComponent } from './create/create.component';
 import { GentxComponent } from './gentx/gentx.component';
 import { KeyComponent } from './key/key.component';
@@ -10,7 +11,7 @@ const routes: Routes = [
   { path: '', component: KeysComponent },
   { path: 'create', component: CreateComponent },
   { path: 'sign', component: SignComponent },
-  { path: 'gentx', component: GentxComponent },
+  { path: 'gentx', component: GentxComponent, canActivate: [KeySelectGuard] },
   { path: ':key_id', component: KeyComponent },
 ];
 

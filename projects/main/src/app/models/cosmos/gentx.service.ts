@@ -10,6 +10,7 @@ import { cosmosclient, rest, proto } from 'cosmos-client';
 export class GentxService {
   constructor(private readonly cosmosSDK: CosmosSDKService, private readonly key: KeyService) {}
 
+  // Todo: gentx should be refactor with GentxData interface or type.
   async gentx(
     key: Key,
     privateKey: string,
@@ -26,8 +27,7 @@ export class GentxService {
     validator_address: string,
     denom: string,
     amount: string,
-  ): Promise<void> {
-    // Todo: void should be changed.
+  ): Promise<{ [k: string]: any }> {
     const sdk = await this.cosmosSDK.sdk().then((sdk) => sdk.rest);
     const privKey = this.key.getPrivKey(key.type, privateKey);
     const pubKey = privKey.pubKey();
@@ -89,9 +89,10 @@ export class GentxService {
 
     // sign
     const txBuilder = new cosmosclient.TxBuilder(sdk, txBody, authInfo);
-    const signDocBytes = txBuilder.signDocBytes(cosmosclient.Long('0')); // Todo: Is this OK?
+    const signDocBytes = txBuilder.signDocBytes(cosmosclient.Long.fromString('0')); // Todo: Is this OK?
     txBuilder.addSignature(privKey.sign(signDocBytes));
 
-    // Todo: WIP
+    const json = txBuilder.txRaw.toJSON();
+    return json;
   }
 }
