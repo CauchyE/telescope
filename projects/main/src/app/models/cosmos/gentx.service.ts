@@ -36,7 +36,7 @@ export class GentxService {
     const publicKeyNumberArray = bech32.decode(gentxData.pubkey).words;
     console.log('publicKeyNumberArray', publicKeyNumberArray);
     const publicKey = new proto.cosmos.crypto.ed25519.PubKey({
-      key: new Uint8Array(publicKeyNumberArray),
+      key: new Uint8Array(bech32.fromWords(publicKeyNumberArray)),
     });
     const packCosmosPublicKey = cosmosclient.codec.packAny(publicKey);
     console.log('packCosmosPublicKey', packCosmosPublicKey);
@@ -104,6 +104,9 @@ export class GentxService {
     const txBuilder = new cosmosclient.TxBuilder(sdk, txBody, authInfo);
     const signDocBytes = txBuilder.signDocBytes(cosmosclient.Long.fromString('0'));
     txBuilder.addSignature(privKey.sign(signDocBytes));
+
+    const test = txBuilder.cosmosJSONStringify();
+    console.log('test', test);
 
     const json = txBuilder.txRaw.toJSON();
     console.log('txBuilder.txRaw.toJSON()', json);
