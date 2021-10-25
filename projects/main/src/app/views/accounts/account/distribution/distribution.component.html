@@ -1,67 +1,64 @@
 <h2>Validator Rewards</h2>
 
-<ng-container *ngIf="commision?.commission?.commission === undefined || []; then empty; else exist">
+<ng-container *ngIf="commision?.commission?.commission?.[0] === undefined ; then empty; else exist">
 </ng-container>
 <ng-template #empty>
-  <p>*This account dose not have commision</p>
+  <p>*This account has no commission</p>
 </ng-template>
 <ng-template #exist>
+  <h3>Accumulated Commission</h3>
+  <mat-card>
+    <mat-list *ngFor="let com of commision?.commission?.commission">
+      <mat-list-item>
+        <span class="column-name">{{ com.amount | number:'1.6-6' }}</span>
+        <span class="flex-auto"></span>
+        <span class="column-value">{{ com.denom }}</span>
+      </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
+    </mat-list>
+  </mat-card>
 </ng-template>
 
-<h3>Accumulated Commission</h3>
-<mat-card>
-  <mat-list *ngFor="let com of commision?.commission?.commission">
-    <mat-list-item>
-      <span class="column-name">{{ com.amount }}</span>
-      <span class="flex-auto"></span>
-      <span class="column-value">{{ com.denom }}</span>
-    </mat-list-item>
-    <mat-divider [inset]="true"></mat-divider>
-  </mat-list>
-</mat-card>
-
-<ng-container *ngIf="rewards?.rewards?.rewards === undefined || null || []; then empty_rewards; else exist_rewards">
+<ng-container *ngIf="rewards?.rewards?.rewards?.[0] === undefined; then empty_rewards; else exist_rewards">
 </ng-container>
 <ng-template #empty_rewards>
-  <p>*This account dose not have any rewards</p>
+  <p>*This account has no outstanding rewards</p>
 </ng-template>
 <ng-template #exist_rewards>
+  <h3>Outstanding Rewards</h3>
+  <mat-card>
+    <mat-list *ngFor="let reward of rewards?.rewards?.rewards">
+      <mat-list-item>
+        <span class="column-name">{{ reward.amount | number:'1.6-6' }}</span>
+        <span class="flex-auto"></span>
+        <span class="column-value">{{ reward.denom }}</span>
+      </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
+    </mat-list>
+  </mat-card>
 </ng-template>
 
-<h3>Outstanding Rewards</h3>
-<mat-card>
-  <mat-list *ngFor="let reward of rewards?.rewards?.rewards">
-    <mat-list-item>
-      <span class="column-name">{{ reward.amount }}</span>
-      <span class="flex-auto"></span>
-      <span class="column-value">{{ reward.denom }}</span>
-    </mat-list-item>
-    <mat-divider [inset]="true"></mat-divider>
-  </mat-list>
-</mat-card>
-
-<ng-container *ngIf="slashes?.slashes === undefined || null || []; then empty_slash; else exist_slash">
+<ng-container *ngIf="slashes?.slashes?.[0] === undefined; then empty_slash; else exist_slash">
 </ng-container>
 <ng-template #empty_slash>
-  <p>*This account dose not have any slashes</p>
+  <p>*This account has no slashes</p>
 </ng-template>
 <ng-template #exist_slash>
+  <h3>Slashing</h3>
+  <mat-card>
+    <mat-list *ngFor="let slash of slashes?.slashes">
+      <mat-list-item>
+        <span class="column-name">Validator Period:</span>
+        <span class="flex-auto"></span>
+        <span class="column-value">{{ slash.validator_period }}</span>
+      </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
+      <mat-list-item>
+        <span class="column-name">Fraction:</span>
+        <span class="flex-auto"></span>
+        <span class="column-value">{{ slash.fraction }}</span>
+      </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
+    </mat-list>
+  </mat-card>
 </ng-template>
-
-<h3>Slashing</h3>
-<mat-card>
-  <mat-list *ngFor="let slash of slashes?.slashes">
-    <mat-list-item>
-      <span class="column-name">Validator Period:</span>
-      <span class="flex-auto"></span>
-      <span class="column-value">{{ slash.validator_period }}</span>
-    </mat-list-item>
-    <mat-divider [inset]="true"></mat-divider>
-    <mat-list-item>
-      <span class="column-name">Fraction:</span>
-      <span class="flex-auto"></span>
-      <span class="column-value">{{ slash.fraction }}</span>
-    </mat-list-item>
-    <mat-divider [inset]="true"></mat-divider>
-  </mat-list>
-</mat-card>

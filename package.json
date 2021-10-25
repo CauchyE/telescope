@@ -32,6 +32,7 @@
     "@ngrx/store": "^12.4.0",
     "@ngrx/store-devtools": "^12.4.0",
     "bip39": "^3.0.4",
+    "cosmos-client": "^0.42.14",
     "crypto-browserify": "^3.12.0",
     "dexie": "^3.0.3",
     "ng-loading-dialog": "^12.0.5",

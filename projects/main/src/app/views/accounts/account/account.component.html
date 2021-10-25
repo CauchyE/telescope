@@ -2,7 +2,7 @@
 <ng-container *ngIf="baseAccount === undefined || null ; then empty; else exist"></ng-container>
 
 <ng-template #empty>
-  <p>*This account dose not have any denoms</p>
+  <span>*This account has no denoms</span>
 </ng-template>
 
 <ng-template #exist>
@@ -25,31 +25,31 @@
       <mat-list-item>
         <span class="column-name">Address: </span>
         <span class="flex-auto"></span>
-        <span class="column-value">{{ baseAccount?.address }}</span>
+        <span class="ml-2 break-all text-sm sm:text-base">{{ baseAccount?.address }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="column-name">Public key: </span>
         <span class="flex-auto"></span>
-        <span class="column-value">{{ publicKey }}</span>
+        <span class="ml-2 break-all text-xs md:text-base">{{ publicKey }}</span>
+      </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
+    </mat-list>
+  </mat-card>
+
+  <h2>Coins</h2>
+  <mat-card>
+    <mat-list *ngFor="let balance of balances">
+      <mat-list-item>
+        <span class="column-name">{{ balance.amount | number:'1.0-0' }}</span>
+        <span class="flex-auto"></span>
+        <span class="column-value">{{ balance.denom }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
     </mat-list>
   </mat-card>
 </ng-template>
-
-<h2>Coins</h2>
-<mat-card>
-  <mat-list *ngFor="let balance of balances">
-    <mat-list-item>
-      <span class="column-name">{{ balance.amount }}</span>
-      <span class="flex-auto"></span>
-      <span class="column-value">{{ balance.denom }}</span>
-    </mat-list-item>
-    <mat-divider [inset]="true"></mat-divider>
-  </mat-list>
-</mat-card>
 
 <!-- <h3>Transactions</h3>
 <mat-card>
