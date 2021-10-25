@@ -12,47 +12,36 @@ import { catchError, map, mergeMap, tap } from 'rxjs/operators';
 export class MonitorComponent implements OnInit {
   dataArray$: Observable<Data[]>;
   startDate$: BehaviorSubject<Date>;
+  endDate$: BehaviorSubject<Date>;
   count$: BehaviorSubject<number> = new BehaviorSubject(1);
 
   constructor(private route: ActivatedRoute, private readonly monitor: MonitorService) {
     const now = new Date();
+    this.endDate$ = new BehaviorSubject(now);
     const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
+    console.log(yesterday);
     this.startDate$ = new BehaviorSubject(yesterday);
     this.dataArray$ = combineLatest([
       this.startDate$.asObservable(),
       this.count$.asObservable(),
     ]).pipe(
-      map(([startDate, count]) => {
-        return [...Array(count).keys()].map((index) => {
-          const tempDate = new Date(
-            startDate.getFullYear(),
-            startDate.getMonth(),
-            startDate.getDate() - index,
-          );
-          return {
-            year: tempDate.getFullYear(),
-            month: tempDate.getMonth() + 1,
-            day: tempDate.getDate(),
-          };
-        });
-      }),
-      mergeMap((dateArray) => {
-        return forkJoin(
-          dateArray.map((date) => this.monitor.list(date.year, date.month, date.day, 1)),
-        );
-      }),
-      map((dataArray) => dataArray.map((elementArray) => elementArray[0])),
+      mergeMap(([start, count]) =>
+        this.monitor.list(start.getFullYear(), start.getMonth() + 1, start.getDate(), count),
+      ),
+      map((list) => list.reverse()),
       catchError((err) => {
         console.error(err);
         return of([]);
       }),
     );
+    this.dataArray$.subscribe((data) => console.log(data));
   }
 
   ngOnInit(): void {}
 
-  appSearchCriteriaChanged(event: { startDate: Date; count: number }): void {
+  appSearchCriteriaChanged(event: { startDate: Date; endDate: Date }): void {
     this.startDate$.next(event.startDate);
-    this.count$.next(event.count);
+    this.endDate$.next(event.endDate);
+    this.count$.next(event.endDate.getDate() - event.startDate.getDate());
   }
 }

@@ -11,22 +11,22 @@ export class MonitorComponent implements OnInit {
   startDate?: Date | null;
 
   @Input()
-  count?: number | null;
+  endDate?: Date | null;
 
   @Input()
   dataArray?: Data[] | null;
 
   @Output()
-  searchCriteriaChanged = new EventEmitter<{ startDate: Date; count: number }>();
+  searchCriteriaChanged = new EventEmitter<{ startDate: Date; endDate: Date }>();
 
   constructor() {}
 
   ngOnInit(): void {}
 
-  onSubmit(startDate: Date, count: number) {
+  onSubmit(startDate: Date, endDate: Date) {
     this.searchCriteriaChanged.emit({
       startDate,
-      count,
+      endDate,
     });
   }
 }
