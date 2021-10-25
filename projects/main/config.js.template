@@ -31,7 +31,6 @@ const config = {
   //       link: '',
   //     }
   //   ],
-  //   messageActions: [''],
   //   messageModules: [
   //     'bank', // hit
   //     'auth',
