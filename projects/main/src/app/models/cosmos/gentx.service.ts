@@ -5,7 +5,6 @@ import { KeyService } from '../keys/key.service';
 import { GentxData } from './gentx.model';
 import { Injectable } from '@angular/core';
 import { cosmosclient, proto } from '@cosmos-client/core';
-import * as bech32 from 'bech32';
 
 @Injectable({
   providedIn: 'root',
@@ -33,13 +32,13 @@ export class GentxService {
     }
 
     console.log('gentxData.pubkey', gentxData.pubkey);
-    const publicKeyNumberArray = bech32.decode(gentxData.pubkey).words;
-    console.log('publicKeyNumberArray', publicKeyNumberArray);
+    const base64DecodedPublicKey = Uint8Array.from(Buffer.from(gentxData.pubkey, 'base64'));
+    console.log('base64DecodedPublicKey', base64DecodedPublicKey);
     const publicKey = new proto.cosmos.crypto.ed25519.PubKey({
-      key: new Uint8Array(bech32.fromWords(publicKeyNumberArray)),
+      key: base64DecodedPublicKey,
     });
-    const packCosmosPublicKey = cosmosclient.codec.packAny(publicKey);
-    console.log('packCosmosPublicKey', packCosmosPublicKey);
+    const packAnyPublicKey = cosmosclient.codec.packAny(publicKey);
+    console.log('packAnyPublicKey', packAnyPublicKey);
 
     // build tx
     const createValidatorTxData = {
@@ -58,7 +57,7 @@ export class GentxService {
       min_self_delegation: gentxData.min_self_delegation,
       delegator_address: gentxData.delegator_address,
       validator_address: gentxData.validator_address,
-      pubkey: packCosmosPublicKey,
+      pubkey: packAnyPublicKey,
       value: {
         denom: gentxData.denom,
         amount: gentxData.amount,
