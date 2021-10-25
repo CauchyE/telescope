@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { rest } from 'cosmos-client';
-import { InlineResponse20048 } from 'cosmos-client/esm/openapi/api';
+import { rest } from '@cosmos-client/core';
+import { InlineResponse20048 } from '@cosmos-client/core/esm/openapi/api';
 import { CosmosSDKService } from 'projects/main/src/app/models/cosmos-sdk.service';
 import { Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
@@ -19,7 +19,7 @@ export class ProposalsComponent implements OnInit {
     private readonly cosmosSDK: CosmosSDKService,
   ) {
     this.proposals$ = this.cosmosSDK.sdk$.pipe(
-      mergeMap((sdk) => rest.cosmos.gov.proposals(sdk.rest)),
+      mergeMap((sdk) => rest.gov.proposals(sdk.rest)),
       map((result) => result.data),
     );
   }

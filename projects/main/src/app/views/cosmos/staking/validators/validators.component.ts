@@ -1,5 +1,8 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { InlineResponse20062Validators, QueryValidatorsResponseIsResponseTypeForTheQueryValidatorsRPCMethod } from 'cosmos-client/esm/openapi';
+import {
+  InlineResponse20066Validators,
+  QueryValidatorsResponseIsResponseTypeForTheQueryValidatorsRPCMethod,
+} from '@cosmos-client/core/esm/openapi';
 import * as crypto from 'crypto';
 
 @Component({
@@ -11,7 +14,7 @@ export class ValidatorsComponent implements OnInit {
   @Input()
   validators?: QueryValidatorsResponseIsResponseTypeForTheQueryValidatorsRPCMethod | null;
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit(): void {
     setTimeout(() => {
@@ -19,7 +22,7 @@ export class ValidatorsComponent implements OnInit {
     }, 5000);
   }
 
-  getColorCode(validator: InlineResponse20062Validators) {
+  getColorCode(validator: InlineResponse20066Validators) {
     const hash = crypto
       .createHash('sha256')
       .update(Buffer.from(validator.operator_address ?? ''))

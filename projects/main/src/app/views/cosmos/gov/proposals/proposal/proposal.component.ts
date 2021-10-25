@@ -1,24 +1,27 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { InlineResponse20048Proposals, InlineResponse20050Deposits, InlineResponse20052Tally, InlineResponse20053Votes } from 'cosmos-client/esm/openapi';
+import {
+  InlineResponse20052Proposals,
+  InlineResponse20054Deposits,
+  InlineResponse20052FinalTallyResult,
+  InlineResponse20057Votes,
+} from '@cosmos-client/core/esm/openapi';
 
 @Component({
   selector: 'view-proposal',
   templateUrl: './proposal.component.html',
-  styleUrls: ['./proposal.component.css']
+  styleUrls: ['./proposal.component.css'],
 })
 export class ProposalComponent implements OnInit {
   @Input()
-  proposal?: InlineResponse20048Proposals | null;
+  proposal?: InlineResponse20052Proposals | null;
   @Input()
-  deposits?: InlineResponse20050Deposits[] | null;
+  deposits?: InlineResponse20054Deposits[] | null;
   @Input()
-  tally?: InlineResponse20052Tally | null;
+  tally?: InlineResponse20052FinalTallyResult | null;
   @Input()
-  votes?: InlineResponse20053Votes[] | null;
+  votes?: InlineResponse20057Votes[] | null;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }

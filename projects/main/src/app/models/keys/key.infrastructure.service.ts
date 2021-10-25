@@ -3,7 +3,7 @@ import { DbService } from '../db.service';
 import { Key, KeyType } from './key.model';
 import { IKeyInfrastructure } from './key.service';
 import { Injectable } from '@angular/core';
-import { cosmosclient, proto } from 'cosmos-client';
+import { cosmosclient, proto } from '@cosmos-client/core';
 import Dexie from 'dexie';
 
 @Injectable({
@@ -82,7 +82,7 @@ export class KeyInfrastructureService implements IKeyInfrastructure {
       }));
     } catch (error) {
       console.error(error);
-      return []
+      return [];
     }
   }
 

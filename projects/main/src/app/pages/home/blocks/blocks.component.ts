@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { rest } from 'cosmos-client';
-import { InlineResponse20031, InlineResponse20032 } from 'cosmos-client/esm/openapi';
+import { rest } from '@cosmos-client/core';
+import { InlineResponse20036, InlineResponse20035 } from '@cosmos-client/core/esm/openapi';
 import { CosmosSDKService } from 'projects/main/src/app/models/cosmos-sdk.service';
 import { Observable, of, zip, timer } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
@@ -13,16 +13,16 @@ import { catchError, map, mergeMap } from 'rxjs/operators';
 })
 export class BlocksComponent implements OnInit {
   pollingInterval = 30;
-  latestBlock$: Observable<InlineResponse20031 | undefined>;
+  latestBlock$: Observable<InlineResponse20035 | undefined>;
   latestBlockHeight$: Observable<bigint | undefined>;
-  latestBlocks$: Observable<InlineResponse20032[] | undefined>;
+  latestBlocks$: Observable<InlineResponse20036[] | undefined>;
 
   constructor(private route: ActivatedRoute, private cosmosSDK: CosmosSDKService) {
     const timer$ = timer(0, this.pollingInterval * 1000);
     // eslint-disable-next-line no-unused-vars
     const sdk$ = timer$.pipe(mergeMap((_) => this.cosmosSDK.sdk$));
     this.latestBlock$ = sdk$.pipe(
-      mergeMap((sdk) => rest.cosmos.tendermint.getLatestBlock(sdk.rest).then((res) => res.data)),
+      mergeMap((sdk) => rest.tendermint.getLatestBlock(sdk.rest).then((res) => res.data)),
     );
     this.latestBlockHeight$ = this.latestBlock$.pipe(
       // eslint-disable-next-line no-undef
@@ -49,9 +49,7 @@ export class BlocksComponent implements OnInit {
           ...blockHeights.map((blockHeight) =>
             this.cosmosSDK.sdk$.pipe(
               mergeMap((sdk) =>
-                rest.cosmos.tendermint
-                  .getBlockByHeight(sdk.rest, blockHeight)
-                  .then((res) => res.data),
+                rest.tendermint.getBlockByHeight(sdk.rest, blockHeight).then((res) => res.data),
               ),
             ),
           ),

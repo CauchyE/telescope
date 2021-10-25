@@ -1,18 +1,18 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { InlineResponse20032 } from 'cosmos-client/esm/openapi';
+import { InlineResponse20035 } from '@cosmos-client/core/esm/openapi';
 
 @Component({
   selector: 'view-blocks',
   templateUrl: './blocks.component.html',
-  styleUrls: ['./blocks.component.css']
+  styleUrls: ['./blocks.component.css'],
 })
 export class BlocksComponent implements OnInit {
   @Input()
-  latestBlocks?: InlineResponse20032[] | null;
+  latestBlocks?: InlineResponse20035[] | null;
 
   @Input()
-  pageSizeOptions?: number[]| null;
+  pageSizeOptions?: number[] | null;
 
   @Input()
   pageSize?: number | null;
@@ -24,17 +24,15 @@ export class BlocksComponent implements OnInit {
   pageLength?: number | null;
 
   @Output()
-  paginationChange:EventEmitter<PageEvent>;
+  paginationChange: EventEmitter<PageEvent>;
 
   constructor() {
-    this.paginationChange = new EventEmitter;
+    this.paginationChange = new EventEmitter();
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   onPaginationChange(pageEvent: PageEvent): void {
     this.paginationChange.emit(pageEvent);
   }
-
 }
