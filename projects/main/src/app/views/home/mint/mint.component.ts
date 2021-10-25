@@ -2,7 +2,7 @@ import { Component, OnInit, Input } from '@angular/core';
 import {
   CosmosMintV1beta1QueryAnnualProvisionsResponse,
   CosmosMintV1beta1QueryInflationResponse,
-} from 'cosmos-client/esm/openapi/api';
+} from '@cosmos-client/core/esm/openapi/api';
 
 @Component({
   selector: 'view-mint',

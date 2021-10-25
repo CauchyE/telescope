@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { cosmosclient, rest } from 'cosmos-client';
+import { cosmosclient, rest } from '@cosmos-client/core';
 import {
   CosmosDistributionV1beta1QueryDelegationTotalRewardsResponse,
   QueryValidatorDelegationsResponseIsResponseTypeForTheQueryValidatorDelegationsRPCMethod,
-} from 'cosmos-client/esm/openapi/api';
+} from '@cosmos-client/core/esm/openapi/api';
 import { CosmosSDKService } from 'projects/main/src/app/models/cosmos-sdk.service';
 import { combineLatest, Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
@@ -35,7 +35,7 @@ export class StakingComponent implements OnInit {
     */
     this.totalrewards$ = combined$.pipe(
       mergeMap(([sdk, accAddress]) =>
-        rest.cosmos.distribution.delegationTotalRewards(sdk.rest, accAddress),
+        rest.distribution.delegationTotalRewards(sdk.rest, accAddress),
       ),
       map((res) => res.data),
     );

@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { CosmosDistributionV1beta1QueryCommunityPoolResponse } from 'cosmos-client/esm/openapi/api';
+import { CosmosDistributionV1beta1QueryCommunityPoolResponse } from '@cosmos-client/core/esm/openapi/api';
 
 @Component({
   selector: 'view-distribution',

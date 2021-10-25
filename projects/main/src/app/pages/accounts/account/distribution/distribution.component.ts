@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { cosmosclient, rest } from 'cosmos-client';
+import { cosmosclient, rest } from '@cosmos-client/core';
 import {
   CosmosDistributionV1beta1QueryValidatorSlashesResponse,
-  InlineResponse20043,
+  InlineResponse20047,
   QueryValidatorCommissionResponseIsTheResponseTypeForTheQueryValidatorCommissionRPCMethod,
-} from 'cosmos-client/esm/openapi/api';
+} from '@cosmos-client/core/esm/openapi/api';
 import { CosmosSDKService } from 'projects/main/src/app/models/cosmos-sdk.service';
 import { combineLatest, Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
@@ -17,7 +17,7 @@ import { map, mergeMap } from 'rxjs/operators';
 })
 export class DistributionComponent implements OnInit {
   commision$: Observable<QueryValidatorCommissionResponseIsTheResponseTypeForTheQueryValidatorCommissionRPCMethod>;
-  rewards$: Observable<InlineResponse20043>;
+  rewards$: Observable<InlineResponse20047>;
   slashes$: Observable<CosmosDistributionV1beta1QueryValidatorSlashesResponse>;
 
   constructor(
@@ -33,21 +33,21 @@ export class DistributionComponent implements OnInit {
 
     this.commision$ = combined$.pipe(
       mergeMap(([sdk, accAddress, valAddress]) =>
-        rest.cosmos.distribution.validatorCommission(sdk.rest, valAddress),
+        rest.distribution.validatorCommission(sdk.rest, valAddress),
       ),
       map((res) => res.data),
     );
 
     this.rewards$ = combined$.pipe(
       mergeMap(([sdk, accAddress, valAddress]) =>
-        rest.cosmos.distribution.validatorOutstandingRewards(sdk.rest, valAddress),
+        rest.distribution.validatorOutstandingRewards(sdk.rest, valAddress),
       ),
       map((res) => res.data),
     );
 
     this.slashes$ = combined$.pipe(
       mergeMap(([sdk, accAddress, valAddress]) =>
-        rest.cosmos.distribution.validatorSlashes(sdk.rest, valAddress, '1', '2'),
+        rest.distribution.validatorSlashes(sdk.rest, valAddress, '1', '2'),
       ),
       map((res) => res.data),
     );

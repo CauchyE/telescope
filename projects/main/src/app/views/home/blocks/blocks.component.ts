@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { InlineResponse20032 } from 'cosmos-client/esm/openapi';
+import { InlineResponse20036 } from '@cosmos-client/core/esm/openapi';
 
 @Component({
   selector: 'view-blocks',
@@ -8,9 +8,9 @@ import { InlineResponse20032 } from 'cosmos-client/esm/openapi';
 })
 export class BlocksComponent implements OnInit {
   @Input()
-  latestBlocks?: InlineResponse20032[] | null | undefined;
+  latestBlocks?: InlineResponse20036[] | null | undefined;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 }

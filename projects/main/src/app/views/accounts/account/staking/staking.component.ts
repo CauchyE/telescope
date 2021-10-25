@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import {
   CosmosDistributionV1beta1QueryDelegationTotalRewardsResponse,
   /*QueryValidatorDelegationsResponseIsResponseTypeForTheQueryValidatorDelegationsRPCMethod,*/
-} from 'cosmos-client/esm/openapi/api';
+} from '@cosmos-client/core/esm/openapi/api';
 
 @Component({
   selector: 'view-staking',

@@ -1,7 +1,7 @@
 import { CosmosSDKService } from '../../models/cosmos-sdk.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { rest } from 'cosmos-client';
-import { InlineResponse20033 } from 'cosmos-client/esm/openapi';
+import { rest } from '@cosmos-client/core';
+import { InlineResponse20037 } from '@cosmos-client/core/esm/openapi';
 import { combineLatest, Observable, timer } from 'rxjs';
 import { mergeMap, map } from 'rxjs/operators';
 
@@ -11,7 +11,7 @@ import { mergeMap, map } from 'rxjs/operators';
   styleUrls: ['./home.component.css'],
 })
 export class HomeComponent implements OnInit, OnDestroy {
-  nodeInfo$: Observable<InlineResponse20033>;
+  nodeInfo$: Observable<InlineResponse20037>;
   syncing$: Observable<boolean>;
 
   constructor(private cosmosSDK: CosmosSDKService) {
@@ -19,12 +19,12 @@ export class HomeComponent implements OnInit, OnDestroy {
     const combined$ = combineLatest([timer$, this.cosmosSDK.sdk$]).pipe(map(([_, sdk]) => sdk));
 
     this.nodeInfo$ = combined$.pipe(
-      mergeMap((sdk) => rest.cosmos.tendermint.getNodeInfo(sdk.rest).then((res) => res.data)),
+      mergeMap((sdk) => rest.tendermint.getNodeInfo(sdk.rest).then((res) => res.data)),
     );
 
     this.syncing$ = combined$.pipe(
       mergeMap((sdk) =>
-        rest.cosmos.tendermint.getSyncing(sdk.rest).then((res) => res.data.syncing || false),
+        rest.tendermint.getSyncing(sdk.rest).then((res) => res.data.syncing || false),
       ),
     );
   }
