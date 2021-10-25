@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { InlineResponse20033 } from 'cosmos-client/esm/openapi';
+import { InlineResponse20033 } from '@cosmos-client/core/esm/openapi';
 
 @Component({
   selector: 'view-home',
@@ -13,7 +13,7 @@ export class HomeComponent implements OnInit {
   @Input()
   syncing?: boolean | null;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 }

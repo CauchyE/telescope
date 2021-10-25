@@ -4,7 +4,7 @@ import { cosmosclient, rest } from '@cosmos-client/core';
 import {
   CosmosDistributionV1beta1QueryDelegationTotalRewardsResponse,
   QueryValidatorDelegationsResponseIsResponseTypeForTheQueryValidatorDelegationsRPCMethod,
-} from 'cosmos-client/esm/openapi/api';
+} from '@cosmos-client/core/esm/openapi/api';
 import { CosmosSDKService } from 'projects/main/src/app/models/cosmos-sdk.service';
 import { combineLatest, Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';

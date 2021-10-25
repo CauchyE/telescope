@@ -1,7 +1,7 @@
 import { CosmosSDKService } from '../../../../models/cosmos-sdk.service';
 import { Component, OnInit } from '@angular/core';
 import { rest } from '@cosmos-client/core';
-import { QueryValidatorsResponseIsResponseTypeForTheQueryValidatorsRPCMethod } from 'cosmos-client/esm/openapi';
+import { QueryValidatorsResponseIsResponseTypeForTheQueryValidatorsRPCMethod } from '@cosmos-client/core/esm/openapi';
 import { Observable, from } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 

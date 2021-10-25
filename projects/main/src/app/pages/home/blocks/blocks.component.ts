@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { rest } from '@cosmos-client/core';
-import { InlineResponse20031, InlineResponse20032 } from 'cosmos-client/esm/openapi';
+import { InlineResponse20031, InlineResponse20032 } from '@cosmos-client/core/esm/openapi';
 import { CosmosSDKService } from 'projects/main/src/app/models/cosmos-sdk.service';
 import { Observable, of, zip, timer } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';

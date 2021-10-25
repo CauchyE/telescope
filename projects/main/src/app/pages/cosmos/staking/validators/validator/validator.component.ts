@@ -2,7 +2,7 @@ import { CosmosSDKService } from '../../../../../models/cosmos-sdk.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { cosmosclient, rest } from '@cosmos-client/core';
-import { InlineResponse20063Validator } from 'cosmos-client/esm/openapi';
+import { InlineResponse20063Validator } from '@cosmos-client/core/esm/openapi';
 import { Observable, of, combineLatest } from 'rxjs';
 import { map, mergeMap, catchError } from 'rxjs/operators';
 

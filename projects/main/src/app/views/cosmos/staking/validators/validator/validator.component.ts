@@ -1,6 +1,6 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { cosmosclient, proto } from '@cosmos-client/core';
-import { InlineResponse20063Validator } from 'cosmos-client/esm/openapi';
+import { InlineResponse20063Validator } from '@cosmos-client/core/esm/openapi';
 
 @Component({
   selector: 'view-validator',

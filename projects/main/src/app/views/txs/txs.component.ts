@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { CosmosTxV1beta1GetTxsEventResponseTxResponses } from 'cosmos-client/esm/openapi';
+import { CosmosTxV1beta1GetTxsEventResponseTxResponses } from '@cosmos-client/core/esm/openapi';
 
 @Component({
   selector: 'view-txs',

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { rest } from '@cosmos-client/core';
-import { QueryTotalSupplyResponseIsTheResponseTypeForTheQueryTotalSupplyRPCMethod } from 'cosmos-client/esm/openapi/api';
+import { QueryTotalSupplyResponseIsTheResponseTypeForTheQueryTotalSupplyRPCMethod } from '@cosmos-client/core/esm/openapi/api';
 import { CosmosSDKService } from 'projects/main/src/app/models/cosmos-sdk.service';
 import { combineLatest, Observable, timer } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';

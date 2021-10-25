@@ -6,7 +6,7 @@ import {
   InlineResponse20050Deposits,
   InlineResponse20052Tally,
   InlineResponse20053Votes,
-} from 'cosmos-client/esm/openapi';
+} from '@cosmos-client/core/esm/openapi';
 import { CosmosSDKService } from 'projects/main/src/app/models/cosmos-sdk.service';
 import { combineLatest, Observable, of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';

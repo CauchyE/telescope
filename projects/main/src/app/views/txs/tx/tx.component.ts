@@ -1,6 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { cosmosclient } from '@cosmos-client/core';
-import { CosmosTxV1beta1GetTxResponse } from 'cosmos-client/esm/openapi';
+import { CosmosTxV1beta1GetTxResponse } from '@cosmos-client/core/esm/openapi';
 
 @Component({
   selector: 'view-tx',

@@ -4,7 +4,7 @@ import { rest } from '@cosmos-client/core';
 import {
   CosmosMintV1beta1QueryAnnualProvisionsResponse,
   CosmosMintV1beta1QueryInflationResponse,
-} from 'cosmos-client/esm/openapi/api';
+} from '@cosmos-client/core/esm/openapi/api';
 import { CosmosSDKService } from 'projects/main/src/app/models/cosmos-sdk.service';
 import { Observable } from 'rxjs';
 import { mergeMap } from 'rxjs/operators';

@@ -3,7 +3,7 @@ import {
   CosmosDistributionV1beta1QueryValidatorSlashesResponse,
   InlineResponse20043,
   QueryValidatorCommissionResponseIsTheResponseTypeForTheQueryValidatorCommissionRPCMethod,
-} from 'cosmos-client/esm/openapi/api';
+} from '@cosmos-client/core/esm/openapi/api';
 
 @Component({
   selector: 'view-distribution',

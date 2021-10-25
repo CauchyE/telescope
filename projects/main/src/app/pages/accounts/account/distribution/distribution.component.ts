@@ -5,7 +5,7 @@ import {
   CosmosDistributionV1beta1QueryValidatorSlashesResponse,
   InlineResponse20043,
   QueryValidatorCommissionResponseIsTheResponseTypeForTheQueryValidatorCommissionRPCMethod,
-} from 'cosmos-client/esm/openapi/api';
+} from '@cosmos-client/core/esm/openapi/api';
 import { CosmosSDKService } from 'projects/main/src/app/models/cosmos-sdk.service';
 import { combineLatest, Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
