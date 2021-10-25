@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { rest } from 'cosmos-client';
+import { rest } from '@cosmos-client/core';
 import {
-  InlineResponse20048Proposals,
-  InlineResponse20050Deposits,
-  InlineResponse20052Tally,
-  InlineResponse20053Votes,
-} from 'cosmos-client/esm/openapi';
+  InlineResponse20052Proposals,
+  InlineResponse20054Deposits,
+  InlineResponse20052FinalTallyResult,
+  InlineResponse20057Votes,
+} from '@cosmos-client/core/esm/openapi';
 import { CosmosSDKService } from 'projects/main/src/app/models/cosmos-sdk.service';
 import { combineLatest, Observable, of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
@@ -17,10 +17,10 @@ import { catchError, map, mergeMap } from 'rxjs/operators';
   styleUrls: ['./proposal.component.css'],
 })
 export class ProposalComponent implements OnInit {
-  proposal$: Observable<InlineResponse20048Proposals | undefined>;
-  deposits$: Observable<InlineResponse20050Deposits[] | undefined>;
-  tally$: Observable<InlineResponse20052Tally | undefined>;
-  votes$: Observable<InlineResponse20053Votes[] | undefined>;
+  proposal$: Observable<InlineResponse20052Proposals | undefined>;
+  deposits$: Observable<InlineResponse20054Deposits[] | undefined>;
+  tally$: Observable<InlineResponse20052FinalTallyResult | undefined>;
+  votes$: Observable<InlineResponse20057Votes[] | undefined>;
 
   constructor(private route: ActivatedRoute, private cosmosSDK: CosmosSDKService) {
     const proposalID$ = this.route.params.pipe(map((params) => params.id));
@@ -29,7 +29,7 @@ export class ProposalComponent implements OnInit {
 
     const combined$ = combineLatest([this.cosmosSDK.sdk$, proposalID$]);
     this.proposal$ = combined$.pipe(
-      mergeMap(([sdk, address]) => rest.cosmos.gov.proposal(sdk.rest, address)),
+      mergeMap(([sdk, address]) => rest.gov.proposal(sdk.rest, address)),
       map((result) => result.data.proposal!),
       catchError((error) => {
         console.error(error);
@@ -38,7 +38,7 @@ export class ProposalComponent implements OnInit {
     );
 
     this.deposits$ = combined$.pipe(
-      mergeMap(([sdk, address]) => rest.cosmos.gov.deposits(sdk.rest, address)),
+      mergeMap(([sdk, address]) => rest.gov.deposits(sdk.rest, address)),
       map((result) => result.data.deposits!),
       catchError((error) => {
         console.error(error);
@@ -47,7 +47,7 @@ export class ProposalComponent implements OnInit {
     );
 
     this.tally$ = combined$.pipe(
-      mergeMap(([sdk, address]) => rest.cosmos.gov.tallyresult(sdk.rest, address)),
+      mergeMap(([sdk, address]) => rest.gov.tallyresult(sdk.rest, address)),
       map((result) => result.data.tally!),
       catchError((error) => {
         console.error(error);
@@ -56,7 +56,7 @@ export class ProposalComponent implements OnInit {
     );
 
     this.votes$ = combined$.pipe(
-      mergeMap(([sdk, address]) => rest.cosmos.gov.votes(sdk.rest, address)),
+      mergeMap(([sdk, address]) => rest.gov.votes(sdk.rest, address)),
       map((result) => result.data.votes!),
       catchError((error) => {
         console.error(error);

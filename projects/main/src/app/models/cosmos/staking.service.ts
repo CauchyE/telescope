@@ -1,25 +1,36 @@
-import { Injectable } from '@angular/core';
 import { CosmosSDKService } from '../cosmos-sdk.service';
 import { Key } from '../keys/key.model';
 import { KeyService } from '../keys/key.service';
-import { cosmosclient, rest, proto } from 'cosmos-client';
+import { Injectable } from '@angular/core';
+import { cosmosclient, rest, proto } from '@cosmos-client/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class StakingService {
-  constructor(private readonly cosmosSDK: CosmosSDKService, private readonly key: KeyService) { }
+  constructor(private readonly cosmosSDK: CosmosSDKService, private readonly key: KeyService) {}
 
-  async createDelegator(key: Key, validatorAddress: string, amount: proto.cosmos.base.v1beta1.ICoin, privateKey: string) {
+  async createDelegator(
+    key: Key,
+    validatorAddress: string,
+    amount: proto.cosmos.base.v1beta1.ICoin,
+    privateKey: string,
+  ) {
     const sdk = await this.cosmosSDK.sdk().then((sdk) => sdk.rest);
     const privKey = this.key.getPrivKey(key.type, privateKey);
     const pubKey = privKey.pubKey();
     const fromAddress = cosmosclient.AccAddress.fromPublicKey(pubKey);
 
     // get account info
-    const account = await rest.cosmos.auth
+    const account = await rest.auth
       .account(sdk, fromAddress)
-      .then((res) => res.data.account && (cosmosclient.codec.unpackCosmosAny(res.data.account) as proto.cosmos.auth.v1beta1.BaseAccount))
+      .then(
+        (res) =>
+          res.data.account &&
+          (cosmosclient.codec.unpackCosmosAny(
+            res.data.account,
+          ) as proto.cosmos.auth.v1beta1.BaseAccount),
+      )
       .catch((_) => undefined);
 
     if (!(account instanceof proto.cosmos.auth.v1beta1.BaseAccount)) {
@@ -59,9 +70,9 @@ export class StakingService {
     txBuilder.addSignature(privKey.sign(signDocBytes));
 
     // broadcast
-    const result = await rest.cosmos.tx.broadcastTx(sdk, {
+    const result = await rest.tx.broadcastTx(sdk, {
       tx_bytes: txBuilder.txBytes(),
-      mode: rest.cosmos.tx.BroadcastTxMode.Block,
+      mode: rest.tx.BroadcastTxMode.Block,
     });
 
     return result.data.tx_response?.txhash || '';

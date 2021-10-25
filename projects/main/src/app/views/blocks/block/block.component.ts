@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { InlineResponse20032 } from 'cosmos-client/esm/openapi';
-import { CosmosBaseTendermintV1beta1GetValidatorSetByHeightResponse } from 'cosmos-client/esm/openapi/api';
+import { InlineResponse20036 } from '@cosmos-client/core/esm/openapi';
+import { CosmosBaseTendermintV1beta1GetValidatorSetByHeightResponse } from '@cosmos-client/core/esm/openapi/api';
 
 @Component({
   selector: 'view-block',
@@ -9,7 +9,7 @@ import { CosmosBaseTendermintV1beta1GetValidatorSetByHeightResponse } from 'cosm
 })
 export class BlockComponent implements OnInit {
   @Input()
-  block?: InlineResponse20032 | null;
+  block?: InlineResponse20036 | null;
   @Input()
   validatorsets?: CosmosBaseTendermintV1beta1GetValidatorSetByHeightResponse | null;
 

@@ -1,6 +1,6 @@
 import { Key } from '../../../../../models/keys/key.model';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { proto } from 'cosmos-client';
+import { proto } from '@cosmos-client/core';
 
 export type CreateOnSubmitEvent = {
   key: Key;

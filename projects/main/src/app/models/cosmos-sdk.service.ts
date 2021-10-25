@@ -1,8 +1,8 @@
+import { ConfigService } from './config.service';
 import { Injectable } from '@angular/core';
-import { cosmosclient } from 'cosmos-client';
+import { cosmosclient } from '@cosmos-client/core';
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { first, map } from 'rxjs/operators';
-import { ConfigService } from './config.service';
 
 @Injectable({
   providedIn: 'root',
