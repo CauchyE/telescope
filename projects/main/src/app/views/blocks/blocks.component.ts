@@ -1,6 +1,6 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { InlineResponse20032 } from '@cosmos-client/core/esm/openapi';
+import { InlineResponse20035 } from '@cosmos-client/core/esm/openapi';
 
 @Component({
   selector: 'view-blocks',
@@ -9,7 +9,7 @@ import { InlineResponse20032 } from '@cosmos-client/core/esm/openapi';
 })
 export class BlocksComponent implements OnInit {
   @Input()
-  latestBlocks?: InlineResponse20032[] | null;
+  latestBlocks?: InlineResponse20035[] | null;
 
   @Input()
   pageSizeOptions?: number[] | null;

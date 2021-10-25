@@ -22,7 +22,7 @@ export class BankService {
     const fromAddress = cosmosclient.AccAddress.fromPublicKey(pubKey);
 
     // get account info
-    const account = await rest.cosmos.auth
+    const account = await rest.auth
       .account(sdk, fromAddress)
       .then((res) => res.data.account && cosmosclient.codec.unpackCosmosAny(res.data.account))
       .catch((_) => undefined);
@@ -64,9 +64,9 @@ export class BankService {
     txBuilder.addSignature(privKey.sign(signDocBytes));
 
     // broadcast
-    const result = await rest.cosmos.tx.broadcastTx(sdk, {
+    const result = await rest.tx.broadcastTx(sdk, {
       tx_bytes: txBuilder.txBytes(),
-      mode: rest.cosmos.tx.BroadcastTxMode.Block,
+      mode: rest.tx.BroadcastTxMode.Block,
     });
 
     return result.data.tx_response?.txhash || '';

@@ -1,7 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import {
   CosmosDistributionV1beta1QueryValidatorSlashesResponse,
-  InlineResponse20043,
+  InlineResponse20047,
   QueryValidatorCommissionResponseIsTheResponseTypeForTheQueryValidatorCommissionRPCMethod,
 } from '@cosmos-client/core/esm/openapi/api';
 
@@ -14,7 +14,7 @@ export class DistributionComponent implements OnInit {
   @Input()
   commision?: QueryValidatorCommissionResponseIsTheResponseTypeForTheQueryValidatorCommissionRPCMethod | null;
   @Input()
-  rewards?: InlineResponse20043 | null;
+  rewards?: InlineResponse20047 | null;
   @Input()
   slashes?: CosmosDistributionV1beta1QueryValidatorSlashesResponse | null;
 

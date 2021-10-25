@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { InlineResponse20048 } from '@cosmos-client/core/esm/openapi';
+import { InlineResponse20052 } from '@cosmos-client/core/esm/openapi';
 
 @Component({
   selector: 'view-proposals',
@@ -8,7 +8,7 @@ import { InlineResponse20048 } from '@cosmos-client/core/esm/openapi';
 })
 export class ProposalsComponent implements OnInit {
   @Input()
-  proposals?: InlineResponse20048 | null;
+  proposals?: InlineResponse20052 | null;
 
   constructor() {}
 

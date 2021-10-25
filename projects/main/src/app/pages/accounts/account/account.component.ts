@@ -25,7 +25,7 @@ export class AccountComponent implements OnInit {
 
     this.account$ = combined$.pipe(
       mergeMap(([sdk, address]) =>
-        rest.cosmos.auth
+        rest.auth
           .account(sdk.rest, address)
           .then((res) => res.data && cosmosclient.codec.unpackCosmosAny(res.data.account))
           .catch((_) => {
@@ -37,7 +37,7 @@ export class AccountComponent implements OnInit {
 
     this.balances$ = combined$.pipe(
       mergeMap(([sdk, address]) =>
-        rest.cosmos.bank.allBalances(sdk.rest, address).then((res) => res.data.balances || []),
+        rest.bank.allBalances(sdk.rest, address).then((res) => res.data.balances || []),
       ),
     );
   }

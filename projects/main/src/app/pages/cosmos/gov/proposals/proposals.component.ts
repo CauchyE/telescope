@@ -19,7 +19,7 @@ export class ProposalsComponent implements OnInit {
     private readonly cosmosSDK: CosmosSDKService,
   ) {
     this.proposals$ = this.cosmosSDK.sdk$.pipe(
-      mergeMap((sdk) => rest.cosmos.gov.proposals(sdk.rest)),
+      mergeMap((sdk) => rest.gov.proposals(sdk.rest)),
       map((result) => result.data),
     );
   }

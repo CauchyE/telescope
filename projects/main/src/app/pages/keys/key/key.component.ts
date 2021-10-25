@@ -53,7 +53,7 @@ export class KeyComponent implements OnInit {
         if (address === undefined) {
           return [];
         }
-        return rest.cosmos.bank
+        return rest.bank
           .allBalances(sdk.rest, address)
           .then((res) => res.data.balances || [])
           .catch((_) => []);

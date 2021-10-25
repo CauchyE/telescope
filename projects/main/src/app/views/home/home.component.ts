@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { InlineResponse20033 } from '@cosmos-client/core/esm/openapi';
+import { InlineResponse20037 } from '@cosmos-client/core/esm/openapi';
 
 @Component({
   selector: 'view-home',
@@ -8,7 +8,7 @@ import { InlineResponse20033 } from '@cosmos-client/core/esm/openapi';
 })
 export class HomeComponent implements OnInit {
   @Input()
-  nodeInfo?: InlineResponse20033 | null;
+  nodeInfo?: InlineResponse20037 | null;
 
   @Input()
   syncing?: boolean | null;

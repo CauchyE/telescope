@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
 import { rest } from '@cosmos-client/core';
-import { CosmosTxV1beta1GetTxsEventResponseTxResponses } from '@cosmos-client/core/esm/openapi/api';
+import { InlineResponse20075TxResponse } from '@cosmos-client/core/esm/openapi/api';
 import { ConfigService } from 'projects/main/src/app/models/config.service';
 import { CosmosSDKService } from 'projects/main/src/app/models/cosmos-sdk.service';
 import { BehaviorSubject, combineLatest, Observable, timer } from 'rxjs';
@@ -23,7 +23,7 @@ export class TxsComponent implements OnInit {
   txsPageOffset$: Observable<bigint>;
 
   pollingInterval = 30;
-  txs$?: Observable<CosmosTxV1beta1GetTxsEventResponseTxResponses[] | undefined>;
+  txs$?: Observable<InlineResponse20075TxResponse[] | undefined>;
   txTypeOptions?: string[];
   selectedTxType$: BehaviorSubject<string> = new BehaviorSubject('bank');
 
@@ -43,7 +43,7 @@ export class TxsComponent implements OnInit {
       this.selectedTxType$,
     ]).pipe(
       switchMap(([sdk, _pageNumber, _pageSize, selectedTxType]) => {
-        return rest.cosmos.tx
+        return rest.tx
           .getTxsEvent(
             sdk.rest,
             [`message.module='${selectedTxType}'`],
@@ -95,7 +95,7 @@ export class TxsComponent implements OnInit {
           return [];
         }
 
-        return rest.cosmos.tx
+        return rest.tx
           .getTxsEvent(
             sdk.rest,
             [`message.module='${selectedTxType}'`],

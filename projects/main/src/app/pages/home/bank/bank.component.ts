@@ -21,7 +21,7 @@ export class BankComponent implements OnInit {
     const timer$ = timer(0, 60 * 1000);
     const combined$ = combineLatest([timer$, this.cosmosSDK.sdk$]).pipe(map(([_, sdk]) => sdk));
     this.totalSupply$ = combined$.pipe(
-      mergeMap((sdk) => rest.cosmos.bank.totalSupply(sdk.rest).then((res) => res.data)),
+      mergeMap((sdk) => rest.bank.totalSupply(sdk.rest).then((res) => res.data)),
     );
   }
 

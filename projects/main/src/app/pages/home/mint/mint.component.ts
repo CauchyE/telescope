@@ -23,10 +23,10 @@ export class MintComponent implements OnInit {
     private readonly cosmosSDK: CosmosSDKService,
   ) {
     this.inflation$ = this.cosmosSDK.sdk$.pipe(
-      mergeMap((sdk) => rest.cosmos.mint.inflation(sdk.rest).then((res) => res.data)),
+      mergeMap((sdk) => rest.mint.inflation(sdk.rest).then((res) => res.data)),
     );
     this.annualProvisions$ = this.cosmosSDK.sdk$.pipe(
-      mergeMap((sdk) => rest.cosmos.mint.annualProvisions(sdk.rest).then((res) => res.data)),
+      mergeMap((sdk) => rest.mint.annualProvisions(sdk.rest).then((res) => res.data)),
     );
   }
 

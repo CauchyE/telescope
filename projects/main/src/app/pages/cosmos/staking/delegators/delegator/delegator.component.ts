@@ -2,7 +2,7 @@ import { CosmosSDKService } from '../../../../../models/cosmos-sdk.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { cosmosclient, rest } from '@cosmos-client/core';
-import { InlineResponse20059, InlineResponse20062 } from '@cosmos-client/core/esm/openapi';
+import { InlineResponse20063, InlineResponse20066 } from '@cosmos-client/core/esm/openapi';
 import { combineLatest, Observable } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 
@@ -12,8 +12,8 @@ import { map, mergeMap } from 'rxjs/operators';
   styleUrls: ['./delegator.component.css'],
 })
 export class DelegatorComponent implements OnInit {
-  delegations$: Observable<InlineResponse20059>;
-  validators$: Observable<InlineResponse20062>;
+  delegations$: Observable<InlineResponse20063>;
+  validators$: Observable<InlineResponse20066>;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -27,12 +27,12 @@ export class DelegatorComponent implements OnInit {
     const combined$ = combineLatest([this.cosmosSDK.sdk$, address$]);
 
     this.delegations$ = combined$.pipe(
-      mergeMap(([sdk, address]) => rest.cosmos.staking.delegatorDelegations(sdk.rest, address)),
+      mergeMap(([sdk, address]) => rest.staking.delegatorDelegations(sdk.rest, address)),
       map((res) => res.data),
     );
 
     this.validators$ = combined$.pipe(
-      mergeMap(([sdk, address]) => rest.cosmos.staking.delegatorValidators(sdk.rest, address)),
+      mergeMap(([sdk, address]) => rest.staking.delegatorValidators(sdk.rest, address)),
       map((res) => res.data),
     );
   }

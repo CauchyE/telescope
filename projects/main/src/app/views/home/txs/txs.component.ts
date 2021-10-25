@@ -1,5 +1,5 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
-import { CosmosTxV1beta1GetTxsEventResponseTxResponses } from '@cosmos-client/core/esm/openapi';
+import { InlineResponse20075TxResponse } from '@cosmos-client/core/esm/openapi';
 
 @Component({
   selector: 'view-txs',
@@ -8,7 +8,7 @@ import { CosmosTxV1beta1GetTxsEventResponseTxResponses } from '@cosmos-client/co
 })
 export class TxsComponent implements OnInit {
   @Input()
-  txs?: CosmosTxV1beta1GetTxsEventResponseTxResponses[] | undefined | null;
+  txs?: InlineResponse20075TxResponse[] | undefined | null;
   @Input()
   txTypeOptions?: string[] | undefined | null;
   @Input()

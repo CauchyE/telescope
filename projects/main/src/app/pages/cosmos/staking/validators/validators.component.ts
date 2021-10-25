@@ -15,7 +15,7 @@ export class ValidatorsComponent implements OnInit {
 
   constructor(private cosmosSDK: CosmosSDKService) {
     this.validators$ = this.cosmosSDK.sdk$.pipe(
-      mergeMap((sdk) => rest.cosmos.staking.validators(sdk.rest)),
+      mergeMap((sdk) => rest.staking.validators(sdk.rest)),
       map((result) => result.data),
     );
   }

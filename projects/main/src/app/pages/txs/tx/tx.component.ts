@@ -18,7 +18,7 @@ export class TxComponent implements OnInit {
   constructor(private route: ActivatedRoute, private cosmosSDK: CosmosSDKService) {
     this.txHash$ = this.route.params.pipe(map((params) => params.tx_hash));
     this.tx$ = combineLatest([this.cosmosSDK.sdk$, this.txHash$]).pipe(
-      mergeMap(([sdk, hash]) => rest.cosmos.tx.getTx(sdk.rest, hash).then((res) => res.data)),
+      mergeMap(([sdk, hash]) => rest.tx.getTx(sdk.rest, hash).then((res) => res.data)),
     );
   }
 

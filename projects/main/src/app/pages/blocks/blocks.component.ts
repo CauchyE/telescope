@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
 import { rest } from '@cosmos-client/core';
-import { InlineResponse20031, InlineResponse20032 } from '@cosmos-client/core/esm/openapi';
+import { InlineResponse20035, InlineResponse20036 } from '@cosmos-client/core/esm/openapi';
 import { CosmosSDKService } from 'projects/main/src/app/models/cosmos-sdk.service';
 import { Observable, of, zip, timer, BehaviorSubject, combineLatest } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
@@ -19,16 +19,16 @@ export class BlocksComponent implements OnInit {
   pageLength$: BehaviorSubject<number> = new BehaviorSubject(1000);
 
   pollingInterval = 30;
-  latestBlock$: Observable<InlineResponse20031 | undefined>;
+  latestBlock$: Observable<InlineResponse20035 | undefined>;
   latestBlockHeight$ = new BehaviorSubject(BigInt(20));
-  latestBlocks$: Observable<InlineResponse20032[] | undefined>;
+  latestBlocks$: Observable<InlineResponse20036[] | undefined>;
   firstBlockHeight$ = new BehaviorSubject(BigInt(20));
 
   constructor(private route: ActivatedRoute, private cosmosSDK: CosmosSDKService) {
     const timer$ = timer(0, this.pollingInterval * 1000);
     const sdk$ = timer$.pipe(mergeMap((_) => this.cosmosSDK.sdk$));
     this.latestBlock$ = sdk$.pipe(
-      mergeMap((sdk) => rest.cosmos.tendermint.getLatestBlock(sdk.rest).then((res) => res.data)),
+      mergeMap((sdk) => rest.tendermint.getLatestBlock(sdk.rest).then((res) => res.data)),
     );
     this.latestBlock$.subscribe((latestBlock) => {
       this.latestBlockHeight$.next(
@@ -56,9 +56,7 @@ export class BlocksComponent implements OnInit {
           ...blockHeights.map((blockHeight) =>
             this.cosmosSDK.sdk$.pipe(
               mergeMap((sdk) =>
-                rest.cosmos.tendermint
-                  .getBlockByHeight(sdk.rest, blockHeight)
-                  .then((res) => res.data),
+                rest.tendermint.getBlockByHeight(sdk.rest, blockHeight).then((res) => res.data),
               ),
             ),
           ),

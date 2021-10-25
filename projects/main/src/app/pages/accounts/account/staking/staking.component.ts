@@ -35,7 +35,7 @@ export class StakingComponent implements OnInit {
     */
     this.totalrewards$ = combined$.pipe(
       mergeMap(([sdk, accAddress]) =>
-        rest.cosmos.distribution.delegationTotalRewards(sdk.rest, accAddress),
+        rest.distribution.delegationTotalRewards(sdk.rest, accAddress),
       ),
       map((res) => res.data),
     );
