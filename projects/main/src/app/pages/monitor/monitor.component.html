@@ -1,7 +1,6 @@
 <view-monitor
-  [data]="data$ | async"
+  [dataArray]="dataArray$ | async"
   [startDate]="startDate$ | async"
   [count]="count$ | async"
-  (startParamChanged)="appStartParamChanged($event)"
-  (countParamChanged)="appCountParamChanged($event)"
+  (searchCriteriaChanged)="appSearchCriteriaChanged($event)"
 ></view-monitor>
