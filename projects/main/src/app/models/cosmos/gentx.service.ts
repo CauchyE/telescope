@@ -4,8 +4,8 @@ import { Key } from '../keys/key.model';
 import { KeyService } from '../keys/key.service';
 import { GentxData } from './gentx.model';
 import { Injectable } from '@angular/core';
+import { cosmosclient, proto } from '@cosmos-client/core';
 import * as bech32 from 'bech32';
-import { cosmosclient, proto } from 'cosmos-client';
 
 @Injectable({
   providedIn: 'root',

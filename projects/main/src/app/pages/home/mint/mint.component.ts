@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { rest } from 'cosmos-client';
+import { rest } from '@cosmos-client/core';
 import {
   CosmosMintV1beta1QueryAnnualProvisionsResponse,
   CosmosMintV1beta1QueryInflationResponse,

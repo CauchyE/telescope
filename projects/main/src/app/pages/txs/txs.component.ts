@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
-import { rest } from 'cosmos-client';
+import { rest } from '@cosmos-client/core';
 import { CosmosTxV1beta1GetTxsEventResponseTxResponses } from 'cosmos-client/esm/openapi/api';
 import { ConfigService } from 'projects/main/src/app/models/config.service';
 import { CosmosSDKService } from 'projects/main/src/app/models/cosmos-sdk.service';

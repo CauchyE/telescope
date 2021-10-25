@@ -4,7 +4,7 @@ import { Key } from '../../../models/keys/key.model';
 import { KeyService } from '../../../models/keys/key.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { cosmosclient, proto, rest } from 'cosmos-client';
+import { cosmosclient, proto, rest } from '@cosmos-client/core';
 import { combineLatest, Observable, of } from 'rxjs';
 import { filter, map, mergeMap } from 'rxjs/operators';
 

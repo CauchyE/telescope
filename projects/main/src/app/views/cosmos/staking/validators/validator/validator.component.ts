@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { cosmosclient, proto } from 'cosmos-client';
+import { cosmosclient, proto } from '@cosmos-client/core';
 import { InlineResponse20063Validator } from 'cosmos-client/esm/openapi';
 
 @Component({
@@ -13,9 +13,9 @@ export class ValidatorComponent implements OnInit, OnChanges {
 
   publicKey?: string;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   ngOnChanges() {
     const pubKey = cosmosclient.codec.unpackCosmosAny(this.validator?.consensus_pubkey);

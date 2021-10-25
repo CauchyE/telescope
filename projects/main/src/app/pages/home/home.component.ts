@@ -1,6 +1,6 @@
 import { CosmosSDKService } from '../../models/cosmos-sdk.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { rest } from 'cosmos-client';
+import { rest } from '@cosmos-client/core';
 import { InlineResponse20033 } from 'cosmos-client/esm/openapi';
 import { combineLatest, Observable, timer } from 'rxjs';
 import { mergeMap, map } from 'rxjs/operators';

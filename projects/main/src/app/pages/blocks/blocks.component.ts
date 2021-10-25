@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import { ActivatedRoute } from '@angular/router';
-import { rest } from 'cosmos-client';
+import { rest } from '@cosmos-client/core';
 import { InlineResponse20031, InlineResponse20032 } from 'cosmos-client/esm/openapi';
 import { CosmosSDKService } from 'projects/main/src/app/models/cosmos-sdk.service';
 import { Observable, of, zip, timer, BehaviorSubject, combineLatest } from 'rxjs';
@@ -30,25 +30,24 @@ export class BlocksComponent implements OnInit {
     this.latestBlock$ = sdk$.pipe(
       mergeMap((sdk) => rest.cosmos.tendermint.getLatestBlock(sdk.rest).then((res) => res.data)),
     );
-    this.latestBlock$.subscribe(
-      (latestBlock) => {
-        this.latestBlockHeight$.next(
-          latestBlock?.block?.header?.height ? BigInt(latestBlock.block.header.height) : BigInt(0)
-        )
-        this.firstBlockHeight$.next(
-          latestBlock?.block?.header?.height ? BigInt(latestBlock.block.header.height) : BigInt(0)
-        )
-        this.pageLength$.next(
-          latestBlock?.block?.header?.height ? parseInt(latestBlock.block.header.height) : 0
-        )
-        this.pageNumber$.next(0)
-      }
-    )
+    this.latestBlock$.subscribe((latestBlock) => {
+      this.latestBlockHeight$.next(
+        latestBlock?.block?.header?.height ? BigInt(latestBlock.block.header.height) : BigInt(0),
+      );
+      this.firstBlockHeight$.next(
+        latestBlock?.block?.header?.height ? BigInt(latestBlock.block.header.height) : BigInt(0),
+      );
+      this.pageLength$.next(
+        latestBlock?.block?.header?.height ? parseInt(latestBlock.block.header.height) : 0,
+      );
+      this.pageNumber$.next(0);
+    });
 
     this.latestBlocks$ = combineLatest([this.firstBlockHeight$, this.pageSize$]).pipe(
       map(([firstBlockHeight, pageSize]) =>
         [...Array(pageSize).keys()].map((index) => {
-          const tempLatestBlockHeight = firstBlockHeight === undefined ? BigInt(0) : firstBlockHeight;
+          const tempLatestBlockHeight =
+            firstBlockHeight === undefined ? BigInt(0) : firstBlockHeight;
           return tempLatestBlockHeight - BigInt(index);
         }),
       ),
@@ -78,7 +77,8 @@ export class BlocksComponent implements OnInit {
     this.pageSize$.next(pageEvent.pageSize);
     this.pageNumber$.next(pageEvent.pageIndex + 1);
     this.pageLength$.next(pageEvent.length);
-    const paginatedBlockHeight = this.latestBlockHeight$.getValue() - BigInt(pageEvent.pageIndex) * BigInt(pageEvent.pageSize);
+    const paginatedBlockHeight =
+      this.latestBlockHeight$.getValue() - BigInt(pageEvent.pageIndex) * BigInt(pageEvent.pageSize);
     this.firstBlockHeight$.next(paginatedBlockHeight);
   }
 }

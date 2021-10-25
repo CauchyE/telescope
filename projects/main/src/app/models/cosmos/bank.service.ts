@@ -1,16 +1,21 @@
-import { Injectable } from '@angular/core';
-import { cosmosclient, rest, proto } from 'cosmos-client';
 import { CosmosSDKService } from '../cosmos-sdk.service';
 import { Key } from '../keys/key.model';
 import { KeyService } from '../keys/key.service';
+import { Injectable } from '@angular/core';
+import { cosmosclient, rest, proto } from '@cosmos-client/core';
 
 @Injectable({
   providedIn: 'root',
 })
 export class BankService {
-  constructor(private readonly cosmosSDK: CosmosSDKService, private readonly key: KeyService) { }
+  constructor(private readonly cosmosSDK: CosmosSDKService, private readonly key: KeyService) {}
 
-  async send(key: Key, toAddress: string, amount: proto.cosmos.base.v1beta1.ICoin[], privateKey: string) {
+  async send(
+    key: Key,
+    toAddress: string,
+    amount: proto.cosmos.base.v1beta1.ICoin[],
+    privateKey: string,
+  ) {
     const sdk = await this.cosmosSDK.sdk().then((sdk) => sdk.rest);
     const privKey = this.key.getPrivKey(key.type, privateKey);
     const pubKey = privKey.pubKey();

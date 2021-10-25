@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
-import { cosmosclient, proto } from 'cosmos-client';
+import { cosmosclient, proto } from '@cosmos-client/core';
 
 @Component({
   selector: 'view-account',
@@ -19,9 +19,9 @@ export class AccountComponent implements OnInit, OnChanges {
 
   txColumnKeys = ['height', 'txhash', 'timestamp', 'gas_wanted', 'gas_used'];
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   ngOnChanges() {
     delete this.baseAccount;

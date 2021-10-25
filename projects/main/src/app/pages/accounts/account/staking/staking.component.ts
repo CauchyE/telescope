@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { cosmosclient, rest } from 'cosmos-client';
+import { cosmosclient, rest } from '@cosmos-client/core';
 import {
   CosmosDistributionV1beta1QueryDelegationTotalRewardsResponse,
   QueryValidatorDelegationsResponseIsResponseTypeForTheQueryValidatorDelegationsRPCMethod,

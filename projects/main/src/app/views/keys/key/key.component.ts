@@ -1,6 +1,6 @@
 import { Key } from '../../../models/keys/key.model';
 import { Component, OnInit, Input } from '@angular/core';
-import { cosmosclient } from 'cosmos-client';
+import { cosmosclient } from '@cosmos-client/core';
 
 @Component({
   selector: 'view-key',
