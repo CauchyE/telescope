@@ -5,7 +5,7 @@ import { KeyService } from '../../../../models/keys/key.service';
 import { KeyStoreService } from '../../../../models/keys/key.store.service';
 import { SendOnSubmitEvent } from '../../../../views/cosmos/bank/send/send.component';
 import { Component, OnInit } from '@angular/core';
-import { cosmosclient, proto, rest } from 'cosmos-client';
+import { cosmosclient, proto, rest } from '@cosmos-client/core';
 import { combineLatest, Observable } from 'rxjs';
 import { map, mergeMap, filter, tap } from 'rxjs/operators';
 
@@ -33,7 +33,7 @@ export class SendComponent implements OnInit {
     );
 
     this.coins$ = combineLatest([this.cosmosSDK.sdk$, address$]).pipe(
-      mergeMap(([sdk, address]) => rest.cosmos.bank.allBalances(sdk.rest, address)),
+      mergeMap(([sdk, address]) => rest.bank.allBalances(sdk.rest, address)),
       map((result) => result.data.balances),
     );
   }

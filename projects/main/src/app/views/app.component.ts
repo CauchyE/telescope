@@ -35,7 +35,6 @@ export class AppComponent implements OnInit {
       });
     };
 
-    // Todo: This is not working.
     combineLatest([this.drawerMode$, this.router.events]).subscribe(([drawerMode, event]) => {
       if (drawerMode === 'over' && event instanceof NavigationEnd) {
         this.sidenav?.close();
@@ -48,7 +47,7 @@ export class AppComponent implements OnInit {
   }
 
   handleResizeWindow(width: number): void {
-    if (width < 600) {
+    if (width < 640) {
       this.drawerMode$.next('over');
       this.drawerOpened$.next(false);
     } else {
