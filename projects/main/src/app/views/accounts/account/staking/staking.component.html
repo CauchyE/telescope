@@ -1,33 +1,50 @@
 <h2>Delegator Rewards</h2>
-<h3>Total Rewards</h3>
-<mat-card>
-  <mat-list *ngFor="let ttl of totalrewards?.total">
-    <mat-list-item>
-      <span class="column-name">{{ ttl.amount }}</span>
-      <span class="flex-auto"></span>
-      <span class="column-value">{{ ttl.denom }}</span>
-    </mat-list-item>
-    <mat-divider [inset]="true"></mat-divider>
-  </mat-list>
-</mat-card>
 
-<h3>Rewards by Each Validator</h3>
-<!--
+<ng-container *ngIf="totalrewards?.total?.[0] === undefined; then empty_ttl; else exist_ttl">
+</ng-container>
+<ng-template #empty_ttl>
+  <p>*This account has no total rewards</p>
+</ng-template>
+<ng-template #exist_ttl>
+  <h3>Total Rewards</h3>
+  <mat-card>
+    <mat-list *ngFor="let ttl of totalrewards?.total">
+      <mat-list-item>
+        <span class="column-name">{{ ttl.amount | number:'1.6-6' }}</span>
+        <span class="flex-auto"></span>
+        <span class="column-value">{{ ttl.denom }}</span>
+      </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
+    </mat-list>
+  </mat-card>
+</ng-template>
+
+<ng-container *ngIf="totalrewards?.rewards?.[0]  === undefined; then empty_rev; else exist_rev">
+</ng-container>
+<ng-template #empty_rev>
+  <p>*This account has not received any rewards from validators</p>
+</ng-template>
+<ng-template #exist_rev>
+
+
+  <h3>Rewards by Each Validator</h3>
+  <!--
 delegationTotalRewardsで報酬の合計値、Valaddress毎の報酬の両方を取得可能
 Validate先が多数にならない現状はすべてのValaddress別の報酬の表示をdelegationTotalRewardsで実装
 -->
-<mat-card>
-  <mat-list *ngFor="let reward of totalrewards?.rewards">
-    <mat-list-item>
-      <span class="column-name">Validator Address: </span>
-      <span class="flex-auto"></span>
-      <span class="column-value">{{ reward.validator_address }}</span>
-    </mat-list-item>
-    <mat-list-item *ngFor="let rew of reward?.reward">
-      <span class="column-name">{{ rew.amount }}</span>
-      <span class="flex-auto"></span>
-      <span class="column-value">{{ rew.denom }}</span>
-    </mat-list-item>
-    <mat-divider [inset]="true"></mat-divider>
-  </mat-list>
-</mat-card>
+  <mat-card>
+    <mat-list *ngFor="let reward of totalrewards?.rewards">
+      <mat-list-item>
+        <span class="column-name">Validator Address: </span>
+        <span class="flex-auto"></span>
+        <span class="ml-2 break-all text-sm sm:text-base">{{ reward.validator_address }}</span>
+      </mat-list-item>
+      <mat-list-item *ngFor="let rew of reward?.reward">
+        <span class="column-name">{{ rew.amount | number:'1.6-6' }}</span>
+        <span class="flex-auto"></span>
+        <span class="column-value">{{ rew.denom }}</span>
+      </mat-list-item>
+      <mat-divider [inset]="true"></mat-divider>
+    </mat-list>
+  </mat-card>
+</ng-template>
