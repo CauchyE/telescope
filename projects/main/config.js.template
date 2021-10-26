@@ -1,7 +1,5 @@
 const config = {
   restURL: `${location.protocol}//${location.hostname}:1317`,
-  faucetURL: `${location.protocol}//${location.hostname}:8000`,
-  monitorURL: `${location.protocol}//${location.hostname}:9000`,
   websocketURL: `${location.protocol.replace('http', 'ws')}//${location.hostname}:26657`,
   chainID: 'cosmoshub-3',
   // bech32Prefix: {
