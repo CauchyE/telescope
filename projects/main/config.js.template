@@ -30,7 +30,6 @@ const config = {
   //       icon: '',
   //     },
   //   ],
-  //   messageActions: [''],
   //   messageModules: [
   //     'bank', // hit
   //     'auth',

@@ -28,7 +28,6 @@ export type Config = {
       link: string;
       icon: string;
     }[];
-    messageActions: string[];
     messageModules: string[];
   };
 };
