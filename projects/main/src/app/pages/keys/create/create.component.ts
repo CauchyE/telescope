@@ -3,6 +3,7 @@ import { CreateOnSubmitEvent } from '../../../views/keys/create/create.component
 import { Component, OnInit } from '@angular/core';
 import * as bip39 from 'bip39';
 import { KeyApplicationService } from 'projects/main/src/app/models/keys/key.application.service';
+import { KeyBackupDialogService } from '../../../models/keys/key-backup-dialog.service';
 
 @Component({
   selector: 'app-create',
@@ -16,12 +17,13 @@ export class CreateComponent implements OnInit {
   constructor(
     private readonly keyApplication: KeyApplicationService,
     private readonly key: KeyService,
+    private readonly keyBackupDialog: KeyBackupDialogService,
   ) {
     this.mnemonic = '';
     this.privateKey = '';
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onClickCreateMnemonic() {
     this.mnemonic = bip39.generateMnemonic();
@@ -36,6 +38,13 @@ export class CreateComponent implements OnInit {
   }
 
   async onSubmit($event: CreateOnSubmitEvent) {
-    await this.keyApplication.create($event.id, $event.type, $event.privateKey);
+
+    let checked: boolean | undefined = await this.keyBackupDialog.open();
+
+    //todo:ダイアログ閉じたら0、ダイアログ外でundefined→保存の有無で制御
+    console.log("checked", typeof (checked), checked)
+    if (!checked === true) {
+      await this.keyApplication.create($event.id, $event.type, $event.privateKey);
+    }
   }
 }
