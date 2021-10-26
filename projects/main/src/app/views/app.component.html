@@ -9,16 +9,31 @@
     </mat-toolbar>
 
     <mat-nav-list>
-      <mat-list-item routerLink="/">Home</mat-list-item>
-      <mat-list-item routerLink="/blocks">Blocks</mat-list-item>
-      <mat-list-item routerLink="/txs">Txs</mat-list-item>
-      <mat-list-item routerLink="/keys">Keys</mat-list-item>
-      <mat-list-item routerLink="/cosmos/bank">Bank</mat-list-item>
-      <mat-list-item routerLink="/cosmos/staking">Staking</mat-list-item>
-      <mat-list-item routerLink="/cosmos/gov">Gov</mat-list-item>
+      <mat-list-item routerLink="/">
+        <mat-icon class="mr-2" color="primary">other_houses</mat-icon>Home
+      </mat-list-item>
+      <mat-list-item routerLink="/blocks">
+        <mat-icon class="mr-2" color="primary">account_tree</mat-icon>Blocks
+      </mat-list-item>
+      <mat-list-item routerLink="/txs">
+        <mat-icon class="mr-2" color="primary">mail</mat-icon>Txs
+      </mat-list-item>
+      <mat-list-item routerLink="/keys">
+        <mat-icon class="mr-2" color="primary">manage_accounts</mat-icon>Keys
+      </mat-list-item>
+      <mat-list-item routerLink="/cosmos/bank">
+        <mat-icon class="mr-2" color="primary">sync_alt</mat-icon>Bank
+      </mat-list-item>
+      <mat-list-item routerLink="/cosmos/staking">
+        <mat-icon class="mr-2" color="primary">savings</mat-icon>Staking
+      </mat-list-item>
+      <mat-list-item routerLink="/cosmos/gov">
+        <mat-icon class="mr-2" color="primary">message</mat-icon>Gov
+      </mat-list-item>
       <ng-template ngFor let-extension [ngForOf]="extensionNavigations">
         <ng-container *ngIf="extension?.name && extension?.link">
           <a mat-list-item [href]="extension.link">
+            <mat-icon class="mr-2" color="primary"> {{ extension.icon }}</mat-icon>
             {{ extension.name }}
           </a>
         </ng-container>
