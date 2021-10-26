@@ -26,16 +26,11 @@ const config = {
   //     monitorURL: `${location.protocol}//${location.hostname}:9000`,
   //   },
   //   navigations: [
-  //   {
-  //     name: 'Monitor',
-  //     link: '/monitor',
-  //     icon: 'monitor',
-  //   },
-  //   {
-  //     name: 'JPYX',
-  //     link: '/jpyx/',
-  //     icon: 'toll',
-  //   },
+  //     {
+  //       name: '',
+  //       link: '',
+  //       icon: '',
+  //     },
   //   ],
   //   messageActions: [''],
   //   messageModules: [
