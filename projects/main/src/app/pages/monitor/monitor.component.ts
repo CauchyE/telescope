@@ -1,5 +1,6 @@
 import { MonitorService, Data } from '../../models/monitor.service';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, combineLatest, forkJoin, Observable, of } from 'rxjs';
 import { catchError, map, mergeMap, tap } from 'rxjs/operators';
@@ -15,7 +16,11 @@ export class MonitorComponent implements OnInit {
   endDate$: BehaviorSubject<Date>;
   count$: BehaviorSubject<number> = new BehaviorSubject(1);
 
-  constructor(private route: ActivatedRoute, private readonly monitor: MonitorService) {
+  constructor(
+    private route: ActivatedRoute,
+    private readonly monitor: MonitorService,
+    private snackBar: MatSnackBar,
+  ) {
     const now = new Date();
     this.endDate$ = new BehaviorSubject(now);
     const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
@@ -41,8 +46,12 @@ export class MonitorComponent implements OnInit {
 
   appSearchCriteriaChanged(event: { startDate: Date; endDate: Date }): void {
     const nextCount = event.endDate.getDate() - event.startDate.getDate();
+    if (nextCount === undefined || nextCount === null || nextCount < 0) {
+      this.snackBar.open('Invalid date!', undefined, { duration: 6000 });
+      return;
+    }
     this.startDate$.next(event.startDate);
     this.endDate$.next(event.endDate);
-    !nextCount ? this.count$.next(1) : this.count$.next(nextCount);
+    this.count$.next(nextCount + 1);
   }
 }
