@@ -28,7 +28,6 @@ export class MonitorComponent implements OnInit {
       mergeMap(([start, count]) =>
         this.monitor.list(start.getFullYear(), start.getMonth() + 1, start.getDate(), count),
       ),
-      map((list) => list.reverse()),
       catchError((err) => {
         console.error(err);
         return of([]);
@@ -42,6 +41,7 @@ export class MonitorComponent implements OnInit {
   appSearchCriteriaChanged(event: { startDate: Date; endDate: Date }): void {
     this.startDate$.next(event.startDate);
     this.endDate$.next(event.endDate);
-    this.count$.next(event.endDate.getDate() - event.startDate.getDate());
+    const nextCount = event.endDate.getDate() - event.startDate.getDate();
+    !nextCount ? this.count$.next(1) : this.count$.next(nextCount);
   }
 }
