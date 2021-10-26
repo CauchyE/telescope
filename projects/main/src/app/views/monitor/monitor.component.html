@@ -6,8 +6,8 @@
       <mat-date-range-input [rangePicker]="picker">
         <input
           #startRef="ngModel"
+          name="startDate"
           [(ngModel)]="startDate"
-          [ngModelOptions]="{ standalone: true }"
           matStartDate
           matInput
           placeholder="Start date"
@@ -15,8 +15,8 @@
         />
         <input
           #endRef="ngModel"
+          name="endDate"
           [(ngModel)]="endDate"
-          [ngModelOptions]="{ standalone: true }"
           matEndDate
           matInput
           placeholder="End date"
