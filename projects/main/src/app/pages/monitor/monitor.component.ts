@@ -32,6 +32,7 @@ export class MonitorComponent implements OnInit {
         console.error(err);
         return of([]);
       }),
+      map((list) => list.reverse()),
     );
     this.dataArray$.subscribe((data) => console.log(data));
   }
@@ -39,9 +40,9 @@ export class MonitorComponent implements OnInit {
   ngOnInit(): void {}
 
   appSearchCriteriaChanged(event: { startDate: Date; endDate: Date }): void {
+    const nextCount = event.endDate.getDate() - event.startDate.getDate();
     this.startDate$.next(event.startDate);
     this.endDate$.next(event.endDate);
-    const nextCount = event.endDate.getDate() - event.startDate.getDate();
     !nextCount ? this.count$.next(1) : this.count$.next(nextCount);
   }
 }

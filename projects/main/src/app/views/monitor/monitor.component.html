@@ -11,6 +11,7 @@
           matStartDate
           matInput
           placeholder="Start date"
+          required
         />
         <input
           #endRef="ngModel"
@@ -19,13 +20,14 @@
           matEndDate
           matInput
           placeholder="End date"
+          required
         />
       </mat-date-range-input>
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-date-range-picker #picker></mat-date-range-picker>
     </mat-form-field>
     <br />
-    <button mat-flat-button fxFill color="accent">Submit</button>
+    <button mat-flat-button fxFill color="accent" [disabled]="formRef.invalid">Submit</button>
   </form>
 </mat-card>
 
