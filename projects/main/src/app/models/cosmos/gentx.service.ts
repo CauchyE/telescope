@@ -102,6 +102,7 @@ export class GentxService {
     // sign
     const txBuilder = new cosmosclient.TxBuilder(sdk, txBody, authInfo);
     const signDocBytes = txBuilder.signDocBytes(cosmosclient.Long.fromString('0'));
+    console.log('hex', Buffer.from(signDocBytes).toString('hex')); // ここのconsole.logを正規表現置換したものをデバッグ用にgentx-proto-binary.txtに書き出した
     txBuilder.addSignature(privKey.sign(signDocBytes));
 
     const test = txBuilder.cosmosJSONStringify();
