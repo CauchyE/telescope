@@ -26,20 +26,8 @@ export class MonitorComponent implements OnInit {
     const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
     this.dateRange$ = new BehaviorSubject([yesterday, now]);
     const dateRangeMinus1$ = this.dateRange$;
-    //.asObservable().pipe(
-    //   map(([start, end]) => {
-    //     start.setDate(start.getDate() - 1);
-    //     end.setDate(end.getDate() - 1);
-    //     return [start, end];
-    //   }),
-    // );
     this.startDate$ = this.dateRange$.pipe(map(([start, end]) => start));
     this.endDate$ = this.dateRange$.pipe(map(([start, end]) => end));
-    // this.count$ = combineLatest([startDateMinus1$, endDateMinus1$]).pipe(
-    //   map(([start, end]) =>
-    //     Math.ceil((end.getMilliseconds() - start.getMilliseconds()) / 86400000),
-    //   ),
-    // );
     this.dataArray$ = dateRangeMinus1$.pipe(
       map(([start, end]) => {
         console.log(start, end);
@@ -52,11 +40,9 @@ export class MonitorComponent implements OnInit {
           .list(start.getFullYear(), start.getMonth() + 1, start.getDate(), count)
           .pipe(map((list) => [start, end, list] as [Date, Date, Data[]])),
       ),
-      map(([start, end, list]) =>
-        list.filter(
-          (v) => start <= new Date(Date.parse(v.date)) && new Date(Date.parse(v.date)) <= end,
-        ),
-      ),
+      map(([start, end, list]) => {
+        return list.filter((v) => new Date(Date.parse(v.before_date)) <= end);
+      }),
       catchError((err) => {
         console.error(err);
         return of([]);
