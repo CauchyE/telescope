@@ -14,7 +14,7 @@ export class MonitorComponent implements OnInit {
   dataArray$: Observable<Data[]>;
   startDate$: BehaviorSubject<Date>;
   endDate$: BehaviorSubject<Date>;
-  count$: BehaviorSubject<number> = new BehaviorSubject(1);
+  count$: Observable<number>;
 
   constructor(
     private route: ActivatedRoute,
@@ -24,14 +24,34 @@ export class MonitorComponent implements OnInit {
     const now = new Date();
     this.endDate$ = new BehaviorSubject(now);
     const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
-    console.log(yesterday);
     this.startDate$ = new BehaviorSubject(yesterday);
-    this.dataArray$ = combineLatest([
-      this.startDate$.asObservable(),
-      this.count$.asObservable(),
-    ]).pipe(
-      mergeMap(([start, count]) =>
-        this.monitor.list(start.getFullYear(), start.getMonth() + 1, start.getDate(), count),
+    const startDateMinus1$ = this.startDate$.asObservable().pipe(
+      map((start) => {
+        start.setDate(start.getDate() - 1);
+        return start;
+      }),
+    );
+    const endDateMinus1$ = this.endDate$.asObservable().pipe(
+      map((end) => {
+        end.setDate(end.getDate() - 1);
+        return end;
+      }),
+    );
+    this.count$ = combineLatest([startDateMinus1$, endDateMinus1$]).pipe(
+      map(([start, end]) =>
+        Math.ceil((end.getMilliseconds() - start.getMilliseconds()) / 86400000),
+      ),
+    );
+    this.dataArray$ = combineLatest([startDateMinus1$, endDateMinus1$, this.count$]).pipe(
+      mergeMap(([start, end, count]) =>
+        this.monitor
+          .list(start.getFullYear(), start.getMonth() + 1, start.getDate(), count)
+          .pipe(map((list) => [start, end, list] as [Date, Date, Data[]])),
+      ),
+      map(([start, end, list]) =>
+        list.filter(
+          (v) => start < new Date(Date.parse(v.date)) && new Date(Date.parse(v.date)) < end,
+        ),
       ),
       catchError((err) => {
         console.error(err);
@@ -45,13 +65,9 @@ export class MonitorComponent implements OnInit {
   ngOnInit(): void {}
 
   appSearchCriteriaChanged(event: { startDate: Date; endDate: Date }): void {
-    const nextCount = event.endDate.getDate() - event.startDate.getDate();
-    if (nextCount === undefined || nextCount === null || nextCount < 0) {
-      this.snackBar.open('Invalid date!', undefined, { duration: 6000 });
-      return;
-    }
     this.startDate$.next(event.startDate);
     this.endDate$.next(event.endDate);
-    this.count$.next(nextCount + 1);
+    console.log('start', event.startDate);
+    console.log('end', event.endDate);
   }
 }

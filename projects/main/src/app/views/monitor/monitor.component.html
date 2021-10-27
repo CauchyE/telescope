@@ -7,7 +7,7 @@
         <input
           #startRef="ngModel"
           name="startDate"
-          [(ngModel)]="startDate"
+          [ngModel]="startDate"
           matStartDate
           matInput
           placeholder="Start date"
@@ -16,7 +16,7 @@
         <input
           #endRef="ngModel"
           name="endDate"
-          [(ngModel)]="endDate"
+          [ngModel]="endDate"
           matEndDate
           matInput
           placeholder="End date"
@@ -45,7 +45,7 @@
         <mat-list-item>
           <span class="column-name">Date:</span>
           <span class="flex-auto"></span>
-          <span class="column-value">{{ data.before_date }}</span>
+          <span class="column-value">{{ data.date }}</span>
         </mat-list-item>
         <mat-divider></mat-divider>
         <mat-list-item>
@@ -73,9 +73,9 @@
         </mat-list-item>
         <mat-divider></mat-divider>
         <mat-list-item>
-          <span class="column-name">Calculated Time:</span>
+          <span class="column-name">Before Date:</span>
           <span class="flex-auto"></span>
-          <span class="column-value">{{ data.date }}</span>
+          <span class="column-value">{{ data.before_date }}</span>
         </mat-list-item>
         <mat-divider></mat-divider>
       </mat-list>
