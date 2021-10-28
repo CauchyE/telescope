@@ -7,7 +7,7 @@
         <input
           #startRef="ngModel"
           name="startDate"
-          [(ngModel)]="startDate"
+          [ngModel]="startDate"
           matStartDate
           matInput
           placeholder="Start date"
@@ -16,7 +16,7 @@
         <input
           #endRef="ngModel"
           name="endDate"
-          [(ngModel)]="endDate"
+          [ngModel]="endDate"
           matEndDate
           matInput
           placeholder="End date"
@@ -30,6 +30,8 @@
     <button mat-flat-button fxFill color="accent" [disabled]="formRef.invalid">Submit</button>
   </form>
 </mat-card>
+<br />
+<br />
 
 <ng-container *ngIf="dataArray === null; then loading; else loaded"></ng-container>
 <ng-template #loading>
@@ -40,45 +42,48 @@
 </ng-template>
 <ng-template #loaded>
   <ng-container *ngIf="(dataArray || []).length > 0; else empty">
-    <mat-card *ngFor="let data of dataArray">
-      <mat-list>
-        <mat-list-item>
-          <span class="column-name">Date:</span>
-          <span class="flex-auto"></span>
-          <span class="column-value">{{ data.before_date }}</span>
-        </mat-list-item>
-        <mat-divider></mat-divider>
-        <mat-list-item>
-          <span class="column-name">Commission:</span>
-          <span class="flex-auto"></span>
-          <span class="column-value">{{
-            data.result.commission.commission.commission[0].amount
-          }}</span>
-          <span class="flex-auto"></span>
-          <span class="column-value">{{
-            data.result.commission.commission.commission[0].denom
-          }}</span>
-        </mat-list-item>
-        <mat-divider></mat-divider>
-        <mat-list-item>
-          <span class="column-name">Outstanding Rewards:</span>
-          <span class="flex-auto"></span>
-          <span class="column-value">{{
-            data.result.outstanding_rewards.rewards.rewards[0].amount
-          }}</span>
-          <span class="flex-auto"></span>
-          <span class="column-value">{{
-            data.result.outstanding_rewards.rewards.rewards[0].denom
-          }}</span>
-        </mat-list-item>
-        <mat-divider></mat-divider>
-        <mat-list-item>
-          <span class="column-name">Calculated Time:</span>
-          <span class="flex-auto"></span>
-          <span class="column-value">{{ data.date }}</span>
-        </mat-list-item>
-        <mat-divider></mat-divider>
-      </mat-list>
-    </mat-card>
+    <ng-container *ngFor="let data of dataArray">
+      <mat-card>
+        <mat-list>
+          <mat-list-item>
+            <span class="column-name">Date:</span>
+            <span class="flex-auto"></span>
+            <span class="column-value">{{ data.date }}</span>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>
+            <span class="column-name">Commission:</span>
+            <span class="flex-auto"></span>
+            <span class="column-value">{{
+              data.result.commission.commission.commission[0].amount
+            }}</span>
+            <span class="flex-auto"></span>
+            <span class="column-value">{{
+              data.result.commission.commission.commission[0].denom
+            }}</span>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>
+            <span class="column-name">Outstanding Rewards:</span>
+            <span class="flex-auto"></span>
+            <span class="column-value">{{
+              data.result.outstanding_rewards.rewards.rewards[0].amount
+            }}</span>
+            <span class="flex-auto"></span>
+            <span class="column-value">{{
+              data.result.outstanding_rewards.rewards.rewards[0].denom
+            }}</span>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+          <mat-list-item>
+            <span class="column-name">Before Date:</span>
+            <span class="flex-auto"></span>
+            <span class="column-value">{{ data.before_date }}</span>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+        </mat-list>
+      </mat-card>
+      <br />
+    </ng-container>
   </ng-container>
 </ng-template>
