@@ -2,8 +2,8 @@ import { MonitorService, Data } from '../../models/monitor.service';
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
-import { BehaviorSubject, combineLatest, forkJoin, Observable, of, zip } from 'rxjs';
-import { catchError, map, mergeMap, tap } from 'rxjs/operators';
+import { BehaviorSubject, Observable, of } from 'rxjs';
+import { catchError, map, mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-monitor',
