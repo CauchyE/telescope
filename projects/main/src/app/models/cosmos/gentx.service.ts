@@ -105,14 +105,16 @@ export class GentxService {
     console.log('hex', Buffer.from(signDocBytes).toString('hex')); // ここのconsole.logを正規表現置換したものをデバッグ用にgentx-proto-binary.txtに書き出した
     txBuilder.addSignature(privKey.sign(signDocBytes));
 
-    const txBodyJson = txBuilder.cosmosJSONStringify();
+    const txBodyJsonString = txBuilder.cosmosJSONStringify();
+    console.log('txBodyJsonString', txBodyJsonString);
+    const txBodyJson = JSON.parse(txBodyJsonString);
     console.log('txBodyJson', txBodyJson);
-
     const txRawJson = txBuilder.txRaw.toJSON();
-    console.log('txBuilder.txRaw.toJSON()', txRawJson);
+    console.log('txRawJson', txRawJson);
     const signatures = txRawJson.signatures;
-    txBodyJson['signatures'] = signatures;
-    const result = txBody;
+    console.log('signatures', signatures);
+    const result = txBodyJson;
+    console.log('result', result);
     return result;
   }
 
