@@ -1,15 +1,12 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { MaterialModule } from '../../material.module';
 import { KeyBackupDialogComponent } from './key-backup-dialog.component';
-import { FormsModule } from '@angular/forms';
-import { MatCheckboxModule } from '@angular/material/checkbox';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import { MatStepperModule } from '@angular/material/stepper';
 
 @NgModule({
   declarations: [KeyBackupDialogComponent],
-  imports: [
-    //Todo:必要なモジュールを絞る。
-    CommonModule, FormsModule, MatCheckboxModule
-  ],
+  imports: [CommonModule, MaterialModule, MatStepperModule],
   exports: [KeyBackupDialogComponent],
 })
 export class KeyBackupDialogModule { }

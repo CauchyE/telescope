@@ -1,9 +1,66 @@
-<form #formRef="ngForm" (submit)="onClickOkButton()">
+<mat-stepper orientation="vertical" linear #stepper>
+  <!--
+  <mat-step [stepControl]="firstFormGroup" errorMessage="Name is required.">
 
-  <mat-checkbox>Click to Check me!</mat-checkbox>
+    <form [formGroup]="firstFormGroup">
+    </form>
+  -->
+  <mat-step>
+    <ng-template matStepLabel>Save your Mnemonic</ng-template>
+    <!--
+      <mat-form-field appearance="fill">
+        <mat-label>Name</mat-label>
+        <input matInput placeholder="Last name, First name" formControlName="firstCtrl" required>
+      </mat-form-field>
+      -->
+    <button mat-flat-button class="w-full" color="accent" (click)="saveMnemonic()">
+      Save Mnemonic
+    </button>
+    <mat-checkbox>I saved my Mnemonic</mat-checkbox>
+    <div>
+      <button mat-flat-button class="w-1/2" color="accent" matStepperNext>Next</button>
+    </div>
+  </mat-step>
+  <!--
+  <mat-step [stepControl]="secondFormGroup" errorMessage="Address is required.">
+    <form [formGroup]="secondFormGroup">
+      <ng-template matStepLabel>Fill out your address</ng-template>
+      <mat-form-field appearance="fill">
+        <mat-label>Address</mat-label>
+        <input matInput placeholder="Ex. 1 Main St, New York, NY" formControlName="secondCtrl" required>
+      </mat-form-field>
+      <div>
+        <p>Go to a different step to see the error state</p>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </form>
+  </mat-step>
+  -->
+  <mat-step>
+    <ng-template matStepLabel>third</ng-template>
+    <div>
+      <p>Go to nest</p>
+      <button mat-flat-button class="w-1/2" color="accent" matStepperPrevious>Back</button>
+      <button mat-button matStepperNext>Next</button>
+    </div>
+  </mat-step>
 
-  <button mat-flat-button class="w-full" color="accent">
-    Submit
-  </button>
+  <mat-step>
+    <ng-template matStepLabel>submit</ng-template>
+    <button mat-flat-button class="w-1/2" color="accent" matStepperPrevious>Back</button>
+    <button mat-flat-button class="w-1/2" color="accent" (click)="onClickOkButton(this.saved)">
+      Submit
+    </button>
+  </mat-step>
 
-</form>
+  <!--
+  <mat-step>
+    <ng-template matStepLabel>Done</ng-template>
+    <p>You are now done.</p>
+    <div>
+      <button mat-button (click)="stepper.reset()">Reset</button>
+    </div>
+  </mat-step>
+  -->
+</mat-stepper>

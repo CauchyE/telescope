@@ -13,6 +13,7 @@ import { KeyBackupDialogService } from '../../../models/keys/key-backup-dialog.s
 export class CreateComponent implements OnInit {
   mnemonic: string;
   privateKey: string;
+  saved: boolean = false;
 
   constructor(
     private readonly keyApplication: KeyApplicationService,
@@ -39,11 +40,11 @@ export class CreateComponent implements OnInit {
 
   async onSubmit($event: CreateOnSubmitEvent) {
 
-    let checked: boolean | undefined = await this.keyBackupDialog.open();
+    this.saved = await this.keyBackupDialog.open(this.mnemonic, $event.privateKey);
 
     //todo:ダイアログ閉じたら0、ダイアログ外でundefined→保存の有無で制御
-    console.log("checked", typeof (checked), checked)
-    if (!checked === true) {
+    console.log("checked", typeof (this.saved), this.saved)
+    if (this.saved === true) {
       await this.keyApplication.create($event.id, $event.type, $event.privateKey);
     }
   }

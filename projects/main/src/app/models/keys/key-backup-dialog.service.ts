@@ -13,12 +13,12 @@ export class KeyBackupDialogService {
     private readonly dialog: MatDialog,
   ) { }
 
-  async open(): Promise<boolean | undefined> {
+  async open(mnemonic: string, privatekey: string): Promise<boolean> {
 
-    const result: boolean | undefined = await this.dialog
+    const result: boolean = await this.dialog
       .open(KeyBackupDialogComponent, {
-        //Todo：ダイアログに何か渡す必要があるか検討。
-        //data: { keys, currentKeyID: currentKey?.id },
+        //Todo：ダイアログに何か渡す必要があるか検討。→pubkeyとニーモニック
+        data: { mnemonic: mnemonic, privatekey: privatekey },
       })
       .afterClosed()
       .toPromise();
