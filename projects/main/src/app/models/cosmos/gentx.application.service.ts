@@ -41,6 +41,9 @@ export class GentxApplicationService {
 
     this.snackBar.open('Successfully generated', undefined, { duration: 6000 });
 
+    this.snackBar.open('Download gentx.json file', undefined, { duration: 6000 });
+    this.gentxService.downloadJsonFile(gentxResult, 'gentx');
+
     return gentxResult;
   }
 }

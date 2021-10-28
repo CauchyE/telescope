@@ -105,16 +105,24 @@ export class GentxService {
     console.log('hex', Buffer.from(signDocBytes).toString('hex')); // ここのconsole.logを正規表現置換したものをデバッグ用にgentx-proto-binary.txtに書き出した
     txBuilder.addSignature(privKey.sign(signDocBytes));
 
-    const test = txBuilder.cosmosJSONStringify();
-    console.log('test', test);
+    const txBodyJson = txBuilder.cosmosJSONStringify();
+    console.log('txBodyJson', txBodyJson);
 
-    const json = txBuilder.txRaw.toJSON();
-    console.log('txBuilder.txRaw.toJSON()', json);
-    const result = {
-      body: txBody,
-      auth_info: authInfo,
-      signatures: json.signatures,
-    };
+    const txRawJson = txBuilder.txRaw.toJSON();
+    console.log('txBuilder.txRaw.toJSON()', txRawJson);
+    const signatures = txRawJson.signatures;
+    txBodyJson['signatures'] = signatures;
+    const result = txBody;
     return result;
+  }
+
+  downloadJsonFile(json: { [k: string]: any }, fileName: string): void {
+    const dataString = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(json));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute('href', dataString);
+    downloadAnchorNode.setAttribute('download', fileName + '.json');
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
   }
 }
