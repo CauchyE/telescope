@@ -12,8 +12,13 @@ import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 })
 export class KeyBackupDialogComponent implements OnInit {
 
-  checked: boolean = false;
   saved: boolean = false;
+  checked: boolean = false;
+  inputMnemonic: string = "";
+
+  now = new Date();
+  sec = this.now.getSeconds();
+  requiredMnemonicNumber = this.sec % 12
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
@@ -27,21 +32,24 @@ export class KeyBackupDialogComponent implements OnInit {
   onClickOkButton(input: boolean): void {
     // ボタンが押されたときは「checked」を呼び出し元に渡す。
     //Todo:渡した「checked」を判断に使用する。
-    console.log("create-dialog,saved", input)
     this.matDialogRef.close(this.checked);
   }
 
-  saveMnemonic(): void {
+  ordinal(n: number): string {
+    if (n == 0) return "1st"
+    if (n == 1) return "2nd"
+    if (n == 2) return "3rd"
+    return String(n + 1) + "th"
+  }
 
+  saveMnemonic(): void {
     //prefix
-    const now = new Date();
-    const year = String(now.getFullYear());
-    const month = String(now.getMonth() + 1);
-    const date = String(now.getDate());
-    const hour = String(now.getHours());
-    const min = String(now.getMinutes());
-    const sec = String(now.getSeconds());
-    const time = year + month + date + hour + min + sec;
+    const year = String(this.now.getFullYear());
+    const month = String(this.now.getMonth() + 1);
+    const date = String(this.now.getDate());
+    const hour = String(this.now.getHours());
+    const min = String(this.now.getMinutes());
+    const time = year + month + date + hour + min + String(this.sec);
 
     //filename
     const filetype = '.txt';
@@ -56,6 +64,17 @@ export class KeyBackupDialogComponent implements OnInit {
     link.href = 'data:text/plain,' + encodeURIComponent(data);
     link.download = fileName;
     link.click();
+
+    //status
+    this.saved = true;
+  }
+
+  private mnemonicArray = this.data.mnemonic.split(/\s/)
+
+  checkSaveMnemonic(str: string): void {
+    if (this.mnemonicArray[this.requiredMnemonicNumber] === str) {
+      this.checked = true;
+    }
   }
 
   ngOnInit(): void {
