@@ -42,7 +42,16 @@ export class GentxApplicationService {
     this.snackBar.open('Successfully generated', undefined, { duration: 6000 });
 
     this.snackBar.open('Download gentx.json file', undefined, { duration: 6000 });
-    this.gentxService.downloadJsonFile(gentxResult, 'gentx');
+
+    const gentxBodyMemo = gentxResult.body.memo as string;
+    const regexp = /(.+)@(.+)/;
+    const matches = gentxBodyMemo.match(regexp);
+    if (matches === null) {
+      this.snackBar.open('Error has occur', undefined, { duration: 6000 });
+      return undefined;
+    }
+    const nodeId = matches[1];
+    this.gentxService.downloadJsonFile(gentxResult, `gentx-${nodeId}`);
 
     return gentxResult;
   }
