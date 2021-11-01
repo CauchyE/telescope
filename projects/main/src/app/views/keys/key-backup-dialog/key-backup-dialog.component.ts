@@ -1,6 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-key-backup-dialog',
@@ -19,20 +20,21 @@ export class KeyBackupDialogComponent implements OnInit {
   now = new Date();
   sec = this.now.getSeconds();
   requiredMnemonicNumber = this.sec % 12
+  private mnemonicArray = this.data.mnemonic.split(/\s/)
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
     public readonly data: {
       mnemonic: string,
-      privatekey: string
+      privatekey: string,
+      id: string
     },
     public matDialogRef: MatDialogRef<KeyBackupDialogComponent>,
+    private readonly snackBar: MatSnackBar,
   ) { }
 
-  onClickOkButton(input: boolean): void {
-    // ボタンが押されたときは「checked」を呼び出し元に渡す。
-    //Todo:渡した「checked」を判断に使用する。
-    this.matDialogRef.close(this.checked);
+  onClickSubmit(input: boolean): void {
+    this.matDialogRef.close({ saved: this.saved, checked: this.checked });
   }
 
   ordinal(n: number): string {
@@ -53,10 +55,11 @@ export class KeyBackupDialogComponent implements OnInit {
 
     //filename
     const filetype = '.txt';
-    const fileName = "key" + time + filetype;
+    const fileName = this.data.id + time + filetype;
 
     //data
-    const data = "private key : " + this.data.privatekey + "\n"
+    const data = "key ID : " + this.data.id + "\n"
+      + "private key : " + this.data.privatekey + "\n"
       + "mnemonic : " + this.data.mnemonic;
 
     //HTML link
@@ -69,11 +72,16 @@ export class KeyBackupDialogComponent implements OnInit {
     this.saved = true;
   }
 
-  private mnemonicArray = this.data.mnemonic.split(/\s/)
-
   checkSaveMnemonic(str: string): void {
     if (this.mnemonicArray[this.requiredMnemonicNumber] === str) {
       this.checked = true;
+      this.snackBar.open('collect', undefined, {
+        duration: 2000,
+      });
+    } else {
+      this.snackBar.open('wrong mnemonic', undefined, {
+        duration: 300,
+      });
     }
   }
 
