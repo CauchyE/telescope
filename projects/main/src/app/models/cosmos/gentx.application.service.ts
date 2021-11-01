@@ -1,4 +1,5 @@
 import { Key } from '../keys/key.model';
+import { MonitorService } from '../monitor.service';
 import { GentxData } from './gentx.model';
 import { GentxService } from './gentx.service';
 import { Injectable } from '@angular/core';
@@ -11,6 +12,7 @@ import { LoadingDialogService } from 'ng-loading-dialog';
 export class GentxApplicationService {
   constructor(
     private readonly gentxService: GentxService,
+    private readonly monitorService: MonitorService,
     private readonly loadingDialog: LoadingDialogService,
     private readonly snackBar: MatSnackBar,
   ) {}
@@ -53,6 +55,16 @@ export class GentxApplicationService {
     const nodeId = matches[1];
     this.gentxService.downloadJsonFile(gentxResult, `gentx-${nodeId}`);
 
-    return gentxResult;
+    const postSlackResult = await this.monitorService
+      .postGentxStringToSlack$(JSON.stringify(gentxResult))
+      .toPromise();
+    if (postSlackResult.status) {
+      return gentxResult;
+    } else {
+      this.snackBar.open(`Error has occur: ${postSlackResult.message}`, undefined, {
+        duration: 6000,
+      });
+      return undefined;
+    }
   }
 }

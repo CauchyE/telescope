@@ -74,6 +74,7 @@ func serveCmd() *cobra.Command {
 
 			router := mux.NewRouter()
 			router.HandleFunc("/list", listHandlerFactory(monitor)).Queries("start_year", "{start_year}").Queries("start_month", "{start_month}").Queries("start_day", "{start_day}").Queries("count", "{count}").Methods("GET")
+			router.HandleFunc("/gentx", gentxHandlerFactory(monitor)).Methods("POST")
 
 			http.Handle("/", router)
 			http.ListenAndServe(fmt.Sprintf(":%d", port), nil)
@@ -118,6 +119,44 @@ func listHandlerFactory(monitor *Monitor) func(w http.ResponseWriter, r *http.Re
 		// }
 
 		json, _ := json.MarshalIndent(data, "", "  ")
+		jsonStr := string(json)
+		fmt.Fprint(w, jsonStr)
+	}
+}
+
+func gentxHandlerFactory(monitor *Monitor) func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.Header().Set("Access-Control-Allow-Headers", "*")
+		w.Header().Set("Access-Control-Allow-Origin", "*")
+		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
+
+		decoder := json.NewDecoder(r.Body)
+		var gentx_json struct {
+			gentx_string string
+		}
+		err1 := decoder.Decode(&gentx_json)
+
+		var responseData struct {
+			status  bool
+			message string
+		}
+
+		if err1 != nil {
+			responseData.status = false
+			responseData.message = err1.Error()
+		} else {
+			gentxString := gentx_json.gentx_string
+			err2 := monitor.postSlack(gentxString)
+			if err2 != nil {
+				responseData.status = false
+				responseData.message = err2.Error()
+			} else {
+				responseData.status = true
+				responseData.message = ""
+			}
+		}
+
+		json, _ := json.MarshalIndent(responseData, "", "  ")
 		jsonStr := string(json)
 		fmt.Fprint(w, jsonStr)
 	}
