@@ -9,3 +9,8 @@ export type Key = {
   type: KeyType;
   public_key: string;
 };
+
+export type KeyBackupResult = {
+  saved: Boolean;
+  checked: Boolean;
+};

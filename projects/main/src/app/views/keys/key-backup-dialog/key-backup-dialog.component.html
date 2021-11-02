@@ -1,0 +1,39 @@
+<mat-stepper orientation="vertical" linear #stepper>
+  <mat-step [completed]="saved">
+    <ng-template matStepLabel>Save your Mnemonic</ng-template>
+    <div class="mb-2">
+      <button mat-flat-button class="w-full" color="accent" (click)="saveMnemonic()">
+        Download
+      </button>
+    </div>
+    <div class="flex justify-end">
+      <button mat-flat-button color="primary" [disabled]="!saved" matStepperNext>Next</button>
+    </div>
+  </mat-step>
+  <mat-step [completed]="checked">
+    <form #formRef="ngForm" (submit)="checkSaveMnemonic(inputMnemonic)">
+      <ng-template matStepLabel>Check</ng-template>
+      <p>Input {{ordinal(requiredMnemonicNumber)}} mnemonic</p>
+      <mat-form-field appearance="fill">
+        <mat-label>mnemonic</mat-label>
+        <input matInput required name="mnemonic" [(ngModel)]="inputMnemonic">
+      </mat-form-field>
+      <div class="mb-2">
+        <button mat-flat-button class="w-full" color="accent">Check</button>
+      </div>
+    </form>
+    <div class="flex justify-between">
+      <button mat-flat-button matStepperPrevious>Back</button>
+      <button mat-flat-button color="primary" [disabled]="!checked" matStepperNext>Next</button>
+    </div>
+  </mat-step>
+  <mat-step>
+    <ng-template matStepLabel>Submit</ng-template>
+    <div class="mb-2 flex justify-start">
+      <button mat-flat-button matStepperPrevious>Back</button>
+    </div>
+    <button mat-flat-button class="w-full" color="accent" [disabled]="!checked || !saved" (click)="onClickSubmit()">
+      Submit
+    </button>
+  </mat-step>
+</mat-stepper>
