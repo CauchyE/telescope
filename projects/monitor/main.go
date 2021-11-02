@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io"
 	"net/http"
 	"os"
 	"strconv"
@@ -74,6 +75,7 @@ func serveCmd() *cobra.Command {
 
 			router := mux.NewRouter()
 			router.HandleFunc("/list", listHandlerFactory(monitor)).Queries("start_year", "{start_year}").Queries("start_month", "{start_month}").Queries("start_day", "{start_day}").Queries("count", "{count}").Methods("GET")
+			router.HandleFunc("/gentx", gentxHandlerFactory(monitor)).Methods("OPTIONS")
 			router.HandleFunc("/gentx", gentxHandlerFactory(monitor)).Methods("POST")
 
 			http.Handle("/", router)
@@ -130,35 +132,68 @@ func gentxHandlerFactory(monitor *Monitor) func(w http.ResponseWriter, r *http.R
 		w.Header().Set("Access-Control-Allow-Origin", "*")
 		w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS")
 
-		decoder := json.NewDecoder(r.Body)
-		var gentx_json struct {
-			gentx_string string
-		}
-		err1 := decoder.Decode(&gentx_json)
-
-		var responseData struct {
-			status  bool
-			message string
+		if r.Method == "OPTIONS" {
+			w.WriteHeader(http.StatusNoContent)
+			return
 		}
 
-		if err1 != nil {
-			responseData.status = false
-			responseData.message = err1.Error()
-		} else {
-			gentxString := gentx_json.gentx_string
-			err2 := monitor.postSlack(gentxString)
-			if err2 != nil {
-				responseData.status = false
-				responseData.message = err2.Error()
-			} else {
-				responseData.status = true
-				responseData.message = ""
-			}
+		if r.Method != "POST" {
+			w.WriteHeader(http.StatusBadRequest)
+			return
 		}
 
-		json, _ := json.MarshalIndent(responseData, "", "  ")
-		jsonStr := string(json)
-		fmt.Fprint(w, jsonStr)
+		if r.Header.Get("Content-Type") != "application/json" {
+			w.WriteHeader(http.StatusBadRequest)
+			return
+		}
+
+		length, err := strconv.Atoi(r.Header.Get("Content-Length"))
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		body := make([]byte, length)
+		length, err = r.Body.Read(body)
+		if err != nil && err != io.EOF {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		var jsonBody map[string]interface{}
+		err = json.Unmarshal(body[:length], &jsonBody)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		fmt.Printf("%v\n", jsonBody)
+
+		gentx_string, ok := jsonBody["gentx_string"].(string)
+		if !ok {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		fmt.Println(gentx_string)
+
+		err = monitor.postSlack(gentx_string)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+
+		type GentxResponse struct {
+			Status  bool   `json:"status"`
+			Message string `json:"message"`
+		}
+		gentx_response := GentxResponse{true, ""}
+		gentx_response_json, err := json.MarshalIndent(gentx_response, "", "  ")
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			return
+		}
+		w.WriteHeader(http.StatusOK)
+		w.Write(gentx_response_json)
+		return
 	}
 }
 

@@ -59,6 +59,7 @@ export class GentxApplicationService {
       .postGentxStringToSlack$(JSON.stringify(gentxResult))
       .toPromise();
     if (postSlackResult.status) {
+      this.snackBar.open(`Success`, undefined, { duration: 6000 });
       return gentxResult;
     } else {
       this.snackBar.open(`Error has occur: ${postSlackResult.message}`, undefined, {

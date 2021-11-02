@@ -32,7 +32,7 @@ export class MonitorService {
       gentx_string: gentxString,
     };
     const requestUrl = `${this.config.config.extension?.monitor?.monitorURL}/gentx`;
-    if (requestUrl !== undefined) {
+    if (this.config.config.extension?.monitor?.monitorURL !== undefined) {
       return this.http.post<GentxResponse>(requestUrl, requestBody);
     } else {
       return of({
