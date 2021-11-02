@@ -1,3 +1,4 @@
+import { KeyBackupResult } from '../../../models/keys/key.model';
 import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
@@ -36,7 +37,8 @@ export class KeyBackupDialogComponent implements OnInit {
   ) {}
 
   onClickSubmit(input: boolean): void {
-    this.matDialogRef.close({ saved: this.saved, checked: this.checked });
+    const keyBackupResult: KeyBackupResult = { saved: this.saved, checked: this.checked };
+    this.matDialogRef.close(keyBackupResult);
   }
 
   ordinal(n: number): string {
@@ -47,7 +49,7 @@ export class KeyBackupDialogComponent implements OnInit {
   }
 
   saveMnemonic(): void {
-    //prefix
+    //postfix
     const year = String(this.now.getFullYear());
     const month = String(this.now.getMonth() + 1);
     const date = String(this.now.getDate());

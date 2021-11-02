@@ -1,5 +1,5 @@
 import { KeyBackupDialogService } from '../../../models/keys/key-backup-dialog.service';
-import { KeyCreateResult } from '../../../models/keys/key.model';
+import { KeyBackupResult } from '../../../models/keys/key.model';
 import { KeyService } from '../../../models/keys/key.service';
 import { CreateOnSubmitEvent } from '../../../views/keys/create/create.component';
 import { Component, OnInit } from '@angular/core';
@@ -15,7 +15,7 @@ import { KeyApplicationService } from 'projects/main/src/app/models/keys/key.app
 export class CreateComponent implements OnInit {
   mnemonic: string;
   privateKey: string;
-  createResult: KeyCreateResult | undefined;
+  keyBackupResult: KeyBackupResult | undefined;
 
   constructor(
     private readonly keyApplication: KeyApplicationService,
@@ -42,14 +42,14 @@ export class CreateComponent implements OnInit {
   }
 
   async onSubmit($event: CreateOnSubmitEvent) {
-    this.createResult = await this.keyBackupDialog.open(
+    this.keyBackupResult = await this.keyBackupDialog.open(
       this.mnemonic,
       $event.privateKey,
       $event.id,
     );
     //const createResult: KeyCreateResult | undefined = await this.keyBackupDialog.open(this.mnemonic, $event.privateKey, $event.id);
 
-    if (this.createResult?.checked === true) {
+    if (this.keyBackupResult?.checked === true) {
       await this.keyApplication.create($event.id, $event.type, $event.privateKey);
     } else {
       this.snackBar.open('create failed', undefined, {
