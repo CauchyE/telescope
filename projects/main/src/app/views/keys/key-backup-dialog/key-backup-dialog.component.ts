@@ -59,7 +59,7 @@ export class KeyBackupDialogComponent implements OnInit {
 
     //filename
     const filetype = '.txt';
-    const fileName = this.data.id + time + filetype;
+    const fileName = 'key-' + this.data.id + '-' + time + filetype;
 
     //data
     const data =
@@ -89,6 +89,7 @@ export class KeyBackupDialogComponent implements OnInit {
         duration: 2000,
       });
     } else {
+      this.checked = false;
       this.snackBar.open('wrong mnemonic', undefined, {
         duration: 300,
       });
