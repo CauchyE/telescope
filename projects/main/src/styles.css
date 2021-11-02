@@ -29,12 +29,4 @@ mat-progress-spinner {
   margin: 1em auto;
 }
 
-.icon {
-  padding: 4px;
-  min-width: 0;
-  width: 24px;
-  height: 24px;
-  flex-shrink: 0;
-  line-height: 40px;
-  border-radius: 50%;
-}
+
