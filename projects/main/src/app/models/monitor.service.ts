@@ -1,7 +1,8 @@
 import { ConfigService } from './config.service';
+import { GentxResponse } from './cosmos/gentx.model';
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 
 export type Data = {
   before_date: string;
@@ -24,5 +25,20 @@ export class MonitorService {
         count: count,
       },
     });
+  }
+
+  postGentxStringToSlack$(gentxString: string): Observable<GentxResponse> {
+    const requestBody = {
+      gentx_string: gentxString,
+    };
+    const requestUrl = `${this.config.config.extension?.monitor?.monitorURL}/gentx`;
+    if (this.config.config.extension?.monitor?.monitorURL !== undefined) {
+      return this.http.post<GentxResponse>(requestUrl, requestBody);
+    } else {
+      return of({
+        status: false,
+        message: 'requestUrl is undefined!',
+      });
+    }
   }
 }

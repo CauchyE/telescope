@@ -17,3 +17,8 @@ export type GentxData = {
   node_id: string;
   pubkey: string;
 };
+
+export type GentxResponse = {
+  status: boolean;
+  message: string;
+};

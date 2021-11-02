@@ -102,18 +102,29 @@ export class GentxService {
     // sign
     const txBuilder = new cosmosclient.TxBuilder(sdk, txBody, authInfo);
     const signDocBytes = txBuilder.signDocBytes(cosmosclient.Long.fromString('0'));
+    console.log('hex', Buffer.from(signDocBytes).toString('hex')); // ここのconsole.logを正規表現置換したものをデバッグ用にgentx-proto-binary.txtに書き出した
     txBuilder.addSignature(privKey.sign(signDocBytes));
 
-    const test = txBuilder.cosmosJSONStringify();
-    console.log('test', test);
-
-    const json = txBuilder.txRaw.toJSON();
-    console.log('txBuilder.txRaw.toJSON()', json);
-    const result = {
-      body: txBody,
-      auth_info: authInfo,
-      signatures: json.signatures,
-    };
+    const txBodyJsonString = txBuilder.cosmosJSONStringify();
+    console.log('txBodyJsonString', txBodyJsonString);
+    const txBodyJson = JSON.parse(txBodyJsonString);
+    console.log('txBodyJson', txBodyJson);
+    const txRawJson = txBuilder.txRaw.toJSON();
+    console.log('txRawJson', txRawJson);
+    const signatures = txRawJson.signatures;
+    console.log('signatures', signatures);
+    const result = txBodyJson;
+    console.log('result', result);
     return result;
+  }
+
+  downloadJsonFile(json: { [k: string]: any }, fileName: string): void {
+    const dataString = 'data:text/json;charset=utf-8,' + encodeURIComponent(JSON.stringify(json));
+    const downloadAnchorNode = document.createElement('a');
+    downloadAnchorNode.setAttribute('href', dataString);
+    downloadAnchorNode.setAttribute('download', fileName + '.json');
+    document.body.appendChild(downloadAnchorNode);
+    downloadAnchorNode.click();
+    downloadAnchorNode.remove();
   }
 }
