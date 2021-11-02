@@ -36,7 +36,7 @@ export class KeyBackupDialogComponent implements OnInit {
     private readonly snackBar: MatSnackBar,
   ) {}
 
-  onClickSubmit(input: boolean): void {
+  onClickSubmit(): void {
     const keyBackupResult: KeyBackupResult = { saved: this.saved, checked: this.checked };
     this.matDialogRef.close(keyBackupResult);
   }

@@ -32,7 +32,7 @@
     <div class="mb-2 flex justify-start">
       <button mat-flat-button matStepperPrevious>Back</button>
     </div>
-    <button mat-flat-button class="w-full" color="accent" [disabled]="!checked || !saved" (click)="onClickSubmit(this.saved)">
+    <button mat-flat-button class="w-full" color="accent" [disabled]="!checked || !saved" (click)="onClickSubmit()">
       Submit
     </button>
   </mat-step>
