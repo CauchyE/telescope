@@ -1,11 +1,11 @@
+import { KeyBackupDialogService } from '../../../models/keys/key-backup-dialog.service';
+import { KeyCreateResult } from '../../../models/keys/key.model';
 import { KeyService } from '../../../models/keys/key.service';
 import { CreateOnSubmitEvent } from '../../../views/keys/create/create.component';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import * as bip39 from 'bip39';
 import { KeyApplicationService } from 'projects/main/src/app/models/keys/key.application.service';
-import { KeyBackupDialogService } from '../../../models/keys/key-backup-dialog.service';
-import { KeyCreateResult } from '../../../models/keys/key.model';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-create',
@@ -15,7 +15,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 export class CreateComponent implements OnInit {
   mnemonic: string;
   privateKey: string;
-  createResult: KeyCreateResult | undefined
+  createResult: KeyCreateResult | undefined;
 
   constructor(
     private readonly keyApplication: KeyApplicationService,
@@ -27,7 +27,7 @@ export class CreateComponent implements OnInit {
     this.privateKey = '';
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   onClickCreateMnemonic() {
     this.mnemonic = bip39.generateMnemonic();
@@ -42,8 +42,11 @@ export class CreateComponent implements OnInit {
   }
 
   async onSubmit($event: CreateOnSubmitEvent) {
-
-    this.createResult = await this.keyBackupDialog.open(this.mnemonic, $event.privateKey, $event.id);
+    this.createResult = await this.keyBackupDialog.open(
+      this.mnemonic,
+      $event.privateKey,
+      $event.id,
+    );
     //const createResult: KeyCreateResult | undefined = await this.keyBackupDialog.open(this.mnemonic, $event.privateKey, $event.id);
 
     if (this.createResult?.checked === true) {

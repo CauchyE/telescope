@@ -1,47 +1,49 @@
+import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { STEPPER_GLOBAL_OPTIONS } from '@angular/cdk/stepper';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-key-backup-dialog',
   templateUrl: './key-backup-dialog.component.html',
   styleUrls: ['./key-backup-dialog.component.css'],
-  providers: [{
-    provide: STEPPER_GLOBAL_OPTIONS, useValue: { showError: true }
-  }]
+  providers: [
+    {
+      provide: STEPPER_GLOBAL_OPTIONS,
+      useValue: { showError: true },
+    },
+  ],
 })
 export class KeyBackupDialogComponent implements OnInit {
-
   saved: boolean = false;
   checked: boolean = false;
-  inputMnemonic: string = "";
+  inputMnemonic: string = '';
 
   now = new Date();
   sec = this.now.getSeconds();
-  requiredMnemonicNumber = this.sec % 12
-  private mnemonicArray = this.data.mnemonic.split(/\s/)
+  requiredMnemonicNumber = this.sec % 12;
+  private mnemonicArray = this.data.mnemonic.split(/\s/);
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
     public readonly data: {
-      mnemonic: string,
-      privatekey: string,
-      id: string
+      mnemonic: string;
+      privatekey: string;
+      id: string;
     },
     public matDialogRef: MatDialogRef<KeyBackupDialogComponent>,
     private readonly snackBar: MatSnackBar,
-  ) { }
+  ) {}
 
   onClickSubmit(input: boolean): void {
     this.matDialogRef.close({ saved: this.saved, checked: this.checked });
   }
 
   ordinal(n: number): string {
-    if (n == 0) return "1st"
-    if (n == 1) return "2nd"
-    if (n == 2) return "3rd"
-    return String(n + 1) + "th"
+    if (n == 0) return '1st';
+    if (n == 1) return '2nd';
+    if (n == 2) return '3rd';
+    return String(n + 1) + 'th';
   }
 
   saveMnemonic(): void {
@@ -58,9 +60,15 @@ export class KeyBackupDialogComponent implements OnInit {
     const fileName = this.data.id + time + filetype;
 
     //data
-    const data = "key ID : " + this.data.id + "\n"
-      + "private key : " + this.data.privatekey + "\n"
-      + "mnemonic : " + this.data.mnemonic;
+    const data =
+      'key ID : ' +
+      this.data.id +
+      '\n' +
+      'private key : ' +
+      this.data.privatekey +
+      '\n' +
+      'mnemonic : ' +
+      this.data.mnemonic;
 
     //HTML link
     const link = document.createElement('a');
@@ -85,8 +93,5 @@ export class KeyBackupDialogComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {
-  }
-
+  ngOnInit(): void {}
 }
-
