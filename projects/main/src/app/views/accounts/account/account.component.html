@@ -11,14 +11,14 @@
       <mat-list-item>
         <span class="whitespace-nowrap">Sequence:</span>
         <span class="flex-auto"></span>
-        <span class="column-value">{{ baseAccount?.sequence }}</span>
+        <span class="ml-2 break-all">{{ baseAccount?.sequence }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="whitespace-nowrap">Account Number: </span>
         <span class="flex-auto"></span>
-        <span class="column-value">{{ baseAccount?.account_number }}</span>
+        <span class="ml-2 break-all">{{ baseAccount?.account_number }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
 
@@ -44,7 +44,7 @@
       <mat-list-item>
         <span class="whitespace-nowrap">{{ balance.amount | number:'1.0-0' }}</span>
         <span class="flex-auto"></span>
-        <span class="column-value">{{ balance.denom }}</span>
+        <span class="ml-2 break-all">{{ balance.denom }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
     </mat-list>
