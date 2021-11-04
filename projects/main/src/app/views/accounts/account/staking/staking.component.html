@@ -12,7 +12,7 @@
       <mat-list-item>
         <span class="column-name">{{ ttl.amount | number:'1.6-6' }}</span>
         <span class="flex-auto"></span>
-        <span class="column-value">{{ ttl.denom }}</span>
+        <span>{{ ttl.denom }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
     </mat-list>
@@ -42,7 +42,7 @@ Validate先が多数にならない現状はすべてのValaddress別の報酬�
       <mat-list-item *ngFor="let rew of reward?.reward">
         <span class="column-name">{{ rew.amount | number:'1.6-6' }}</span>
         <span class="flex-auto"></span>
-        <span class="column-value">{{ rew.denom }}</span>
+        <span>{{ rew.denom }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
     </mat-list>

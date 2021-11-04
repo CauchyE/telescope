@@ -12,7 +12,7 @@
       <mat-list-item>
         <span class="column-name">{{ com.amount | number:'1.6-6' }}</span>
         <span class="flex-auto"></span>
-        <span class="column-value">{{ com.denom }}</span>
+        <span>{{ com.denom }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
     </mat-list>
@@ -31,7 +31,7 @@
       <mat-list-item>
         <span class="column-name">{{ reward.amount | number:'1.6-6' }}</span>
         <span class="flex-auto"></span>
-        <span class="column-value">{{ reward.denom }}</span>
+        <span>{{ reward.denom }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
     </mat-list>
@@ -50,13 +50,13 @@
       <mat-list-item>
         <span class="column-name">Validator Period:</span>
         <span class="flex-auto"></span>
-        <span class="column-value">{{ slash.validator_period }}</span>
+        <span>{{ slash.validator_period }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
       <mat-list-item>
         <span class="column-name">Fraction:</span>
         <span class="flex-auto"></span>
-        <span class="column-value">{{ slash.fraction }}</span>
+        <span>{{ slash.fraction }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
     </mat-list>
