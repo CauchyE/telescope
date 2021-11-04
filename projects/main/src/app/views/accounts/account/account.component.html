@@ -9,28 +9,28 @@
   <mat-card *ngIf="baseAccount">
     <mat-list>
       <mat-list-item>
-        <span class="column-name">Sequence:</span>
+        <span class="whitespace-nowrap">Sequence:</span>
         <span class="flex-auto"></span>
         <span class="column-value">{{ baseAccount?.sequence }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
-        <span class="column-name">Account Number: </span>
+        <span class="whitespace-nowrap">Account Number: </span>
         <span class="flex-auto"></span>
         <span class="column-value">{{ baseAccount?.account_number }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
-        <span class="column-name">Address: </span>
+        <span class="whitespace-nowrap">Address: </span>
         <span class="flex-auto"></span>
         <span class="ml-2 break-all text-sm sm:text-base">{{ baseAccount?.address }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
-        <span class="column-name">Public key: </span>
+        <span class="whitespace-nowrap">Public key: </span>
         <span class="flex-auto"></span>
         <span class="ml-2 break-all text-xs md:text-base">{{ publicKey }}</span>
       </mat-list-item>
@@ -42,7 +42,7 @@
   <mat-card>
     <mat-list *ngFor="let balance of balances">
       <mat-list-item>
-        <span class="column-name">{{ balance.amount | number:'1.0-0' }}</span>
+        <span class="whitespace-nowrap">{{ balance.amount | number:'1.0-0' }}</span>
         <span class="flex-auto"></span>
         <span class="column-value">{{ balance.denom }}</span>
       </mat-list-item>
