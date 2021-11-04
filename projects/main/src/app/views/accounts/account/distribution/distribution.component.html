@@ -10,7 +10,7 @@
   <mat-card>
     <mat-list *ngFor="let com of commision?.commission?.commission">
       <mat-list-item>
-        <span class="column-name">{{ com.amount | number:'1.6-6' }}</span>
+        <span>{{ com.amount | number:'1.6-6' }}</span>
         <span class="flex-auto"></span>
         <span>{{ com.denom }}</span>
       </mat-list-item>
@@ -29,7 +29,7 @@
   <mat-card>
     <mat-list *ngFor="let reward of rewards?.rewards?.rewards">
       <mat-list-item>
-        <span class="column-name">{{ reward.amount | number:'1.6-6' }}</span>
+        <span>{{ reward.amount | number:'1.6-6' }}</span>
         <span class="flex-auto"></span>
         <span>{{ reward.denom }}</span>
       </mat-list-item>
@@ -48,13 +48,13 @@
   <mat-card>
     <mat-list *ngFor="let slash of slashes?.slashes">
       <mat-list-item>
-        <span class="column-name">Validator Period:</span>
+        <span>Validator Period:</span>
         <span class="flex-auto"></span>
         <span>{{ slash.validator_period }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
       <mat-list-item>
-        <span class="column-name">Fraction:</span>
+        <span>Fraction:</span>
         <span class="flex-auto"></span>
         <span>{{ slash.fraction }}</span>
       </mat-list-item>
