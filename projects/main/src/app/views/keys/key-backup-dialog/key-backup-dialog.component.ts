@@ -34,7 +34,7 @@ export class KeyBackupDialogComponent implements OnInit {
     },
     public matDialogRef: MatDialogRef<KeyBackupDialogComponent>,
     private readonly snackBar: MatSnackBar,
-  ) {}
+  ) { }
 
   onClickSubmit(): void {
     const keyBackupResult: KeyBackupResult = { saved: this.saved, checked: this.checked };
@@ -85,16 +85,16 @@ export class KeyBackupDialogComponent implements OnInit {
   checkSaveMnemonic(str: string): void {
     if (this.mnemonicArray[this.requiredMnemonicNumber] === str) {
       this.checked = true;
-      this.snackBar.open('collect', undefined, {
+      this.snackBar.open('Collect', undefined, {
         duration: 2000,
       });
     } else {
       this.checked = false;
-      this.snackBar.open('wrong mnemonic', undefined, {
-        duration: 300,
+      this.snackBar.open('Wrong mnemonic', undefined, {
+        duration: 1000,
       });
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }

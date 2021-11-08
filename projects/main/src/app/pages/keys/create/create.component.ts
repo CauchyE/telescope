@@ -27,7 +27,7 @@ export class CreateComponent implements OnInit {
     this.privateKey = '';
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onClickCreateMnemonic() {
     this.mnemonic = bip39.generateMnemonic();
@@ -54,7 +54,7 @@ and store them safely and confidentially without disclosing them to others.\
 
   async onSubmit($event: CreateOnSubmitEvent) {
     this.keyBackupResult = await this.keyBackupDialog.open(
-      this.mnemonic,
+      $event.mnemonic,
       $event.privateKey,
       $event.id,
     );
@@ -62,7 +62,7 @@ and store them safely and confidentially without disclosing them to others.\
     if (this.keyBackupResult?.saved === true && this.keyBackupResult?.checked === true) {
       await this.keyApplication.create($event.id, $event.type, $event.privateKey);
     } else {
-      this.snackBar.open('create failed', undefined, {
+      this.snackBar.open('Create failed', undefined, {
         duration: 3000,
       });
     }

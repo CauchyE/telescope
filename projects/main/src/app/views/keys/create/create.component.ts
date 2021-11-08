@@ -7,6 +7,7 @@ export type CreateOnSubmitEvent = {
   id: string;
   type: KeyType;
   privateKey: string;
+  mnemonic: string;
 };
 
 @Component({
@@ -38,7 +39,7 @@ export class CreateComponent implements OnInit {
     this.appSubmit = new EventEmitter();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onClickCreateMnemonic() {
     this.appClickCreateMnemonic.emit();
@@ -48,9 +49,9 @@ export class CreateComponent implements OnInit {
     this.appBlurMnemonic.next(mnemonic);
   }
 
-  onSubmit(id: string, type: KeyType, privateKey: string) {
+  onSubmit(id: string, type: KeyType, privateKey: string, mnemonic: string) {
     this.isPasswordVisible = false;
-    this.appSubmit.emit({ id, type, privateKey });
+    this.appSubmit.emit({ id, type, privateKey, mnemonic });
   }
 
   togglePasswordVisibility() {

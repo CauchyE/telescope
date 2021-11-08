@@ -1,4 +1,4 @@
-<form #formRef="ngForm" (submit)="onSubmit(idRef.value, typeRef.value, privateKeyRef.value)">
+<form #formRef="ngForm" (submit)="onSubmit(idRef.value, typeRef.value, privateKeyRef.value, mnemonicRef.value)">
   <mat-form-field class="w-full">
     <mat-label>ID</mat-label>
     <input #idRef ngModel name="id" matInput required pattern="^[a-z_][a-z_0-9]*$" autocomplete="username" />
