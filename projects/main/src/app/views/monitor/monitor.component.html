@@ -4,24 +4,10 @@
     <mat-form-field fxFill>
       <mat-label>Choose a Date Range</mat-label>
       <mat-date-range-input [rangePicker]="picker">
-        <input
-          #startRef="ngModel"
-          name="startDate"
-          [ngModel]="startDate"
-          matStartDate
-          matInput
-          placeholder="Start date"
-          required
-        />
-        <input
-          #endRef="ngModel"
-          name="endDate"
-          [ngModel]="endDate"
-          matEndDate
-          matInput
-          placeholder="End date"
-          required
-        />
+        <input #startRef="ngModel" name="startDate" [ngModel]="startDate" matStartDate matInput placeholder="Start date"
+          required />
+        <input #endRef="ngModel" name="endDate" [ngModel]="endDate" matEndDate matInput placeholder="End date"
+          required />
       </mat-date-range-input>
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-date-range-picker #picker></mat-date-range-picker>
@@ -46,39 +32,39 @@
       <mat-card>
         <mat-list>
           <mat-list-item>
-            <span class="column-name">Date:</span>
+            <span>Date:</span>
             <span class="flex-auto"></span>
-            <span class="column-value">{{ data.date }}</span>
+            <span>{{ data.date }}</span>
           </mat-list-item>
           <mat-divider></mat-divider>
           <mat-list-item>
-            <span class="column-name">Commission:</span>
+            <span>Commission:</span>
             <span class="flex-auto"></span>
-            <span class="column-value">{{
+            <span>{{
               data.result.commission.commission.commission[0].amount
-            }}</span>
+              }}</span>
             <span class="flex-auto"></span>
-            <span class="column-value">{{
+            <span>{{
               data.result.commission.commission.commission[0].denom
-            }}</span>
+              }}</span>
           </mat-list-item>
           <mat-divider></mat-divider>
           <mat-list-item>
-            <span class="column-name">Outstanding Rewards:</span>
+            <span>Outstanding Rewards:</span>
             <span class="flex-auto"></span>
-            <span class="column-value">{{
+            <span>{{
               data.result.outstanding_rewards.rewards.rewards[0].amount
-            }}</span>
+              }}</span>
             <span class="flex-auto"></span>
-            <span class="column-value">{{
+            <span>{{
               data.result.outstanding_rewards.rewards.rewards[0].denom
-            }}</span>
+              }}</span>
           </mat-list-item>
           <mat-divider></mat-divider>
           <mat-list-item>
-            <span class="column-name">Before Date:</span>
+            <span>Before Date:</span>
             <span class="flex-auto"></span>
-            <span class="column-value">{{ data.before_date }}</span>
+            <span>{{ data.before_date }}</span>
           </mat-list-item>
           <mat-divider></mat-divider>
         </mat-list>
