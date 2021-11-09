@@ -1,11 +1,15 @@
 <h2>Validator Rewards</h2>
 
-<ng-container *ngIf="commision?.commission?.commission?.[0] === undefined ; then empty; else exist">
+<ng-container *ngIf="commision?.commission?.commission?.[0] === undefined || null ; then empty; else exist">
 </ng-container>
+
 <ng-template #empty>
+  <p>{{myType(commision?.commission?.commission?.[0])| json}} </p>
   <p>*This account has no commission</p>
 </ng-template>
+
 <ng-template #exist>
+  <p>{{myType(commision?.commission?.commission?.[0])| json}} </p>
   <h3>Accumulated Commission</h3>
   <mat-card>
     <mat-list *ngFor="let com of commision?.commission?.commission">
