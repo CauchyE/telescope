@@ -41,7 +41,7 @@
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
-          <span class="whitespace-nowrap">Unbounding Height: </span>
+          <span class="whitespace-nowrap">Unbonding Height: </span>
           <span class="flex-auto"></span>
           <span class="ml-2 break-all">{{ validator?.unbonding_height }}</span>
         </mat-list-item>
@@ -55,10 +55,11 @@
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
-          <span>Unbounding Time: </span>
+          <span>Unbonding Time: </span>
           <span class="flex-auto"></span>
-          <span class="ml-2 break-all text-sm sm:text-base">{{ validator?.unbonding_time | date : 'yyyy-M-d a h:mm:ss
-            z' }}</span>
+          <span class="ml-2 break-all text-sm sm:text-base">
+            {{ validator?.unbonding_time | date : 'yyyy-M-d a h:mm:ss z' }}
+          </span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
       </mat-list>
