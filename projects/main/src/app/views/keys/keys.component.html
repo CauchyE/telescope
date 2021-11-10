@@ -11,10 +11,7 @@
   <ng-container *ngIf="keys === null; then loading; else loaded">
   </ng-container>
   <ng-template #loading>
-    <mat-progress-spinner
-      [diameter]="60"
-      [mode]="'indeterminate'"
-    ></mat-progress-spinner>
+    <mat-progress-spinner [diameter]="60" [mode]="'indeterminate'"></mat-progress-spinner>
   </ng-template>
   <ng-template #loaded>
     <ng-container *ngIf="(keys?.length || 0) > 0; then exist; else empty">
@@ -32,6 +29,6 @@
     </ng-container>
   </ng-template>
   <ng-template #empty>
-    <p class="empty">There is no key.</p>
+    <p class="m-3 text-center">There is no key.</p>
   </ng-template>
 </mat-nav-list>
