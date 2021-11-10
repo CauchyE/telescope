@@ -24,7 +24,7 @@
   <mat-progress-spinner [diameter]="60" [mode]="'indeterminate'"></mat-progress-spinner>
 </ng-template>
 <ng-template #empty>
-  <p>No Data</p>
+  <div class="m-3 text-center">No Data</div>
 </ng-template>
 <ng-template #loaded>
   <ng-container *ngIf="(dataArray || []).length > 0; else empty">
