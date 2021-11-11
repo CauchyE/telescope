@@ -6,7 +6,12 @@
   <ng-container *ngIf="validator !== undefined; then exist; else notFound"> </ng-container>
 </ng-template>
 <ng-template #exist>
-  <h2>Validator: {{ validator?.operator_address }}</h2>
+  <h2>
+    <div class="flex">
+      <span>Validator: </span>
+      <span class="ml-2 break-all">{{ validator?.operator_address }}</span>
+    </div>
+  </h2>
 
   <mat-card>
     <mat-card-content>
@@ -18,27 +23,25 @@
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
-          <span class="whitespace-nowrap">Consensus Pubkey:</span>
+          <span>Consensus Pubkey:</span>
           <span class="flex-auto"></span>
-          <span class="ml-2 break-all">
-            {{ publicKey }}
-          </span>
+          <span class="ml-2 break-all text-xs md:text-base">{{ publicKey }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
           <span class="whitespace-nowrap">Tokens: </span>
           <span class="flex-auto"></span>
-          <span class="ml-2 break-all">{{ validator?.tokens }}</span>
+          <span class="ml-2 break-all">{{ validator?.tokens | number:'1.0-0' }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
-          <span class="whitespace-nowrap">Delegator Shares: </span>
+          <span>Delegator Shares: </span>
           <span class="flex-auto"></span>
-          <span class="ml-2 break-all">{{ validator?.delegator_shares }}</span>
+          <span class="ml-2 break-all">{{ validator?.delegator_shares | number:'1.6-6' }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
-          <span class="whitespace-nowrap">Unbounding Height: </span>
+          <span class="whitespace-nowrap">Unbonding Height: </span>
           <span class="flex-auto"></span>
           <span class="ml-2 break-all">{{ validator?.unbonding_height }}</span>
         </mat-list-item>
@@ -52,9 +55,11 @@
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
-          <span class="whitespace-nowrap">Unbounding Time: </span>
+          <span>Unbonding Time: </span>
           <span class="flex-auto"></span>
-          <span class="ml-2 break-all">{{ validator?.unbonding_time }}</span>
+          <span class="ml-2 break-all text-sm sm:text-base">
+            {{ validator?.unbonding_time | date : 'yyyy-M-d a h:mm:ss z' }}
+          </span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
       </mat-list>
@@ -69,7 +74,7 @@
           <span class="whitespace-nowrap">Rate: </span>
           <span class="flex-auto"></span>
           <span class="ml-2 break-all">
-            {{ validator?.commission?.commission_rates?.rate }}
+            {{ validator?.commission?.commission_rates?.rate | number:'1.6-6' }}
           </span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
@@ -77,7 +82,7 @@
           <span class="whitespace-nowrap">Max Rate: </span>
           <span class="flex-auto"></span>
           <span class="ml-2 break-all">
-            {{ validator?.commission?.commission_rates?.max_rate }}
+            {{ validator?.commission?.commission_rates?.max_rate | number:'1.6-6' }}
           </span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
@@ -85,7 +90,7 @@
           <span class="whitespace-nowrap">Max Change Rate: </span>
           <span class="flex-auto"></span>
           <span class="ml-2 break-all">
-            {{ validator?.commission?.commission_rates?.max_change_rate }}
+            {{ validator?.commission?.commission_rates?.max_change_rate | number:'1.6-6' }}
           </span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
@@ -99,6 +104,7 @@
       <mat-list>
         <mat-list-item>
           <span class="whitespace-nowrap">Moniker: </span>
+          <span class="flex-auto"></span>
           <span class="ml-2 break-all">
             {{ validator?.description?.moniker }}
           </span>
