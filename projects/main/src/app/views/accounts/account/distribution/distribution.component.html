@@ -1,13 +1,10 @@
 <h2>Validator Rewards</h2>
 
-<ng-container
-  　*ngIf="(commission?.commission?.commission?.length || 0) > 0; then existCommission; else emptyCommission">
+<ng-container *ngIf="(commission?.commission?.commission?.length || 0) > 0; then existCommission; else emptyCommission">
 </ng-container>
-
 <ng-template #emptyCommission>
   <p>*This account has no commission</p>
 </ng-template>
-
 <ng-template #existCommission>
   <h3>Accumulated Commission</h3>
   <mat-card>
