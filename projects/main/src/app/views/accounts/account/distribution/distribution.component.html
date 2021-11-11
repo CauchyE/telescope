@@ -1,34 +1,34 @@
 <h2>Validator Rewards</h2>
 
-<ng-container *ngIf="commision?.commission?.commission?.[0] === undefined || null ; then empty; else exist">
+<ng-container *ngIf="commission?.commission?.commission?.[0] === undefined || null ; then emptyCommission; else existCommission">
 </ng-container>
 
-<ng-template #empty>
-  <p>{{myType(commision?.commission?.commission?.[0])| json}} </p>
+<ng-template #emptyCommission>
+  <p>{{ myType(commission?.commission?.commission?.[0]) | json }}</p>
   <p>*This account has no commission</p>
 </ng-template>
 
-<ng-template #exist>
-  <p>{{myType(commision?.commission?.commission?.[0])| json}} </p>
+<ng-template #existCommission>
+  <p>{{ myType(commission?.commission?.commission?.[0])| json }}</p>
   <h3>Accumulated Commission</h3>
   <mat-card>
-    <mat-list *ngFor="let com of commision?.commission?.commission">
+    <mat-list *ngFor="let commission of commission?.commission?.commission">
       <mat-list-item>
-        <span>{{ com.amount | number:'1.6-6' }}</span>
+        <span>{{ commission.amount | number:'1.6-6' }}</span>
         <span class="flex-auto"></span>
-        <span>{{ com.denom }}</span>
+        <span>{{ commission.denom }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
     </mat-list>
   </mat-card>
 </ng-template>
 
-<ng-container *ngIf="rewards?.rewards?.rewards?.[0] === undefined; then empty_rewards; else exist_rewards">
+<ng-container *ngIf="rewards?.rewards?.rewards?.[0] === undefined; then emptyRewards; else existRewards">
 </ng-container>
-<ng-template #empty_rewards>
+<ng-template #emptyRewards>
   <p>*This account has no outstanding rewards</p>
 </ng-template>
-<ng-template #exist_rewards>
+<ng-template #existRewards>
   <h3>Outstanding Rewards</h3>
   <mat-card>
     <mat-list *ngFor="let reward of rewards?.rewards?.rewards">
@@ -42,12 +42,12 @@
   </mat-card>
 </ng-template>
 
-<ng-container *ngIf="slashes?.slashes?.[0] === undefined; then empty_slash; else exist_slash">
+<ng-container *ngIf="slashes?.slashes?.[0] === undefined; then emptySlashes; else existSlashes">
 </ng-container>
-<ng-template #empty_slash>
+<ng-template #emptySlashes>
   <p>*This account has no slashes</p>
 </ng-template>
-<ng-template #exist_slash>
+<ng-template #existSlashes>
   <h3>Slashing</h3>
   <mat-card>
     <mat-list *ngFor="let slash of slashes?.slashes">

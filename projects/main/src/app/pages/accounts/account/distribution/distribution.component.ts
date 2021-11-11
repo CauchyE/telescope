@@ -7,18 +7,21 @@ import {
   QueryValidatorCommissionResponseIsTheResponseTypeForTheQueryValidatorCommissionRPCMethod,
 } from '@cosmos-client/core/esm/openapi/api';
 import { CosmosSDKService } from 'projects/main/src/app/models/cosmos-sdk.service';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import { map, mergeMap } from 'rxjs/operators';
 
 @Component({
-  selector: 'app-vesting',
+  selector: 'app-distribution',
   templateUrl: './distribution.component.html',
   styleUrls: ['./distribution.component.css'],
 })
 export class DistributionComponent implements OnInit {
-  commision$: Observable<QueryValidatorCommissionResponseIsTheResponseTypeForTheQueryValidatorCommissionRPCMethod>;
-  rewards$: Observable<InlineResponse20047>;
-  slashes$: Observable<CosmosDistributionV1beta1QueryValidatorSlashesResponse>;
+  commission$: Observable<
+    | QueryValidatorCommissionResponseIsTheResponseTypeForTheQueryValidatorCommissionRPCMethod
+    | undefined
+  >;
+  rewards$: Observable<InlineResponse20047 | undefined>;
+  slashes$: Observable<CosmosDistributionV1beta1QueryValidatorSlashesResponse | undefined>;
 
   constructor(
     private readonly route: ActivatedRoute,
@@ -26,30 +29,54 @@ export class DistributionComponent implements OnInit {
   ) {
     const accAddress$ = this.route.params.pipe(
       map((params) => params.address),
-      map((addr) => cosmosclient.AccAddress.fromString(addr)),
+      map((address) => {
+        try {
+          const accAddress = cosmosclient.AccAddress.fromString(address);
+          return accAddress;
+        } catch (error) {
+          return undefined;
+        }
+      }),
     );
-    const valAddress$ = accAddress$.pipe(map((addr) => addr.toValAddress()));
+    const valAddress$ = accAddress$.pipe(
+      map((address) => {
+        if (address === undefined) {
+          return undefined;
+        }
+        return address.toValAddress();
+      }),
+    );
     const combined$ = combineLatest([this.cosmosSDK.sdk$, accAddress$, valAddress$]);
 
-    this.commision$ = combined$.pipe(
-      mergeMap(([sdk, accAddress, valAddress]) =>
-        rest.distribution.validatorCommission(sdk.rest, valAddress),
-      ),
-      map((res) => res.data),
+    this.commission$ = combined$.pipe(
+      mergeMap(([sdk, accAddress, valAddress]) => {
+        if (accAddress === undefined || valAddress === undefined) {
+          return of(undefined);
+        }
+        return rest.distribution.validatorCommission(sdk.rest, valAddress).then((res) => res.data);
+      }),
     );
 
     this.rewards$ = combined$.pipe(
-      mergeMap(([sdk, accAddress, valAddress]) =>
-        rest.distribution.validatorOutstandingRewards(sdk.rest, valAddress),
-      ),
-      map((res) => res.data),
+      mergeMap(([sdk, accAddress, valAddress]) => {
+        if (accAddress === undefined || valAddress === undefined) {
+          return of(undefined);
+        }
+        return rest.distribution
+          .validatorOutstandingRewards(sdk.rest, valAddress)
+          .then((res) => res.data);
+      }),
     );
 
     this.slashes$ = combined$.pipe(
-      mergeMap(([sdk, accAddress, valAddress]) =>
-        rest.distribution.validatorSlashes(sdk.rest, valAddress, '1', '2'),
-      ),
-      map((res) => res.data),
+      mergeMap(([sdk, accAddress, valAddress]) => {
+        if (accAddress === undefined || valAddress === undefined) {
+          return of(undefined);
+        }
+        return rest.distribution
+          .validatorSlashes(sdk.rest, valAddress, '1', '2') // Todo: '2' must be fixed to latest block height and add pagination support!
+          .then((res) => res.data);
+      }),
     );
   }
 
