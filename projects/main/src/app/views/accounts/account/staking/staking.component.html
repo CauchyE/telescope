@@ -1,6 +1,6 @@
 <h2>Delegator Rewards</h2>
 
-<ng-container *ngIf="totalRewards === undefined || null; then emptyTotalRewards; else existTotalRewards">
+<ng-container *ngIf="(totalRewards?.total?.length || 0) > 0; then existTotalRewards; else emptyTotalRewards">
 </ng-container>
 <ng-template #emptyTotalRewards>
   <p>*This account has no total rewards</p>
@@ -19,7 +19,8 @@
   </mat-card>
 </ng-template>
 
-<ng-container *ngIf="totalRewards?.rewards?.[0] === undefined; then emptyEachValidatorRewards; else existEachValidatorRewards">
+<ng-container
+  *ngIf="(totalRewards?.rewards?.length || 0) > 0; then existEachValidatorRewards; else emptyEachValidatorRewards">
 </ng-container>
 <ng-template #emptyEachValidatorRewards>
   <p>*This account has not received any rewards from validators</p>

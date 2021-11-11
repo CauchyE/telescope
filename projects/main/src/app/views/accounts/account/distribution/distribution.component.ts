@@ -18,13 +18,7 @@ export class DistributionComponent implements OnInit {
   @Input()
   slashes?: CosmosDistributionV1beta1QueryValidatorSlashesResponse | null;
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
-
-  myType(any: any): any {
-    console.log('comminson', typeof any);
-    console.log('com_json', JSON.stringify(any));
-    return any;
-  }
+  ngOnInit(): void { }
 }
