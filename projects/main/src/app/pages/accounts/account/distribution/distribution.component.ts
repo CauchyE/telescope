@@ -61,8 +61,8 @@ export class DistributionComponent implements OnInit {
           '1',
           latestBlock?.block?.header?.height,
           undefined,
-          undefined,
-          undefined,
+          BigInt(1),
+          BigInt(latestBlock?.block?.header?.height || 2),
           true
         ),
       ),
