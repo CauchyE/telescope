@@ -89,7 +89,8 @@ export class TxsComponent implements OnInit {
       ),
       switchMap(([sdk, selectedTxType, pageSize, pageOffset, _txTotalCount]) => {
         const modifiedPageOffset = pageOffset < 1 ? BigInt(1) : pageOffset;
-        const modifiedPageSize = pageOffset < 1 ? pageOffset + BigInt(pageSize) : BigInt(pageSize);
+        const modifiedPageSize =
+          pageOffset < 1 ? pageOffset + BigInt(pageSize) + BigInt(1) : BigInt(pageSize);
 
         if (modifiedPageOffset <= 0 || modifiedPageSize <= 0) {
           return [];
