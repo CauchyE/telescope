@@ -1,5 +1,6 @@
 import { CosmosSDKService } from '../../../models/cosmos-sdk.service';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { cosmosclient, rest, proto } from '@cosmos-client/core';
 import { combineLatest, Observable, of } from 'rxjs';
@@ -15,7 +16,11 @@ export class AccountComponent implements OnInit {
   account$: Observable<proto.cosmos.auth.v1beta1.BaseAccount | unknown | undefined>;
   balances$: Observable<proto.cosmos.base.v1beta1.ICoin[] | undefined>;
 
-  constructor(private route: ActivatedRoute, private cosmosSDK: CosmosSDKService) {
+  constructor(
+    private route: ActivatedRoute,
+    private cosmosSDK: CosmosSDKService,
+    private snackBar: MatSnackBar,
+  ) {
     this.address$ = this.route.params.pipe(
       map((params) => params.address),
       map((address) => {
@@ -23,6 +28,8 @@ export class AccountComponent implements OnInit {
           const accAddress = cosmosclient.AccAddress.fromString(address);
           return accAddress;
         } catch (error) {
+          console.error(error);
+          this.snackBar.open('Invalid address!', undefined, { duration: 3000 });
           return undefined;
         }
       }),

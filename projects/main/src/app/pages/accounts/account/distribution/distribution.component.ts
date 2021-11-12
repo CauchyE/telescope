@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { cosmosclient, rest } from '@cosmos-client/core';
 import {
@@ -26,6 +27,7 @@ export class DistributionComponent implements OnInit {
   constructor(
     private readonly route: ActivatedRoute,
     private readonly cosmosSDK: CosmosSDKService,
+    private readonly snackBar: MatSnackBar,
   ) {
     const accAddress$ = this.route.params.pipe(
       map((params) => params.address),
@@ -34,6 +36,8 @@ export class DistributionComponent implements OnInit {
           const accAddress = cosmosclient.AccAddress.fromString(address);
           return accAddress;
         } catch (error) {
+          console.error(error);
+          this.snackBar.open('Invalid address!', undefined, { duration: 3000 });
           return undefined;
         }
       }),
