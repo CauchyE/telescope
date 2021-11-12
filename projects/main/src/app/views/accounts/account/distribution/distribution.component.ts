@@ -12,7 +12,7 @@ import {
 })
 export class DistributionComponent implements OnInit {
   @Input()
-  commision?: QueryValidatorCommissionResponseIsTheResponseTypeForTheQueryValidatorCommissionRPCMethod | null;
+  commission?: QueryValidatorCommissionResponseIsTheResponseTypeForTheQueryValidatorCommissionRPCMethod | null;
   @Input()
   rewards?: InlineResponse20047 | null;
   @Input()
@@ -21,11 +21,4 @@ export class DistributionComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void { }
-
-  myType(any: any): any {
-
-    console.log("comminson", typeof (any))
-    console.log("com_json", JSON.stringify(any))
-    return any
-  }
 }
