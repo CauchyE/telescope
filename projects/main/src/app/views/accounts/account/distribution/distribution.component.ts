@@ -1,4 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { PageEvent } from '@angular/material/paginator';
 import {
   CosmosDistributionV1beta1QueryValidatorSlashesResponse,
   InlineResponse20047,
@@ -17,8 +18,24 @@ export class DistributionComponent implements OnInit {
   rewards?: InlineResponse20047 | null;
   @Input()
   slashes?: CosmosDistributionV1beta1QueryValidatorSlashesResponse | null;
+  @Input()
+  displaySizeOptions?: number[] | null;
+  @Input()
+  displaySize?: number | null;
+  @Input()
+  displayNumber?: number | null;
+  @Input()
+  displayLength?: number | null;
+  @Output()
+  paginationChange: EventEmitter<PageEvent>;
 
-  constructor() { }
+  constructor() {
+    this.paginationChange = new EventEmitter();
+  }
 
   ngOnInit(): void { }
+
+  onPaginationChange(pageEvent: PageEvent): void {
+    this.paginationChange.emit(pageEvent);
+  }
 }

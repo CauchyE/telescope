@@ -38,27 +38,35 @@
   </mat-card>
 </ng-template>
 
+<!-- //debug for add page nation
 <ng-container *ngIf="(slashes?.slashes?.length || 0) > 0; then existSlashes; else emptySlashes">
 </ng-container>
 <ng-template #emptySlashes>
   <p>*This account has no slashes</p>
 </ng-template>
 <ng-template #existSlashes>
-  <h3>Slashing</h3>
-  <mat-card>
-    <mat-list *ngFor="let slash of slashes?.slashes">
-      <mat-list-item>
-        <span>Validator Period:</span>
-        <span class="flex-auto"></span>
-        <span>{{ slash.validator_period }}</span>
-      </mat-list-item>
-      <mat-divider [inset]="true"></mat-divider>
-      <mat-list-item>
-        <span>Fraction:</span>
-        <span class="flex-auto"></span>
-        <span>{{ slash.fraction }}</span>
-      </mat-list-item>
-      <mat-divider [inset]="true"></mat-divider>
-    </mat-list>
-  </mat-card>
+-->
+<h3>Slashing</h3>
+<mat-card>
+  <mat-list *ngFor="let slash of slashes?.slashes">
+    <mat-list-item>
+      <span>Validator Period:</span>
+      <span class="flex-auto"></span>
+      <span>{{ slash.validator_period }}</span>
+    </mat-list-item>
+    <mat-divider [inset]="true"></mat-divider>
+    <mat-list-item>
+      <span>Fraction:</span>
+      <span class="flex-auto"></span>
+      <span>{{ slash.fraction }}</span>
+    </mat-list-item>
+    <mat-divider [inset]="true"></mat-divider>
+  </mat-list>
+  <mat-paginator [length]="displayLength" [pageSize]="displaySize" [pageIndex]="displayNumber ? displayNumber - 1 : 0"
+    [pageSizeOptions]="displaySizeOptions ? displaySizeOptions : []" (page)="onPaginationChange($event)">
+  </mat-paginator>
+</mat-card>
+
+<!-- //debug for add page nation
 </ng-template>
+-->

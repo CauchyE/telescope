@@ -1,1 +1,3 @@
-<view-distribution [commission]="commission$ | async" [rewards]="rewards$ | async" [slashes]="slashes$ | async"></view-distribution>
+<view-distribution [commission]="commission$ | async" [rewards]="rewards$ | async" [slashes]="slashes$ | async"
+  [displaySize]="displaySize$ | async" [displayNumber]="displayNumber$ | async" [displayLength]="displayLength$ | async"
+  [displaySizeOptions]="displaySizeOptions" (paginationChange)="appPaginationChanged($event)"></view-distribution>
