@@ -15,7 +15,7 @@ export class StakingComponent implements OnInit {
     Valaddress指定で取得するAPI delegationRewardsは現状コメントアウト
   */
   @Input()
-  totalrewards?: CosmosDistributionV1beta1QueryDelegationTotalRewardsResponse | null;
+  totalRewards?: CosmosDistributionV1beta1QueryDelegationTotalRewardsResponse | null;
   /*
   @Input()
   eachrewards?: QueryValidatorDelegationsResponseIsResponseTypeForTheQueryValidatorDelegationsRPCMethod | null;

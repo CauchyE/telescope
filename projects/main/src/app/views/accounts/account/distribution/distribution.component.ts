@@ -12,13 +12,13 @@ import {
 })
 export class DistributionComponent implements OnInit {
   @Input()
-  commision?: QueryValidatorCommissionResponseIsTheResponseTypeForTheQueryValidatorCommissionRPCMethod | null;
+  commission?: QueryValidatorCommissionResponseIsTheResponseTypeForTheQueryValidatorCommissionRPCMethod | null;
   @Input()
   rewards?: InlineResponse20047 | null;
   @Input()
   slashes?: CosmosDistributionV1beta1QueryValidatorSlashesResponse | null;
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }
