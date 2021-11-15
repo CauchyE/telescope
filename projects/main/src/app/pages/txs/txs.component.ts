@@ -87,9 +87,16 @@ export class TxsComponent implements OnInit {
         ([_sdk, _selectedTxType, _pageSize, _pageOffset, txTotalCount]) =>
           txTotalCount !== BigInt(0),
       ),
-      switchMap(([sdk, selectedTxType, pageSize, pageOffset, _txTotalCount]) => {
+      switchMap(([sdk, selectedTxType, pageSize, pageOffset, txTotalCount]) => {
         const modifiedPageOffset = pageOffset < 1 ? BigInt(1) : pageOffset;
         const modifiedPageSize = pageOffset < 1 ? pageOffset + BigInt(pageSize) : BigInt(pageSize);
+        // Note: This is strange. This is temporary workaround way.
+        const temporaryWorkaroundPageSize =
+          txTotalCount === BigInt(1) &&
+          modifiedPageOffset === BigInt(1) &&
+          modifiedPageSize === BigInt(1)
+            ? modifiedPageSize + BigInt(1)
+            : modifiedPageSize;
 
         if (modifiedPageOffset <= 0 || modifiedPageSize <= 0) {
           return [];
@@ -101,7 +108,7 @@ export class TxsComponent implements OnInit {
             [`message.module='${selectedTxType}'`],
             undefined,
             modifiedPageOffset,
-            modifiedPageSize,
+            temporaryWorkaroundPageSize,
             true,
           )
           .then((res) => {
