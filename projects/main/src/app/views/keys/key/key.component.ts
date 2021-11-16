@@ -1,6 +1,7 @@
 import { Key } from '../../../models/keys/key.model';
 import { Component, OnInit, Input } from '@angular/core';
 import { cosmosclient } from '@cosmos-client/core';
+import { KeyDeleteDialogService } from '../../../models/keys/key-delete-dialog.service';
 
 @Component({
   selector: 'view-key',
@@ -20,15 +21,21 @@ export class KeyComponent implements OnInit {
   @Input()
   faucets?:
     | {
-        hasFaucet: boolean;
-        faucetURL: string;
-        denom: string;
-        creditAmount: number;
-        maxCredit: number;
-      }[]
+      hasFaucet: boolean;
+      faucetURL: string;
+      denom: string;
+      creditAmount: number;
+      maxCredit: number;
+    }[]
     | null;
 
-  constructor() {}
+  constructor(
+    private readonly keyDeleteDialogService: KeyDeleteDialogService,
+  ) { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
+
+  openDeleteDialog(id: string) {
+    this.keyDeleteDialogService.openKeyDeleteDialog(id)
+  }
 }

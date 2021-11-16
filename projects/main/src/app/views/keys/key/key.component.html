@@ -1,4 +1,12 @@
-<h2>{{ key?.id }}</h2>
+<h2>
+  <div class="flex flex-row">
+    <span>{{ key?.id }}</span>
+    <span class="flex-auto"></span>
+    <button (click)="openDeleteDialog(key?.id || '')" color="accent">
+      <mat-icon color="accent">delete</mat-icon>
+    </button>
+  </div>
+</h2>
 
 <mat-list>
   <mat-card>
