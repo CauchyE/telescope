@@ -1,5 +1,5 @@
-<h2>Gentx</h2>
-<form #formRef="ngForm" (submit)="onSubmitGentx(
+<h2>Create Validator</h2>
+<form #formRef="ngForm" (submit)="onSubmitCreateValidator(
   privateKeyRef.value,
   monikerRef.value,
   identityRef.value,
@@ -78,7 +78,9 @@
       matInput
       type="text"
       required
+      pattern="^[0-9]+$"
     />
+    <span matSuffix>%</span>
   </mat-form-field>
   <mat-form-field class="w-full">
     <mat-label>Max rate</mat-label>
@@ -89,7 +91,9 @@
       matInput
       type="text"
       required
+      pattern="^[0-9]+$"
     />
+    <span matSuffix>%</span>
   </mat-form-field>
   <mat-form-field class="w-full">
     <mat-label>Max change rate</mat-label>
@@ -100,7 +104,9 @@
       matInput
       type="text"
       required
+      pattern="^[0-9]+$"
     />
+    <span matSuffix>%</span>
   </mat-form-field>
   <mat-form-field class="w-full">
     <mat-label>Min self delegation</mat-label>
@@ -215,5 +221,5 @@
       required
     />
   </mat-form-field>
-  <button mat-flat-button color="accent" [disabled]="formRef.invalid">Generate</button>
+  <button mat-flat-button color="accent" [disabled]="formRef.invalid">Submit</button>
 </form>
