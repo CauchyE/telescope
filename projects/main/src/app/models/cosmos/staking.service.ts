@@ -40,16 +40,13 @@ export class StakingService {
       throw Error('validator_address mismatch!');
     }
 
-    console.log('createValidatorData.pubkey', createValidatorData.pubkey);
     const base64DecodedPublicKey = Uint8Array.from(
       Buffer.from(createValidatorData.pubkey, 'base64'),
     );
-    console.log('base64DecodedPublicKey', base64DecodedPublicKey);
     const publicKey = new proto.cosmos.crypto.ed25519.PubKey({
       key: base64DecodedPublicKey,
     });
     const packAnyPublicKey = cosmosclient.codec.packAny(publicKey);
-    console.log('packAnyPublicKey', packAnyPublicKey);
 
     // build tx
     const createValidatorTxData = {
@@ -74,17 +71,14 @@ export class StakingService {
         amount: createValidatorData.amount,
       },
     };
-    console.log('createValidatorTxData', createValidatorTxData);
     const msgCreateValidator = new proto.cosmos.staking.v1beta1.MsgCreateValidator(
       createValidatorTxData,
     );
-    console.log('msgCreateValidator', msgCreateValidator);
 
     const txBody = new proto.cosmos.tx.v1beta1.TxBody({
       messages: [cosmosclient.codec.packAny(msgCreateValidator)],
       memo: `${createValidatorData.node_id}@${createValidatorData.ip}:26656`,
     });
-    console.log('txBody', txBody);
 
     const authInfo = new proto.cosmos.tx.v1beta1.AuthInfo({
       signer_infos: [
@@ -102,33 +96,23 @@ export class StakingService {
         gas_limit: cosmosclient.Long.fromString('200000'),
       },
     });
-    console.log('authInfo', authInfo);
 
     // sign
     const txBuilder = new cosmosclient.TxBuilder(sdk, txBody, authInfo);
     const signDocBytes = txBuilder.signDocBytes(account.account_number);
-    console.log('hex', Buffer.from(signDocBytes).toString('hex')); // ここのconsole.logを正規表現置換したものをデバッグ用にgentx-proto-binary.txtに書き出した
     txBuilder.addSignature(privKey.sign(signDocBytes));
 
     // broadcast
-    const broadcastResult = await rest.tx.broadcastTx(sdk, {
+    const result = await rest.tx.broadcastTx(sdk, {
       tx_bytes: txBuilder.txBytes(),
       mode: rest.tx.BroadcastTxMode.Block,
     });
-    console.log('broadCastResult', broadcastResult);
 
-    const txBodyJsonString = txBuilder.cosmosJSONStringify();
-    console.log('txBodyJsonString', txBodyJsonString);
-    const txBodyJson = JSON.parse(txBodyJsonString);
-    console.log('txBodyJson', txBodyJson);
-    const txRawJson = txBuilder.txRaw.toJSON();
-    console.log('txRawJson', txRawJson);
-    const signatures = txRawJson.signatures;
-    console.log('signatures', signatures);
-    const result = txBodyJson;
-    console.log('result', result);
-    return broadcastResult.data;
-    return result;
+    if (result.data.tx_response?.code !== 0) {
+      throw Error(result.data.tx_response?.raw_log);
+    }
+
+    return result.data;
   }
 
   async createDelegator(

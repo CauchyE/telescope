@@ -29,9 +29,14 @@ export class StakingApplicationService {
     const dialogRef = this.loadingDialog.open('Loading...');
 
     let createValidatorResult: InlineResponse20075 | undefined;
+    let txHash: string | undefined;
 
     try {
       createValidatorResult = await this.staking.createValidator(key, createValidatorData);
+      txHash = createValidatorResult.tx_response?.txhash;
+      if (txHash === undefined) {
+        throw Error('Invalid txHash!');
+      }
     } catch (error) {
       console.error(error);
       this.snackBar.open('Error has occur', undefined, { duration: 6000 });
@@ -41,6 +46,8 @@ export class StakingApplicationService {
     }
 
     this.snackBar.open('Successfully create validator', undefined, { duration: 6000 });
+
+    await this.router.navigate(['txs', txHash]);
   }
 
   async createDelegator(
