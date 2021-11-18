@@ -52,8 +52,10 @@ export class TxsComponent implements OnInit {
             undefined,
             true,
           )
-          .then((res) =>
-            res.data.pagination?.total ? BigInt(res.data.pagination?.total) : BigInt(0),
+          .then((res) => {
+            console.log("tx-dbg", res)//debug
+            return res.data.pagination?.total ? BigInt(res.data.pagination?.total) : BigInt(0)
+          }
           )
           .catch((error) => {
             console.error(error);
@@ -93,8 +95,8 @@ export class TxsComponent implements OnInit {
         // Note: This is strange. This is temporary workaround way.
         const temporaryWorkaroundPageSize =
           txTotalCount === BigInt(1) &&
-          modifiedPageOffset === BigInt(1) &&
-          modifiedPageSize === BigInt(1)
+            modifiedPageOffset === BigInt(1) &&
+            modifiedPageSize === BigInt(1)
             ? modifiedPageSize + BigInt(1)
             : modifiedPageSize;
 
@@ -123,7 +125,7 @@ export class TxsComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   appSelectedTxTypeChanged(selectedTxType: string): void {
     this.selectedTxType$.next(selectedTxType);
