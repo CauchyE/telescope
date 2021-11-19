@@ -12,7 +12,6 @@ export class KeyDeleteConfirmDialogComponent implements OnInit {
 
   constructor(
     @Inject(MAT_DIALOG_DATA)
-    //public readonly data: { id: string; },
     public readonly data: {
       id: string;
     },
