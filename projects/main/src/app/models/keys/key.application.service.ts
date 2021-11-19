@@ -46,6 +46,17 @@ export class KeyApplicationService {
     await this.router.navigate(['keys', id]);
   }
 
+  async delete(id: string) {
+
+    await this.key.delete(id);
+
+    this.snackBar.open('Successfully deleted', undefined, {
+      duration: 6000,
+    });
+
+    await this.router.navigate(['keys']);
+  }
+
   sign(data: string, privateKey: string): string {
     const uInt8ArrayData = Uint8Array.from(Buffer.from(data, 'base64'));
     const uInt8ArraySignedData = this.key.sign(KeyType.SECP256K1, privateKey, uInt8ArrayData);

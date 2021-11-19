@@ -1,6 +1,8 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { KeyDeleteConfirmDialogComponent } from '../key-delete-confirm-dialog/key-delete-confirm-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-key-delete-dialog',
@@ -17,6 +19,7 @@ export class KeyDeleteDialogComponent implements OnInit {
       id: string;
     },
     public matDialogRef: MatDialogRef<KeyDeleteDialogComponent>,
+    private readonly dialog: MatDialog,
     private readonly snackBar: MatSnackBar,
   ) { }
 
@@ -25,9 +28,7 @@ export class KeyDeleteDialogComponent implements OnInit {
 
   checkDeleteAccount(id: string) {
     if (id === this.data.id) {
-      this.snackBar.open('Collect ID', undefined, {
-        duration: 2000,
-      });
+      this.openKeyDeleteConfirmDialog()
     } else {
       this.snackBar.open('Wrong ID', undefined, {
         duration: 2000,
@@ -35,4 +36,13 @@ export class KeyDeleteDialogComponent implements OnInit {
     }
   }
 
+  openKeyDeleteConfirmDialog() {
+    this.dialog.open(KeyDeleteConfirmDialogComponent, {
+      data: { id: this.data.id },
+    })
+      .afterClosed()
+      .subscribe((_) => {
+        this.matDialogRef.close()
+      })
+  }
 }

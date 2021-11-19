@@ -1,11 +1,12 @@
 <form #formRef="ngForm" (submit)="checkDeleteAccount(inputId)">
-  <ng-template matStepLabel>Check</ng-template>
-  <p>Input your ID</p>
+  <!--<ng-template matStepLabel>Check</ng-template>-->
+  <p>You can delete your account here.<br> If you do not store your private key or mnemonics, the assets of this account
+    will be permanently lost. If you understand this and want to delete your account, please enter your ID.</p>
   <mat-form-field appearance="fill">
     <mat-label>ID</mat-label>
     <input matInput required name="address_name" [(ngModel)]="inputId">
   </mat-form-field>
   <div class="mb-2">
-    <button mat-flat-button class="w-full" color="accent">Delete</button>
+    <button mat-flat-button class="w-full" color="warn">Delete</button>
   </div>
 </form>
