@@ -69,6 +69,6 @@ export class BankService {
       mode: rest.tx.BroadcastTxMode.Block,
     });
 
-    return result.data.tx_response?.txhash || '';
+    return result || '';
   }
 }

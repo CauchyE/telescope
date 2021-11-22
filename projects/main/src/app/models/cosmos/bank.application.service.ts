@@ -27,9 +27,14 @@ export class BankApplicationService {
     let txhash: string;
 
     try {
-      txhash = await this.bank.send(key, toAddress, amount, privateKey);
-    } catch {
-      this.snackBar.open('Error has occured', undefined, {
+      const res: any = await this.bank.send(key, toAddress, amount, privateKey);
+      if (res.data.tx_response.code !== 0 && res.data.tx_response.raw_log !== undefined) {
+        throw new Error(res.data.tx_response.raw_log);
+      }
+      txhash = res.data.tx_response.txhash;
+    } catch (error) {
+      const msg = (error as Error).toString();
+      this.snackBar.open(`Error has occured: ${msg}`, undefined, {
         duration: 6000,
       });
       return;
