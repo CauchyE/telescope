@@ -2,6 +2,11 @@ import { Key } from '../../../../models/keys/key.model';
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { proto } from '@cosmos-client/core';
 
+interface Denom {
+  value: string;
+  viewValue: string;
+}
+
 export type SendOnSubmitEvent = {
   key: Key;
   toAddress: string;
@@ -54,4 +59,13 @@ export class SendComponent implements OnInit {
       privateKey,
     });
   }
+
+  tokens: Denom[] = [
+    { value: 'jpyx', viewValue: 'JPYX: JPY Stable Coin' },
+    { value: 'ujpyx', viewValue: 'uJPYX: 10^(-6) JPYX' },
+    { value: 'btc', viewValue: 'BTC: Bitcoin' },
+    { value: 'ubtc', viewValue: 'uBTC: 10^(-6) BTC' },
+    { value: 'jcbn', viewValue: 'JCBN: Governance Token for JPYX' },
+    { value: 'ujcbn', viewValue: 'uJCBN: 10^(-6) JCBN' },
+  ];
 }
