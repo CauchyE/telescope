@@ -1,6 +1,5 @@
 import { CreateModule } from '../../views/keys/create/create.module';
 import { GentxModule } from '../../views/keys/gentx/gentx.module';
-import { KeyDeleteConfirmDialogModule } from '../../views/keys/key-delete-confirm-dialog/key-delete-confirm-dialog.module';
 import { KeyModule } from '../../views/keys/key/key.module';
 import { KeysModule } from '../../views/keys/keys.module';
 import { SignModule } from '../../views/keys/sign/sign.module';
@@ -23,7 +22,6 @@ import { NgModule } from '@angular/core';
     CreateModule,
     SignModule,
     GentxModule,
-    KeyDeleteConfirmDialogModule,
   ],
 })
 export class AppKeysModule {}
