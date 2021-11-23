@@ -10,7 +10,7 @@
 <div class="overflow-scroll h-80">
   <mat-card>
     <mat-nav-list>
-      <ng-container *ngIf="txs === undefined || null ; then empty; else exist"></ng-container>
+      <ng-container *ngIf="txs === undefined || null; then empty; else exist"></ng-container>
       <ng-template #empty></ng-template>
       <ng-template #exist>
         <mat-list-item>
@@ -19,13 +19,13 @@
           <span class="break-all truncate">Tx Hash</span>
         </mat-list-item>
         <mat-divider></mat-divider>
-        <ng-container *ngFor="let tx of txs">
+        <ng-container *ngFor="let tx of txs; last as last">
           <mat-list-item routerLink="/txs/{{ tx.txhash }}">
             <span class="pr-4">{{ tx.height }}</span>
             <span class="flex-auto"></span>
             <span class="break-all truncate">{{ tx.txhash }}</span>
           </mat-list-item>
-          <mat-divider></mat-divider>
+          <mat-divider *ngIf="!last"></mat-divider>
         </ng-container>
       </ng-template>
     </mat-nav-list>
