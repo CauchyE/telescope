@@ -17,7 +17,7 @@ import { map, mergeMap, filter, tap } from 'rxjs/operators';
 export class SendComponent implements OnInit {
   key$: Observable<Key | undefined>;
   coins$: Observable<proto.cosmos.base.v1beta1.ICoin[] | undefined>;
-  amount$: Observable<proto.cosmos.base.v1beta1.ICoin[] | undefined>;
+  amounts$: Observable<proto.cosmos.base.v1beta1.ICoin[] | undefined>;
   constructor(
     private readonly cosmosSDK: CosmosSDKService,
     private readonly key: KeyService,
@@ -38,7 +38,7 @@ export class SendComponent implements OnInit {
       map((result) => result.data.balances),
     );
 
-    this.amount$ = this.coins$.pipe(
+    this.amounts$ = this.coins$.pipe(
       map((coin) =>
         coin?.map((data) => ({
           denom: data.denom,
