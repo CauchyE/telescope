@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MintComponent } from './mint.component';
 import { RouterModule } from '@angular/router';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '../../material.module';
 
 @NgModule({
@@ -10,7 +9,7 @@ import { MaterialModule } from '../../material.module';
     MintComponent
   ],
   imports: [
-    CommonModule, RouterModule, FlexLayoutModule, MaterialModule
+    CommonModule, RouterModule, MaterialModule
   ],
   exports: [
     MintComponent
