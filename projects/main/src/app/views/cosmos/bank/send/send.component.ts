@@ -22,7 +22,7 @@ export class SendComponent implements OnInit {
   coins?: proto.cosmos.base.v1beta1.ICoin[] | null;
 
   @Input()
-  amount?: proto.cosmos.base.v1beta1.ICoin[] | null;
+  amounts?: proto.cosmos.base.v1beta1.ICoin[] | null;
 
   @Output()
   appSubmit: EventEmitter<SendOnSubmitEvent>;
@@ -34,16 +34,20 @@ export class SendComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit(toAddress: string, privateKey: string) {
-    if (!this.amount) {
+    if (!this.amounts) {
       return;
     }
     this.appSubmit.emit({
       key: this.key!,
       toAddress,
-      amount: this.amount.map((data) => ({
-        denom: data.denom,
-        amount: data.amount?.toString(),
-      })),
+      amount: this.amounts
+        .filter((value) => {
+          return Number(value.amount) > 0;
+        })
+        .map((value) => ({
+          denom: value.denom,
+          amount: value.amount?.toString(),
+        })),
       privateKey,
     });
   }

@@ -24,37 +24,32 @@
       <input #toAddressRef ngModel name="to-address" matInput required />
     </mat-form-field>
 
-    <ng-template #enable>
-      <ng-container *ngFor="let e of amount; let i = index">
-        <ng-container
-          *ngIf="amount[i] !== null || undefined; then enable; else disable"
-        ></ng-container>
-        <div class="flex flex-row content-center items-center">
-          <mat-form-field class="flex-auto">
-            <mat-label>Denom</mat-label>
-            <input
-              [(ngModel)]="amount[i].denom"
-              name="denom-{{ i }}"
-              type="text"
-              matInput
-              readonly
-            />
-          </mat-form-field>
-          <mat-form-field class="flex-auto">
-            <mat-label>Amount</mat-label>
-            <input
-              [(ngModel)]="amount[i].amount"
-              name="amount-{{ i }}"
-              matInput
-              type="number"
-              pattern="^\d+$"
-              [min]="0"
-              required
-            />
-          </mat-form-field>
-        </div>
-      </ng-container>
-    </ng-template>
+    <ng-container *ngFor="let e of amounts; let i = index">
+      <div class="flex flex-row content-center items-center">
+        <mat-form-field class="flex-auto">
+          <mat-label>Denom</mat-label>
+          <input
+            [(ngModel)]="amounts && amounts[i].denom"
+            name="denom-{{ i }}"
+            type="text"
+            matInput
+            readonly
+          />
+        </mat-form-field>
+        <mat-form-field class="flex-auto">
+          <mat-label>Amount</mat-label>
+          <input
+            [(ngModel)]="amounts && amounts[i].amount"
+            name="amount-{{ i }}"
+            matInput
+            type="number"
+            pattern="^\d+$"
+            [min]="0"
+            required
+          />
+        </mat-form-field>
+      </div>
+    </ng-container>
 
     <mat-form-field class="w-full">
       <mat-label>ID</mat-label>
