@@ -21,36 +21,33 @@ export class SendComponent implements OnInit {
   @Input()
   coins?: proto.cosmos.base.v1beta1.ICoin[] | null;
 
+  @Input()
+  amount?: proto.cosmos.base.v1beta1.ICoin[] | null;
+
   @Output()
   appSubmit: EventEmitter<SendOnSubmitEvent>;
 
-  amount: proto.cosmos.base.v1beta1.ICoin[];
-
   constructor() {
     this.appSubmit = new EventEmitter();
-    this.amount = [{ denom: '', amount: '' }];
   }
 
   ngOnInit(): void {}
 
-  removeAmount(index: number) {
-    this.amount.splice(index, 1);
-    return false;
-  }
-
-  addAmount() {
-    this.amount.push({});
-    return false;
-  }
-
   onSubmit(toAddress: string, privateKey: string) {
+    if (!this.amount) {
+      return;
+    }
     this.appSubmit.emit({
       key: this.key!,
       toAddress,
-      amount: this.amount.map((data) => ({
-        denom: data.denom,
-        amount: data.amount?.toString(),
-      })),
+      amount: this.amount
+        .filter((coin) => {
+          return Number(coin.amount) > 0;
+        })
+        .map((coin) => ({
+          denom: coin.denom,
+          amount: coin.amount?.toString(),
+        })),
       privateKey,
     });
   }

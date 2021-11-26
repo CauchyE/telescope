@@ -24,12 +24,17 @@ export class BankApplicationService {
     privateKey: string,
   ) {
     const dialogRef = this.loadingDialog.open('Sending');
-    let txhash: string;
+    let txhash: string | undefined;
 
     try {
-      txhash = await this.bank.send(key, toAddress, amount, privateKey);
-    } catch {
-      this.snackBar.open('Error has occured', undefined, {
+      const res = await this.bank.send(key, toAddress, amount, privateKey);
+      txhash = res.tx_response?.txhash;
+      if (txhash === undefined) {
+        throw Error('Invalid txhash!');
+      }
+    } catch (error) {
+      const msg = (error as Error).toString();
+      this.snackBar.open(`Error has occured: ${msg}`, undefined, {
         duration: 6000,
       });
       return;
