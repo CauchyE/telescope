@@ -5,7 +5,7 @@ import { proto } from '@cosmos-client/core';
 export type SendOnSubmitEvent = {
   key: Key;
   toAddress: string;
-  amount: proto.cosmos.base.v1beta1.ICoin[];
+  coins: proto.cosmos.base.v1beta1.ICoin[];
   privateKey: string;
 };
 
@@ -22,7 +22,7 @@ export class SendComponent implements OnInit {
   coins?: proto.cosmos.base.v1beta1.ICoin[] | null;
 
   @Input()
-  amounts?: proto.cosmos.base.v1beta1.ICoin[] | null;
+  sentCoins?: proto.cosmos.base.v1beta1.ICoin[] | null;
 
   @Output()
   appSubmit: EventEmitter<SendOnSubmitEvent>;
@@ -34,19 +34,19 @@ export class SendComponent implements OnInit {
   ngOnInit(): void {}
 
   onSubmit(toAddress: string, privateKey: string) {
-    if (!this.amounts) {
+    if (!this.sentCoins) {
       return;
     }
     this.appSubmit.emit({
       key: this.key!,
       toAddress,
-      amount: this.amounts
-        .filter((value) => {
-          return Number(value.amount) > 0;
+      coins: this.sentCoins
+        .filter((sentCoin) => {
+          return Number(sentCoin.amount) > 0;
         })
-        .map((value) => ({
-          denom: value.denom,
-          amount: value.amount?.toString(),
+        .map((sentCoin) => ({
+          denom: sentCoin.denom,
+          amount: sentCoin.amount?.toString(),
         })),
       privateKey,
     });
