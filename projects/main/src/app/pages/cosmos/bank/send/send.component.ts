@@ -40,9 +40,9 @@ export class SendComponent implements OnInit {
     );
 
     this.sentCoins$ = this.coins$.pipe(
-      map((coin) =>
-        coin?.map((data) => ({
-          denom: data.denom,
+      map((coins) =>
+        coins?.map((coin) => ({
+          denom: coin.denom,
           amount: '0',
         })),
       ),
