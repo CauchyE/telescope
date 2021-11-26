@@ -17,7 +17,7 @@ import { map, mergeMap, filter, tap } from 'rxjs/operators';
 export class SendComponent implements OnInit {
   key$: Observable<Key | undefined>;
   coins$: Observable<proto.cosmos.base.v1beta1.ICoin[] | undefined>;
-  sentCoins$: Observable<proto.cosmos.base.v1beta1.ICoin[] | undefined>;
+  amount$: Observable<proto.cosmos.base.v1beta1.ICoin[] | undefined>;
 
   constructor(
     private readonly cosmosSDK: CosmosSDKService,
@@ -39,9 +39,9 @@ export class SendComponent implements OnInit {
       map((result) => result.data.balances),
     );
 
-    this.sentCoins$ = this.coins$.pipe(
-      map((coins) =>
-        coins?.map((coin) => ({
+    this.amount$ = this.coins$.pipe(
+      map((amount) =>
+        amount?.map((coin) => ({
           denom: coin.denom,
           amount: '0',
         })),
@@ -52,6 +52,6 @@ export class SendComponent implements OnInit {
   ngOnInit(): void {}
 
   async onSubmit($event: SendOnSubmitEvent) {
-    await this.bankApplication.send($event.key, $event.toAddress, $event.coins, $event.privateKey);
+    await this.bankApplication.send($event.key, $event.toAddress, $event.amount, $event.privateKey);
   }
 }

@@ -24,12 +24,12 @@
       <input #toAddressRef ngModel name="to-address" matInput required />
     </mat-form-field>
 
-    <ng-container *ngFor="let e of sentCoins; let i = index">
+    <ng-container *ngFor="let e of amount; let i = index">
       <div class="flex flex-row content-center items-center">
         <mat-form-field class="flex-auto">
           <mat-label>Denom</mat-label>
           <input
-            [(ngModel)]="sentCoins && sentCoins[i].denom"
+            [(ngModel)]="amount && amount[i].denom"
             name="denom-{{ i }}"
             type="text"
             matInput
@@ -39,7 +39,7 @@
         <mat-form-field class="flex-auto">
           <mat-label>Amount</mat-label>
           <input
-            [(ngModel)]="sentCoins && sentCoins[i].amount"
+            [(ngModel)]="amount && amount[i].amount"
             name="amount-{{ i }}"
             matInput
             type="number"

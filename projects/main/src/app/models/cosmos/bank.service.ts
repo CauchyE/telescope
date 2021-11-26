@@ -14,7 +14,7 @@ export class BankService {
   async send(
     key: Key,
     toAddress: string,
-    coins: proto.cosmos.base.v1beta1.ICoin[],
+    amount: proto.cosmos.base.v1beta1.ICoin[],
     privateKey: string,
   ): Promise<InlineResponse20075> {
     const sdk = await this.cosmosSDK.sdk().then((sdk) => sdk.rest);
@@ -36,7 +36,7 @@ export class BankService {
     const msgSend = new proto.cosmos.bank.v1beta1.MsgSend({
       from_address: fromAddress.toString(),
       to_address: toAddress,
-      amount: coins,
+      amount: amount,
     });
 
     const txBody = new proto.cosmos.tx.v1beta1.TxBody({

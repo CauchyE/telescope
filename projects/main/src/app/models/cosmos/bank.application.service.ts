@@ -20,14 +20,14 @@ export class BankApplicationService {
   async send(
     key: Key,
     toAddress: string,
-    coins: proto.cosmos.base.v1beta1.ICoin[],
+    amount: proto.cosmos.base.v1beta1.ICoin[],
     privateKey: string,
   ) {
     const dialogRef = this.loadingDialog.open('Sending');
     let txhash: string | undefined;
 
     try {
-      const res = await this.bank.send(key, toAddress, coins, privateKey);
+      const res = await this.bank.send(key, toAddress, amount, privateKey);
       txhash = res.tx_response?.txhash;
       if (txhash === undefined) {
         throw Error('Invalid txhash!');
