@@ -1,7 +1,7 @@
 <h2>Daily Rewards</h2>
 <mat-card>
   <form #formRef="ngForm" (submit)="onSubmit(startRef.value, endRef.value)">
-    <mat-form-field fxFill>
+    <mat-form-field class="w-full">
       <mat-label>Choose a Date Range</mat-label>
       <mat-date-range-input [rangePicker]="picker">
         <input #startRef="ngModel" name="startDate" [ngModel]="startDate" matStartDate matInput placeholder="Start date"
@@ -13,7 +13,7 @@
       <mat-date-range-picker #picker></mat-date-range-picker>
     </mat-form-field>
     <br />
-    <button mat-flat-button fxFill color="accent" [disabled]="formRef.invalid">Submit</button>
+    <button mat-flat-button class="w-full" color="accent" [disabled]="formRef.invalid">Submit</button>
   </form>
 </mat-card>
 <br />
