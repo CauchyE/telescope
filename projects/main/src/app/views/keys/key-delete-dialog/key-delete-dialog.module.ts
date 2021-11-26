@@ -9,4 +9,4 @@ import { FormsModule } from '@angular/forms';
   imports: [CommonModule, MaterialModule, FormsModule],
   exports: [KeyDeleteDialogComponent],
 })
-export class KeyDeleteDialogModule { }
+export class KeyDeleteDialogModule {}

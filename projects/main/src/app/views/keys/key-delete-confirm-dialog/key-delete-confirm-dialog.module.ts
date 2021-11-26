@@ -7,6 +7,6 @@ import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [KeyDeleteConfirmDialogComponent],
   imports: [CommonModule, MaterialModule, FormsModule],
-  exports: [KeyDeleteConfirmDialogComponent]
+  exports: [KeyDeleteConfirmDialogComponent],
 })
-export class KeyDeleteConfirmDialogModule { }
+export class KeyDeleteConfirmDialogModule {}
