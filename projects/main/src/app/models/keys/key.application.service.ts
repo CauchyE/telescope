@@ -27,6 +27,17 @@ export class KeyApplicationService {
       return;
     }
 
+    const publicKey = Buffer.from(await this.key.getPrivKey(type, privateKey).pubKey().bytes()).toString('hex');
+    const keyList = await this.key.list()
+    for (var i = 0; i < keyList.length; i++) {
+      if (keyList[i].public_key === publicKey) {
+        this.snackBar.open('This mnemonic is already used', undefined, {
+          duration: 3000,
+        });
+        return;
+      }
+    }
+
     const dialogRef = this.loadingDialog.open('Creating');
     try {
       await this.key.set(id, type, privateKey);
