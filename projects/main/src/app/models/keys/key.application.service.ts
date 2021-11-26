@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { LoadingDialogService } from 'ng-loading-dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 import { KeyType } from './key.model';
 import { KeyService } from './key.service';
+import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { LoadingDialogService } from 'ng-loading-dialog';
 
 @Injectable({
   providedIn: 'root',
@@ -47,7 +47,6 @@ export class KeyApplicationService {
   }
 
   async delete(id: string) {
-
     await this.key.delete(id);
 
     this.snackBar.open('Successfully deleted', undefined, {
