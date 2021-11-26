@@ -1,4 +1,4 @@
-<form #form="ngForm" class="text-base mt-4 xs:text-xxl">
+<form #form="ngForm" class="text-base mt-4 xs:mt-5">
   <mat-form-field appearance="fill" (submit)="onSubmit(searchValueRef.value)">
     <mat-label>Search</mat-label>
     <input #searchValueRef matInput required id="searchValue" name="searchValue" [ngModel]="searchValue"
