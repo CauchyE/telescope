@@ -1,3 +1,4 @@
+import { KeyDeleteDialogService } from '../../../models/keys/key-delete-dialog.service';
 import { Key } from '../../../models/keys/key.model';
 import { Component, OnInit, Input } from '@angular/core';
 import { cosmosclient } from '@cosmos-client/core';
@@ -28,7 +29,11 @@ export class KeyComponent implements OnInit {
       }[]
     | null;
 
-  constructor() {}
+  constructor(private readonly keyDeleteDialogService: KeyDeleteDialogService) {}
 
   ngOnInit(): void {}
+
+  openDeleteDialog(id: string) {
+    this.keyDeleteDialogService.openKeyDeleteDialog(id);
+  }
 }
