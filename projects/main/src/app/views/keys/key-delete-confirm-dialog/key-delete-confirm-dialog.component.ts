@@ -27,6 +27,4 @@ export class KeyDeleteConfirmDialogComponent implements OnInit {
   notConfirm(): void {
     this.matDialogRef.close();
   }
-
-  dam() {}
 }
