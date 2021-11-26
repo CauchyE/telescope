@@ -1,28 +1,14 @@
 <form #form="ngForm" [ngClass.xs]="'xs'">
   <mat-form-field appearance="fill" (submit)="onSubmit(searchValueRef.value)">
     <mat-label>Search</mat-label>
-    <input
-      #searchValueRef
-      matInput
-      required
-      id="searchValue"
-      name="searchValue"
-      [ngModel]="searchValue"
-      [matAutocomplete]="auto"
-    />
-    <mat-autocomplete
-      #auto="matAutocomplete"
-      (optionSelected)="onOptionSelected($event.option.value)"
-    >
+    <input #searchValueRef matInput required id="searchValue" name="searchValue" [ngModel]="searchValue"
+      [matAutocomplete]="auto" />
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event.option.value)">
       <mat-option *ngFor="let option of options" [value]="option.format(searchValueRef.value)">
         {{ option.label(searchValueRef.value) }}
       </mat-option>
     </mat-autocomplete>
-    <button
-      mat-icon-button
-      matSuffix
-      [disabled]="form.invalid"
-    >
+    <button mat-icon-button matSuffix [disabled]="form.invalid">
       <mat-icon>search</mat-icon>
     </button>
   </mat-form-field>
