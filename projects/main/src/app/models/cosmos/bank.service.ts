@@ -4,6 +4,7 @@ import { KeyService } from '../keys/key.service';
 import { Injectable } from '@angular/core';
 import { cosmosclient, rest, proto } from '@cosmos-client/core';
 import { InlineResponse20075 } from '@cosmos-client/core/esm/openapi';
+import { SingleRepresentsASingleSignerModeEnum } from '@cosmos-client/core/esm/openapi/api';
 
 @Injectable({
   providedIn: 'root',
@@ -62,7 +63,36 @@ export class BankService {
     // sign
     const txBuilder = new cosmosclient.TxBuilder(sdk, txBody, authInfo);
     const signDocBytes = txBuilder.signDocBytes(account.account_number);
-    txBuilder.addSignature(privKey.sign(signDocBytes));
+    const signature = privKey.sign(signDocBytes);
+    txBuilder.addSignature(signature);
+
+    // simulate
+    const simulatedResult = await rest.tx.simulate(sdk, {
+      tx: {
+        body: {
+          messages: [cosmosclient.codec.packCosmosAny(msgSend)],
+        },
+        auth_info: {
+          signer_infos: [
+            {
+              public_key: cosmosclient.codec.packCosmosAny(account.pub_key),
+              mode_info: {
+                single: {
+                  mode: SingleRepresentsASingleSignerModeEnum.Direct,
+                },
+              },
+              sequence: account.sequence.toString(),
+            },
+          ],
+          fee: {
+            gas_limit: '200000',
+          },
+        },
+        signatures: [signature.toString()],
+      },
+      tx_bytes: txBuilder.txBytes(),
+    });
+    console.log('simulatedResult', simulatedResult);
 
     // broadcast
     const result = await rest.tx.broadcastTx(sdk, {
