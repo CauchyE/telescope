@@ -7,8 +7,9 @@ import { SendOnSubmitEvent } from '../../../../views/cosmos/bank/send/send.compo
 import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { cosmosclient, proto, rest } from '@cosmos-client/core';
+import { ConfigService } from 'projects/main/src/app/models/config.service';
 import { combineLatest, Observable } from 'rxjs';
-import { map, mergeMap, filter, tap } from 'rxjs/operators';
+import { map, mergeMap, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-send',
@@ -19,6 +20,7 @@ export class SendComponent implements OnInit {
   key$: Observable<Key | undefined>;
   coins$: Observable<proto.cosmos.base.v1beta1.ICoin[] | undefined>;
   amount$: Observable<proto.cosmos.base.v1beta1.ICoin[] | undefined>;
+  minimumGasPrices: proto.cosmos.base.v1beta1.ICoin[];
 
   constructor(
     private readonly cosmosSDK: CosmosSDKService,
@@ -26,6 +28,7 @@ export class SendComponent implements OnInit {
     private readonly keyStore: KeyStoreService,
     private readonly bankApplication: BankApplicationService,
     private readonly snackBar: MatSnackBar,
+    private readonly configS: ConfigService,
   ) {
     this.key$ = this.keyStore.currentKey$;
 
@@ -49,6 +52,8 @@ export class SendComponent implements OnInit {
         })),
       ),
     );
+
+    this.minimumGasPrices = this.configS.config.minimumGasPrices;
   }
 
   ngOnInit(): void {}
@@ -60,6 +65,12 @@ export class SendComponent implements OnInit {
       });
       return;
     }
-    await this.bankApplication.send($event.key, $event.toAddress, $event.amount, $event.privateKey);
+    await this.bankApplication.send(
+      $event.key,
+      $event.toAddress,
+      $event.amount,
+      $event.minimumGasPrice,
+      $event.privateKey,
+    );
   }
 }

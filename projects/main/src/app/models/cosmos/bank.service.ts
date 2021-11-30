@@ -15,6 +15,7 @@ export class BankService {
     key: Key,
     toAddress: string,
     amount: proto.cosmos.base.v1beta1.ICoin[],
+    minimumGasPrice: proto.cosmos.base.v1beta1.ICoin,
     privateKey: string,
   ): Promise<InlineResponse20075> {
     const sdk = await this.cosmosSDK.sdk().then((sdk) => sdk.rest);
@@ -63,7 +64,7 @@ export class BankService {
       fee: {
         amount: [
           {
-            denom: 'ujcbn',
+            denom: minimumGasPrice.denom,
             amount: dummyFee,
           },
         ],
@@ -100,7 +101,9 @@ export class BankService {
     const simulatedGasUsedWithMargin = simulatedGasUsedWithMarginNumber.toFixed(0);
     // Todo: 0.015 depends on Node's config(`~/.jpyx/config/app.toml` minimum-gas-prices).
     // Hardcode is not good.
-    const simulatedFeeWithMarginNumber = parseInt(simulatedGasUsedWithMargin) * 0.015;
+    const simulatedFeeWithMarginNumber =
+      parseInt(simulatedGasUsedWithMargin) *
+      parseFloat(minimumGasPrice.amount ? minimumGasPrice.amount : '0');
     const simulatedFeeWithMargin = Math.ceil(simulatedFeeWithMarginNumber).toFixed(0);
     console.log({
       simulatedGasUsed,
@@ -125,7 +128,7 @@ export class BankService {
       fee: {
         amount: [
           {
-            denom: 'ujcbn',
+            denom: minimumGasPrice.denom,
             amount: simulatedFeeWithMargin,
           },
         ],

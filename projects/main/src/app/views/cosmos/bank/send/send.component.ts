@@ -6,6 +6,7 @@ export type SendOnSubmitEvent = {
   key: Key;
   toAddress: string;
   amount: proto.cosmos.base.v1beta1.ICoin[];
+  minimumGasPrice: proto.cosmos.base.v1beta1.ICoin;
   privateKey: string;
 };
 
@@ -24,19 +25,34 @@ export class SendComponent implements OnInit {
   @Input()
   amount?: proto.cosmos.base.v1beta1.ICoin[] | null;
 
+  @Input()
+  minimumGasPrices?: proto.cosmos.base.v1beta1.ICoin[];
+
   @Output()
   appSubmit: EventEmitter<SendOnSubmitEvent>;
+
+  selectedGasPrice?: proto.cosmos.base.v1beta1.ICoin;
 
   constructor() {
     this.appSubmit = new EventEmitter();
   }
 
+  ngOnChanges(): void {
+    if (this.minimumGasPrices && this.minimumGasPrices.length > 0) {
+      this.selectedGasPrice = this.minimumGasPrices[0];
+    }
+  }
+
   ngOnInit(): void {}
 
-  onSubmit(toAddress: string, privateKey: string) {
+  onSubmit(toAddress: string, privateKey: string, minimumGasPrice: string) {
     if (!this.amount) {
       return;
     }
+    if (this.selectedGasPrice === undefined) {
+      return;
+    }
+    this.selectedGasPrice.amount = minimumGasPrice.toString();
     this.appSubmit.emit({
       key: this.key!,
       toAddress,
@@ -48,7 +64,14 @@ export class SendComponent implements OnInit {
           denom: coin.denom,
           amount: coin.amount?.toString(),
         })),
+      minimumGasPrice: this.selectedGasPrice,
       privateKey,
     });
+  }
+
+  onMinimumGasDenomChanged(denom: string): void {
+    this.selectedGasPrice = this.minimumGasPrices?.find(
+      (minimumGasPrice) => minimumGasPrice.denom === denom,
+    );
   }
 }

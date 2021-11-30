@@ -10,6 +10,10 @@ const config = {
   //   consAddr: '',
   //   consPub: '',
   // },
+  // minimumGasPrices: {
+  //   denom: '';
+  //   amount: '';
+  // }[];
   // extension: {
   //   faucet: [
   //     {
