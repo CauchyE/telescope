@@ -5,6 +5,7 @@ import { KeyService } from '../../../../models/keys/key.service';
 import { KeyStoreService } from '../../../../models/keys/key.store.service';
 import { SendOnSubmitEvent } from '../../../../views/cosmos/bank/send/send.component';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { cosmosclient, proto, rest } from '@cosmos-client/core';
 import { combineLatest, Observable } from 'rxjs';
 import { map, mergeMap, filter, tap } from 'rxjs/operators';
@@ -24,6 +25,7 @@ export class SendComponent implements OnInit {
     private readonly key: KeyService,
     private readonly keyStore: KeyStoreService,
     private readonly bankApplication: BankApplicationService,
+    private readonly snackBar: MatSnackBar,
   ) {
     this.key$ = this.keyStore.currentKey$;
 
@@ -52,6 +54,12 @@ export class SendComponent implements OnInit {
   ngOnInit(): void {}
 
   async onSubmit($event: SendOnSubmitEvent) {
+    if ($event.amount.length === 0) {
+      this.snackBar.open('Invalid coins', undefined, {
+        duration: 6000,
+      });
+      return;
+    }
     await this.bankApplication.send($event.key, $event.toAddress, $event.amount, $event.privateKey);
   }
 }
