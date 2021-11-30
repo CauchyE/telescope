@@ -99,8 +99,7 @@ export class BankService {
       ? parseInt(simulatedGasUsed) * 1.1
       : 200000;
     const simulatedGasUsedWithMargin = simulatedGasUsedWithMarginNumber.toFixed(0);
-    // Todo: 0.015 depends on Node's config(`~/.jpyx/config/app.toml` minimum-gas-prices).
-    // Hardcode is not good.
+    // minimumGasPrice depends on Node's config(`~/.jpyx/config/app.toml` minimum-gas-prices).
     const simulatedFeeWithMarginNumber =
       parseInt(simulatedGasUsedWithMargin) *
       parseFloat(minimumGasPrice.amount ? minimumGasPrice.amount : '0');
