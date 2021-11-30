@@ -4,7 +4,6 @@ import { KeyService } from '../keys/key.service';
 import { Injectable } from '@angular/core';
 import { cosmosclient, rest, proto } from '@cosmos-client/core';
 import { InlineResponse20075 } from '@cosmos-client/core/esm/openapi';
-import { SingleRepresentsASingleSignerModeEnum } from '@cosmos-client/core/esm/openapi/api';
 
 @Injectable({
   providedIn: 'root',
@@ -33,16 +32,84 @@ export class BankService {
       throw Error('Address not found');
     }
 
-    // build tx
+    // build MsgSend
     const msgSend = new proto.cosmos.bank.v1beta1.MsgSend({
       from_address: fromAddress.toString(),
       to_address: toAddress,
       amount: amount,
     });
 
+    // build TxBody
     const txBody = new proto.cosmos.tx.v1beta1.TxBody({
       messages: [cosmosclient.codec.packAny(msgSend)],
     });
+
+    const dummyGasLimit = '1'; // This is dummy value for simulation.
+    const dummyFee = '1'; // This is dummy value for simulation.
+
+    // build AuthInfo for simulation
+    const simulatedAuthInfo = new proto.cosmos.tx.v1beta1.AuthInfo({
+      signer_infos: [
+        {
+          public_key: cosmosclient.codec.packAny(pubKey),
+          mode_info: {
+            single: {
+              mode: proto.cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_DIRECT,
+            },
+          },
+          sequence: account.sequence,
+        },
+      ],
+      fee: {
+        amount: [
+          {
+            denom: 'ujcbn',
+            amount: dummyFee,
+          },
+        ],
+        gas_limit: cosmosclient.Long.fromString(dummyGasLimit),
+      },
+    });
+
+    // sign simulation tx data
+    const simulatedTxBuilder = new cosmosclient.TxBuilder(sdk, txBody, simulatedAuthInfo);
+    const simulatedSignDocBytes = simulatedTxBuilder.signDocBytes(account.account_number);
+    const simulatedSignature = privKey.sign(simulatedSignDocBytes);
+    simulatedTxBuilder.addSignature(simulatedSignature);
+    console.log('simulatedRequestTxJsonString', simulatedTxBuilder.cosmosJSONStringify());
+    console.log('simulatedRequestTxJson', JSON.parse(simulatedTxBuilder.cosmosJSONStringify()));
+
+    // restore json from txBuilder
+    const requestBodyForSimulation = JSON.parse(simulatedTxBuilder.cosmosJSONStringify());
+    delete requestBodyForSimulation.auth_info.signer_infos[0].mode_info.multi;
+    requestBodyForSimulation.auth_info.fee.gas_limit = dummyGasLimit;
+
+    // simulate tx
+    const simulatedResult = await rest.tx.simulate(sdk, {
+      tx: requestBodyForSimulation as any,
+      tx_bytes: simulatedTxBuilder.txBytes(),
+    });
+    console.log('simulatedResult.data', simulatedResult.data);
+
+    // estimate fee
+    const simulatedGasUsed = simulatedResult.data.gas_info?.gas_used;
+    // This margin prevents insufficient fee due to data size difference between simulated tx and actual tx.
+    const simulatedGasUsedWithMarginNumber = simulatedGasUsed
+      ? parseInt(simulatedGasUsed) * 1.1
+      : 200000;
+    const simulatedGasUsedWithMargin = simulatedGasUsedWithMarginNumber.toFixed(0);
+    // Todo: 0.015 depends on Node's config(`~/.jpyx/config/app.toml` minimum-gas-prices).
+    // Hardcode is not good.
+    const simulatedFeeWithMarginNumber = parseInt(simulatedGasUsedWithMargin) * 0.015;
+    const simulatedFeeWithMargin = Math.ceil(simulatedFeeWithMarginNumber).toFixed(0);
+    console.log({
+      simulatedGasUsed,
+      simulatedGasUsedWithMargin,
+      simulatedFeeWithMarginNumber,
+      simulatedFeeWithMargin,
+    });
+
+    // build AuthInfo
     const authInfo = new proto.cosmos.tx.v1beta1.AuthInfo({
       signer_infos: [
         {
@@ -56,51 +123,29 @@ export class BankService {
         },
       ],
       fee: {
-        gas_limit: cosmosclient.Long.fromString('200000'),
+        amount: [
+          {
+            denom: 'ujcbn',
+            amount: simulatedFeeWithMargin,
+          },
+        ],
+        gas_limit: cosmosclient.Long.fromString(simulatedGasUsedWithMargin),
       },
     });
 
-    // sign
+    // sign tx data
     const txBuilder = new cosmosclient.TxBuilder(sdk, txBody, authInfo);
     const signDocBytes = txBuilder.signDocBytes(account.account_number);
     const signature = privKey.sign(signDocBytes);
     txBuilder.addSignature(signature);
 
-    // simulate
-    const simulatedResult = await rest.tx.simulate(sdk, {
-      tx: {
-        body: {
-          messages: [cosmosclient.codec.packCosmosAny(msgSend)],
-        },
-        auth_info: {
-          signer_infos: [
-            {
-              public_key: cosmosclient.codec.packCosmosAny(account.pub_key),
-              mode_info: {
-                single: {
-                  mode: SingleRepresentsASingleSignerModeEnum.Direct,
-                },
-              },
-              sequence: account.sequence.toString(),
-            },
-          ],
-          fee: {
-            gas_limit: '200000',
-          },
-        },
-        signatures: [signature.toString()],
-      },
-      tx_bytes: txBuilder.txBytes(),
-    });
-    console.log('simulatedResult', simulatedResult);
-
-    // broadcast
+    // broadcast tx
     const result = await rest.tx.broadcastTx(sdk, {
       tx_bytes: txBuilder.txBytes(),
       mode: rest.tx.BroadcastTxMode.Block,
     });
 
-    // check error
+    // check broadcast tx error
     if (result.data.tx_response?.code !== 0) {
       throw Error(result.data.tx_response?.raw_log);
     }
