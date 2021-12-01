@@ -74,4 +74,10 @@ export class SendComponent implements OnInit {
       (minimumGasPrice) => minimumGasPrice.denom === denom,
     );
   }
+
+  onMinimumGasAmountSliderChanged(amount: string): void {
+    if (this.selectedGasPrice) {
+      this.selectedGasPrice.amount = amount;
+    }
+  }
 }
