@@ -1,8 +1,9 @@
-import { NgModule } from '@angular/core';
+import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
-
+import { NgModule } from '@angular/core';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatDividerModule } from '@angular/material/divider';
@@ -15,10 +16,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSelectModule } from '@angular/material/select';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatToolbarModule } from '@angular/material/toolbar';
-import { MatCardModule } from '@angular/material/card';
 import { MatTableModule } from '@angular/material/table';
-import { ClipboardModule } from '@angular/cdk/clipboard';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 @NgModule({
   declarations: [],
@@ -44,4 +43,4 @@ import { ClipboardModule } from '@angular/cdk/clipboard';
     ClipboardModule,
   ],
 })
-export class MaterialModule { }
+export class MaterialModule {}
