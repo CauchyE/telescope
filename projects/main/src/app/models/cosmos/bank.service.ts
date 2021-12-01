@@ -1,6 +1,7 @@
 import { CosmosSDKService } from '../cosmos-sdk.service';
 import { Key } from '../keys/key.model';
 import { KeyService } from '../keys/key.service';
+import { SimulatedTxBankSendResultResponse } from './bank.model';
 import { Injectable } from '@angular/core';
 import { cosmosclient, rest, proto } from '@cosmos-client/core';
 import { InlineResponse20075 } from '@cosmos-client/core/esm/openapi';
@@ -15,9 +16,83 @@ export class BankService {
     key: Key,
     toAddress: string,
     amount: proto.cosmos.base.v1beta1.ICoin[],
-    minimumGasPrice: proto.cosmos.base.v1beta1.ICoin,
+    gas: proto.cosmos.base.v1beta1.ICoin,
+    fee: proto.cosmos.base.v1beta1.ICoin,
     privateKey: string,
   ): Promise<InlineResponse20075> {
+    const sdk = await this.cosmosSDK.sdk().then((sdk) => sdk.rest);
+    const privKey = this.key.getPrivKey(key.type, privateKey);
+    const pubKey = privKey.pubKey();
+    const fromAddress = cosmosclient.AccAddress.fromPublicKey(pubKey);
+
+    // get account info
+    const account = await rest.auth
+      .account(sdk, fromAddress)
+      .then((res) => res.data.account && cosmosclient.codec.unpackCosmosAny(res.data.account))
+      .catch((_) => undefined);
+
+    if (!(account instanceof proto.cosmos.auth.v1beta1.BaseAccount)) {
+      throw Error('Address not found');
+    }
+
+    // build MsgSend
+    const msgSend = new proto.cosmos.bank.v1beta1.MsgSend({
+      from_address: fromAddress.toString(),
+      to_address: toAddress,
+      amount: amount,
+    });
+
+    // build TxBody
+    const txBody = new proto.cosmos.tx.v1beta1.TxBody({
+      messages: [cosmosclient.codec.packAny(msgSend)],
+    });
+
+    // build AuthInfo
+    const authInfo = new proto.cosmos.tx.v1beta1.AuthInfo({
+      signer_infos: [
+        {
+          public_key: cosmosclient.codec.packAny(pubKey),
+          mode_info: {
+            single: {
+              mode: proto.cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_DIRECT,
+            },
+          },
+          sequence: account.sequence,
+        },
+      ],
+      fee: {
+        amount: [fee],
+        gas_limit: cosmosclient.Long.fromString(gas.amount ? gas.amount : '0'),
+      },
+    });
+
+    // sign tx data
+    const txBuilder = new cosmosclient.TxBuilder(sdk, txBody, authInfo);
+    const signDocBytes = txBuilder.signDocBytes(account.account_number);
+    const signature = privKey.sign(signDocBytes);
+    txBuilder.addSignature(signature);
+
+    // broadcast tx
+    const result = await rest.tx.broadcastTx(sdk, {
+      tx_bytes: txBuilder.txBytes(),
+      mode: rest.tx.BroadcastTxMode.Block,
+    });
+
+    // check broadcast tx error
+    if (result.data.tx_response?.code !== 0) {
+      throw Error(result.data.tx_response?.raw_log);
+    }
+
+    return result.data;
+  }
+
+  async simulateToSend(
+    key: Key,
+    toAddress: string,
+    amount: proto.cosmos.base.v1beta1.ICoin[],
+    minimumGasPrice: proto.cosmos.base.v1beta1.ICoin,
+    privateKey: string,
+  ): Promise<SimulatedTxBankSendResultResponse> {
     const sdk = await this.cosmosSDK.sdk().then((sdk) => sdk.rest);
     const privKey = this.key.getPrivKey(key.type, privateKey);
     const pubKey = privKey.pubKey();
@@ -111,47 +186,17 @@ export class BankService {
       simulatedFeeWithMargin,
     });
 
-    // build AuthInfo
-    const authInfo = new proto.cosmos.tx.v1beta1.AuthInfo({
-      signer_infos: [
-        {
-          public_key: cosmosclient.codec.packAny(pubKey),
-          mode_info: {
-            single: {
-              mode: proto.cosmos.tx.signing.v1beta1.SignMode.SIGN_MODE_DIRECT,
-            },
-          },
-          sequence: account.sequence,
-        },
-      ],
-      fee: {
-        amount: [
-          {
-            denom: minimumGasPrice.denom,
-            amount: simulatedFeeWithMargin,
-          },
-        ],
-        gas_limit: cosmosclient.Long.fromString(simulatedGasUsedWithMargin),
+    return {
+      simulatedResultData: simulatedResult.data,
+      minimumGasPrice,
+      estimatedGasUsedWithMargin: {
+        denom: minimumGasPrice.denom,
+        amount: simulatedGasUsedWithMargin,
       },
-    });
-
-    // sign tx data
-    const txBuilder = new cosmosclient.TxBuilder(sdk, txBody, authInfo);
-    const signDocBytes = txBuilder.signDocBytes(account.account_number);
-    const signature = privKey.sign(signDocBytes);
-    txBuilder.addSignature(signature);
-
-    // broadcast tx
-    const result = await rest.tx.broadcastTx(sdk, {
-      tx_bytes: txBuilder.txBytes(),
-      mode: rest.tx.BroadcastTxMode.Block,
-    });
-
-    // check broadcast tx error
-    if (result.data.tx_response?.code !== 0) {
-      throw Error(result.data.tx_response?.raw_log);
-    }
-
-    return result.data;
+      estimatedFeeWithMargin: {
+        denom: minimumGasPrice.denom,
+        amount: simulatedFeeWithMargin,
+      },
+    };
   }
 }
