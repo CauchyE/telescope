@@ -21,13 +21,11 @@ export class TxFeeConfirmDialogComponent implements OnInit {
 
   okToSendTx(): void {
     this.data.isConfirmed = true;
-    console.log(this.data);
     this.dialogRef.close(this.data);
   }
 
   cancelToSendTx(): void {
     this.data.isConfirmed = false;
-    console.log(this.data);
     this.dialogRef.close(this.data);
   }
 }
