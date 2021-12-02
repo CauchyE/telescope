@@ -2,6 +2,7 @@ import { environment } from '../environments/environment';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { reducers, metaReducers } from './reducers';
+import { TxFeeConfirmDialogModule } from './views/cosmos/tx-fee-confirm-dialog/tx-fee-confirm-dialog.module';
 import { KeyBackupDialogModule } from './views/keys/key-backup-dialog/key-backup-dialog.module';
 import { KeyDeleteConfirmDialogModule } from './views/keys/key-delete-confirm-dialog/key-delete-confirm-dialog.module';
 import { KeyDeleteDialogModule } from './views/keys/key-delete-dialog/key-delete-dialog.module';
@@ -38,6 +39,7 @@ import { LoadingDialogModule } from 'ng-loading-dialog';
     KeyBackupDialogModule,
     KeyDeleteDialogModule,
     KeyDeleteConfirmDialogModule,
+    TxFeeConfirmDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

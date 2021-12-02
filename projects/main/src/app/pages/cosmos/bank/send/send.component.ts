@@ -5,9 +5,11 @@ import { KeyService } from '../../../../models/keys/key.service';
 import { KeyStoreService } from '../../../../models/keys/key.store.service';
 import { SendOnSubmitEvent } from '../../../../views/cosmos/bank/send/send.component';
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { cosmosclient, proto, rest } from '@cosmos-client/core';
+import { ConfigService } from 'projects/main/src/app/models/config.service';
 import { combineLatest, Observable } from 'rxjs';
-import { map, mergeMap, filter, tap } from 'rxjs/operators';
+import { map, mergeMap, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-send',
@@ -18,12 +20,15 @@ export class SendComponent implements OnInit {
   key$: Observable<Key | undefined>;
   coins$: Observable<proto.cosmos.base.v1beta1.ICoin[] | undefined>;
   amount$: Observable<proto.cosmos.base.v1beta1.ICoin[] | undefined>;
+  minimumGasPrices: proto.cosmos.base.v1beta1.ICoin[];
 
   constructor(
     private readonly cosmosSDK: CosmosSDKService,
     private readonly key: KeyService,
     private readonly keyStore: KeyStoreService,
     private readonly bankApplication: BankApplicationService,
+    private readonly snackBar: MatSnackBar,
+    private readonly configS: ConfigService,
   ) {
     this.key$ = this.keyStore.currentKey$;
 
@@ -47,11 +52,25 @@ export class SendComponent implements OnInit {
         })),
       ),
     );
+
+    this.minimumGasPrices = this.configS.config.minimumGasPrices;
   }
 
   ngOnInit(): void {}
 
   async onSubmit($event: SendOnSubmitEvent) {
-    await this.bankApplication.send($event.key, $event.toAddress, $event.amount, $event.privateKey);
+    if ($event.amount.length === 0) {
+      this.snackBar.open('Invalid coins', undefined, {
+        duration: 6000,
+      });
+      return;
+    }
+    await this.bankApplication.send(
+      $event.key,
+      $event.toAddress,
+      $event.amount,
+      $event.minimumGasPrice,
+      $event.privateKey,
+    );
   }
 }

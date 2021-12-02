@@ -7,7 +7,8 @@
 </ng-template>
 <ng-template #exist>
   <mat-list>
-    <h3 matSubheader>Send</h3>
+    <h3>Bank-Send</h3>
+    <h4>Balances</h4>
     <mat-divider></mat-divider>
     <ng-container *ngFor="let coin of coins">
       <mat-list-item>
@@ -18,7 +19,9 @@
       <mat-divider></mat-divider>
     </ng-container>
   </mat-list>
-  <form #formRef="ngForm" (submit)="onSubmit(toAddressRef.value, privateKeyRef.value)">
+
+  <h4 class="pt-6 pb-0">Sending Form</h4>
+  <form #formRef="ngForm" (submit)="onSubmit(toAddressRef.value, privateKeyRef.value, minimumGasPriceRef.value)">
     <mat-form-field class="w-full">
       <mat-label>To address</mat-label>
       <input #toAddressRef ngModel name="to-address" matInput required />
@@ -51,6 +54,44 @@
       </div>
     </ng-container>
 
+    <h4 class="pt-3">Gas Settings</h4>
+    <div class="flex flex-row content-content items-end">
+      <mat-form-field class="flex-auto">
+        <mat-label>Minimum Gas Denom</mat-label>
+        <mat-select
+          [(ngModel)]="selectedGasPrice && selectedGasPrice.denom"
+          name="minimum-gas-denom"
+          required
+          (valueChange)="onMinimumGasDenomChanged($event)"
+        >
+          <mat-option *ngFor="let minimumGasPrice of minimumGasPrices" [value]="minimumGasPrice.denom">
+            {{ minimumGasPrice.denom }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <mat-form-field class="flex-auto">
+        <mat-label>Minimum Gas Price</mat-label>
+        <input
+          [(ngModel)]="selectedGasPrice && selectedGasPrice.amount"
+          #minimumGasPriceRef
+          name="minimum-gas-price"
+          matInput
+          type="number"
+          [min]="0"
+          required
+        />
+      </mat-form-field>
+    </div>
+    <mat-slider class="w-full"
+    [max]="1"
+    [min]="0"
+    [step]="0.015"
+    [(ngModel)]="selectedGasPrice && selectedGasPrice.amount"
+    name="minimum-gas-price-slider"
+  >
+  </mat-slider>
+
+    <h4 class="pt-3">Signer</h4>
     <mat-form-field class="w-full">
       <mat-label>ID</mat-label>
       <input
