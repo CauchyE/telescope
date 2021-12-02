@@ -1,7 +1,7 @@
 import { CosmosSDKService } from '../cosmos-sdk.service';
 import { Key } from '../keys/key.model';
 import { KeyService } from '../keys/key.service';
-import { SimulatedTxBankSendResultResponse } from './bank.model';
+import { SimulatedTxResultResponse } from './tx-common.model';
 import { TxCommonService } from './tx-common.service';
 import { Injectable } from '@angular/core';
 import { cosmosclient, rest, proto } from '@cosmos-client/core';
@@ -35,7 +35,7 @@ export class BankService {
     amount: proto.cosmos.base.v1beta1.ICoin[],
     minimumGasPrice: proto.cosmos.base.v1beta1.ICoin,
     privateKey: string,
-  ): Promise<SimulatedTxBankSendResultResponse> {
+  ): Promise<SimulatedTxResultResponse> {
     const dummyFee: proto.cosmos.base.v1beta1.ICoin = {
       denom: minimumGasPrice.denom,
       amount: '1',
