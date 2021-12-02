@@ -1,7 +1,10 @@
+import { TxFeeConfirmDialogComponent } from '../../views/cosmos/tx-fee-confirm-dialog/tx-fee-confirm-dialog.component';
 import { Key } from '../keys/key.model';
 import { CreateValidatorData } from './staking.model';
 import { StakingService } from './staking.service';
+import { SimulatedTxResultResponse } from './tx-common.model';
 import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { proto } from '@cosmos-client/core';
@@ -15,14 +18,54 @@ export class StakingApplicationService {
   constructor(
     private readonly router: Router,
     private readonly snackBar: MatSnackBar,
+    private readonly dialog: MatDialog,
     private readonly loadingDialog: LoadingDialogService,
     private readonly staking: StakingService,
   ) {}
 
-  async createValidator(key: Key | undefined, createValidatorData: CreateValidatorData) {
+  async createValidator(
+    key: Key | undefined,
+    createValidatorData: CreateValidatorData,
+    minimumGasPrice: proto.cosmos.base.v1beta1.ICoin,
+  ) {
     if (key === undefined) {
       this.snackBar.open('Error has occur', undefined, { duration: 6000 });
       this.snackBar.open('Invalid key', undefined, { duration: 6000 });
+      return;
+    }
+
+    // simulate
+    let simulatedResultData: SimulatedTxResultResponse;
+    let gas: proto.cosmos.base.v1beta1.ICoin;
+    let fee: proto.cosmos.base.v1beta1.ICoin;
+
+    try {
+      simulatedResultData = await this.staking.simulateToCreateValidator(
+        key,
+        createValidatorData,
+        minimumGasPrice,
+      );
+      gas = simulatedResultData.estimatedGasUsedWithMargin;
+      fee = simulatedResultData.estimatedFeeWithMargin;
+    } catch (error) {
+      const errorMessage = `Tx simulation failed: ${(error as Error).toString()}`;
+      this.snackBar.open(`An error has occur: ${errorMessage}`);
+      return;
+    }
+
+    // ask the user to confirm the fee with a dialog
+    const txFeeConfirmedResult = await this.dialog
+      .open(TxFeeConfirmDialogComponent, {
+        data: {
+          fee,
+          isConfirmed: false,
+        },
+      })
+      .afterClosed()
+      .toPromise();
+
+    if (txFeeConfirmedResult === undefined || txFeeConfirmedResult.isConfirmed === false) {
+      this.snackBar.open('Tx was canceled', undefined, { duration: 6000 });
       return;
     }
 
@@ -32,7 +75,12 @@ export class StakingApplicationService {
     let txHash: string | undefined;
 
     try {
-      createValidatorResult = await this.staking.createValidator(key, createValidatorData);
+      createValidatorResult = await this.staking.createValidator(
+        key,
+        createValidatorData,
+        gas,
+        fee,
+      );
       txHash = createValidatorResult.tx_response?.txhash;
       if (txHash === undefined) {
         throw Error('Invalid txHash!');
