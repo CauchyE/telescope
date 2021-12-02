@@ -1,7 +1,7 @@
 import { TxFeeConfirmDialogComponent } from '../../views/cosmos/tx-fee-confirm-dialog/tx-fee-confirm-dialog.component';
 import { Key } from '../keys/key.model';
-import { SimulatedTxBankSendResultResponse } from './bank.model';
 import { BankService } from './bank.service';
+import { SimulatedTxResultResponse } from './tx-common.model';
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -29,7 +29,7 @@ export class BankApplicationService {
     privateKey: string,
   ) {
     // simulate
-    let simulatedResultData: SimulatedTxBankSendResultResponse;
+    let simulatedResultData: SimulatedTxResultResponse;
     let gas: proto.cosmos.base.v1beta1.ICoin;
     let fee: proto.cosmos.base.v1beta1.ICoin;
 
