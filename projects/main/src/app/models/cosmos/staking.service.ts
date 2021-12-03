@@ -24,7 +24,7 @@ export class StakingService {
     gas: proto.cosmos.base.v1beta1.ICoin,
     fee: proto.cosmos.base.v1beta1.ICoin,
   ): Promise<InlineResponse20075> {
-    const txBuilder = await this.buildCreateValidator(key, createValidatorData, gas, fee);
+    const txBuilder = await this.buildCreateValidator(key, createValidatorData, gas, fee, false);
     return await this.txCommonService.announceTx(txBuilder);
   }
 
@@ -46,6 +46,7 @@ export class StakingService {
       createValidatorData,
       dummyGas,
       dummyFee,
+      true,
     );
     return await this.txCommonService.simulateTx(simulatedTxBuilder, minimumGasPrice);
   }
@@ -55,6 +56,7 @@ export class StakingService {
     createValidatorData: CreateValidatorData,
     gas: proto.cosmos.base.v1beta1.ICoin,
     fee: proto.cosmos.base.v1beta1.ICoin,
+    isSimulation: boolean,
   ): Promise<cosmosclient.TxBuilder> {
     const sdk = await this.cosmosSDK.sdk().then((sdk) => sdk.rest);
     const privKey = this.key.getPrivKey(key.type, createValidatorData.privateKey);
@@ -98,9 +100,15 @@ export class StakingService {
         details: createValidatorData.details,
       },
       commission: {
-        rate: createValidatorData.rate,
-        max_rate: createValidatorData.max_rate,
-        max_change_rate: createValidatorData.max_change_rate,
+        rate: isSimulation
+          ? (parseInt(createValidatorData.rate) / 100).toFixed(2)
+          : createValidatorData.rate,
+        max_rate: isSimulation
+          ? (parseInt(createValidatorData.max_rate) / 100).toFixed(2)
+          : createValidatorData.max_rate,
+        max_change_rate: isSimulation
+          ? (parseInt(createValidatorData.max_change_rate) / 100).toFixed(2)
+          : createValidatorData.max_change_rate,
       },
       min_self_delegation: createValidatorData.min_self_delegation,
       delegator_address: createValidatorData.delegator_address,
