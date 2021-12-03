@@ -48,6 +48,7 @@ export class StakingApplicationService {
       gas = simulatedResultData.estimatedGasUsedWithMargin;
       fee = simulatedResultData.estimatedFeeWithMargin;
     } catch (error) {
+      console.error(error);
       const errorMessage = `Tx simulation failed: ${(error as Error).toString()}`;
       this.snackBar.open(`An error has occur: ${errorMessage}`);
       return;
@@ -87,7 +88,8 @@ export class StakingApplicationService {
       }
     } catch (error) {
       console.error(error);
-      this.snackBar.open('Error has occur', undefined, { duration: 6000 });
+      const msg = (error as Error).toString();
+      this.snackBar.open(`An error has occur: ${msg}`, undefined, { duration: 6000 });
       return;
     } finally {
       dialogRef.close();
