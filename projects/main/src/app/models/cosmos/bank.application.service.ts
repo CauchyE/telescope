@@ -44,6 +44,7 @@ export class BankApplicationService {
       gas = simulatedResultData.estimatedGasUsedWithMargin;
       fee = simulatedResultData.estimatedFeeWithMargin;
     } catch (error) {
+      console.error(error);
       const errorMessage = `Tx simulation failed: ${(error as Error).toString()}`;
       this.snackBar.open(`An error has occur: ${errorMessage}`);
       return;
@@ -76,6 +77,7 @@ export class BankApplicationService {
         throw Error('Invalid txhash!');
       }
     } catch (error) {
+      console.error(error);
       const msg = (error as Error).toString();
       this.snackBar.open(`An error has occur: ${msg}`, undefined, {
         duration: 6000,
