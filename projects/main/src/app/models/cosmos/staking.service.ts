@@ -2,6 +2,8 @@ import { CosmosSDKService } from '../cosmos-sdk.service';
 import { Key } from '../keys/key.model';
 import { KeyService } from '../keys/key.service';
 import { CreateValidatorData } from './staking.model';
+import { SimulatedTxResultResponse } from './tx-common.model';
+import { TxCommonService } from './tx-common.service';
 import { Injectable } from '@angular/core';
 import { cosmosclient, rest, proto } from '@cosmos-client/core';
 import { InlineResponse20075 } from '@cosmos-client/core/esm/openapi';
@@ -10,12 +12,52 @@ import { InlineResponse20075 } from '@cosmos-client/core/esm/openapi';
   providedIn: 'root',
 })
 export class StakingService {
-  constructor(private readonly cosmosSDK: CosmosSDKService, private readonly key: KeyService) {}
+  constructor(
+    private readonly cosmosSDK: CosmosSDKService,
+    private readonly key: KeyService,
+    private readonly txCommonService: TxCommonService,
+  ) {}
 
   async createValidator(
     key: Key,
     createValidatorData: CreateValidatorData,
+    gas: proto.cosmos.base.v1beta1.ICoin,
+    fee: proto.cosmos.base.v1beta1.ICoin,
   ): Promise<InlineResponse20075> {
+    const txBuilder = await this.buildCreateValidator(key, createValidatorData, gas, fee, false);
+    return await this.txCommonService.announceTx(txBuilder);
+  }
+
+  async simulateToCreateValidator(
+    key: Key,
+    createValidatorData: CreateValidatorData,
+    minimumGasPrice: proto.cosmos.base.v1beta1.ICoin,
+  ): Promise<SimulatedTxResultResponse> {
+    const dummyFee: proto.cosmos.base.v1beta1.ICoin = {
+      denom: minimumGasPrice.denom,
+      amount: '1',
+    };
+    const dummyGas: proto.cosmos.base.v1beta1.ICoin = {
+      denom: minimumGasPrice.denom,
+      amount: '1',
+    };
+    const simulatedTxBuilder = await this.buildCreateValidator(
+      key,
+      createValidatorData,
+      dummyGas,
+      dummyFee,
+      true,
+    );
+    return await this.txCommonService.simulateTx(simulatedTxBuilder, minimumGasPrice);
+  }
+
+  async buildCreateValidator(
+    key: Key,
+    createValidatorData: CreateValidatorData,
+    gas: proto.cosmos.base.v1beta1.ICoin,
+    fee: proto.cosmos.base.v1beta1.ICoin,
+    isSimulation: boolean,
+  ): Promise<cosmosclient.TxBuilder> {
     const sdk = await this.cosmosSDK.sdk().then((sdk) => sdk.rest);
     const privKey = this.key.getPrivKey(key.type, createValidatorData.privateKey);
     const pubKey = privKey.pubKey();
@@ -58,9 +100,15 @@ export class StakingService {
         details: createValidatorData.details,
       },
       commission: {
-        rate: createValidatorData.rate,
-        max_rate: createValidatorData.max_rate,
-        max_change_rate: createValidatorData.max_change_rate,
+        rate: isSimulation
+          ? (parseInt(createValidatorData.rate) / 100).toFixed(2)
+          : createValidatorData.rate,
+        max_rate: isSimulation
+          ? (parseInt(createValidatorData.max_rate) / 100).toFixed(2)
+          : createValidatorData.max_rate,
+        max_change_rate: isSimulation
+          ? (parseInt(createValidatorData.max_change_rate) / 100).toFixed(2)
+          : createValidatorData.max_change_rate,
       },
       min_self_delegation: createValidatorData.min_self_delegation,
       delegator_address: createValidatorData.delegator_address,
@@ -93,7 +141,8 @@ export class StakingService {
         },
       ],
       fee: {
-        gas_limit: cosmosclient.Long.fromString('200000'),
+        amount: [fee],
+        gas_limit: cosmosclient.Long.fromString(gas.amount ? gas.amount : '200000'),
       },
     });
 
@@ -102,17 +151,7 @@ export class StakingService {
     const signDocBytes = txBuilder.signDocBytes(account.account_number);
     txBuilder.addSignature(privKey.sign(signDocBytes));
 
-    // broadcast
-    const result = await rest.tx.broadcastTx(sdk, {
-      tx_bytes: txBuilder.txBytes(),
-      mode: rest.tx.BroadcastTxMode.Block,
-    });
-
-    if (result.data.tx_response?.code !== 0) {
-      throw Error(result.data.tx_response?.raw_log);
-    }
-
-    return result.data;
+    return txBuilder;
   }
 
   async createDelegator(

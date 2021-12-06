@@ -6,6 +6,7 @@ export type SendOnSubmitEvent = {
   key: Key;
   toAddress: string;
   amount: proto.cosmos.base.v1beta1.ICoin[];
+  minimumGasPrice: proto.cosmos.base.v1beta1.ICoin;
   privateKey: string;
 };
 
@@ -21,37 +22,62 @@ export class SendComponent implements OnInit {
   @Input()
   coins?: proto.cosmos.base.v1beta1.ICoin[] | null;
 
+  @Input()
+  amount?: proto.cosmos.base.v1beta1.ICoin[] | null;
+
+  @Input()
+  minimumGasPrices?: proto.cosmos.base.v1beta1.ICoin[];
+
   @Output()
   appSubmit: EventEmitter<SendOnSubmitEvent>;
 
-  amount: proto.cosmos.base.v1beta1.ICoin[];
+  selectedGasPrice?: proto.cosmos.base.v1beta1.ICoin;
 
   constructor() {
     this.appSubmit = new EventEmitter();
-    this.amount = [{ denom: '', amount: '' }];
+  }
+
+  ngOnChanges(): void {
+    if (this.minimumGasPrices && this.minimumGasPrices.length > 0) {
+      this.selectedGasPrice = this.minimumGasPrices[0];
+    }
   }
 
   ngOnInit(): void {}
 
-  removeAmount(index: number) {
-    this.amount.splice(index, 1);
-    return false;
-  }
-
-  addAmount() {
-    this.amount.push({});
-    return false;
-  }
-
-  onSubmit(toAddress: string, privateKey: string) {
+  onSubmit(toAddress: string, privateKey: string, minimumGasPrice: string) {
+    if (!this.amount) {
+      return;
+    }
+    if (this.selectedGasPrice === undefined) {
+      return;
+    }
+    this.selectedGasPrice.amount = minimumGasPrice.toString();
     this.appSubmit.emit({
       key: this.key!,
       toAddress,
-      amount: this.amount.map((data) => ({
-        denom: data.denom,
-        amount: data.amount?.toString(),
-      })),
+      amount: this.amount
+        .filter((coin) => {
+          return Number(coin.amount) > 0;
+        })
+        .map((coin) => ({
+          denom: coin.denom,
+          amount: coin.amount?.toString(),
+        })),
+      minimumGasPrice: this.selectedGasPrice,
       privateKey,
     });
+  }
+
+  onMinimumGasDenomChanged(denom: string): void {
+    this.selectedGasPrice = this.minimumGasPrices?.find(
+      (minimumGasPrice) => minimumGasPrice.denom === denom,
+    );
+  }
+
+  onMinimumGasAmountSliderChanged(amount: string): void {
+    if (this.selectedGasPrice) {
+      this.selectedGasPrice.amount = amount;
+    }
   }
 }

@@ -1,0 +1,16 @@
+<form #formRef="ngForm" (submit)="checkDeleteAccount(inputId)">
+  <p class="p-1 mb-2 rounded border border-red-500">
+    You can delete your account here.<br>
+    If you do not backup your private key or mnemonics,<br>
+    the assets of this account will be permanently lost.<br>
+    If you understand this and want to delete your account,<br>
+    please enter your ID.
+  </p>
+  <mat-form-field class="w-full" appearance="fill">
+    <mat-label>ID</mat-label>
+    <input matInput required name="address_name" [(ngModel)]="inputId">
+  </mat-form-field>
+  <div class="mb-2">
+    <button mat-flat-button class="w-full" color="warn">Delete</button>
+  </div>
+</form>

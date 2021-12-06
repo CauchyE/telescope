@@ -1,6 +1,7 @@
 import { CreateValidatorData } from '../../../../models/cosmos/staking.model';
 import { Key } from '../../../../models/keys/key.model';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { proto } from '@cosmos-client/core';
 
 @Component({
   selector: 'app-view-create-validator',
@@ -25,10 +26,23 @@ export class CreateValidatorComponent implements OnInit {
   @Input() ip?: string | null;
   @Input() node_id?: string | null;
   @Input() pubkey?: string | null;
+  @Input() minimumGasPrices?: proto.cosmos.base.v1beta1.ICoin[];
 
-  @Output() submitCreateValidator = new EventEmitter<CreateValidatorData>();
+  @Output() submitCreateValidator = new EventEmitter<
+    CreateValidatorData & {
+      minimumGasPrice: proto.cosmos.base.v1beta1.ICoin;
+    }
+  >();
+
+  minimumGasPrice?: proto.cosmos.base.v1beta1.ICoin;
 
   constructor() {}
+
+  ngOnChanges(): void {
+    if (this.minimumGasPrices && this.minimumGasPrices.length > 0) {
+      this.minimumGasPrice = this.minimumGasPrices[0];
+    }
+  }
 
   ngOnInit(): void {}
 
@@ -50,7 +64,11 @@ export class CreateValidatorComponent implements OnInit {
     ip: string,
     node_id: string,
     pubkey: string,
+    minimumGasPriceAmount: string,
   ): Promise<void> {
+    if (this.minimumGasPrice === undefined) {
+      return;
+    }
     this.submitCreateValidator.emit({
       privateKey,
       moniker,
@@ -69,6 +87,22 @@ export class CreateValidatorComponent implements OnInit {
       ip,
       node_id,
       pubkey,
+      minimumGasPrice: {
+        denom: this.minimumGasPrice.denom,
+        amount: minimumGasPriceAmount,
+      },
     });
+  }
+
+  onMinimumGasDenomChanged(denom: string): void {
+    this.minimumGasPrice = this.minimumGasPrices?.find(
+      (minimumGasPrice) => minimumGasPrice.denom === denom,
+    );
+  }
+
+  onMinimumGasAmountSliderChanged(amount: string): void {
+    if (this.minimumGasPrice) {
+      this.minimumGasPrice.amount = amount;
+    }
   }
 }

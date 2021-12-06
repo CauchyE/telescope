@@ -5,6 +5,8 @@ import { KeyService } from '../../../../models/keys/key.service';
 import { KeyStoreService } from '../../../../models/keys/key.store.service';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { proto } from '@cosmos-client/core';
+import { ConfigService } from 'projects/main/src/app/models/config.service';
 import { Observable } from 'rxjs';
 import { filter, map } from 'rxjs/operators';
 
@@ -31,12 +33,14 @@ export class CreateValidatorComponent implements OnInit {
   ip$: Observable<string>;
   node_id$: Observable<string>;
   pubkey$: Observable<string>;
+  minimumGasPrices: proto.cosmos.base.v1beta1.ICoin[];
 
   constructor(
     private readonly route: ActivatedRoute,
     private readonly keyService: KeyService,
     private readonly keyStoreService: KeyStoreService,
     private readonly stakingApplicationService: StakingApplicationService,
+    private readonly configS: ConfigService,
   ) {
     this.key$ = this.keyStoreService.currentKey$;
     this.moniker$ = this.route.queryParams.pipe(
@@ -103,13 +107,23 @@ export class CreateValidatorComponent implements OnInit {
       filter((queryParams) => queryParams.pubkey),
       map((queryParams) => queryParams.pubkey),
     );
+
+    this.minimumGasPrices = this.configS.config.minimumGasPrices;
   }
 
   ngOnInit(): void {}
 
-  async appSubmitCreateValidator(createValidatorData: CreateValidatorData): Promise<void> {
+  async appSubmitCreateValidator(
+    createValidatorData: CreateValidatorData & {
+      minimumGasPrice: proto.cosmos.base.v1beta1.ICoin;
+    },
+  ): Promise<void> {
     this.key$.subscribe(async (key) => {
-      await this.stakingApplicationService.createValidator(key, createValidatorData);
+      await this.stakingApplicationService.createValidator(
+        key,
+        createValidatorData,
+        createValidatorData.minimumGasPrice,
+      );
     });
   }
 }

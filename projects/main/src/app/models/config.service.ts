@@ -12,6 +12,10 @@ export type Config = {
     consAddr: string;
     consPub: string;
   };
+  minimumGasPrices: {
+    denom: string;
+    amount: string;
+  }[];
   extension?: {
     faucet?: {
       hasFaucet: boolean;
