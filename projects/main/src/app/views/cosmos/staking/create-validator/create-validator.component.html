@@ -16,7 +16,8 @@
   amountRef.value,
   ipRef.value,
   nodeIdRef.value,
-  pubkeyRef.value)"
+  pubkeyRef.value,
+  minimumGasPriceRef.value)"
 >
   <mat-form-field class="w-full">
     <mat-label>Moniker</mat-label>
@@ -196,6 +197,45 @@
       required
     />
   </mat-form-field>
+
+  <h4 class="pt-3">Gas Settings</h4>
+  <div class="flex flex-row content-content items-end">
+    <mat-form-field class="flex-auto">
+      <mat-label>Minimum Gas Denom</mat-label>
+      <mat-select
+        [(ngModel)]="minimumGasPrice && minimumGasPrice.denom"
+        name="minimum-gas-denom"
+        required
+        (valueChange)="onMinimumGasDenomChanged($event)"
+      >
+        <mat-option *ngFor="let minimumGasPriceOption of minimumGasPrices" [value]="minimumGasPriceOption.denom">
+          {{ minimumGasPriceOption.denom }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="flex-auto">
+      <mat-label>Minimum Gas Price</mat-label>
+      <input
+        [(ngModel)]="minimumGasPrice && minimumGasPrice.amount"
+        #minimumGasPriceRef
+        name="minimum-gas-price"
+        matInput
+        type="number"
+        [min]="0"
+        required
+      />
+    </mat-form-field>
+  </div>
+  <mat-slider class="w-full"
+    [max]="1"
+    [min]="0"
+    [step]="0.015"
+    [(ngModel)]="minimumGasPrice && minimumGasPrice.amount"
+    name="minimum-gas-price-slider"
+  >
+  </mat-slider>
+
+  <h4 class="pt-3">Signer</h4>
   <mat-form-field class="w-full">
     <mat-label>ID</mat-label>
     <input

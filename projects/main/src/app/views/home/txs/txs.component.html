@@ -21,9 +21,9 @@
         <mat-divider></mat-divider>
         <ng-container *ngFor="let tx of txs">
           <mat-list-item routerLink="/txs/{{ tx.txhash }}">
-            <span class="pr-4">{{ tx.height }}</span>
+            <span class="pr-4 font-mono">{{ tx.height }}</span>
             <span class="flex-auto"></span>
-            <span class="break-all truncate">{{ tx.txhash }}</span>
+            <span class="break-all truncate font-mono">{{ tx.txhash }}</span>
           </mat-list-item>
           <mat-divider></mat-divider>
         </ng-container>

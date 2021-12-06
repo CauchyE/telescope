@@ -1,9 +1,9 @@
-import { Injectable } from '@angular/core';
-import { LoadingDialogService } from 'ng-loading-dialog';
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
 import { KeyType } from './key.model';
 import { KeyService } from './key.service';
+import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
+import { LoadingDialogService } from 'ng-loading-dialog';
 
 @Injectable({
   providedIn: 'root',
@@ -27,6 +27,17 @@ export class KeyApplicationService {
       return;
     }
 
+    const publicKey = Buffer.from(await this.key.getPrivKey(type, privateKey).pubKey().bytes()).toString('hex');
+    const keyList = await this.key.list()
+    for (var i = 0; i < keyList.length; i++) {
+      if (keyList[i].public_key === publicKey) {
+        this.snackBar.open('This mnemonic is already used', undefined, {
+          duration: 3000,
+        });
+        return;
+      }
+    }
+
     const dialogRef = this.loadingDialog.open('Creating');
     try {
       await this.key.set(id, type, privateKey);
@@ -44,6 +55,16 @@ export class KeyApplicationService {
     });
 
     await this.router.navigate(['keys', id]);
+  }
+
+  async delete(id: string) {
+    await this.key.delete(id);
+
+    this.snackBar.open('Successfully deleted', undefined, {
+      duration: 6000,
+    });
+
+    await this.router.navigate(['keys']);
   }
 
   sign(data: string, privateKey: string): string {
