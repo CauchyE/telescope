@@ -22,13 +22,12 @@
         {{ block?.block?.header?.time | date : 'yyyy-M-d a h:mm:ss z' }}
       </span>
     </mat-list-item>
-    <mat-divider [inset]="true"></mat-divider>
   </mat-list>
 </mat-card>
 
-<h3>Validatorsets</h3>
+<h3>Validator sets</h3>
 <ng-container *ngFor="let validatorset of validatorsets?.validators">
-  <mat-card>
+  <mat-card class="mb-2">
     <mat-list>
       <mat-list-item>
         <span class="whitespace-nowrap">Address:</span>
@@ -47,7 +46,6 @@
         <span class="flex-auto"></span>
         <span class="ml-2 break-all text-sm sm:text-base">{{ validatorset.proposer_priority }}</span>
       </mat-list-item>
-      <mat-divider [inset]="true"></mat-divider>
     </mat-list>
   </mat-card>
 </ng-container>

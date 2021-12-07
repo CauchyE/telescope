@@ -36,7 +36,7 @@
         {{ tx?.tx_response?.timestamp | date : 'yyyy-M-d a h:mm:ss z' }}
       </span>
     </mat-list-item>
-    <mat-divider [inset]="true"></mat-divider>
+
   </mat-list>
 </mat-card>
 
@@ -51,13 +51,13 @@
           <span class="ml-2 break-all">{{ constructorName(msg) }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
-        <ng-template ngFor let-data [ngForOf]="entries(msg)">
+        <ng-template ngFor let-data [ngForOf]="entries(msg)" let-last="last">
           <mat-list-item>
             <span class="whitespace-nowrap">{{ data[0] }}</span>
             <span class="flex-auto"></span>
             <span class="ml-2 break-all text-xs sm:text-base">{{ data[1] | json }}</span>
           </mat-list-item>
-          <mat-divider [inset]="true"></mat-divider>
+          <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
         </ng-template>
       </mat-list>
     </mat-card>
@@ -67,7 +67,7 @@
 <h3>Signatures</h3>
 <ng-template ngFor let-signerInfo [ngForOf]="tx?.tx?.auth_info?.signer_infos">
   <ng-container *ngIf="unpackKey(signerInfo.public_key) as pubKey">
-    <mat-card>
+    <mat-card class="mb-2">
       <mat-list>
         <mat-list-item>
           <span class="whitespace-nowrap">Key Type: </span>
@@ -86,7 +86,6 @@
           <span class="flex-auto"></span>
           <span class="ml-2 break-all">{{ signerInfo?.mode_info }}</span>
         </mat-list-item>
-        <mat-divider [inset]="true"></mat-divider>
       </mat-list>
     </mat-card>
   </ng-container>
@@ -95,7 +94,7 @@
 <h3>Logs</h3>
 <ng-template ngFor let-log [ngForOf]="tx?.tx_response?.logs">
   <ng-template ngFor let-event [ngForOf]="log.events">
-    <mat-card>
+    <mat-card class="mb-2">
       <mat-list>
         <mat-list-item>
           <span class="whitespace-nowrap">Type: </span>
@@ -103,13 +102,13 @@
           <span class="ml-2 break-all">{{ event.type }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
-        <ng-template ngFor let-attr [ngForOf]="event.attributes">
+        <ng-template ngFor let-attr [ngForOf]="event.attributes" let-last="last">
           <mat-list-item>
             <span class="whitespace-nowrap">{{ attr.key }}</span>
             <span class="flex-auto"></span>
             <span class="ml-2 break-all text-sm sm:text-base">{{ attr.value | json }}</span>
           </mat-list-item>
-          <mat-divider [inset]="true"></mat-divider>
+          <mat-divider [inset]="true" *ngIf="!last"></mat-divider>
         </ng-template>
       </mat-list>
     </mat-card>
