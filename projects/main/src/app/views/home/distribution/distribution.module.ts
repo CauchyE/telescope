@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DistributionComponent } from './distribution.component';
 import { RouterModule } from '@angular/router';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '../../material.module';
 
 
@@ -12,7 +11,7 @@ import { MaterialModule } from '../../material.module';
     DistributionComponent
   ],
   imports: [
-    CommonModule, RouterModule, FlexLayoutModule, MaterialModule
+    CommonModule, RouterModule, MaterialModule
   ],
   exports: [
     DistributionComponent

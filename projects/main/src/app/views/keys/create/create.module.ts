@@ -3,7 +3,6 @@ import { CreateComponent } from './create.component';
 import { ClipboardModule } from '@angular/cdk/clipboard';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 
@@ -13,10 +12,9 @@ import { RouterModule } from '@angular/router';
     CommonModule,
     RouterModule,
     FormsModule,
-    FlexLayoutModule,
     MaterialModule,
     ClipboardModule,
   ],
   exports: [CreateComponent],
 })
-export class CreateModule {}
+export class CreateModule { }

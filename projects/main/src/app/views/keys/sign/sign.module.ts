@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { SignComponent } from './sign.component';
 import { RouterModule } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { FlexLayoutModule } from '@angular/flex-layout';
 import { MaterialModule } from '../../material.module';
 
 @NgModule({
@@ -14,7 +13,6 @@ import { MaterialModule } from '../../material.module';
     CommonModule,
     RouterModule,
     FormsModule,
-    FlexLayoutModule,
     MaterialModule
   ],
   exports: [SignComponent]
