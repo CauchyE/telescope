@@ -33,7 +33,7 @@
     "bip39": "^3.0.4",
     "crypto-browserify": "^3.12.0",
     "dexie": "^3.0.3",
-    "ng-loading-dialog": "^12.0.5",
+    "ng-loading-dialog": "^12.0.6",
     "ng-min-max": "^12.0.5",
     "querystring": "^0.2.1",
     "rxjs": "~6.6.0",
