@@ -9,16 +9,18 @@
 </div>
 <div>
   <mat-card>
-    <mat-nav-list>
-      <ng-container *ngIf="txs === undefined || null ; then empty; else exist"></ng-container>
-      <ng-template #empty></ng-template>
-      <ng-template #exist>
+    <ng-container *ngIf="txs === undefined || null ; then empty; else exist"></ng-container>
+    <ng-template #empty></ng-template>
+    <ng-template #exist>
+      <mat-list>
         <mat-list-item>
           <span class="break-all truncate pr-4">Block Height</span>
           <span class="flex-auto"></span>
           <span class="break-all truncate">Tx Hash</span>
         </mat-list-item>
         <mat-divider></mat-divider>
+      </mat-list>
+      <mat-nav-list>
         <ng-container *ngFor="let tx of txs">
           <mat-list-item routerLink="/txs/{{ tx.txhash }}">
             <span class="pr-4 font-mono">{{ tx.height }}</span>
@@ -30,7 +32,7 @@
         <mat-paginator [length]="pageLength" [pageSize]="pageSize" [pageIndex]="pageNumber ? pageNumber - 1 : 0"
           [pageSizeOptions]="pageSizeOptions ? pageSizeOptions : []" (page)="onPaginationChange($event)">
         </mat-paginator>
-      </ng-template>
-    </mat-nav-list>
+      </mat-nav-list>
+    </ng-template>
   </mat-card>
 </div>
