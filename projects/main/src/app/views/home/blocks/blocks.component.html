@@ -1,16 +1,6 @@
 <h2>Latest Blocks</h2>
 <div class="overflow-scroll h-80">
   <mat-card>
-    <!--
-      <ng-container *ngFor="let latestBlock of latestBlocks">
-        <mat-list-item routerLink="/blocks/{{ latestBlock.result.data.value.block.header.height }}">
-          <span >{{ latestBlock.result.data.value.block.header.height }}</span>
-          <span class="flex-auto"></span>
-          <span >{{ latestBlock.result.data.value.block.header.time }}</span>
-        </mat-list-item>
-        <mat-divider></mat-divider>
-      </ng-container>
-      -->
     <ng-container *ngIf="latestBlocks === undefined || null ; then empty; else exist"></ng-container>
     <ng-template #empty></ng-template>
     <ng-template #exist>
