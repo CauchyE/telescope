@@ -25,12 +25,48 @@ export class ToolbarComponent implements OnInit {
 
   options = [
     {
-      label: (value: string) => `Address "${value}"`,
-      format: (value: string) => `address=${value}`,
+      label: (value: string) => {
+        const equalCharacter = value.indexOf("=")
+        if (equalCharacter) {
+          const fixedValue = value.substr(equalCharacter + 1)
+          return `Address "${fixedValue}"`
+        }
+        else {
+          return `Address "${value}"`
+        }
+      },
+      format: (value: string) => {
+        const equalCharacter = value.indexOf("=")
+        if (equalCharacter) {
+          const fixedValue = value.substr(equalCharacter + 1)
+          return `address=${fixedValue}`
+        }
+        else {
+          return `address=${value}`
+        }
+      }
     },
     {
-      label: (value: string) => `Tx hash "${value}"`,
-      format: (value: string) => `tx_hash=${value}`,
+      label: (value: string) => {
+        const equalCharacter = value.indexOf("=")
+        if (equalCharacter) {
+          const fixedValue = value.substr(equalCharacter + 1)
+          return `Tx hash "${fixedValue}"`
+        }
+        else {
+          return `Tx hash "${value}"`
+        }
+      },
+      format: (value: string) => {
+        const equalCharacter = value.indexOf("=")
+        if (equalCharacter) {
+          const fixedValue = value.substr(equalCharacter + 1)
+          return `tx_hash=${fixedValue}`
+        }
+        else {
+          return `tx_hash=${value}`
+        }
+      },
     },
   ];
 
@@ -39,7 +75,7 @@ export class ToolbarComponent implements OnInit {
     this.appSubmitSearchValue = new EventEmitter();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onOptionSelected(option: any): void {
     this.appSubmitSearchValue.emit(option);
