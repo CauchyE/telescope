@@ -24,6 +24,7 @@ export class AppComponent implements OnInit {
   drawerMode$: BehaviorSubject<MatDrawerMode> = new BehaviorSubject('side' as MatDrawerMode);
 
   drawerOpened$ = new BehaviorSubject(true);
+  drawerClosed$ = new BehaviorSubject(false);
 
   constructor(private router: Router, private ngZone: NgZone) {
     this.searchValue = '';
@@ -50,9 +51,11 @@ export class AppComponent implements OnInit {
     if (width < 640) {
       this.drawerMode$.next('over');
       this.drawerOpened$.next(false);
+      this.drawerClosed$.next(true);
     } else {
       this.drawerMode$.next('side');
       this.drawerOpened$.next(true);
+      this.drawerClosed$.next(false);
     }
   }
 
