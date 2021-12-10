@@ -1,5 +1,5 @@
 <form #form="ngForm" class="text-base mt-4 sm:mt-6">
-  <mat-form-field appearance="fill" (submit)="onSubmit(searchValueRef.value)" [style.width.%]="300">
+  <mat-form-field appearance="fill" (submit)="onSubmit(searchValueRef.value)" class="w-full">
     <mat-label>Search</mat-label>
     <input #searchValueRef matInput id="searchValue" name="searchValue" [ngModel]="searchValue"
       [matAutocomplete]="auto" />
