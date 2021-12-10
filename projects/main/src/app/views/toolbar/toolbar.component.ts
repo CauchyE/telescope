@@ -39,7 +39,7 @@ export class ToolbarComponent implements OnInit {
     this.appSubmitSearchValue = new EventEmitter();
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   onOptionSelected(option: any): void {
     this.appSubmitSearchValue.emit(option);
