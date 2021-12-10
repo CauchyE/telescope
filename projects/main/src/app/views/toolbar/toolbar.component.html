@@ -4,7 +4,8 @@
     <input #searchValueRef matInput required id="searchValue" name="searchValue" [ngModel]="searchValue"
       [matAutocomplete]="auto" />
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event.option.value)">
-      <mat-option *ngFor="let option of options" [value]="option.format(searchValueRef.value)">
+      <mat-option *ngFor="let option of options" [value]="option.format(searchValueRef.value)"
+        [disabled]="option.allowed(searchValueRef.value)">
         {{ option.label(searchValueRef.value) }}
       </mat-option>
     </mat-autocomplete>

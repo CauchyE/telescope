@@ -25,12 +25,22 @@ export class ToolbarComponent implements OnInit {
 
   options = [
     {
+      //address
       label: (value: string) => `Address "${value}"`,
       format: (value: string) => `address=${value}`,
+      allowed: (value: string) => true,
     },
     {
+      //transaction
       label: (value: string) => `Tx hash "${value}"`,
       format: (value: string) => `tx_hash=${value}`,
+      allowed: (value: string) => false,
+    },
+    {
+      //blocks
+      label: (value: string) => `Blocks "${value}"`,
+      format: (value: string) => `Blocks=${value}`,
+      allowed: (value: string) => true,
     },
   ];
 
@@ -39,7 +49,9 @@ export class ToolbarComponent implements OnInit {
     this.appSubmitSearchValue = new EventEmitter();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
+
+
 
   onOptionSelected(option: any): void {
     this.appSubmitSearchValue.emit(option);
