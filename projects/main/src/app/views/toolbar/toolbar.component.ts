@@ -26,11 +26,11 @@ export class ToolbarComponent implements OnInit {
   options = [
     {
       label: (value: string) => `Address "${value}"`,
-      format: (value: string) => `address=${value}`
+      format: (value: string) => `address=${value}`,
     },
     {
       label: (value: string) => `Tx hash "${value}"`,
-      format: (value: string) => `tx_hash=${value}`
+      format: (value: string) => `tx_hash=${value}`,
     },
   ];
 
