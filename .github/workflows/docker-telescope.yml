@@ -25,8 +25,8 @@ jobs:
           file: ./projects/main/Dockerfile
           push: true
           tags: |
-            ghcr.io/CauchyE/telescope:${{ steps.variables.outputs.version }}
-            ghcr.io/CauchyE/telescope:latest
+            ghcr.io/cauchye/telescope:${{ steps.variables.outputs.version }}
+            ghcr.io/cauchye/telescope:latest
       - name: Create GitHub dispatch event
         run: |
           curl --request POST 'https://api.github.com/repos/UnUniFi/utils/dispatches' \
