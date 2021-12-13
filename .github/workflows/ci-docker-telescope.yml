@@ -27,5 +27,5 @@ jobs:
           file: ./projects/main/Dockerfile
           push: false
           tags: |
-            ghcr.io/CauchyE/telescope:${{ steps.variables.outputs.version }}
-            ghcr.io/CauchyE/telescope:latest
+            ghcr.io/cauchye/telescope:${{ steps.variables.outputs.version }}
+            ghcr.io/cauchye/telescope:latest
