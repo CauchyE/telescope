@@ -2,7 +2,8 @@ version: '3'
 
 services:
   telescope:
-    image: lcnem/telescope
+    container_name: telescope
+    image: ghcr.io/CauchyE/telescope
     # build:
     #   dockerfile: ./Dockerfile
     volumes:
