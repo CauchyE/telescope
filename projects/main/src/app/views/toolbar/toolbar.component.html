@@ -1,7 +1,7 @@
 <form #form="ngForm" class="text-base mt-4 sm:mt-6">
-  <mat-form-field appearance="fill" (submit)="onSubmit(searchValueRef.value)">
+  <mat-form-field appearance="fill" (submit)="onSubmit(searchValueRef.value)" class="w-full">
     <mat-label>Search</mat-label>
-    <input #searchValueRef matInput required id="searchValue" name="searchValue" [ngModel]="searchValue"
+    <input #searchValueRef matInput id="searchValue" name="searchValue" [ngModel]="searchValue"
       [matAutocomplete]="auto" />
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event.option.value)">
       <mat-option *ngFor="let option of options" [value]="option.format(searchValueRef.value)">
