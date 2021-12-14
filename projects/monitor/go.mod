@@ -1,4 +1,4 @@
-module github.com/lcnem/telescope/projects/monitor
+module github.com/CauchyE/telescope/projects/monitor
 
 go 1.16
 

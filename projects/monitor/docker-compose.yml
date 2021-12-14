@@ -3,7 +3,7 @@ version: '3'
 services:
   monitor:
     container_name: monitor
-    image: lcnem/telescope-monitor
+    image: ghcr.io/cauchye/telescope-monitor
     # ports:
     #   - 9000:9000
     volumes:
