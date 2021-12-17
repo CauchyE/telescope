@@ -1,8 +1,4 @@
-
-<view-app
-[extensionNavigations]="config.extension?.navigations"
-[searchValue]="searchValue$ | async"
-(appSubmitSearchValue)="onSubmitSearchValue($event)"
->
+<view-app [extensionNavigations]="config.extension?.navigations" [searchValue]="searchValue$ | async"
+  [searchWordOption]="searchWordOption" (appSubmitSearchValue)="onSubmitSearchValue($event)" (appSubmitInputValue)="onCheckInputValue($event)">
   <router-outlet></router-outlet>
 </view-app>

@@ -15,8 +15,14 @@ export class AppComponent implements OnInit {
   @Input()
   searchValue: string | null;
 
+  @Input()
+  searchWordOption: {label:string,allowed:boolean} | null;
+
   @Output()
   appSubmitSearchValue: EventEmitter<string>;
+
+  @Output()
+  appSubmitInputValue: EventEmitter<string>;
 
   @ViewChild('drawer')
   sidenav!: MatSidenav;
@@ -27,7 +33,9 @@ export class AppComponent implements OnInit {
 
   constructor(private router: Router, private ngZone: NgZone) {
     this.searchValue = '';
+    this.searchWordOption = {label:"",allowed:false};
     this.appSubmitSearchValue = new EventEmitter();
+    this.appSubmitInputValue = new EventEmitter();
 
     window.onresize = (_) => {
       this.ngZone.run(() => {
@@ -58,5 +66,9 @@ export class AppComponent implements OnInit {
 
   onSubmitSearchValue(value: string) {
     this.appSubmitSearchValue.emit(value);
+  }
+
+  onSubmitInputValue(value: string) {
+    this.appSubmitInputValue.emit(value);
   }
 }

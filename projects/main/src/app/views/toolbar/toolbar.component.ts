@@ -17,11 +17,18 @@ export class ToolbarComponent implements OnInit {
   @Input()
   searchValue: string | null;
 
+  @Input()
+  searchWordOption: {label:string,allowed:boolean} | null;
+
   @Output()
   appSubmitSearchValue: EventEmitter<string>;
 
+  @Output()
+  appSubmitInputValue: EventEmitter<string>;
+
   @ViewChild('searchValueRef')
   searchValueRef!: NgModel;
+
 
   options = [
     {
@@ -46,7 +53,9 @@ export class ToolbarComponent implements OnInit {
 
   constructor() {
     this.searchValue = '';
+    this.searchWordOption = {label:"",allowed:false}
     this.appSubmitSearchValue = new EventEmitter();
+    this.appSubmitInputValue = new EventEmitter();
   }
 
   ngOnInit(): void { }
@@ -57,7 +66,11 @@ export class ToolbarComponent implements OnInit {
     this.appSubmitSearchValue.emit(option);
   }
 
-  onSubmit(value: string) {
+  onSubmit(value: string): void {
     this.appSubmitSearchValue.emit(value);
+  }
+
+  onChangeInput(inputValue: string): void {
+    this.appSubmitInputValue.emit(inputValue);
   }
 }

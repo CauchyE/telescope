@@ -48,7 +48,8 @@
           <mat-icon>menu</mat-icon>
         </button>
       </ng-container>
-      <view-toolbar class="flex-auto" [searchValue]="searchValue" (appSubmitSearchValue)="onSubmitSearchValue($event)">
+      <view-toolbar class="flex-auto" [searchWordOption]="searchWordOption" [searchValue]="searchValue"
+        (appSubmitSearchValue)="onSubmitSearchValue($event)" (appSubmitInputValue)="onSubmitInputValue($event)">
       </view-toolbar>
     </mat-toolbar>
     <div class="container">
