@@ -67,23 +67,26 @@ export class AppComponent {
 
   async onCheckInputValue(value: string) {
 
+    //test
     console.log("r",value)
 
-    //
+    //default value
     this.searchWordOption = {label:value,allowed:false}
 
-    //
+    //get block height for validation
     var sdk = await this.cosmosSDK.sdk$.toPromise();
     var latestBlock : InlineResponse20035 = await rest.tendermint.getLatestBlock(sdk.rest).then((res) => res.data)
     var blockHeight = latestBlock.block?.header?.height
-    console.log("BH",blockHeight)
+    console.log("BH",blockHeight) //<- not work
 
-    //validation
+    //validation & return block
     if( 1 <= Number(value) && Number(value) <= Number(blockHeight) ){
       console.log("100",value)
       this.searchWordOption.allowed = true
       return
     }
+
+    //validation & return account
     if( value.length == 43 && value.substring(0,4) === "jpyx" ){
       console.log("in_add")
       var address = cosmosclient.AccAddress.fromString(value);
@@ -107,6 +110,8 @@ export class AppComponent {
         return;
       }*/
     }
+
+    //validation & return transaction
     if(value.length == 20){
 
     }
