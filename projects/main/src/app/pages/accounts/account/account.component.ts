@@ -13,7 +13,12 @@ import { map, mergeMap } from 'rxjs/operators';
 })
 export class AccountComponent implements OnInit {
   address$: Observable<cosmosclient.AccAddress | undefined>;
-  account$: Observable<proto.cosmos.auth.v1beta1.BaseAccount | unknown | undefined>;
+  account$: Observable<
+    | proto.cosmos.auth.v1beta1.BaseAccount
+    | proto.cosmos.vesting.v1beta1.ContinuousVestingAccount
+    | unknown
+    | undefined
+  >;
   balances$: Observable<proto.cosmos.base.v1beta1.ICoin[] | undefined>;
 
   constructor(
