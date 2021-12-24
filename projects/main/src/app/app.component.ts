@@ -1,9 +1,10 @@
 import { Config, ConfigService } from './models/config.service';
 import { CosmosSDKService } from './models/cosmos-sdk.service';
-import { cosmosclient, rest, proto } from '@cosmos-client/core';
-import { InlineResponse20035, InlineResponse20036 } from '@cosmos-client/core/esm/openapi';
 import { Component } from '@angular/core';
 import { Router, ActivationEnd } from '@angular/router';
+import { cosmosclient, rest, proto } from '@cosmos-client/core';
+import { InlineResponse20035, InlineResponse20036 } from '@cosmos-client/core/esm/openapi';
+import { CosmosTxV1beta1GetTxResponse } from '@cosmos-client/core/esm/openapi';
 import * as qs from 'querystring';
 import { Observable } from 'rxjs';
 import { map, filter } from 'rxjs/operators';
@@ -16,7 +17,7 @@ import { map, filter } from 'rxjs/operators';
 export class AppComponent {
   searchValue$: Observable<string>;
 
-  searchWordOption: {label:string,allowed:boolean} = {label:"",allowed:false};
+  searchWordOption: { label: string; allowed: boolean } = { label: '', allowed: false };
 
   config: Config;
 
@@ -33,13 +34,13 @@ export class AppComponent {
       map((event) => {
         console.log(event.snapshot.params);
         if ('address' in event.snapshot.params) {
-          const A = qs.stringify({ address: event.snapshot.params.address });
-          console.log("A", A)
-          return A
+          const address = qs.stringify({ address: event.snapshot.params.address });
+          const fixedAddress = address.substring(address.indexOf('=') + 1);
+          return fixedAddress;
         } else if ('tx_hash' in event.snapshot.params) {
-          var A = qs.stringify({ txHash: event.snapshot.params.tx_hash });
-          console.log("A", A)
-          return A
+          const txHash = qs.stringify({ txHash: event.snapshot.params.tx_hash });
+          const fixedTxHash = txHash.substring(txHash.indexOf('=') + 1);
+          return fixedTxHash;
         }
         return '';
       }),
@@ -62,58 +63,55 @@ export class AppComponent {
       await this.router.navigate(['accounts', params.address]);
     } else if ('tx_hash' in params) {
       await this.router.navigate(['txs', params.tx_hash]);
+    } else if ('blocks' in params) {
+      await this.router.navigate(['blocks', params.blocks]);
     }
   }
 
   async onCheckInputValue(value: string) {
-
-    //test
-    console.log("r",value)
+    console.log('v', value);
 
     //default value
-    this.searchWordOption = {label:value,allowed:false}
+    this.searchWordOption = { label: value, allowed: false };
 
-    //get block height for validation
-    var sdk = await this.cosmosSDK.sdk$.toPromise();
-    var latestBlock : InlineResponse20035 = await rest.tendermint.getLatestBlock(sdk.rest).then((res) => res.data)
-    var blockHeight = latestBlock.block?.header?.height
-    console.log("BH",blockHeight) //<- not work
+    //sdk
+    const sdk = await this.cosmosSDK.sdk$.toPromise(); //<-stop
 
-    //validation & return block
-    if( 1 <= Number(value) && Number(value) <= Number(blockHeight) ){
-      console.log("100",value)
-      this.searchWordOption.allowed = true
-      return
+    //check block or not,
+    if (1 <= Number(value)) {
+      //get block height for validation
+      const latestBlock: InlineResponse20035 = await rest.tendermint
+        .getLatestBlock(sdk.rest)
+        .then((res) => res.data);
+      const blockHeight = latestBlock.block?.header?.height;
+
+      //validation & return block
+      if (Number(value) <= Number(blockHeight)) {
+        this.searchWordOption.allowed = true;
+      }
     }
 
-    //validation & return account
-    if( value.length == 43 && value.substring(0,4) === "jpyx" ){
-      console.log("in_add")
+    //account validation
+    if (value.length == 46 && value.substring(0, 7) === 'ununifi') {
+      console.log('in_address_dayo');
+
+      //account api
       var address = cosmosclient.AccAddress.fromString(value);
       var baseAccount = await rest.auth
-          .account(sdk.rest, address)
-          .then((res) => res.data && cosmosclient.codec.unpackCosmosAny(res.data.account))
+        .account(sdk.rest, address)
+        .then((res) => res.data && cosmosclient.codec.unpackCosmosAny(res.data.account));
       if (baseAccount instanceof proto.cosmos.auth.v1beta1.BaseAccount) {
-        this.searchWordOption.allowed = true
-        console.log("conglaturation")
-        return
+        this.searchWordOption.allowed = true;
       }
-
-      /*
-      try {
-        const accAddress = cosmosclient.AccAddress.fromString(value);
-        this.searchWordOption.allowed = true
-        console.log("OK")
-        return
-      } catch (error) {
-        console.error(error);
-        return;
-      }*/
     }
 
-    //validation & return transaction
-    if(value.length == 20){
-
+    //transaction validation
+    if (value.length == 64) {
+      //transaction api
+      const tx = await rest.tx.getTx(sdk.rest, value).then((res) => res.data);
+      if (tx !== undefined) {
+        this.searchWordOption.allowed = true;
+      }
     }
   }
 }
