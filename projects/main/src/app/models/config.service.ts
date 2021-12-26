@@ -36,6 +36,12 @@ export type Config = {
   };
 };
 
+export type SearchResult = {
+  searchValue: string;
+  type: string; // "blocks" or "accounts" or "txs"
+  matched: boolean;
+};
+
 declare const config: Config;
 
 @Injectable({

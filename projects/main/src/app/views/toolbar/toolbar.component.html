@@ -1,19 +1,32 @@
 <form #form="ngForm" class="text-base mt-4 sm:mt-6">
   <mat-form-field appearance="fill" (submit)="onSubmit(searchValueRef.value)" class="w-full">
     <mat-label>Search</mat-label>
-    <input #searchValueRef matInput id="searchValue" name="searchValue" [ngModel]="searchValue" [matAutocomplete]="auto"
-      (ngModelChange)="onChangeInput(searchValueRef.value)" />
-    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event.option.value)">
+    <input
+      #searchValueRef
+      matInput
+      id="searchValue"
+      name="searchValue"
+      [ngModel]="searchValue"
+      [matAutocomplete]="auto"
+      (ngModelChange)="onChangeInput(searchValueRef.value)"
+    />
+    <mat-autocomplete
+      #auto="matAutocomplete"
+      (optionSelected)="onOptionSelected($event.option.value)"
+    >
       <!--
       <mat-option *ngFor="let option of options" [value]="option.format(searchValueRef.value)"
         [disabled]="option.allowed(searchValueRef.value)">
         {{ option.label(searchValueRef.value) }}
       </mat-option>
       -->
-      <mat-option *ngIf="searchWordOption" [value]="searchWordOption.label" [disabled]="!searchWordOption.allowed"
+      <mat-option
+        *ngIf="searchWordOption"
+        [value]="searchWordOption.label"
+        [disabled]="!searchWordOption.allowed"
       >
-      {{ searchWordOption.label }}
-    </mat-option>
+        {{ searchWordOption.label }}
+      </mat-option>
     </mat-autocomplete>
     <button mat-icon-button matSuffix [disabled]="form.invalid">
       <mat-icon>search</mat-icon>
