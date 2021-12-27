@@ -71,9 +71,9 @@ export class AppComponent {
     //
 
     const timer$ = timer(0, 3 * 1000);
-    const sub = timer$.subscribe((n) => console.log('timer=', n)); //ここまではおｋ
-    const sub2$ = combineLatest([timer$, this.searchBoxInputValue$]);
-    const sub2X = sub2$.subscribe(([n, str]) => console.log('timer2=', n, str)); //ここまではおk
+    //const sub = timer$.subscribe((n) => console.log('timer=', n)); //ここまではおｋ
+    //const sub2$ = combineLatest([timer$, this.searchBoxInputValue$]);
+    //const sub2X = sub2$.subscribe(([n, str]) => console.log('timer2=', n, str)); //ここまではおk
 
     const combined$ = combineLatest([timer$, this.cosmosSDK.sdk$]).pipe(
       map(([_, sdk]) => {
@@ -82,20 +82,20 @@ export class AppComponent {
       }),
     );
 
-    this.matchBlockHeightPattern$ = this.searchBoxInputValue$.pipe(
+    this.matchBlockHeightPattern$ = this.searchBoxInputValue$.asObservable().pipe(
       map((value) => {
         console.log('matchBlock', value);
         return 1 <= Number(value);
       }),
     );
-    const sub3X = this.matchBlockHeightPattern$.subscribe((str) => console.log('matBlock', str)); //ここまではおk
+    //const sub3X = this.matchBlockHeightPattern$.subscribe((str) => console.log('matBlock', str)); //ここまではおk
 
     //const test = combined$.pipe(map([_, _]));
 
     //console.log('this.config', this.config);
     //console.log('this.configS', this.configS.config);
 
-    this.matchAccAddressPattern$ = this.searchBoxInputValue$.pipe(
+    this.matchAccAddressPattern$ = this.searchBoxInputValue$.asObservable().pipe(
       map((value) => {
         console.log('matchAdd', value);
         const prefix = this.config.bech32Prefix?.accAddr;
@@ -104,9 +104,9 @@ export class AppComponent {
         return value.length == 46 && value.substring(0, prefixCount) === prefix;
       }),
     );
-    const sub4X = this.matchAccAddressPattern$.subscribe((str) => console.log('mataddr', str));
+    //const sub4X = this.matchAccAddressPattern$.subscribe((str) => console.log('mataddr', str));
 
-    this.matchTxHashPattern$ = this.searchBoxInputValue$.pipe(
+    this.matchTxHashPattern$ = this.searchBoxInputValue$.asObservable().pipe(
       map((value) => {
         console.log('matchTx', value);
         return value.length == 64;
@@ -124,6 +124,7 @@ export class AppComponent {
         const value = this.searchBoxInputValue$.subscribe((val) => {
           inputValue = val;
         });
+        console.log(inputValue);
         value.unsubscribe();
 
         //account api
@@ -132,8 +133,10 @@ export class AppComponent {
           .account(sdk.rest, address)
           .then((res) => res.data && cosmosclient.codec.unpackCosmosAny(res.data.account));
 
+        console.log('base', baseAccount);
+        //console.log('base', await baseAccount);
         if (baseAccount instanceof proto.cosmos.auth.v1beta1.BaseAccount) {
-          console.log('isValidAccAddress_true', baseAccount);
+          console.log('isValidAccAddress_true');
           return of(true);
         }
 
@@ -141,6 +144,7 @@ export class AppComponent {
         return of(false);
       }),
     );
+    //このサブスクリプションはいるらしい。2021/12/27
     const sub5X = this.isValidAccAddress$.subscribe((str) => console.log('isValAddr', str));
   }
 
@@ -162,11 +166,13 @@ export class AppComponent {
     this.searchBoxInputValue$.next(value);
     //console.log('InputValue$', this.searchBoxInputValue$);
 
+    console.log('v', value);
+
     //console.log('AddrPtn$ ', this.matchAccAddressPattern$);
 
     /*/以下削除
 
-    console.log('v', value);
+
 
     //default value
     this.searchWordOption = { label: value, allowed: true };
