@@ -33,7 +33,7 @@ export class BankApplicationService {
     let gas: proto.cosmos.base.v1beta1.ICoin;
     let fee: proto.cosmos.base.v1beta1.ICoin;
 
-    var noSpaceToAddress = toAddress.replace(/\s+/g, '');
+    const noSpaceToAddress = toAddress.replace(/\s+/g, '');
 
     try {
       simulatedResultData = await this.bank.simulateToSend(
