@@ -33,12 +33,12 @@ export class BankApplicationService {
     let gas: proto.cosmos.base.v1beta1.ICoin;
     let fee: proto.cosmos.base.v1beta1.ICoin;
 
-    const noSpaceToAddress = toAddress.replace(/\s+/g, '');
+    const toAddressWithNoWhitespace = toAddress.replace(/\s+/g, '');
 
     try {
       simulatedResultData = await this.bank.simulateToSend(
         key,
-        noSpaceToAddress,
+        toAddressWithNoWhitespace,
         amount,
         minimumGasPrice,
         privateKey,
@@ -73,7 +73,14 @@ export class BankApplicationService {
     let txhash: string | undefined;
 
     try {
-      const res = await this.bank.send(key, noSpaceToAddress, amount, gas, fee, privateKey);
+      const res = await this.bank.send(
+        key,
+        toAddressWithNoWhitespace,
+        amount,
+        gas,
+        fee,
+        privateKey,
+      );
       txhash = res.tx_response?.txhash;
       if (txhash === undefined) {
         throw Error('Invalid txhash!');
