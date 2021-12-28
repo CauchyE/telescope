@@ -19,7 +19,6 @@ export class AppComponent {
 
   searchBoxInputValue$: BehaviorSubject<string> = new BehaviorSubject(''); //孫から受け取るもの。
   //searchValue$: BehaviorSubject<string>; // 孫→子→親コンポーネントの流れでイベントで渡していく
-  //searchResult$: Observable<SearchResult>; // 親→子→孫コンポーネントの流れで値で渡していく。
 
   //後ほど削除
   searchWordOption: { label: string; allowed: boolean } = { label: '', allowed: false };
@@ -28,9 +27,11 @@ export class AppComponent {
   matchAccAddressPattern$: Observable<boolean> = of(false);
   matchTxHashPattern$: Observable<boolean> = of(false);
 
-  //isValidBlockHeight$: Observable<boolean>;
-  isValidAccAddress$: Observable<boolean>;
-  //isValidTxHash$: Observable<boolean>;
+  isValidBlockHeight$: Observable<boolean> = of(false);
+  isValidAccAddress$: Observable<boolean> = of(false);
+  isValidTxHash$: Observable<boolean> = of(false);
+
+  searchResult$: Observable<SearchResult>; // 親→子→孫コンポーネントの流れで値で渡していく。
 
   config: Config;
 
@@ -89,9 +90,7 @@ export class AppComponent {
       }),
     );
     //const sub3X = this.matchBlockHeightPattern$.subscribe((str) => console.log('matBlock', str)); //ここまではおk
-
     //const test = combined$.pipe(map([_, _]));
-
     //console.log('this.config', this.config);
     //console.log('this.configS', this.configS.config);
 
@@ -113,19 +112,51 @@ export class AppComponent {
       }),
     );
 
+    this.isValidBlockHeight$ = combineLatest([this.matchBlockHeightPattern$, combined$]).pipe(
+      filter(([matchBlockHeightPattern, _]) => matchBlockHeightPattern),
+      mergeMap(([match, sdk]) => {
+        /*if (!match) {
+          console.log('isValidBlockHeight_false_match');
+          return of(false);
+        }*/
+
+        //get block height for validation
+
+        let inputNumber: string = '';
+        const searchBoxInputValueSubscription = this.searchBoxInputValue$.subscribe((val) => {
+          inputNumber = val;
+        });
+        console.log(inputNumber);
+        searchBoxInputValueSubscription.unsubscribe();
+        /*
+      const latestBlock: InlineResponse20035 = await rest.tendermint
+      .getLatestBlock(sdk.rest)
+      .then((res) => res.data);
+    const blockHeight = latestBlock.block?.header?.height;
+
+    //validation & return block
+    if (Number(inputNumber) <= Number(blockHeight)) return of(true)
+*/
+        console.log('isValidBlockHeight_false_default');
+        return of(false);
+      }),
+    );
+    const isValBlksubsc = this.isValidBlockHeight$.subscribe((str) => console.log('isValBlk', str));
+
     this.isValidAccAddress$ = combineLatest([this.matchAccAddressPattern$, combined$]).pipe(
+      filter(([matchAccAddressPattern, _]) => matchAccAddressPattern),
       mergeMap(([match, sdk]) => {
         if (!match) {
           console.log('isValidAccAddress_false_match');
           return of(false);
         }
 
-        var inputValue: string = '';
-        const value = this.searchBoxInputValue$.subscribe((val) => {
+        let inputValue: string = '';
+        const searchBoxInputValueSubscription = this.searchBoxInputValue$.subscribe((val) => {
           inputValue = val;
         });
         console.log(inputValue);
-        value.unsubscribe();
+        searchBoxInputValueSubscription.unsubscribe();
 
         //account api
         const address = cosmosclient.AccAddress.fromString(inputValue);
@@ -146,6 +177,46 @@ export class AppComponent {
     );
     //このサブスクリプションはいるらしい。2021/12/27
     const sub5X = this.isValidAccAddress$.subscribe((str) => console.log('isValAddr', str));
+
+    this.isValidTxHash$ = combineLatest([this.matchTxHashPattern$, combined$]).pipe(
+      filter(([matchTxHashPattern, _]) => matchTxHashPattern),
+      mergeMap(([match, sdk]) => {
+        /*
+        if (!match) {
+          console.log('isValidAccAddress_false_match');
+          return of(false);
+        }*/
+
+        console.log('isValidTxHash_false_default');
+        return of(false);
+      }),
+    );
+    const isValTxsubsc = this.isValidTxHash$.subscribe((str) => console.log('isValTx', str));
+
+    this.searchResult$ = combineLatest([
+      this.isValidBlockHeight$,
+      this.isValidAccAddress$,
+      this.isValidTxHash$,
+    ]).pipe(
+      filter(
+        ([isValidBlockHeight, isValidAccAddress, isValidTxHash]) =>
+          isValidBlockHeight || isValidAccAddress || isValidTxHash,
+      ),
+      mergeMap(([isValidBlockHeight, isValidAccAddress, isValidTxHash]) => {
+        let inputValue: string = '';
+        const searchBoxInputValueSubscription = this.searchBoxInputValue$.subscribe((val) => {
+          inputValue = val;
+        });
+        searchBoxInputValueSubscription.unsubscribe();
+
+        let inputType: string = '';
+        if (isValidBlockHeight) inputType = 'blocks';
+        if (isValidAccAddress) inputType = 'address';
+        if (isValidTxHash) inputType = 'transactions';
+
+        return of({ searchValue: inputValue, type: inputType });
+      }),
+    );
   }
 
   async onSubmitSearchValue(value: string) {
