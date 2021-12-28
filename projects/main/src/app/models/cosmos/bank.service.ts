@@ -78,10 +78,13 @@ export class BankService {
       throw Error('Address not found');
     }
 
+    // remove unintentional whitespace
+    const toAddressWithNoWhitespace = toAddress.replace(/\s+/g, '');
+
     // build MsgSend
     const msgSend = new proto.cosmos.bank.v1beta1.MsgSend({
       from_address: fromAddress.toString(),
-      to_address: toAddress,
+      to_address: toAddressWithNoWhitespace,
       amount: amount,
     });
 
