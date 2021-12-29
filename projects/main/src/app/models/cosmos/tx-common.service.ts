@@ -68,7 +68,7 @@ export class TxCommonService {
     // broadcast tx
     const result = await rest.tx.broadcastTx(sdk, {
       tx_bytes: txBuilder.txBytes(),
-      mode: rest.tx.BroadcastTxMode.Async,
+      mode: rest.tx.BroadcastTxMode.Block,
     });
 
     window.alert(`Copy the following txHash for AirDrop!\n${result.data.tx_response?.txhash}`);
