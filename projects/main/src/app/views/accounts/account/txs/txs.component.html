@@ -1,0 +1,27 @@
+<h2>Transactions</h2>
+<div>
+  <mat-card>
+    <ng-container *ngIf="txsWithPagination?.tx_responses === undefined || null ; then empty; else exist"></ng-container>
+    <ng-template #empty></ng-template>
+    <ng-template #exist>
+      <mat-list>
+        <mat-list-item>
+          <span class="break-all truncate pr-4">Block Height</span>
+          <span class="flex-auto"></span>
+          <span class="break-all truncate">Tx Hash</span>
+        </mat-list-item>
+        <mat-divider></mat-divider>
+      </mat-list>
+      <mat-nav-list>
+        <ng-container *ngFor="let tx of txsWithPagination?.tx_responses">
+          <mat-list-item routerLink="/txs/{{ tx.txhash }}">
+            <span class="pr-4 font-mono">{{ tx.height }}</span>
+            <span class="flex-auto"></span>
+            <span class="break-all truncate font-mono">{{ tx.txhash }}</span>
+          </mat-list-item>
+          <mat-divider></mat-divider>
+        </ng-container>
+      </mat-nav-list>
+    </ng-template>
+  </mat-card>
+</div>
