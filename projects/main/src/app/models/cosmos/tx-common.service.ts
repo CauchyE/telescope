@@ -71,6 +71,8 @@ export class TxCommonService {
       mode: rest.tx.BroadcastTxMode.Block,
     });
 
+    window.alert(`Copy the following txHash for AirDrop!\n${result.data.tx_response?.txhash}`);
+
     // check broadcast tx error
     if (result.data.tx_response?.code !== 0) {
       throw Error(result.data.tx_response?.raw_log);
