@@ -6,7 +6,7 @@ import { cosmosclient, rest, proto } from '@cosmos-client/core';
 import { InlineResponse20035, InlineResponse20036 } from '@cosmos-client/core/esm/openapi';
 import { CosmosTxV1beta1GetTxResponse } from '@cosmos-client/core/esm/openapi';
 import * as qs from 'querystring';
-import { combineLatest, Observable, timer, BehaviorSubject, of } from 'rxjs';
+import { combineLatest, Observable, from, timer, BehaviorSubject, of } from 'rxjs';
 import { mergeMap, map, filter } from 'rxjs/operators';
 
 @Component({
@@ -21,7 +21,7 @@ export class AppComponent {
   //searchValue$: BehaviorSubject<string>; // 孫→子→親コンポーネントの流れでイベントで渡していく
 
   //後ほど削除
-  searchWordOption: { label: string; allowed: boolean } = { label: '', allowed: false };
+  //searchWordOption: { label: string; allowed: boolean } = { label: '', allowed: false };
 
   matchBlockHeightPattern$: Observable<boolean> = of(false);
   matchAccAddressPattern$: Observable<boolean> = of(false);
@@ -31,7 +31,9 @@ export class AppComponent {
   isValidAccAddress$: Observable<boolean> = of(false);
   isValidTxHash$: Observable<boolean> = of(false);
 
-  searchResult$: Observable<SearchResult>; // 親→子→孫コンポーネントの流れで値で渡していく。
+  latestBlockHeight$: Observable<string | undefined>;
+
+  searchResult$: Observable<SearchResult> = of({ searchValue: '', type: '' }); // 親→子→孫コンポーネントの流れで値で渡していく。
 
   config: Config;
 
@@ -59,6 +61,7 @@ export class AppComponent {
         return '';
       }),
     );
+
     this.config = this.configS.config;
     if (this.config.extension?.faucet !== undefined) {
       this.config.extension.navigations.unshift({
@@ -68,24 +71,10 @@ export class AppComponent {
       });
     }
 
-    //this.searchResult$ = this.searchValue$.combinelatest();
-    //
-
-    const timer$ = timer(0, 3 * 1000);
-    //const sub = timer$.subscribe((n) => console.log('timer=', n)); //ここまではおｋ
-    //const sub2$ = combineLatest([timer$, this.searchBoxInputValue$]);
-    //const sub2X = sub2$.subscribe(([n, str]) => console.log('timer2=', n, str)); //ここまではおk
-
-    const combined$ = combineLatest([timer$, this.cosmosSDK.sdk$]).pipe(
-      map(([_, sdk]) => {
-        console.log('t=', _);
-        return sdk;
-      }),
-    );
-
     this.matchBlockHeightPattern$ = this.searchBoxInputValue$.asObservable().pipe(
       map((value) => {
-        console.log('matchBlock', value);
+        //console.log('matchBlock', value);
+        this.initializeObservables();
         return 1 <= Number(value);
       }),
     );
@@ -96,10 +85,11 @@ export class AppComponent {
 
     this.matchAccAddressPattern$ = this.searchBoxInputValue$.asObservable().pipe(
       map((value) => {
-        console.log('matchAdd', value);
+        //console.log('matchAdd', value);
         const prefix = this.config.bech32Prefix?.accAddr;
         const prefixCount = this.config.bech32Prefix?.accAddr.length;
         console.log(prefix, prefixCount, value.substring(0, prefixCount));
+        this.initializeObservables();
         return value.length == 46 && value.substring(0, prefixCount) === prefix;
       }),
     );
@@ -107,43 +97,61 @@ export class AppComponent {
 
     this.matchTxHashPattern$ = this.searchBoxInputValue$.asObservable().pipe(
       map((value) => {
-        console.log('matchTx', value);
+        //console.log('matchTx', value);
+        this.initializeObservables();
         return value.length == 64;
       }),
     );
 
-    this.isValidBlockHeight$ = combineLatest([this.matchBlockHeightPattern$, combined$]).pipe(
+    this.latestBlockHeight$ = of(''); //for initialize
+    this.isValidBlockHeight$ = combineLatest([
+      this.matchBlockHeightPattern$,
+      this.cosmosSDK.sdk$,
+    ]).pipe(
       filter(([matchBlockHeightPattern, _]) => matchBlockHeightPattern),
-      mergeMap(([match, sdk]) => {
+      mergeMap(([_, sdk]) => {
         /*if (!match) {
           console.log('isValidBlockHeight_false_match');
           return of(false);
         }*/
 
         //get block height for validation
-
-        let inputNumber: string = '';
+        let inputNumber: number = 0;
         const searchBoxInputValueSubscription = this.searchBoxInputValue$.subscribe((val) => {
-          inputNumber = val;
+          inputNumber = Number(val);
+          console.log('inputNumber', inputNumber);
+          searchBoxInputValueSubscription.unsubscribe();
         });
-        console.log(inputNumber);
-        searchBoxInputValueSubscription.unsubscribe();
-        /*
-      const latestBlock: InlineResponse20035 = await rest.tendermint
-      .getLatestBlock(sdk.rest)
-      .then((res) => res.data);
-    const blockHeight = latestBlock.block?.header?.height;
 
-    //validation & return block
-    if (Number(inputNumber) <= Number(blockHeight)) return of(true)
-*/
+        this.latestBlockHeight$ = from(
+          rest.tendermint
+            .getLatestBlock(sdk.rest)
+            .then((res) => res.data && res.data.block?.header?.height),
+        );
+        console.log('val', this.latestBlockHeight$);
+
+        let blockHeight = 0;
+        const subscriptionLatestBlockHeight = this.latestBlockHeight$.subscribe((val) => {
+          console.log('val', val);
+          blockHeight = Number(val);
+          subscriptionLatestBlockHeight.unsubscribe();
+          //validation & return block
+        });
+        console.log({ inputNumber, blockHeight });
+
+        if (Number(inputNumber) <= Number(blockHeight)) return of(true);
+
         console.log('isValidBlockHeight_false_default');
         return of(false);
       }),
     );
+    //このサブスクリプションはいるらしい。2021/12/27
     const isValBlksubsc = this.isValidBlockHeight$.subscribe((str) => console.log('isValBlk', str));
 
-    this.isValidAccAddress$ = combineLatest([this.matchAccAddressPattern$, combined$]).pipe(
+    this.isValidAccAddress$ = combineLatest([
+      this.matchAccAddressPattern$,
+      this.cosmosSDK.sdk$,
+    ]).pipe(
       filter(([matchAccAddressPattern, _]) => matchAccAddressPattern),
       mergeMap(([match, sdk]) => {
         if (!match) {
@@ -158,17 +166,22 @@ export class AppComponent {
         console.log(inputValue);
         searchBoxInputValueSubscription.unsubscribe();
 
-        //account api
-        const address = cosmosclient.AccAddress.fromString(inputValue);
-        const baseAccount = rest.auth
-          .account(sdk.rest, address)
-          .then((res) => res.data && cosmosclient.codec.unpackCosmosAny(res.data.account));
+        try {
+          //account api
+          const address = cosmosclient.AccAddress.fromString(inputValue);
+          const baseAccount = rest.auth
+            .account(sdk.rest, address)
+            .then((res) => res.data && cosmosclient.codec.unpackCosmosAny(res.data.account));
 
-        console.log('base', baseAccount);
-        //console.log('base', await baseAccount);
-        if (baseAccount instanceof proto.cosmos.auth.v1beta1.BaseAccount) {
-          console.log('isValidAccAddress_true');
-          return of(true);
+          console.log('base', baseAccount);
+          //console.log('base', await baseAccount);
+          if (baseAccount !== undefined) {
+            console.log('isValidAccAddress_true');
+            return of(true);
+          }
+        } catch (error) {
+          console.error(error);
+          return of(false);
         }
 
         console.log('isValidAccAddress_false_default');
@@ -178,7 +191,7 @@ export class AppComponent {
     //このサブスクリプションはいるらしい。2021/12/27
     const sub5X = this.isValidAccAddress$.subscribe((str) => console.log('isValAddr', str));
 
-    this.isValidTxHash$ = combineLatest([this.matchTxHashPattern$, combined$]).pipe(
+    this.isValidTxHash$ = combineLatest([this.matchTxHashPattern$, this.cosmosSDK.sdk$]).pipe(
       filter(([matchTxHashPattern, _]) => matchTxHashPattern),
       mergeMap(([match, sdk]) => {
         /*
@@ -187,6 +200,20 @@ export class AppComponent {
           return of(false);
         }*/
 
+        let hash: string = '';
+        const searchBoxInputValueSubscription = this.searchBoxInputValue$.subscribe((val) => {
+          hash = val;
+        });
+        console.log(hash);
+        searchBoxInputValueSubscription.unsubscribe();
+
+        const transaction = rest.tx.getTx(sdk.rest, hash);
+
+        if (transaction !== undefined) {
+          console.log('isValidTx_true', transaction);
+          return of(true);
+        }
+
         console.log('isValidTxHash_false_default');
         return of(false);
       }),
@@ -194,15 +221,18 @@ export class AppComponent {
     const isValTxsubsc = this.isValidTxHash$.subscribe((str) => console.log('isValTx', str));
 
     this.searchResult$ = combineLatest([
-      this.isValidBlockHeight$,
+      timer(0, 10 * 1000),
+      //this.isValidBlockHeight$,
       this.isValidAccAddress$,
       this.isValidTxHash$,
     ]).pipe(
       filter(
         ([isValidBlockHeight, isValidAccAddress, isValidTxHash]) =>
-          isValidBlockHeight || isValidAccAddress || isValidTxHash,
+          isValidBlockHeight !== 0 || isValidAccAddress || isValidTxHash,
       ),
+
       mergeMap(([isValidBlockHeight, isValidAccAddress, isValidTxHash]) => {
+        console.log({ isValidBlockHeight, isValidAccAddress, isValidTxHash });
         let inputValue: string = '';
         const searchBoxInputValueSubscription = this.searchBoxInputValue$.subscribe((val) => {
           inputValue = val;
@@ -210,13 +240,14 @@ export class AppComponent {
         searchBoxInputValueSubscription.unsubscribe();
 
         let inputType: string = '';
-        if (isValidBlockHeight) inputType = 'blocks';
+        //if (isValidBlockHeight) inputType = 'blocks';
         if (isValidAccAddress) inputType = 'address';
         if (isValidTxHash) inputType = 'transactions';
 
         return of({ searchValue: inputValue, type: inputType });
       }),
     );
+    const subX = this.searchResult$.subscribe((str) => console.log('isValRes', str));
   }
 
   async onSubmitSearchValue(value: string) {
@@ -232,60 +263,21 @@ export class AppComponent {
     }
   }
 
-  //async onCheckInputValue(value: string) {
+  async getBlockHeight(value: string) {}
+
+  initializeObservables() {
+    /*
+    this.searchResult$ = of({ searchValue: '', type: '' });
+    this.isValidBlockHeight$ = of(false);
+    this.isValidAccAddress$ = of(false);
+    this.isValidTxHash$ = of(false);
+    */
+  }
+
   onCheckInputValue(value: string) {
     this.searchBoxInputValue$.next(value);
     //console.log('InputValue$', this.searchBoxInputValue$);
 
     console.log('v', value);
-
-    //console.log('AddrPtn$ ', this.matchAccAddressPattern$);
-
-    /*/以下削除
-
-
-
-    //default value
-    this.searchWordOption = { label: value, allowed: true };
-
-    //sdk
-    const sdk = await this.cosmosSDK.sdk$.toPromise(); //<-stop
-
-    //check block or not,
-    if (1 <= Number(value)) {
-      //get block height for validation
-      const latestBlock: InlineResponse20035 = await rest.tendermint
-        .getLatestBlock(sdk.rest)
-        .then((res) => res.data);
-      const blockHeight = latestBlock.block?.header?.height;
-
-      //validation & return block
-      if (Number(value) <= Number(blockHeight)) {
-        this.searchWordOption.allowed = true;
-      }
-    }
-
-    //account validation
-    if (value.length == 46 && value.substring(0, 7) === 'ununifi') {
-      console.log('in_address_dayo');
-
-      //account api
-      var address = cosmosclient.AccAddress.fromString(value);
-      var baseAccount = await rest.auth
-        .account(sdk.rest, address)
-        .then((res) => res.data && cosmosclient.codec.unpackCosmosAny(res.data.account));
-      if (baseAccount instanceof proto.cosmos.auth.v1beta1.BaseAccount) {
-        this.searchWordOption.allowed = true;
-      }
-    }
-
-    //transaction validation
-    if (value.length == 64) {
-      //transaction api
-      const tx = await rest.tx.getTx(sdk.rest, value).then((res) => res.data);
-      if (tx !== undefined) {
-        this.searchWordOption.allowed = true;
-      }
-    } //*/
   }
 }

@@ -21,11 +21,10 @@
       </mat-option>
       -->
       <mat-option
-        *ngIf="searchWordOption"
-        [value]="searchWordOption.label"
-        [disabled]="!searchWordOption.allowed"
+        *ngIf="searchResult?.searchValue !== '' && searchResult?.type !== ''"
+        [value]="searchResult?.searchValue"
       >
-        {{ searchWordOption.label }}
+        {{ searchResult?.type }}={{ searchResult?.searchValue }}
       </mat-option>
     </mat-autocomplete>
     <button mat-icon-button matSuffix [disabled]="form.invalid">

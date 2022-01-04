@@ -16,7 +16,7 @@ export class AppComponent implements OnInit {
   searchValue: string | null;
 
   @Input()
-  searchWordOption: {label:string,allowed:boolean} | null;
+  searchResult: { searchValue: string; type: string } | null;
 
   @Output()
   appSubmitSearchValue: EventEmitter<string>;
@@ -33,7 +33,7 @@ export class AppComponent implements OnInit {
 
   constructor(private router: Router, private ngZone: NgZone) {
     this.searchValue = '';
-    this.searchWordOption = {label:"",allowed:false};
+    this.searchResult = { searchValue: '', type: '' };
     this.appSubmitSearchValue = new EventEmitter();
     this.appSubmitInputValue = new EventEmitter();
 

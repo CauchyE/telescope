@@ -1,11 +1,4 @@
-import {
-  Component,
-  OnInit,
-  Output,
-  EventEmitter,
-  Input,
-  ViewChild,
-} from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, Input, ViewChild } from '@angular/core';
 import { NgModel } from '@angular/forms';
 
 @Component({
@@ -18,7 +11,7 @@ export class ToolbarComponent implements OnInit {
   searchValue: string | null;
 
   @Input()
-  searchWordOption: {label:string,allowed:boolean} | null;
+  searchResult: { searchValue: string; type: string } | null;
 
   @Output()
   appSubmitSearchValue: EventEmitter<string>;
@@ -28,7 +21,6 @@ export class ToolbarComponent implements OnInit {
 
   @ViewChild('searchValueRef')
   searchValueRef!: NgModel;
-
 
   options = [
     {
@@ -53,14 +45,12 @@ export class ToolbarComponent implements OnInit {
 
   constructor() {
     this.searchValue = '';
-    this.searchWordOption = {label:"",allowed:false}
+    this.searchResult = { searchValue: '', type: '' };
     this.appSubmitSearchValue = new EventEmitter();
     this.appSubmitInputValue = new EventEmitter();
   }
 
-  ngOnInit(): void { }
-
-
+  ngOnInit(): void {}
 
   onOptionSelected(option: any): void {
     this.appSubmitSearchValue.emit(option);

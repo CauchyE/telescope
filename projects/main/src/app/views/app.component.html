@@ -1,6 +1,10 @@
 <mat-drawer-container>
-  <mat-drawer #drawer class="mat-elevation-z16" [mode]="(drawerMode$ | async) || 'over'"
-    [opened]="drawerOpened$ | async">
+  <mat-drawer
+    #drawer
+    class="mat-elevation-z16"
+    [mode]="(drawerMode$ | async) || 'over'"
+    [opened]="drawerOpened$ | async"
+  >
     <mat-toolbar class="mat-elevation-z4 toolbar" color="primary">
       <button class="align-middle" mat-icon-button routerLink="/">
         <img class="p-1 w-10 h-10" src="/favicon.png" />
@@ -48,8 +52,13 @@
           <mat-icon>menu</mat-icon>
         </button>
       </ng-container>
-      <view-toolbar class="flex-auto" [searchWordOption]="searchWordOption" [searchValue]="searchValue"
-        (appSubmitSearchValue)="onSubmitSearchValue($event)" (appSubmitInputValue)="onSubmitInputValue($event)">
+      <view-toolbar
+        class="flex-auto"
+        [searchResult]="searchResult"
+        [searchValue]="searchValue"
+        (appSubmitSearchValue)="onSubmitSearchValue($event)"
+        (appSubmitInputValue)="onSubmitInputValue($event)"
+      >
       </view-toolbar>
     </mat-toolbar>
     <div class="container">
