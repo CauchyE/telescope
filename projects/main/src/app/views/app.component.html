@@ -55,9 +55,8 @@
       <view-toolbar
         class="flex-auto"
         [searchResult]="searchResult"
-        [searchValue]="searchValue"
-        (appSubmitSearchValue)="onSubmitSearchValue($event)"
-        (appSubmitInputValue)="onSubmitInputValue($event)"
+        (appSubmitSearchResult)="onSubmitSearchResult($event)"
+        (appChangeInputValue)="onChangeInputValue($event)"
       >
       </view-toolbar>
     </mat-toolbar>

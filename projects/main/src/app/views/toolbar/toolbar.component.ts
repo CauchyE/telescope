@@ -1,6 +1,11 @@
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild } from '@angular/core';
 import { NgModel } from '@angular/forms';
 
+export type SearchResult = {
+  searchValue: string;
+  type: string;
+};
+
 @Component({
   selector: 'view-toolbar',
   templateUrl: './toolbar.component.html',
@@ -8,59 +13,48 @@ import { NgModel } from '@angular/forms';
 })
 export class ToolbarComponent implements OnInit {
   @Input()
-  searchValue: string | null;
-
-  @Input()
-  searchResult: { searchValue: string; type: string } | null;
+  searchResult?: SearchResult | null;
 
   @Output()
-  appSubmitSearchValue: EventEmitter<string>;
+  appSubmitSearchResult: EventEmitter<SearchResult>;
 
   @Output()
-  appSubmitInputValue: EventEmitter<string>;
+  appChangeInputValue: EventEmitter<string>;
 
   @ViewChild('searchValueRef')
   searchValueRef!: NgModel;
 
-  options = [
-    {
-      //address
-      label: (value: string) => `Address "${value}"`,
-      format: (value: string) => `address=${value}`,
-      allowed: (value: string) => true,
-    },
-    {
-      //transaction
-      label: (value: string) => `Tx hash "${value}"`,
-      format: (value: string) => `tx_hash=${value}`,
-      allowed: (value: string) => false,
-    },
-    {
-      //blocks
-      label: (value: string) => `Blocks "${value}"`,
-      format: (value: string) => `Blocks=${value}`,
-      allowed: (value: string) => true,
-    },
-  ];
+  searchValue: string;
 
   constructor() {
     this.searchValue = '';
-    this.searchResult = { searchValue: '', type: '' };
-    this.appSubmitSearchValue = new EventEmitter();
-    this.appSubmitInputValue = new EventEmitter();
+    this.searchResult = {
+      searchValue: '',
+      type: '',
+    };
+    this.appSubmitSearchResult = new EventEmitter();
+    this.appChangeInputValue = new EventEmitter();
   }
 
   ngOnInit(): void {}
 
-  onOptionSelected(option: any): void {
-    this.appSubmitSearchValue.emit(option);
+  onOptionSelected(): void {
+    if (this.searchResult) {
+      this.appSubmitSearchResult.emit(this.searchResult);
+    } else {
+      // Todo: snackbar notification
+    }
   }
 
-  onSubmit(value: string): void {
-    this.appSubmitSearchValue.emit(value);
+  onSubmitSearchResult(): void {
+    if (this.searchResult) {
+      this.appSubmitSearchResult.emit(this.searchResult);
+    } else {
+      // Todo: snackbar notification
+    }
   }
 
   onChangeInput(inputValue: string): void {
-    this.appSubmitInputValue.emit(inputValue);
+    this.appChangeInputValue.emit(inputValue);
   }
 }
