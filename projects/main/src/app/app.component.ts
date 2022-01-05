@@ -2,9 +2,9 @@ import { Config, ConfigService, SearchResult } from './models/config.service';
 import { CosmosSDKService } from './models/cosmos-sdk.service';
 import { Component } from '@angular/core';
 import { Router, ActivationEnd } from '@angular/router';
-import { cosmosclient, rest } from '@cosmos-client/core';
+import { cosmosclient, rest, proto } from '@cosmos-client/core';
 import * as qs from 'querystring';
-import { combineLatest, Observable, from, timer, BehaviorSubject, of } from 'rxjs';
+import { combineLatest, Observable, zip, from, timer, BehaviorSubject, of } from 'rxjs';
 import { mergeMap, map, filter } from 'rxjs/operators';
 
 @Component({
@@ -27,6 +27,8 @@ export class AppComponent {
   isValidAccAddress$: Observable<boolean> = of(false);
   isValidTxHash$: Observable<boolean> = of(false);
 
+  A: Observable<unknown>; //仮
+  B: Observable<unknown>; //仮
   latestBlockHeight$: Observable<string | undefined>;
 
   searchResult$: Observable<SearchResult> = of({ searchValue: '', type: '' }); // 親→子→孫コンポーネントの流れで値で渡していく。
@@ -63,58 +65,35 @@ export class AppComponent {
       });
     }
 
+    //block validation 1
     this.matchBlockHeightPattern$ = this.searchBoxInputValue$.asObservable().pipe(
       map((value) => {
-        this.initializeObservables();
+        console.log('in_block', value);
         return 1 <= Number(value);
       }),
     );
 
-    this.matchAccAddressPattern$ = this.searchBoxInputValue$.asObservable().pipe(
-      map((value) => {
-        const prefix = this.config.bech32Prefix?.accAddr;
-        const prefixCount = this.config.bech32Prefix?.accAddr.length;
-        this.initializeObservables();
-        return value.length == 46 && value.substring(0, prefixCount) === prefix;
-      }),
-    );
-
-    this.matchTxHashPattern$ = this.searchBoxInputValue$.asObservable().pipe(
-      map((value) => {
-        this.initializeObservables();
-        return value.length == 64;
-      }),
-    );
-
-    this.latestBlockHeight$ = of(''); //for initialize
-    this.isValidBlockHeight$ = combineLatest([
+    //block validation 2
+    this.latestBlockHeight$ = combineLatest([
       this.matchBlockHeightPattern$,
       this.cosmosSDK.sdk$,
     ]).pipe(
       filter(([matchBlockHeightPattern, _]) => matchBlockHeightPattern),
       mergeMap(([_, sdk]) => {
+        const height = rest.tendermint
+          .getLatestBlock(sdk.rest)
+          .then((res) => res.data && res.data.block?.header?.height);
+        return from(height);
+      }),
+    );
+
+    //block check
+    this.isValidBlockHeight$ = combineLatest([
+      this.latestBlockHeight$,
+      this.searchBoxInputValue$,
+    ]).pipe(
+      mergeMap(([blockHeight, inputNumber]) => {
         //get block height for validation
-        let inputNumber: number = 0;
-        const searchBoxInputValueSubscription = this.searchBoxInputValue$.subscribe((val) => {
-          inputNumber = Number(val);
-          console.log('inputNumber', inputNumber);
-          searchBoxInputValueSubscription.unsubscribe();
-        });
-
-        this.latestBlockHeight$ = from(
-          rest.tendermint
-            .getLatestBlock(sdk.rest)
-            .then((res) => res.data && res.data.block?.header?.height),
-        );
-        console.log('val', this.latestBlockHeight$);
-
-        let blockHeight = 0;
-        const subscriptionLatestBlockHeight = this.latestBlockHeight$.subscribe((val) => {
-          console.log('val', val);
-          blockHeight = Number(val);
-          subscriptionLatestBlockHeight.unsubscribe();
-          //validation & return block
-        });
         console.log({ inputNumber, blockHeight });
 
         if (Number(inputNumber) <= Number(blockHeight)) return of(true);
@@ -124,64 +103,87 @@ export class AppComponent {
       }),
     );
 
-    this.isValidAccAddress$ = combineLatest([
+    //Address validation 1
+    this.matchAccAddressPattern$ = this.searchBoxInputValue$.asObservable().pipe(
+      map((value) => {
+        const prefix = this.config.bech32Prefix?.accAddr;
+        const prefixCount = this.config.bech32Prefix?.accAddr.length;
+        console.log({ prefix, prefixCount });
+        return value.length == 46 && value.substring(0, prefixCount) === prefix;
+      }),
+    );
+
+    //Address check 1
+    this.A = combineLatest([
       this.matchAccAddressPattern$,
       this.cosmosSDK.sdk$,
+      this.searchBoxInputValue$,
     ]).pipe(
-      filter(([matchAccAddressPattern, _]) => matchAccAddressPattern),
-      mergeMap(([match, sdk]) => {
-        if (!match) {
-          console.log('isValidAccAddress_false_match');
-          return of(false);
-        }
-
-        let inputValue: string = '';
-        const searchBoxInputValueSubscription = this.searchBoxInputValue$.subscribe((val) => {
-          inputValue = val;
-        });
-        console.log(inputValue);
-        searchBoxInputValueSubscription.unsubscribe();
-
+      filter(([matchAccAddressPattern, _, __]) => matchAccAddressPattern),
+      mergeMap(([_, sdk, inputValue]) => {
         try {
+          console.log('try');
           //account api
           const address = cosmosclient.AccAddress.fromString(inputValue);
           const baseAccount = rest.auth
             .account(sdk.rest, address)
             .then((res) => res.data && cosmosclient.codec.unpackCosmosAny(res.data.account));
-
-          if (baseAccount !== undefined) {
-            console.log('isValidAccAddress_true');
-            return of(true);
-          }
+          return from(baseAccount);
         } catch (error) {
           console.error(error);
-          return of(false);
+          return of();
         }
-
-        console.log('isValidAccAddress_false_default');
-        return of(false);
       }),
     );
 
-    this.isValidTxHash$ = combineLatest([this.matchTxHashPattern$, this.cosmosSDK.sdk$]).pipe(
-      filter(([matchTxHashPattern, _]) => matchTxHashPattern),
-      mergeMap(([match, sdk]) => {
-        let hash: string = '';
-        const searchBoxInputValueSubscription = this.searchBoxInputValue$.subscribe((val) => {
-          hash = val;
-        });
-        console.log(hash);
-        searchBoxInputValueSubscription.unsubscribe();
-
-        const transaction = rest.tx.getTx(sdk.rest, hash);
-
-        if (transaction !== undefined) {
-          console.log('isValidTx_true', transaction);
-          return of(true);
+    //Address check 2
+    this.isValidAccAddress$ = this.A.pipe(
+      map((account) => {
+        console.log(account);
+        if (account instanceof proto.cosmos.auth.v1beta1.BaseAccount) {
+          console.log('isValidAccAddress_true');
+          return true;
         }
+        return false;
+      }),
+    );
 
+    //Transaction validation 1
+    this.matchTxHashPattern$ = this.searchBoxInputValue$.asObservable().pipe(
+      map((value) => {
+        return value.length == 64;
+      }),
+    );
+    //Transaction check 1
+    this.B = combineLatest([
+      this.matchTxHashPattern$,
+      this.cosmosSDK.sdk$,
+      this.searchBoxInputValue$,
+    ]).pipe(
+      filter(([matchTxHashPattern, _, __]) => matchTxHashPattern),
+      mergeMap(([_, sdk, hash]) => {
+        try {
+          const transaction = rest.tx
+            .getTx(sdk.rest, hash)
+            .then((res) => res.data && cosmosclient.codec.unpackCosmosAny(res.data.tx_response));
+          return from(transaction);
+        } catch (error) {
+          console.error(error);
+          return of();
+        }
+      }),
+    );
+
+    //Transaction check 2
+    this.isValidTxHash$ = this.B.pipe(
+      map((tx) => {
+        if (tx instanceof proto.cosmos.tx.v1beta1.GetTxResponse) {
+          console.log('isValidTx_true', tx);
+          console.log({ tx });
+          return true;
+        }
         console.log('isValidTxHash_false_default');
-        return of(false);
+        return false;
       }),
     );
 
@@ -195,7 +197,6 @@ export class AppComponent {
         ([isValidBlockHeight, isValidAccAddress, isValidTxHash]) =>
           isValidBlockHeight !== 0 || isValidAccAddress || isValidTxHash, // !== 0 -> debug
       ),
-
       mergeMap(([isValidBlockHeight, isValidAccAddress, isValidTxHash]) => {
         console.log({ isValidBlockHeight, isValidAccAddress, isValidTxHash });
         let inputValue: string = '';
@@ -234,15 +235,14 @@ export class AppComponent {
     //debug
     // 初期化が必要だが、現在Observableの更新が３回走るようになっており、
     // ３回目の更新で判定結果が消されるため初期化できない。
-    /*
     this.searchResult$ = of({ searchValue: '', type: '' });
     this.isValidBlockHeight$ = of(false);
     this.isValidAccAddress$ = of(false);
     this.isValidTxHash$ = of(false);
-    */
   }
 
   onCheckInputValue(value: string) {
+    this.initializeObservables();
     this.searchBoxInputValue$.next(value);
     console.log('v', value);
   }
