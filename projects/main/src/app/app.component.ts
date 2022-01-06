@@ -126,7 +126,7 @@ export class AppComponent {
           const tx = rest.tx
             .getTx(sdk.rest, searchBoxInputValue)
             .then((res) => {
-              console.log({ res });
+              console.log(res);
               return res.data.tx;
             })
             .catch((error) => false);
