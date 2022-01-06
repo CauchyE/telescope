@@ -92,7 +92,26 @@ export class AppComponent {
       }),
     );
 
-    this.isValidAccAddress$ = this.matchAccAddressPattern$;
+    this.isValidAccAddress$ = combineLatest([
+      this.searchBoxInputValue$.asObservable(),
+      this.matchAccAddressPattern$,
+    ]).pipe(
+      mergeMap(([searchBoxInputValue, matchAccAddressPattern]) => {
+        if (!matchAccAddressPattern) {
+          return of(false);
+        }
+        try {
+          const address = cosmosclient.AccAddress.fromString(searchBoxInputValue);
+          if (address instanceof cosmosclient.AccAddress) {
+            return of(true);
+          } else {
+            return of(false);
+          }
+        } catch (error) {
+          return of(false);
+        }
+      }),
+    );
 
     this.isValidTxHash$ = combineLatest([
       this.searchBoxInputValue$.asObservable(),
@@ -107,7 +126,7 @@ export class AppComponent {
           const tx = rest.tx
             .getTx(sdk.rest, searchBoxInputValue)
             .then((res) => {
-              console.log(res);
+              console.log({ res });
               return res.data.tx;
             })
             .catch((error) => false);
@@ -158,7 +177,7 @@ export class AppComponent {
               return { searchValue: searchBoxInputValue, type: 'address' };
             }
             if (matchTxHashPattern && isValidTxHash) {
-              return { searchValue: searchBoxInputValue, type: 'tx' };
+              return { searchValue: searchBoxInputValue, type: 'txHash' };
             }
             return { searchValue: searchBoxInputValue, type: '' };
           } else {

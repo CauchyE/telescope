@@ -10,18 +10,20 @@
       [matAutocomplete]="auto"
       (ngModelChange)="onChangeInput(searchValueRef.value)"
     />
-    <mat-autocomplete
-      #auto="matAutocomplete"
-      (optionSelected)="onOptionSelected()"
-    >
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected()">
       <mat-option
         *ngIf="searchResult?.searchValue !== '' && searchResult?.type !== ''"
         [value]="searchResult?.searchValue"
       >
-        {{ searchResult?.type }}={{ searchResult?.searchValue }}
+        {{ searchResult?.type }} = {{ searchResult?.searchValue }}
       </mat-option>
     </mat-autocomplete>
-    <button mat-icon-button matSuffix [disabled]="searchResult?.searchValue === '' || searchResult?.type === ''">
+    <button
+      mat-icon-button
+      matSuffix
+      [disabled]="searchResult?.searchValue === '' || searchResult?.type === ''"
+      (click)="onOptionSelected()"
+    >
       <mat-icon>search</mat-icon>
     </button>
   </mat-form-field>

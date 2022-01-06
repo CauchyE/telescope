@@ -1,5 +1,6 @@
 import { Component, OnInit, Output, EventEmitter, Input, ViewChild } from '@angular/core';
 import { NgModel } from '@angular/forms';
+import { MatAutocompleteTrigger } from '@angular/material/autocomplete';
 
 export type SearchResult = {
   searchValue: string;
@@ -40,13 +41,16 @@ export class ToolbarComponent implements OnInit {
 
   onOptionSelected(): void {
     if (this.searchResult) {
+      console.log(this.searchResult);
       this.appSubmitSearchResult.emit(this.searchResult);
+      this.searchResult = { searchValue: '', type: '' };
     } else {
       // Todo: snackbar notification
     }
   }
 
   onSubmitSearchResult(): void {
+    console.log(this.searchResult);
     if (this.searchResult) {
       this.appSubmitSearchResult.emit(this.searchResult);
     } else {
