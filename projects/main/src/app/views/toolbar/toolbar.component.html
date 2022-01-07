@@ -1,14 +1,30 @@
 <form #form="ngForm" class="text-base mt-4 sm:mt-6">
-  <mat-form-field appearance="fill" (submit)="onSubmit(searchValueRef.value)" class="w-full">
+  <mat-form-field appearance="fill" (submit)="onSubmitSearchResult()" class="w-full">
     <mat-label>Search</mat-label>
-    <input #searchValueRef matInput id="searchValue" name="searchValue" [ngModel]="searchValue"
-      [matAutocomplete]="auto" />
-    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected($event.option.value)">
-      <mat-option *ngFor="let option of options" [value]="option.format(searchValueRef.value)">
-        {{ option.label(searchValueRef.value) }}
+    <input
+      #searchValueRef
+      matInput
+      id="searchValue"
+      name="searchValue"
+      [(ngModel)]="searchValue"
+      [matAutocomplete]="auto"
+      (ngModelChange)="onChangeInput(searchValueRef.value)"
+      (focus)="onFocusInput(searchValueRef.value)"
+    />
+    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected()">
+      <mat-option
+        *ngIf="searchResult?.searchValue !== '' && searchResult?.type !== ''"
+        [value]="searchResult?.searchValue"
+      >
+        {{ searchResult?.type }} = {{ searchResult?.searchValue }}
       </mat-option>
     </mat-autocomplete>
-    <button mat-icon-button matSuffix [disabled]="form.invalid">
+    <button
+      mat-icon-button
+      matSuffix
+      [disabled]="searchResult?.searchValue === '' || searchResult?.type === ''"
+      (click)="onSubmitSearchResult()"
+    >
       <mat-icon>search</mat-icon>
     </button>
   </mat-form-field>
