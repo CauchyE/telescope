@@ -9,6 +9,7 @@
       [ngModel]="searchValue"
       [matAutocomplete]="auto"
       (ngModelChange)="onChangeInput(searchValueRef.value)"
+      (focus)="onFocusInput(searchValueRef.value)"
     />
     <mat-autocomplete #auto="matAutocomplete" (optionSelected)="onOptionSelected()">
       <mat-option
@@ -22,7 +23,7 @@
       mat-icon-button
       matSuffix
       [disabled]="searchResult?.searchValue === '' || searchResult?.type === ''"
-      (click)="onOptionSelected()"
+      (click)="onSubmitSearchResult()"
     >
       <mat-icon>search</mat-icon>
     </button>

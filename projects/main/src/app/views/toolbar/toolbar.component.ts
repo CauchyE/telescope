@@ -42,20 +42,21 @@ export class ToolbarComponent implements OnInit {
     if (this.searchResult) {
       this.appSubmitSearchResult.emit(this.searchResult);
       this.searchResult = { searchValue: '', type: '' };
-    } else {
-      // Todo: snackbar notification
     }
   }
 
   onSubmitSearchResult(): void {
     if (this.searchResult) {
       this.appSubmitSearchResult.emit(this.searchResult);
-    } else {
-      // Todo: snackbar notification
+      this.searchResult = { searchValue: '', type: '' };
     }
   }
 
   onChangeInput(inputValue: string): void {
+    this.appChangeInputValue.emit(inputValue);
+  }
+
+  onFocusInput(inputValue: string): void {
     this.appChangeInputValue.emit(inputValue);
   }
 }
