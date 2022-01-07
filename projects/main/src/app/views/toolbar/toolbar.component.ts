@@ -1,5 +1,4 @@
-import { Component, OnInit, Output, EventEmitter, Input, ViewChild } from '@angular/core';
-import { NgModel } from '@angular/forms';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 
 export type SearchResult = {
   searchValue: string;
@@ -21,9 +20,6 @@ export class ToolbarComponent implements OnInit {
   @Output()
   appChangeInputValue: EventEmitter<string>;
 
-  @ViewChild('searchValueRef')
-  searchValueRef!: NgModel;
-
   searchValue: string;
 
   constructor() {
@@ -42,6 +38,7 @@ export class ToolbarComponent implements OnInit {
     if (this.searchResult) {
       this.appSubmitSearchResult.emit(this.searchResult);
       this.searchResult = { searchValue: '', type: '' };
+      this.searchValue = '';
     }
   }
 
@@ -49,6 +46,7 @@ export class ToolbarComponent implements OnInit {
     if (this.searchResult) {
       this.appSubmitSearchResult.emit(this.searchResult);
       this.searchResult = { searchValue: '', type: '' };
+      this.searchValue = '';
     }
   }
 

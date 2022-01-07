@@ -6,7 +6,7 @@
       matInput
       id="searchValue"
       name="searchValue"
-      [ngModel]="searchValue"
+      [(ngModel)]="searchValue"
       [matAutocomplete]="auto"
       (ngModelChange)="onChangeInput(searchValueRef.value)"
       (focus)="onFocusInput(searchValueRef.value)"
