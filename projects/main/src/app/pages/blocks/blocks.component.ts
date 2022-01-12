@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { rest } from '@cosmos-client/core';
 import { InlineResponse20035, InlineResponse20036 } from '@cosmos-client/core/esm/openapi';
 import { CosmosSDKService } from 'projects/main/src/app/models/cosmos-sdk.service';
@@ -24,7 +24,11 @@ export class BlocksComponent implements OnInit {
   latestBlocks$: Observable<InlineResponse20036[] | undefined>;
   firstBlockHeight$ = new BehaviorSubject(BigInt(20));
 
-  constructor(private route: ActivatedRoute, private cosmosSDK: CosmosSDKService) {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    private cosmosSDK: CosmosSDKService,
+  ) {
     const timer$ = timer(0, this.pollingInterval * 1000);
     const sdk$ = timer$.pipe(mergeMap((_) => this.cosmosSDK.sdk$));
     this.latestBlock$ = sdk$.pipe(
@@ -41,6 +45,20 @@ export class BlocksComponent implements OnInit {
         latestBlock?.block?.header?.height ? parseInt(latestBlock.block.header.height) : 0,
       );
       this.pageNumber$.next(0);
+    });
+
+    this.route.queryParams.subscribe((params) => {
+      console.log('pages', params); // { order: "popular" }
+
+      this.pageSize$.next(params.perPage);
+      this.pageNumber$.next(params.pages);
+      console.log(this.pageSize$.getValue(), this.pageNumber$.getValue());
+
+      const paginatedBlockHeight =
+        this.latestBlockHeight$.getValue() - BigInt(params.pages - 1) * BigInt(params.perPage);
+      console.log('paginatedBlockHeight', paginatedBlockHeight);
+
+      this.firstBlockHeight$.next(paginatedBlockHeight);
     });
 
     this.latestBlocks$ = combineLatest([this.firstBlockHeight$, this.pageSize$]).pipe(
@@ -72,11 +90,15 @@ export class BlocksComponent implements OnInit {
   ngOnInit(): void {}
 
   appPaginationChanged(pageEvent: PageEvent): void {
-    this.pageSize$.next(pageEvent.pageSize);
-    this.pageNumber$.next(pageEvent.pageIndex + 1);
     this.pageLength$.next(pageEvent.length);
-    const paginatedBlockHeight =
-      this.latestBlockHeight$.getValue() - BigInt(pageEvent.pageIndex) * BigInt(pageEvent.pageSize);
-    this.firstBlockHeight$.next(paginatedBlockHeight);
+
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        perPage: pageEvent.pageSize,
+        pages: pageEvent.pageIndex + 1,
+      },
+      queryParamsHandling: 'merge',
+    });
   }
 }
