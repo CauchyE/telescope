@@ -51,8 +51,8 @@ export class BlocksComponent implements OnInit {
     //add
     this.route.queryParams.subscribe((params) => {
       console.log('pages', params); // { order: "popular" }
-
       console.log(this.pageSizeOptions.includes(Number(params.perPage)));
+
       if (this.pageSizeOptions.includes(Number(params.perPage))) {
         console.log('inclide', params.perPage);
         this.pageSize$.next(params.perPage);
@@ -71,7 +71,7 @@ export class BlocksComponent implements OnInit {
 
     this.latestBlocks$ = combineLatest([this.firstBlockHeight$, this.pageSize$]).pipe(
       map(([firstBlockHeight, pageSize]) =>
-        [...Array(pageSize).keys()].map((index) => {
+        [...Array(pageSize * 1).keys()].map((index) => {
           console.log('index', index);
           const tempLatestBlockHeight =
             firstBlockHeight === undefined ? BigInt(0) : firstBlockHeight;
