@@ -5,7 +5,7 @@ import { rest } from '@cosmos-client/core';
 import { InlineResponse20035, InlineResponse20036 } from '@cosmos-client/core/esm/openapi';
 import { CosmosSDKService } from 'projects/main/src/app/models/cosmos-sdk.service';
 import { Observable, of, zip, timer, BehaviorSubject, combineLatest } from 'rxjs';
-import { catchError, map, mergeMap } from 'rxjs/operators';
+import { catchError, map, switchMap, mergeMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-blocks',
@@ -14,16 +14,15 @@ import { catchError, map, mergeMap } from 'rxjs/operators';
 })
 export class BlocksComponent implements OnInit {
   pageSizeOptions = [5, 10, 20];
-  pageSize$: BehaviorSubject<number> = new BehaviorSubject(10);
-  pageNumber$: BehaviorSubject<number> = new BehaviorSubject(1);
-  pageLength$: BehaviorSubject<number> = new BehaviorSubject(1000);
+  pageSize$: Observable<number>;
+  pageNumber$: Observable<number>;
+  pageLength$: Observable<number>;
 
   pollingInterval = 30;
   latestBlock$: Observable<InlineResponse20035 | undefined>;
-  latestBlockHeight$ = new BehaviorSubject(BigInt(20));
+  latestBlockHeight$: Observable<bigint>;
   latestBlocks$: Observable<InlineResponse20036[] | undefined>;
-  firstBlockHeight$ = new BehaviorSubject(BigInt(20));
-
+  firstBlockHeight$: Observable<bigint>;
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -35,44 +34,49 @@ export class BlocksComponent implements OnInit {
       mergeMap((sdk) => rest.tendermint.getLatestBlock(sdk.rest).then((res) => res.data)),
     );
 
-    this.latestBlock$.subscribe((latestBlock) => {
-      this.latestBlockHeight$.next(
-        latestBlock?.block?.header?.height ? BigInt(latestBlock.block.header.height) : BigInt(0),
-      );
-      this.firstBlockHeight$.next(
-        latestBlock?.block?.header?.height ? BigInt(latestBlock.block.header.height) : BigInt(0),
-      );
-      this.pageLength$.next(
-        latestBlock?.block?.header?.height ? parseInt(latestBlock.block.header.height) : 0,
-      );
-      this.pageNumber$.next(0);
-    });
+    this.latestBlockHeight$ = this.latestBlock$.pipe(
+      map((latestBlock) =>
+        latestBlock?.block?.header?.height ? BigInt(latestBlock.block.header.height) : BigInt(20),
+      ),
+    );
 
-    //add
-    this.route.queryParams.subscribe((params) => {
-      console.log('pages', params); // { order: "popular" }
-      console.log(this.pageSizeOptions.includes(Number(params.perPage)));
+    this.pageLength$ = this.latestBlock$.pipe(
+      map((latestBlock) =>
+        latestBlock?.block?.header?.height ? parseInt(latestBlock.block.header.height) : 1000,
+      ),
+    );
 
-      if (this.pageSizeOptions.includes(Number(params.perPage))) {
-        console.log('inclide', params.perPage);
-        this.pageSize$.next(params.perPage);
-      }
-      this.pageNumber$.next(params.pages);
-      console.log(this.pageSize$.getValue(), this.pageNumber$.getValue());
+    this.pageNumber$ = this.route.queryParams.pipe(map((params) => Number(params.pages)));
 
-      const paginatedBlockHeight =
-        this.latestBlockHeight$.getValue() - BigInt(params.pages - 1) * BigInt(params.perPage) > 0
-          ? this.latestBlockHeight$.getValue() - BigInt(params.pages - 1) * BigInt(params.perPage)
-          : BigInt(100);
-      console.log('paginatedBlockHeight', paginatedBlockHeight);
+    this.pageSize$ = this.route.queryParams.pipe(
+      map((params) => {
+        const pageSize: number = Number(params.perPage);
+        if (this.pageSizeOptions.includes(pageSize)) {
+          return pageSize;
+        } else {
+          return 10;
+        }
+      }),
+    );
 
-      this.firstBlockHeight$.next(paginatedBlockHeight);
-    });
+    this.firstBlockHeight$ = combineLatest([
+      this.latestBlockHeight$,
+      this.pageNumber$,
+      this.pageSize$,
+    ]).pipe(
+      switchMap(([latestBlockHeight, pageNumber, perPage]) => {
+        const paginatedBlockHeight =
+          latestBlockHeight - BigInt(pageNumber - 1) * BigInt(perPage) > 0
+            ? latestBlockHeight - BigInt(pageNumber - 1) * BigInt(perPage)
+            : BigInt(100);
+        return of(paginatedBlockHeight);
+      }),
+    );
 
     this.latestBlocks$ = combineLatest([this.firstBlockHeight$, this.pageSize$]).pipe(
       map(([firstBlockHeight, pageSize]) =>
-        [...Array(pageSize * 1).keys()].map((index) => {
-          console.log('index', index);
+        [...Array(pageSize).keys()].map((index) => {
+          //console.log('index', index);
           const tempLatestBlockHeight =
             firstBlockHeight === undefined ? BigInt(0) : firstBlockHeight;
           return tempLatestBlockHeight - BigInt(index);
@@ -94,24 +98,11 @@ export class BlocksComponent implements OnInit {
         return of(undefined);
       }),
     );
-
-    this.pageSize$.subscribe((x) => console.log('pageSize', x));
-    this.firstBlockHeight$.subscribe((x) => console.log('1stBlockH', x));
   }
 
   ngOnInit(): void {}
 
   appPaginationChanged(pageEvent: PageEvent): void {
-    /*
-    this.pageSize$.next(pageEvent.pageSize);
-    this.pageNumber$.next(pageEvent.pageIndex + 1);
-    this.pageLength$.next(pageEvent.length);
-    const paginatedBlockHeight =
-      this.latestBlockHeight$.getValue() - BigInt(pageEvent.pageIndex) * BigInt(pageEvent.pageSize);
-    this.firstBlockHeight$.next(paginatedBlockHeight);
-    */
-
-    //add
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
