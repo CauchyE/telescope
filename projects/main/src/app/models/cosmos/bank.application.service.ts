@@ -33,9 +33,6 @@ export class BankApplicationService {
     let gas: proto.cosmos.base.v1beta1.ICoin;
     let fee: proto.cosmos.base.v1beta1.ICoin;
 
-    // remove unintentional whitespace
-    const privateKeyWithNoWhitespace = privateKey.replace(/\s+/g, '');
-
     const dialogRefSimulating = this.loadingDialog.open('Simulating...');
 
     try {
@@ -44,7 +41,7 @@ export class BankApplicationService {
         toAddress,
         amount,
         minimumGasPrice,
-        privateKeyWithNoWhitespace,
+        privateKey,
       );
       gas = simulatedResultData.estimatedGasUsedWithMargin;
       fee = simulatedResultData.estimatedFeeWithMargin;
@@ -78,14 +75,7 @@ export class BankApplicationService {
     let txhash: string | undefined;
 
     try {
-      const res = await this.bank.send(
-        key,
-        toAddress,
-        amount,
-        gas,
-        fee,
-        privateKeyWithNoWhitespace,
-      );
+      const res = await this.bank.send(key, toAddress, amount, gas, fee, privateKey);
       txhash = res.tx_response?.txhash;
       if (txhash === undefined) {
         throw Error('Invalid txhash!');
