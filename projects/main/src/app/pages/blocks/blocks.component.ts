@@ -4,7 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { rest } from '@cosmos-client/core';
 import { InlineResponse20035, InlineResponse20036 } from '@cosmos-client/core/esm/openapi';
 import { CosmosSDKService } from 'projects/main/src/app/models/cosmos-sdk.service';
-import { Observable, of, zip, timer, BehaviorSubject, combineLatest } from 'rxjs';
+import { Observable, of, zip, timer, combineLatest } from 'rxjs';
 import { catchError, map, switchMap, mergeMap } from 'rxjs/operators';
 
 @Component({
@@ -47,16 +47,6 @@ export class BlocksComponent implements OnInit {
       ),
     );
 
-    this.pageNumber$ = this.route.queryParams.pipe(
-      map((params) => {
-        if (Number(params.pages)) {
-          return Number(params.pages);
-        } else {
-          return 1;
-        }
-      }),
-    );
-
     this.pageSize$ = this.route.queryParams.pipe(
       map((params) => {
         const pageSize: number = Number(params.perPage);
@@ -65,6 +55,19 @@ export class BlocksComponent implements OnInit {
         } else {
           return 10;
         }
+      }),
+    );
+
+    this.pageNumber$ = combineLatest([
+      this.pageLength$,
+      this.pageSize$,
+      this.route.queryParams,
+    ]).pipe(
+      map(([pageLength, pageSize, params]) => {
+        const pages = Number(params.pages);
+        if (!pages) return 2;
+        if (pages > pageLength / pageSize + 1) return 3;
+        return pages;
       }),
     );
 
@@ -84,11 +87,13 @@ export class BlocksComponent implements OnInit {
 
     this.latestBlocks$ = combineLatest([this.firstBlockHeight$, this.pageSize$]).pipe(
       map(([firstBlockHeight, pageSize]) =>
-        [...Array(pageSize).keys()].map((index) => {
-          const tempLatestBlockHeight =
-            firstBlockHeight === undefined ? BigInt(0) : firstBlockHeight;
-          return tempLatestBlockHeight - BigInt(index);
-        }),
+        [...Array(pageSize < firstBlockHeight ? pageSize : Number(firstBlockHeight)).keys()].map(
+          (index) => {
+            const tempLatestBlockHeight =
+              firstBlockHeight === undefined ? BigInt(0) : firstBlockHeight;
+            return tempLatestBlockHeight - BigInt(index);
+          },
+        ),
       ),
       mergeMap((blockHeights) =>
         zip(
