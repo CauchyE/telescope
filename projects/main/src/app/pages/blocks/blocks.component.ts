@@ -65,8 +65,8 @@ export class BlocksComponent implements OnInit {
     ]).pipe(
       map(([pageLength, pageSize, params]) => {
         const pages = Number(params.pages);
-        if (!pages) return 2;
-        if (pages > pageLength / pageSize + 1) return 3;
+        if (!pages) return 1;
+        if (pages > pageLength / pageSize + 1) return 1;
         return pages;
       }),
     );
