@@ -64,7 +64,8 @@ export class BankService {
     privateKey: string,
   ): Promise<cosmosclient.TxBuilder> {
     const sdk = await this.cosmosSDK.sdk().then((sdk) => sdk.rest);
-    const privKey = this.key.getPrivKey(key.type, privateKey);
+    const privateKeyWithNoWhitespace = privateKey.replace(/\s+/g, '');
+    const privKey = this.key.getPrivKey(key.type, privateKeyWithNoWhitespace);
     const pubKey = privKey.pubKey();
     const fromAddress = cosmosclient.AccAddress.fromPublicKey(pubKey);
 
