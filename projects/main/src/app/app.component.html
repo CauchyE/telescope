@@ -1,8 +1,8 @@
-
 <view-app
-[extensionNavigations]="config.extension?.navigations"
-[searchValue]="searchValue$ | async"
-(appSubmitSearchValue)="onSubmitSearchValue($event)"
+  [extensionNavigations]="config.extension?.navigations"
+  [searchResult]="searchResult$ | async"
+  (appSubmitSearchResult)="onSubmitSearchResult($event)"
+  (appChangeInputValue)="onChangeInputValue($event)"
 >
   <router-outlet></router-outlet>
 </view-app>

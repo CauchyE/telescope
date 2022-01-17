@@ -1,12 +1,9 @@
-import {
-  Component,
-  OnInit,
-  Output,
-  EventEmitter,
-  Input,
-  ViewChild,
-} from '@angular/core';
-import { NgModel } from '@angular/forms';
+import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
+
+export type SearchResult = {
+  searchValue: string;
+  type: string;
+};
 
 @Component({
   selector: 'view-toolbar',
@@ -15,37 +12,49 @@ import { NgModel } from '@angular/forms';
 })
 export class ToolbarComponent implements OnInit {
   @Input()
-  searchValue: string | null;
+  searchResult?: SearchResult | null;
 
   @Output()
-  appSubmitSearchValue: EventEmitter<string>;
+  appSubmitSearchResult: EventEmitter<SearchResult>;
 
-  @ViewChild('searchValueRef')
-  searchValueRef!: NgModel;
+  @Output()
+  appChangeInputValue: EventEmitter<string>;
 
-  options = [
-    {
-      label: (value: string) => `Address "${value}"`,
-      format: (value: string) => `address=${value}`,
-    },
-    {
-      label: (value: string) => `Tx hash "${value}"`,
-      format: (value: string) => `tx_hash=${value}`,
-    },
-  ];
+  searchValue: string;
 
   constructor() {
     this.searchValue = '';
-    this.appSubmitSearchValue = new EventEmitter();
+    this.searchResult = {
+      searchValue: '',
+      type: '',
+    };
+    this.appSubmitSearchResult = new EventEmitter();
+    this.appChangeInputValue = new EventEmitter();
   }
 
   ngOnInit(): void {}
 
-  onOptionSelected(option: any): void {
-    this.appSubmitSearchValue.emit(option);
+  onOptionSelected(): void {
+    if (this.searchResult) {
+      this.appSubmitSearchResult.emit(this.searchResult);
+      this.searchResult = { searchValue: '', type: '' };
+      this.searchValue = '';
+    }
   }
 
-  onSubmit(value: string) {
-    this.appSubmitSearchValue.emit(value);
+  onSubmitSearchResult(): void {
+    if (this.searchResult) {
+      this.appSubmitSearchResult.emit(this.searchResult);
+      this.searchResult = { searchValue: '', type: '' };
+      this.searchValue = '';
+    }
+  }
+
+  onChangeInput(inputValue: string): void {
+    this.appChangeInputValue.emit(inputValue);
+  }
+
+  onFocusInput(inputValue: string): void {
+    this.appChangeInputValue.emit(inputValue);
   }
 }
