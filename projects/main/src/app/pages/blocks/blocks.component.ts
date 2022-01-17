@@ -23,6 +23,7 @@ export class BlocksComponent implements OnInit {
   latestBlockHeight$: Observable<bigint>;
   latestBlocks$: Observable<InlineResponse20036[] | undefined>;
   firstBlockHeight$: Observable<bigint>;
+
   constructor(
     private router: Router,
     private route: ActivatedRoute,
@@ -46,7 +47,15 @@ export class BlocksComponent implements OnInit {
       ),
     );
 
-    this.pageNumber$ = this.route.queryParams.pipe(map((params) => Number(params.pages)));
+    this.pageNumber$ = this.route.queryParams.pipe(
+      map((params) => {
+        if (Number(params.pages)) {
+          return Number(params.pages);
+        } else {
+          return 1;
+        }
+      }),
+    );
 
     this.pageSize$ = this.route.queryParams.pipe(
       map((params) => {
@@ -76,7 +85,6 @@ export class BlocksComponent implements OnInit {
     this.latestBlocks$ = combineLatest([this.firstBlockHeight$, this.pageSize$]).pipe(
       map(([firstBlockHeight, pageSize]) =>
         [...Array(pageSize).keys()].map((index) => {
-          //console.log('index', index);
           const tempLatestBlockHeight =
             firstBlockHeight === undefined ? BigInt(0) : firstBlockHeight;
           return tempLatestBlockHeight - BigInt(index);
