@@ -1,7 +1,7 @@
 <h2>Blocks</h2>
 <div>
   <mat-card>
-    <ng-container *ngIf="latestBlocks === undefined || null; then empty; else exist"></ng-container>
+    <ng-container *ngIf="blocks === undefined || null; then empty; else exist"></ng-container>
     <ng-template #empty></ng-template>
     <ng-template #exist>
       <mat-list>
@@ -12,13 +12,13 @@
         </mat-list-item>
       </mat-list>
       <mat-nav-list>
-        <ng-container *ngFor="let latestBlock of latestBlocks">
+        <ng-container *ngFor="let block of blocks">
           <mat-divider></mat-divider>
-          <mat-list-item routerLink="/blocks/{{ latestBlock?.block?.header?.height }}">
-            <span class="pr-4">{{ latestBlock?.block?.header?.height }}</span>
+          <mat-list-item routerLink="/blocks/{{ block?.block?.header?.height }}">
+            <span class="pr-4">{{ block?.block?.header?.height }}</span>
             <span class="flex-auto"></span>
             <span class="break-all text-sm sm:text-base">
-              {{ latestBlock?.block?.header?.time | date : 'yyyy-M-d a h:mm:ss z' }}
+              {{ block?.block?.header?.time | date : 'yyyy-M-d a h:mm:ss z' }}
             </span>
           </mat-list-item>
           <mat-divider></mat-divider>

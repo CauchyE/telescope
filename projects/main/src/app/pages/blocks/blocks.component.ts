@@ -16,13 +16,15 @@ export class BlocksComponent implements OnInit {
   pageSizeOptions = [5, 10, 20];
   pageSize$: Observable<number>;
   pageNumber$: Observable<number>;
-  pageLength$: Observable<number>;
+  pageLength$: Observable<number | undefined>;
+  defaultPageSize = 10;
+  defaultPageNumber = 1;
 
   pollingInterval = 30;
   latestBlock$: Observable<InlineResponse20035 | undefined>;
-  latestBlockHeight$: Observable<bigint>;
-  latestBlocks$: Observable<InlineResponse20036[] | undefined>;
-  firstBlockHeight$: Observable<bigint>;
+  latestBlockHeight$: Observable<bigint | undefined>;
+  firstBlockHeight$: Observable<bigint | undefined>;
+  blocks$: Observable<InlineResponse20036[] | undefined>;
 
   constructor(
     private router: Router,
@@ -37,23 +39,23 @@ export class BlocksComponent implements OnInit {
 
     this.latestBlockHeight$ = this.latestBlock$.pipe(
       map((latestBlock) =>
-        latestBlock?.block?.header?.height ? BigInt(latestBlock.block.header.height) : BigInt(20),
+        latestBlock?.block?.header?.height ? BigInt(latestBlock.block.header.height) : undefined,
       ),
     );
 
     this.pageLength$ = this.latestBlock$.pipe(
       map((latestBlock) =>
-        latestBlock?.block?.header?.height ? parseInt(latestBlock.block.header.height) : 1000,
+        latestBlock?.block?.header?.height ? parseInt(latestBlock.block.header.height) : undefined,
       ),
     );
 
     this.pageSize$ = this.route.queryParams.pipe(
       map((params) => {
-        const pageSize: number = Number(params.perPage);
+        const pageSize = Number(params.perPage);
         if (this.pageSizeOptions.includes(pageSize)) {
           return pageSize;
         } else {
-          return 10;
+          return this.defaultPageSize;
         }
       }),
     );
@@ -64,9 +66,12 @@ export class BlocksComponent implements OnInit {
       this.route.queryParams,
     ]).pipe(
       map(([pageLength, pageSize, params]) => {
+        if (pageLength === undefined) {
+          return this.defaultPageNumber;
+        }
         const pages = Number(params.pages);
-        if (!pages) return 1;
-        if (pages > pageLength / pageSize + 1) return 1;
+        if (!pages) return this.defaultPageNumber;
+        if (pages > pageLength / pageSize + 1) return this.defaultPageNumber;
         return pages;
       }),
     );
@@ -77,24 +82,25 @@ export class BlocksComponent implements OnInit {
       this.pageSize$,
     ]).pipe(
       switchMap(([latestBlockHeight, pageNumber, perPage]) => {
-        const paginatedBlockHeight =
-          latestBlockHeight - BigInt(pageNumber - 1) * BigInt(perPage) > 0
-            ? latestBlockHeight - BigInt(pageNumber - 1) * BigInt(perPage)
-            : BigInt(100);
+        if (latestBlockHeight === undefined) {
+          return of(undefined);
+        }
+        const paginatedBlockHeight = latestBlockHeight - BigInt(pageNumber - 1) * BigInt(perPage);
         return of(paginatedBlockHeight);
       }),
     );
 
-    this.latestBlocks$ = combineLatest([this.firstBlockHeight$, this.pageSize$]).pipe(
-      map(([firstBlockHeight, pageSize]) =>
-        [...Array(pageSize < firstBlockHeight ? pageSize : Number(firstBlockHeight)).keys()].map(
-          (index) => {
-            const tempLatestBlockHeight =
-              firstBlockHeight === undefined ? BigInt(0) : firstBlockHeight;
-            return tempLatestBlockHeight - BigInt(index);
-          },
-        ),
-      ),
+    this.blocks$ = combineLatest([this.firstBlockHeight$, this.pageSize$]).pipe(
+      map(([firstBlockHeight, pageSize]) => {
+        if (firstBlockHeight === undefined) {
+          return [];
+        }
+        const paginatedBlocksLength =
+          pageSize < firstBlockHeight ? pageSize : Number(firstBlockHeight);
+        return [...Array(paginatedBlocksLength).keys()].map(
+          (index) => firstBlockHeight - BigInt(index),
+        );
+      }),
       mergeMap((blockHeights) =>
         zip(
           ...blockHeights.map((blockHeight) =>
