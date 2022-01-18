@@ -17,7 +17,7 @@ export class BlocksComponent implements OnInit {
   pageSize$: Observable<number>;
   pageNumber$: Observable<number>;
   pageLength$: Observable<number | undefined>;
-  defaultPageSize = 10;
+  defaultPageSize = this.pageSizeOptions[1];
   defaultPageNumber = 1;
 
   pollingInterval = 30;
