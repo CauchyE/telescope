@@ -9,7 +9,7 @@ import { InlineResponse20035 } from '@cosmos-client/core/esm/openapi';
 })
 export class BlocksComponent implements OnInit {
   @Input()
-  latestBlocks?: InlineResponse20035[] | null;
+  blocks?: InlineResponse20035[] | null;
 
   @Input()
   pageSizeOptions?: number[] | null;
