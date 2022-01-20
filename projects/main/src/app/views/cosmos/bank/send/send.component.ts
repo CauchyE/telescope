@@ -28,6 +28,9 @@ export class SendComponent implements OnInit {
   @Input()
   minimumGasPrices?: proto.cosmos.base.v1beta1.ICoin[];
 
+  @Input()
+  maxAmount: string[] | null;
+
   @Output()
   appSubmit: EventEmitter<SendOnSubmitEvent>;
 
@@ -35,6 +38,7 @@ export class SendComponent implements OnInit {
 
   constructor() {
     this.appSubmit = new EventEmitter();
+    this.maxAmount = [];
   }
 
   ngOnChanges(): void {

@@ -20,6 +20,7 @@ export class SendComponent implements OnInit {
   key$: Observable<Key | undefined>;
   coins$: Observable<proto.cosmos.base.v1beta1.ICoin[] | undefined>;
   amount$: Observable<proto.cosmos.base.v1beta1.ICoin[] | undefined>;
+  maxAmount$: Observable<string[]>;
   minimumGasPrices: proto.cosmos.base.v1beta1.ICoin[];
 
   constructor(
@@ -53,6 +54,16 @@ export class SendComponent implements OnInit {
       ),
     );
 
+    this.maxAmount$ = this.coins$.pipe(
+      map((amount) => {
+        if (amount === undefined) {
+          return [];
+        }
+        return [...Array(amount).keys()].map((index) => {
+          return amount[index].amount as string;
+        });
+      }),
+    );
     this.minimumGasPrices = this.configS.config.minimumGasPrices;
   }
 
