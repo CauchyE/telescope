@@ -27,7 +27,7 @@ export class CreateComponent implements OnInit {
     this.privateKey = '';
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   onClickCreateMnemonic() {
     this.mnemonic = bip39.generateMnemonic();
@@ -53,8 +53,9 @@ and store them safely and confidentially without disclosing them to others.\
   }
 
   async onSubmit($event: CreateOnSubmitEvent) {
+    const mnemonicWithNoWhitespace = $event.mnemonic.trim();
     this.keyBackupResult = await this.keyBackupDialog.open(
-      $event.mnemonic,
+      mnemonicWithNoWhitespace,
       $event.privateKey,
       $event.id,
     );
