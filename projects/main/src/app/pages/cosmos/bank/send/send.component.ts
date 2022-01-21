@@ -59,7 +59,6 @@ export class SendComponent implements OnInit {
         if (coins === undefined) {
           return [];
         }
-        console.log('coins', coins);
         return [...coins.keys()].map((index) => {
           let eachAmount = parseInt((coins && coins[index].amount) || '0');
           if (coins[index].denom === 'uguu') {
