@@ -60,5 +60,8 @@
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
     </mat-list>
+    <mat-paginator [length]="displayLength" [pageSize]="displaySize" [pageIndex]="displayNumber ? displayNumber - 1 : 0"
+      [pageSizeOptions]="displaySizeOptions ? displaySizeOptions : []" (page)="onPaginationChange($event)">
+    </mat-paginator>
   </mat-card>
 </ng-template>
