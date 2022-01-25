@@ -2,24 +2,23 @@
   <h2>Transactions</h2>
   <mat-form-field appearance="fill">
     <mat-select [(value)]="selectedTxType" (valueChange)="onSelectedTxTypeChanged($event)">
-      <mat-option *ngFor="let txType of txTypeOptions" [value]="txType">{{txType}}
-      </mat-option>
+      <mat-option *ngFor="let txType of txTypeOptions" [value]="txType">{{ txType }} </mat-option>
     </mat-select>
   </mat-form-field>
 </div>
 <div>
   <mat-card>
-    <ng-container *ngIf="txs === undefined || null ; then empty; else exist"></ng-container>
+    <mat-list>
+      <mat-list-item>
+        <span class="break-all truncate pr-4">Block Height</span>
+        <span class="flex-auto"></span>
+        <span class="break-all truncate">Tx Hash</span>
+      </mat-list-item>
+      <mat-divider></mat-divider>
+    </mat-list>
+    <ng-container *ngIf="(txs?.length || 0) > 0; then exist; else empty"></ng-container>
     <ng-template #empty></ng-template>
     <ng-template #exist>
-      <mat-list>
-        <mat-list-item>
-          <span class="break-all truncate pr-4">Block Height</span>
-          <span class="flex-auto"></span>
-          <span class="break-all truncate">Tx Hash</span>
-        </mat-list-item>
-        <mat-divider></mat-divider>
-      </mat-list>
       <mat-nav-list>
         <ng-container *ngFor="let tx of txs">
           <mat-list-item routerLink="/txs/{{ tx.txhash }}">
@@ -29,10 +28,15 @@
           </mat-list-item>
           <mat-divider></mat-divider>
         </ng-container>
-        <mat-paginator [length]="pageLength" [pageSize]="pageSize" [pageIndex]="pageNumber ? pageNumber - 1 : 0"
-          [pageSizeOptions]="pageSizeOptions ? pageSizeOptions : []" (page)="onPaginationChange($event)">
-        </mat-paginator>
       </mat-nav-list>
     </ng-template>
+    <mat-paginator
+      [length]="pageLength"
+      [pageSize]="pageSize"
+      [pageIndex]="pageNumber ? pageNumber - 1 : 0"
+      [pageSizeOptions]="pageSizeOptions ? pageSizeOptions : []"
+      (page)="onPaginationChange($event)"
+    >
+    </mat-paginator>
   </mat-card>
 </div>
