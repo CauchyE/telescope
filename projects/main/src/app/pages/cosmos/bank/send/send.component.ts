@@ -59,13 +59,27 @@ export class SendComponent implements OnInit {
         if (coins === undefined) {
           return [];
         }
-        return [...coins.keys()].map((index) => {
-          let eachAmount = parseInt((coins && coins[index].amount) || '0');
-          if (coins[index].denom === 'uguu') {
-            eachAmount = eachAmount - 1;
-          }
-          return eachAmount;
-        });
+        return coins
+          .map((coins, _index) => {
+            return { denom: coins.denom, amount: parseInt((coins && coins.amount) || '0') };
+          })
+          .map((numberedCoin, _index) => {
+            //check whether minimum_gas_prices include this denom
+            let isGasPrices: boolean = false;
+
+            this.configS.config.minimumGasPrices.map((minimumGasPrice) => {
+              if (numberedCoin.denom === minimumGasPrice.denom) {
+                console.log({ numberedCoin, minimumGasPrice });
+                isGasPrices = true;
+              }
+            });
+
+            if (isGasPrices) {
+              return numberedCoin.amount - 1;
+            } else {
+              return numberedCoin.amount;
+            }
+          });
       }),
     );
     this.minimumGasPrices = this.configS.config.minimumGasPrices;
