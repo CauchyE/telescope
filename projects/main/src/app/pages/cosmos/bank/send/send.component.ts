@@ -69,7 +69,6 @@ export class SendComponent implements OnInit {
 
             this.configS.config.minimumGasPrices.map((minimumGasPrice) => {
               if (numberedCoin.denom === minimumGasPrice.denom) {
-                console.log({ numberedCoin, minimumGasPrice });
                 isGasPrices = true;
               }
             });
