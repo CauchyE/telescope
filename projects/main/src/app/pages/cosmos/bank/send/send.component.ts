@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { cosmosclient, proto, rest } from '@cosmos-client/core';
 import { ConfigService } from 'projects/main/src/app/models/config.service';
-import { combineLatest, Observable } from 'rxjs';
+import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
 import { map, mergeMap, filter } from 'rxjs/operators';
 
 @Component({
@@ -22,6 +22,7 @@ export class SendComponent implements OnInit {
   amount$: Observable<proto.cosmos.base.v1beta1.ICoin[] | undefined>;
   maxAmounts$: Observable<number[]>;
   minimumGasPrices: proto.cosmos.base.v1beta1.ICoin[];
+  selectedGasDenom$: BehaviorSubject<string> = new BehaviorSubject('');
 
   constructor(
     private readonly cosmosSDK: CosmosSDKService,
@@ -54,26 +55,17 @@ export class SendComponent implements OnInit {
       ),
     );
 
-    this.maxAmounts$ = this.coins$.pipe(
-      map((coins) => {
+    this.maxAmounts$ = combineLatest([this.coins$, this.selectedGasDenom$.asObservable()]).pipe(
+      map(([coins, selectedGasDenom]) => {
         if (coins === undefined) {
           return [];
         }
         return coins
-          .map((coins, _index) => {
-            return { denom: coins.denom, amount: parseInt((coins && coins.amount) || '0') };
+          .map((coin) => {
+            return { denom: coin.denom, amount: parseInt((coin && coin.amount) || '0') };
           })
-          .map((numberedCoin, _index) => {
-            //check whether minimum_gas_prices include this denom
-            let isGasPrices: boolean = false;
-
-            this.configS.config.minimumGasPrices.map((minimumGasPrice) => {
-              if (numberedCoin.denom === minimumGasPrice.denom) {
-                isGasPrices = true;
-              }
-            });
-
-            if (isGasPrices) {
+          .map((numberedCoin) => {
+            if (numberedCoin.denom === selectedGasDenom) {
               return numberedCoin.amount - 1;
             } else {
               return numberedCoin.amount;
@@ -100,5 +92,10 @@ export class SendComponent implements OnInit {
       $event.minimumGasPrice,
       $event.privateKey,
     );
+  }
+
+  gasPriceSelected($event: proto.cosmos.base.v1beta1.ICoin) {
+    this.selectedGasDenom$.next($event.denom || '');
+    console.log('minimun_gas_price is ', $event.denom);
   }
 }

@@ -34,15 +34,20 @@ export class SendComponent implements OnInit {
   @Output()
   appSubmit: EventEmitter<SendOnSubmitEvent>;
 
+  @Output()
+  gasPriceSelected: EventEmitter<proto.cosmos.base.v1beta1.ICoin>;
+
   selectedGasPrice?: proto.cosmos.base.v1beta1.ICoin;
 
   constructor() {
     this.appSubmit = new EventEmitter();
+    this.gasPriceSelected = new EventEmitter();
   }
 
   ngOnChanges(): void {
     if (this.minimumGasPrices && this.minimumGasPrices.length > 0) {
       this.selectedGasPrice = this.minimumGasPrices[0];
+      this.gasPriceSelected.emit(this.selectedGasPrice);
     }
   }
 
@@ -76,6 +81,7 @@ export class SendComponent implements OnInit {
     this.selectedGasPrice = this.minimumGasPrices?.find(
       (minimumGasPrice) => minimumGasPrice.denom === denom,
     );
+    this.gasPriceSelected.emit(this.selectedGasPrice);
   }
 
   onMinimumGasAmountSliderChanged(amount: string): void {
