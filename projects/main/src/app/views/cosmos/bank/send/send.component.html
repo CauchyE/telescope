@@ -21,7 +21,10 @@
   </mat-list>
 
   <h4 class="pt-6 pb-0">Sending Form</h4>
-  <form #formRef="ngForm" (submit)="onSubmit(toAddressRef.value, privateKeyRef.value, minimumGasPriceRef.value)">
+  <form
+    #formRef="ngForm"
+    (submit)="onSubmit(toAddressRef.value, privateKeyRef.value, minimumGasPriceRef.value)"
+  >
     <mat-form-field class="w-full">
       <mat-label>To address</mat-label>
       <input #toAddressRef ngModel name="to-address" matInput required />
@@ -47,7 +50,7 @@
             matInput
             type="number"
             pattern="^\d+$"
-            [max]="(maxAmounts && maxAmounts[i]) || 0"
+            [max]="(coins && coins[i].amount) || 0"
             [min]="0"
             required
           />
@@ -65,7 +68,10 @@
           required
           (valueChange)="onMinimumGasDenomChanged($event)"
         >
-          <mat-option *ngFor="let minimumGasPrice of minimumGasPrices" [value]="minimumGasPrice.denom">
+          <mat-option
+            *ngFor="let minimumGasPrice of minimumGasPrices"
+            [value]="minimumGasPrice.denom"
+          >
             {{ minimumGasPrice.denom }}
           </mat-option>
         </mat-select>
@@ -83,14 +89,15 @@
         />
       </mat-form-field>
     </div>
-    <mat-slider class="w-full"
-    [max]="1"
-    [min]="0"
-    [step]="0.015"
-    [(ngModel)]="selectedGasPrice && selectedGasPrice.amount"
-    name="minimum-gas-price-slider"
-  >
-  </mat-slider>
+    <mat-slider
+      class="w-full"
+      [max]="1"
+      [min]="0"
+      [step]="0.015"
+      [(ngModel)]="selectedGasPrice && selectedGasPrice.amount"
+      name="minimum-gas-price-slider"
+    >
+    </mat-slider>
 
     <h4 class="pt-3">Signer</h4>
     <mat-form-field class="w-full">

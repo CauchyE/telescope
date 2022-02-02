@@ -91,11 +91,11 @@ export class SendComponent implements OnInit {
       $event.amount,
       $event.minimumGasPrice,
       $event.privateKey,
+      $event.coins,
     );
   }
 
   gasPriceSelected($event: proto.cosmos.base.v1beta1.ICoin) {
     this.selectedGasDenom$.next($event.denom || '');
-    console.log('minimun_gas_price is ', $event.denom);
   }
 }

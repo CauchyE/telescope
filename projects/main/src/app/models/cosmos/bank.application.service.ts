@@ -27,6 +27,7 @@ export class BankApplicationService {
     amount: proto.cosmos.base.v1beta1.ICoin[],
     minimumGasPrice: proto.cosmos.base.v1beta1.ICoin,
     privateKey: string,
+    coins: proto.cosmos.base.v1beta1.ICoin[],
   ) {
     // simulate
     let simulatedResultData: SimulatedTxResultResponse;
@@ -35,11 +36,29 @@ export class BankApplicationService {
 
     const dialogRefSimulating = this.loadingDialog.open('Simulating...');
 
+    //Todo: if amount has maximum gasDenom, do amount -1
+    const maximumGasPrice = coins.find((coin) => coin.denom === minimumGasPrice.denom);
+    const amountGasPrice = amount.find((amount) => amount.denom === minimumGasPrice.denom);
+
+    const fixedAmount: proto.cosmos.base.v1beta1.ICoin[] = [];
+    amount.forEach((amount) => {
+      //has gas denom
+      if (
+        maximumGasPrice?.amount === amountGasPrice?.amount &&
+        amount.denom === minimumGasPrice.denom
+      ) {
+        const amountForSimulation = parseInt(amount.amount || '0') - 1;
+        fixedAmount.push({ amount: amountForSimulation.toString(), denom: amount.denom });
+      } else {
+        fixedAmount.push(amount);
+      }
+    });
+
     try {
       simulatedResultData = await this.bank.simulateToSend(
         key,
         toAddress,
-        amount,
+        fixedAmount,
         minimumGasPrice,
         privateKey,
       );
@@ -54,11 +73,17 @@ export class BankApplicationService {
       dialogRefSimulating.close();
     }
 
+    // check whether the fee exceeded
+    const isOver =
+      parseInt(fee.amount || '0') + parseInt(amountGasPrice?.amount || '0') >
+      parseInt(maximumGasPrice?.amount || '0');
+
     // ask the user to confirm the fee with a dialog
     const txFeeConfirmedResult = await this.dialog
       .open(TxFeeConfirmDialogComponent, {
         data: {
           fee,
+          isTxFeeOver: isOver,
           isConfirmed: false,
         },
       })
