@@ -36,29 +36,28 @@ export class BankApplicationService {
 
     const dialogRefSimulating = this.loadingDialog.open('Simulating...');
 
-    //Todo: if amount has maximum gasDenom, do amount -1
-    const maximumGasPrice = coins.find((coin) => coin.denom === minimumGasPrice.denom);
-    const amountGasPrice = amount.find((amount) => amount.denom === minimumGasPrice.denom);
-
-    const fixedAmount: proto.cosmos.base.v1beta1.ICoin[] = [];
-    amount.forEach((amount) => {
-      //has gas denom
-      if (
-        maximumGasPrice?.amount === amountGasPrice?.amount &&
-        amount.denom === minimumGasPrice.denom
-      ) {
-        const amountForSimulation = parseInt(amount.amount || '0') - 1;
-        fixedAmount.push({ amount: amountForSimulation.toString(), denom: amount.denom });
-      } else {
-        fixedAmount.push(amount);
-      }
-    });
+    // confirm whether amount has fee for simulation
+    const feeDenom = minimumGasPrice.denom;
+    const simulationFeeAmount = 1;
+    const tempAmountToSend = amount.find(
+      (amount) => amount.denom === minimumGasPrice.denom,
+    )?.amount;
+    const amountToSend = tempAmountToSend ? parseInt(tempAmountToSend) : 0;
+    const tempBalance = coins.find((coin) => coin.denom === minimumGasPrice.denom)?.amount;
+    const balance = tempBalance ? parseInt(tempBalance) : 0;
+    if (amountToSend + simulationFeeAmount > balance) {
+      this.snackBar.open(
+        `Insufficient fee margin for simulation!\nAmount to send: ${amountToSend}${feeDenom} + Simulation fee: ${simulationFeeAmount}${feeDenom} > Balance: ${balance}${feeDenom}`,
+      );
+      dialogRefSimulating.close();
+      return;
+    }
 
     try {
       simulatedResultData = await this.bank.simulateToSend(
         key,
         toAddress,
-        fixedAmount,
+        amount,
         minimumGasPrice,
         privateKey,
       );
@@ -74,16 +73,19 @@ export class BankApplicationService {
     }
 
     // check whether the fee exceeded
-    const isOver =
-      parseInt(fee.amount || '0') + parseInt(amountGasPrice?.amount || '0') >
-      parseInt(maximumGasPrice?.amount || '0');
+    const simulatedFee = fee.amount ? parseInt(fee.amount) : 0;
+    if (simulatedFee + amountToSend > balance) {
+      this.snackBar.open(
+        `Insufficient fee margin for send!\nAmount to send: ${amountToSend}${feeDenom} + Simulated fee: ${simulatedFee}${feeDenom} > Balance: ${balance}${feeDenom}`,
+      );
+      return;
+    }
 
     // ask the user to confirm the fee with a dialog
     const txFeeConfirmedResult = await this.dialog
       .open(TxFeeConfirmDialogComponent, {
         data: {
           fee,
-          isTxFeeOver: isOver,
           isConfirmed: false,
         },
       })

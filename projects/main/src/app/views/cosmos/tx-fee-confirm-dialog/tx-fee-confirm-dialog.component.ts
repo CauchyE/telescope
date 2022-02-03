@@ -12,7 +12,6 @@ export class TxFeeConfirmDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA)
     public readonly data: {
       fee: proto.cosmos.base.v1beta1.ICoin;
-      isTxFeeOver: boolean;
       isConfirmed: boolean;
     },
     private readonly dialogRef: MatDialogRef<TxFeeConfirmDialogComponent>,

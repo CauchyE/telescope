@@ -29,9 +29,6 @@ export class SendComponent implements OnInit {
   @Input()
   minimumGasPrices?: proto.cosmos.base.v1beta1.ICoin[];
 
-  @Input()
-  maxAmounts?: number[] | null;
-
   @Output()
   appSubmit: EventEmitter<SendOnSubmitEvent>;
 

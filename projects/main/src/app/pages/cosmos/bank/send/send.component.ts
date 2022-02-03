@@ -20,7 +20,6 @@ export class SendComponent implements OnInit {
   key$: Observable<Key | undefined>;
   coins$: Observable<proto.cosmos.base.v1beta1.ICoin[] | undefined>;
   amount$: Observable<proto.cosmos.base.v1beta1.ICoin[] | undefined>;
-  maxAmounts$: Observable<number[]>;
   minimumGasPrices: proto.cosmos.base.v1beta1.ICoin[];
   selectedGasDenom$: BehaviorSubject<string> = new BehaviorSubject('');
 
@@ -55,24 +54,6 @@ export class SendComponent implements OnInit {
       ),
     );
 
-    this.maxAmounts$ = combineLatest([this.coins$, this.selectedGasDenom$.asObservable()]).pipe(
-      map(([coins, selectedGasDenom]) => {
-        if (coins === undefined) {
-          return [];
-        }
-        return coins
-          .map((coin) => {
-            return { denom: coin.denom, amount: parseInt((coin && coin.amount) || '0') };
-          })
-          .map((numberedCoin) => {
-            if (numberedCoin.denom === selectedGasDenom) {
-              return numberedCoin.amount - 1;
-            } else {
-              return numberedCoin.amount;
-            }
-          });
-      }),
-    );
     this.minimumGasPrices = this.configS.config.minimumGasPrices;
   }
 
