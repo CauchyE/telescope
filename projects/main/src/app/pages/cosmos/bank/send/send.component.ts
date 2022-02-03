@@ -8,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { cosmosclient, proto, rest } from '@cosmos-client/core';
 import { ConfigService } from 'projects/main/src/app/models/config.service';
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
+import { combineLatest, Observable } from 'rxjs';
 import { map, mergeMap, filter } from 'rxjs/operators';
 
 @Component({
@@ -21,7 +21,6 @@ export class SendComponent implements OnInit {
   coins$: Observable<proto.cosmos.base.v1beta1.ICoin[] | undefined>;
   amount$: Observable<proto.cosmos.base.v1beta1.ICoin[] | undefined>;
   minimumGasPrices: proto.cosmos.base.v1beta1.ICoin[];
-  selectedGasDenom$: BehaviorSubject<string> = new BehaviorSubject('');
 
   constructor(
     private readonly cosmosSDK: CosmosSDKService,
@@ -74,9 +73,5 @@ export class SendComponent implements OnInit {
       $event.privateKey,
       $event.coins,
     );
-  }
-
-  gasPriceSelected($event: proto.cosmos.base.v1beta1.ICoin) {
-    this.selectedGasDenom$.next($event.denom || '');
   }
 }
