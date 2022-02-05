@@ -48,6 +48,7 @@ export class BankApplicationService {
     if (amountToSend + simulationFeeAmount > balance) {
       this.snackBar.open(
         `Insufficient fee margin for simulation!\nAmount to send: ${amountToSend}${feeDenom} + Simulation fee: ${simulationFeeAmount}${feeDenom} > Balance: ${balance}${feeDenom}`,
+        'Close',
       );
       dialogRefSimulating.close();
       return;
@@ -77,6 +78,7 @@ export class BankApplicationService {
     if (simulatedFee + amountToSend > balance) {
       this.snackBar.open(
         `Insufficient fee margin for send!\nAmount to send: ${amountToSend}${feeDenom} + Simulated fee: ${simulatedFee}${feeDenom} > Balance: ${balance}${feeDenom}`,
+        'Close',
       );
       return;
     }
