@@ -27,6 +27,7 @@ export class BankApplicationService {
     amount: proto.cosmos.base.v1beta1.ICoin[],
     minimumGasPrice: proto.cosmos.base.v1beta1.ICoin,
     privateKey: string,
+    coins: proto.cosmos.base.v1beta1.ICoin[],
   ) {
     // simulate
     let simulatedResultData: SimulatedTxResultResponse;
@@ -34,6 +35,24 @@ export class BankApplicationService {
     let fee: proto.cosmos.base.v1beta1.ICoin;
 
     const dialogRefSimulating = this.loadingDialog.open('Simulating...');
+
+    // confirm whether amount has fee for simulation
+    const feeDenom = minimumGasPrice.denom;
+    const simulationFeeAmount = 1;
+    const tempAmountToSend = amount.find(
+      (amount) => amount.denom === minimumGasPrice.denom,
+    )?.amount;
+    const amountToSend = tempAmountToSend ? parseInt(tempAmountToSend) : 0;
+    const tempBalance = coins.find((coin) => coin.denom === minimumGasPrice.denom)?.amount;
+    const balance = tempBalance ? parseInt(tempBalance) : 0;
+    if (amountToSend + simulationFeeAmount > balance) {
+      this.snackBar.open(
+        `Insufficient fee margin for simulation!\nAmount to send: ${amountToSend}${feeDenom} + Simulation fee: ${simulationFeeAmount}${feeDenom} > Balance: ${balance}${feeDenom}`,
+        'Close',
+      );
+      dialogRefSimulating.close();
+      return;
+    }
 
     try {
       simulatedResultData = await this.bank.simulateToSend(
@@ -52,6 +71,16 @@ export class BankApplicationService {
       return;
     } finally {
       dialogRefSimulating.close();
+    }
+
+    // check whether the fee exceeded
+    const simulatedFee = fee.amount ? parseInt(fee.amount) : 0;
+    if (simulatedFee + amountToSend > balance) {
+      this.snackBar.open(
+        `Insufficient fee margin for send!\nAmount to send: ${amountToSend}${feeDenom} + Simulated fee: ${simulatedFee}${feeDenom} > Balance: ${balance}${feeDenom}`,
+        'Close',
+      );
+      return;
     }
 
     // ask the user to confirm the fee with a dialog
