@@ -8,6 +8,7 @@ export type SendOnSubmitEvent = {
   amount: proto.cosmos.base.v1beta1.ICoin[];
   minimumGasPrice: proto.cosmos.base.v1beta1.ICoin;
   privateKey: string;
+  coins: proto.cosmos.base.v1beta1.ICoin[];
 };
 
 @Component({
@@ -66,6 +67,7 @@ export class SendComponent implements OnInit {
         })),
       minimumGasPrice: this.selectedGasPrice,
       privateKey,
+      coins: this.coins!,
     });
   }
 
