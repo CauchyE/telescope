@@ -1,5 +1,6 @@
 import { TxFeeConfirmDialogComponent } from '../../views/cosmos/tx-fee-confirm-dialog/tx-fee-confirm-dialog.component';
 import { Key } from '../keys/key.model';
+import { KeyService } from '../keys/key.service';
 import { BankService } from './bank.service';
 import { SimulatedTxResultResponse } from './tx-common.model';
 import { Injectable } from '@angular/core';
@@ -19,6 +20,7 @@ export class BankApplicationService {
     private readonly dialog: MatDialog,
     private readonly loadingDialog: LoadingDialogService,
     private readonly bank: BankService,
+    private readonly key: KeyService,
   ) {}
 
   async send(
@@ -29,6 +31,10 @@ export class BankApplicationService {
     privateKey: string,
     coins: proto.cosmos.base.v1beta1.ICoin[],
   ) {
+    if (!(await this.key.validatePrivKey(key, privateKey))) {
+      this.snackBar.open(`Invalid private key.`, 'Close');
+      return;
+    }
     // simulate
     let simulatedResultData: SimulatedTxResultResponse;
     let gas: proto.cosmos.base.v1beta1.ICoin;
