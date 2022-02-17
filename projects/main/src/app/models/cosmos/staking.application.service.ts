@@ -52,7 +52,7 @@ export class StakingApplicationService {
     } catch (error) {
       console.error(error);
       const errorMessage = `Tx simulation failed: ${(error as Error).toString()}`;
-      this.snackBar.open(`An error has occur: ${errorMessage}`);
+      this.snackBar.open(`An error has occur: ${errorMessage}`, 'Close');
       return;
     } finally {
       dialogRefSimulating.close();
