@@ -1,10 +1,8 @@
+import { FaucetApplicationService } from '../../models/faucets/faucet.application.service';
 import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute, Router } from '@angular/router';
-import { LoadingDialogService } from 'ng-loading-dialog';
 import { ConfigService } from 'projects/main/src/app/models/config.service';
 import { FaucetRequest } from 'projects/main/src/app/models/faucets/faucet.model';
-import { FaucetService } from 'projects/main/src/app/models/faucets/faucet.service';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -23,11 +21,8 @@ export class FaucetComponent implements OnInit {
 
   constructor(
     private readonly route: ActivatedRoute,
-    private router: Router,
     private configS: ConfigService,
-    private faucetService: FaucetService,
-    private readonly snackBar: MatSnackBar,
-    private readonly loadingDialog: LoadingDialogService,
+    private faucetApplication: FaucetApplicationService,
   ) {
     this.denoms = this.configS.config.extension?.faucet?.map((faucet) => faucet.denom);
     this.address$ = this.route.queryParams.pipe(map((queryParams) => queryParams.address));
@@ -58,38 +53,7 @@ export class FaucetComponent implements OnInit {
   ngOnInit(): void {}
 
   appPostFaucetRequested(faucetRequest: FaucetRequest): void {
-    const dialogRef = this.loadingDialog.open('Claiming...');
-    const subscription = this.faucetService.postFaucetRequest$(faucetRequest).subscribe(
-      (faucetResponse) => {
-        console.log(faucetResponse);
-        dialogRef.close();
-        subscription.unsubscribe();
-        if (faucetResponse.transfers.length > 0) {
-          const resultList = faucetResponse.transfers.map((transfer) => {
-            if (transfer.status === 'ok') {
-              return true;
-            } else {
-              return false;
-            }
-          });
-          const result = resultList.every((element) => element === true);
-          if (result) {
-            this.snackBar.open('Success', undefined, { duration: 3000 });
-            this.router.navigate(['/accounts', faucetRequest.address]);
-          } else {
-            this.snackBar.open('Failed', undefined, { duration: 6000 });
-          }
-        } else {
-          this.snackBar.open('Failed', undefined, { duration: 6000 });
-        }
-      },
-      (error) => {
-        console.error(error);
-        dialogRef.close();
-        subscription.unsubscribe();
-        this.snackBar.open('Failed', undefined, { duration: 6000 });
-      },
-    );
+    this.faucetApplication.postFaucetRequest(faucetRequest);
   }
 
   appSelectedDenomChange(selectedDenom: string): void {
