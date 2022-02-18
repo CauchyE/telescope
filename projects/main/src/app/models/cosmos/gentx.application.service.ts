@@ -62,9 +62,7 @@ export class GentxApplicationService {
       this.snackBar.open(`Success`, undefined, { duration: 6000 });
       return gentxResult;
     } else {
-      this.snackBar.open(`Error has occur: ${postSlackResult.message}`, undefined, {
-        duration: 6000,
-      });
+      this.snackBar.open(`Error has occur: ${postSlackResult.message}`, 'Close');
       return undefined;
     }
   }

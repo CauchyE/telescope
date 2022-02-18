@@ -64,7 +64,7 @@ and store them safely and confidentially without disclosing them to others.\
       await this.keyApplication.create($event.id, $event.type, $event.privateKey);
     } else {
       this.snackBar.open('Create failed', undefined, {
-        duration: 3000,
+        duration: 6000,
       });
     }
   }

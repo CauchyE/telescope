@@ -1,6 +1,5 @@
 import { MonitorService, Data } from '../../models/monitor.service';
 import { Component, OnInit } from '@angular/core';
-import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, Observable, of } from 'rxjs';
 import { catchError, map, mergeMap } from 'rxjs/operators';
@@ -17,11 +16,7 @@ export class MonitorComponent implements OnInit {
   endDate$: Observable<Date>;
   // count$: Observable<number>;
 
-  constructor(
-    private route: ActivatedRoute,
-    private readonly monitor: MonitorService,
-    private snackBar: MatSnackBar,
-  ) {
+  constructor(private route: ActivatedRoute, private readonly monitor: MonitorService) {
     const now = new Date();
     const yesterday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1);
     this.dateRange$ = new BehaviorSubject([yesterday, now]);

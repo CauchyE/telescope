@@ -67,7 +67,7 @@ export class BankApplicationService {
     } catch (error) {
       console.error(error);
       const errorMessage = `Tx simulation failed: ${(error as Error).toString()}`;
-      this.snackBar.open(`An error has occur: ${errorMessage}`);
+      this.snackBar.open(`An error has occur: ${errorMessage}`, 'Close');
       return;
     } finally {
       dialogRefSimulating.close();
@@ -112,9 +112,7 @@ export class BankApplicationService {
     } catch (error) {
       console.error(error);
       const msg = (error as Error).toString();
-      this.snackBar.open(`An error has occur: ${msg}`, undefined, {
-        duration: 6000,
-      });
+      this.snackBar.open(`An error has occur: ${msg}`, 'Close');
       return;
     } finally {
       dialogRef.close();
