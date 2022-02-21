@@ -21,7 +21,7 @@ export class StakingApplicationService {
     private readonly dialog: MatDialog,
     private readonly loadingDialog: LoadingDialogService,
     private readonly staking: StakingService,
-  ) {}
+  ) { }
 
   async createValidator(
     key: Key | undefined,
@@ -108,7 +108,7 @@ export class StakingApplicationService {
     key: Key,
     validatorAddress: string,
     amount: proto.cosmos.base.v1beta1.ICoin,
-    privateKey: string,
+    privateKey: Uint8Array,
   ) {
     const dialogRef = this.loadingDialog.open('Sending');
     let txhash: string;

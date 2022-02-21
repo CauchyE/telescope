@@ -7,16 +7,17 @@ import { MatDialog } from '@angular/material/dialog';
   providedIn: 'root',
 })
 export class KeyBackupDialogService {
-  constructor(public matDialog: MatDialog, private readonly dialog: MatDialog) {}
+  constructor(public matDialog: MatDialog, private readonly dialog: MatDialog) { }
 
   async open(
     mnemonic: string,
-    privatekey: string,
+    privatekey: Uint8Array,
     id: string,
   ): Promise<KeyBackupResult | undefined> {
+    const privatekeyString = Buffer.from(privatekey).toString('hex')
     const keyBackupResult: KeyBackupResult = await this.dialog
       .open(KeyBackupDialogComponent, {
-        data: { mnemonic: mnemonic, privatekey: privatekey, id: id },
+        data: { mnemonic: mnemonic, privatekey: privatekeyString, id: id },
       })
       .afterClosed()
       .toPromise();

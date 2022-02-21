@@ -7,7 +7,7 @@ export type SendOnSubmitEvent = {
   toAddress: string;
   amount: proto.cosmos.base.v1beta1.ICoin[];
   minimumGasPrice: proto.cosmos.base.v1beta1.ICoin;
-  privateKey: string;
+  privateKey: Uint8Array;
   coins: proto.cosmos.base.v1beta1.ICoin[];
 };
 
@@ -44,9 +44,9 @@ export class SendComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
-  onSubmit(toAddress: string, privateKey: string, minimumGasPrice: string) {
+  onSubmit(toAddress: string, privateKeyString: string, minimumGasPrice: string) {
     if (!this.amount) {
       return;
     }
@@ -54,6 +54,11 @@ export class SendComponent implements OnInit {
       return;
     }
     this.selectedGasPrice.amount = minimumGasPrice.toString();
+
+    const privateKeyWithNoWhitespace = privateKeyString.replace(/\s+/g, '');
+    const privateKeyBuffer = Buffer.from(privateKeyWithNoWhitespace, 'hex')
+    const privateKey = Uint8Array.from(privateKeyBuffer)
+
     this.appSubmit.emit({
       key: this.key!,
       toAddress,

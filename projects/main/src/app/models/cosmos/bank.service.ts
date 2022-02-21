@@ -15,7 +15,7 @@ export class BankService {
     private readonly cosmosSDK: CosmosSDKService,
     private readonly key: KeyService,
     private readonly txCommonService: TxCommonService,
-  ) {}
+  ) { }
 
   async send(
     key: Key,
@@ -23,7 +23,7 @@ export class BankService {
     amount: proto.cosmos.base.v1beta1.ICoin[],
     gas: proto.cosmos.base.v1beta1.ICoin,
     fee: proto.cosmos.base.v1beta1.ICoin,
-    privateKey: string,
+    privateKey: Uint8Array,
   ): Promise<InlineResponse20075> {
     const txBuilder = await this.buildSendTx(key, toAddress, amount, gas, fee, privateKey);
     return await this.txCommonService.announceTx(txBuilder);
@@ -34,7 +34,7 @@ export class BankService {
     toAddress: string,
     amount: proto.cosmos.base.v1beta1.ICoin[],
     minimumGasPrice: proto.cosmos.base.v1beta1.ICoin,
-    privateKey: string,
+    privateKey: Uint8Array,
   ): Promise<SimulatedTxResultResponse> {
     const dummyFee: proto.cosmos.base.v1beta1.ICoin = {
       denom: minimumGasPrice.denom,
@@ -61,7 +61,7 @@ export class BankService {
     amount: proto.cosmos.base.v1beta1.ICoin[],
     gas: proto.cosmos.base.v1beta1.ICoin,
     fee: proto.cosmos.base.v1beta1.ICoin,
-    privateKey: string,
+    privateKey: Uint8Array,
   ): Promise<cosmosclient.TxBuilder> {
     const sdk = await this.cosmosSDK.sdk().then((sdk) => sdk.rest);
     const privKey = this.key.getPrivKey(key.type, privateKey);
