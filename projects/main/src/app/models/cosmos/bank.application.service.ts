@@ -1,5 +1,6 @@
 import { TxFeeConfirmDialogComponent } from '../../views/cosmos/tx-fee-confirm-dialog/tx-fee-confirm-dialog.component';
 import { Key } from '../keys/key.model';
+import { KeyService } from '../keys/key.service';
 import { BankService } from './bank.service';
 import { SimulatedTxResultResponse } from './tx-common.model';
 import { Injectable } from '@angular/core';
@@ -19,6 +20,7 @@ export class BankApplicationService {
     private readonly dialog: MatDialog,
     private readonly loadingDialog: LoadingDialogService,
     private readonly bank: BankService,
+    private readonly key: KeyService,
   ) {}
 
   async send(
@@ -27,13 +29,36 @@ export class BankApplicationService {
     amount: proto.cosmos.base.v1beta1.ICoin[],
     minimumGasPrice: proto.cosmos.base.v1beta1.ICoin,
     privateKey: string,
+    coins: proto.cosmos.base.v1beta1.ICoin[],
   ) {
+    if (!(await this.key.validatePrivKey(key, privateKey))) {
+      this.snackBar.open(`Invalid private key.`, 'Close');
+      return;
+    }
     // simulate
     let simulatedResultData: SimulatedTxResultResponse;
     let gas: proto.cosmos.base.v1beta1.ICoin;
     let fee: proto.cosmos.base.v1beta1.ICoin;
 
     const dialogRefSimulating = this.loadingDialog.open('Simulating...');
+
+    // confirm whether amount has fee for simulation
+    const feeDenom = minimumGasPrice.denom;
+    const simulationFeeAmount = 1;
+    const tempAmountToSend = amount.find(
+      (amount) => amount.denom === minimumGasPrice.denom,
+    )?.amount;
+    const amountToSend = tempAmountToSend ? parseInt(tempAmountToSend) : 0;
+    const tempBalance = coins.find((coin) => coin.denom === minimumGasPrice.denom)?.amount;
+    const balance = tempBalance ? parseInt(tempBalance) : 0;
+    if (amountToSend + simulationFeeAmount > balance) {
+      this.snackBar.open(
+        `Insufficient fee margin for simulation!\nAmount to send: ${amountToSend}${feeDenom} + Simulation fee: ${simulationFeeAmount}${feeDenom} > Balance: ${balance}${feeDenom}`,
+        'Close',
+      );
+      dialogRefSimulating.close();
+      return;
+    }
 
     try {
       simulatedResultData = await this.bank.simulateToSend(
@@ -48,10 +73,20 @@ export class BankApplicationService {
     } catch (error) {
       console.error(error);
       const errorMessage = `Tx simulation failed: ${(error as Error).toString()}`;
-      this.snackBar.open(`An error has occur: ${errorMessage}`);
+      this.snackBar.open(`An error has occur: ${errorMessage}`, 'Close');
       return;
     } finally {
       dialogRefSimulating.close();
+    }
+
+    // check whether the fee exceeded
+    const simulatedFee = fee.amount ? parseInt(fee.amount) : 0;
+    if (simulatedFee + amountToSend > balance) {
+      this.snackBar.open(
+        `Insufficient fee margin for send!\nAmount to send: ${amountToSend}${feeDenom} + Simulated fee: ${simulatedFee}${feeDenom} > Balance: ${balance}${feeDenom}`,
+        'Close',
+      );
+      return;
     }
 
     // ask the user to confirm the fee with a dialog
@@ -83,9 +118,7 @@ export class BankApplicationService {
     } catch (error) {
       console.error(error);
       const msg = (error as Error).toString();
-      this.snackBar.open(`An error has occur: ${msg}`, undefined, {
-        duration: 6000,
-      });
+      this.snackBar.open(`An error has occur: ${msg}`, 'Close');
       return;
     } finally {
       dialogRef.close();

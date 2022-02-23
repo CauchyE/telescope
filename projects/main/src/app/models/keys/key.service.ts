@@ -43,6 +43,12 @@ export class KeyService {
     return this.iKeyInfrastructure.getPrivateKeyFromMnemonic(mnemonicWithNoWhitespace);
   }
 
+  async validatePrivKey(key: Key, privateKey: string) {
+    const privKey = this.getPrivKey(key.type, privateKey);
+
+    return key.public_key === Buffer.from(privKey.pubKey().bytes()).toString('hex');
+  }
+
   get(id: string) {
     return this.iKeyInfrastructure.get(id);
   }

@@ -34,7 +34,7 @@ export class StakingComponent implements OnInit {
           return accAddress;
         } catch (error) {
           console.error(error);
-          this.snackBar.open('Invalid address!', undefined, { duration: 3000 });
+          this.snackBar.open('Invalid address!', undefined, { duration: 6000 });
           return undefined;
         }
       }),
