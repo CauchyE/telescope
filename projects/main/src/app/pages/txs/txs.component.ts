@@ -42,8 +42,8 @@ export class TxsComponent implements OnInit {
 
     this.selectedTxType$ = this.route.queryParams.pipe(
       map((params) => {
-        if (this.txTypeOptions?.includes(params.TxType)) {
-          return params.TxType;
+        if (this.txTypeOptions?.includes(params.txType)) {
+          return params.txType;
         } else {
           return this.defaultTxType;
         }
@@ -76,8 +76,10 @@ export class TxsComponent implements OnInit {
     );
 
     this.pageSize$ = this.route.queryParams.pipe(
-      filter((params) => params.perPage),
       map((params) => {
+        if (params.perPage === undefined) {
+          return this.defaultPageSize;
+        }
         const pageSize = Number(params.perPage);
         if (this.pageSizeOptions.includes(pageSize)) {
           return pageSize;
@@ -130,8 +132,8 @@ export class TxsComponent implements OnInit {
         // Note: This is strange. This is temporary workaround way.
         const temporaryWorkaroundPageSize =
           txTotalCount === BigInt(1) &&
-          modifiedPageOffset === BigInt(1) &&
-          modifiedPageSize === BigInt(1)
+            modifiedPageOffset === BigInt(1) &&
+            modifiedPageSize === BigInt(1)
             ? modifiedPageSize + BigInt(1)
             : modifiedPageSize;
 
@@ -153,20 +155,24 @@ export class TxsComponent implements OnInit {
           })
           .catch((error) => {
             console.error(error);
+            console.log("error1", { selectedTxType, pageSize, pageOffset, txTotalCount })
             return [];
           });
       }),
-      map((latestTxs) => latestTxs?.reverse()),
+      map((latestTxs) => {
+        console.log("error2")
+        return latestTxs?.reverse()
+      }),
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   appSelectedTxTypeChanged(selectedTxType: string): void {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: {
-        TxType: selectedTxType,
+        txType: selectedTxType,
       },
       queryParamsHandling: 'merge',
     });
