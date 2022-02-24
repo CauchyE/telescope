@@ -2,9 +2,10 @@
 <mat-card>
   <mat-list *ngFor="let sup of totalSupply?.supply; last as last">
     <mat-list-item>
-      <span>{{ sup.amount | number:'1.0-0' }}</span>
       <span class="flex-auto"></span>
+      <span class="mr-2">{{ sup.amount | number:'1.0-0' }}</span>
       <span>{{ sup.denom }}</span>
+      <span *ngIf="sup?.denom?.length == 3" class="mr-2"></span>
       <mat-divider *ngIf="!last"></mat-divider>
     </mat-list-item>
   </mat-list>

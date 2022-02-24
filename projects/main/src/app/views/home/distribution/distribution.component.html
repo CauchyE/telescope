@@ -2,9 +2,10 @@
 <mat-card>
   <mat-list *ngFor="let pool of communityPool?.pool; last as last">
     <mat-list-item>
-      <span>{{ pool.amount | number:'1.6-6' }}</span>
       <span class="flex-auto"></span>
+      <span class="mr-2">{{ pool.amount | number:'1.6-6' }}</span>
       <span>{{ pool.denom }}</span>
+      <span *ngIf="pool?.denom?.length == 3" class="mr-2"></span>
       <mat-divider *ngIf="!last"></mat-divider>
     </mat-list-item>
   </mat-list>
