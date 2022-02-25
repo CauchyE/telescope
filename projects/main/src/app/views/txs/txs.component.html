@@ -17,8 +17,8 @@
           <span class="break-all truncate pr-4">Block Height</span>
           <span class="flex-auto"></span>
           <span class="break-all truncate">Tx Hash</span>
+          <mat-divider></mat-divider>
         </mat-list-item>
-        <mat-divider></mat-divider>
       </mat-list>
       <mat-nav-list>
         <ng-container *ngFor="let tx of txs">
@@ -26,8 +26,8 @@
             <span class="pr-4 font-mono">{{ tx.height }}</span>
             <span class="flex-auto"></span>
             <span class="break-all truncate font-mono">{{ tx.txhash }}</span>
+            <mat-divider></mat-divider>
           </mat-list-item>
-          <mat-divider></mat-divider>
         </ng-container>
         <mat-paginator [length]="pageLength" [pageSize]="pageSize" [pageIndex]="pageNumber ? pageNumber - 1 : 0"
           [pageSizeOptions]="pageSizeOptions ? pageSizeOptions : []" (page)="onPaginationChange($event)">

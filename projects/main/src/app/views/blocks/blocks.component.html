@@ -9,19 +9,19 @@
           <span class="break-all truncate pr-4">Height</span>
           <span class="flex-auto"></span>
           <span class="break-all truncate">Time</span>
+          <mat-divider></mat-divider>
         </mat-list-item>
       </mat-list>
       <mat-nav-list>
         <ng-container *ngFor="let block of blocks">
-          <mat-divider></mat-divider>
           <mat-list-item routerLink="/blocks/{{ block?.block?.header?.height }}">
             <span class="pr-4">{{ block?.block?.header?.height }}</span>
             <span class="flex-auto"></span>
             <span class="break-all text-sm sm:text-base">
               {{ block?.block?.header?.time | date : 'yyyy-M-d a h:mm:ss z' }}
             </span>
+            <mat-divider></mat-divider>
           </mat-list-item>
-          <mat-divider></mat-divider>
         </ng-container>
         <mat-paginator [length]="pageLength" [pageSize]="pageSize" [pageIndex]="pageNumber ? pageNumber - 1 : 0"
           [pageSizeOptions]="pageSizeOptions ? pageSizeOptions : []" (page)="onPaginationChange($event)">
