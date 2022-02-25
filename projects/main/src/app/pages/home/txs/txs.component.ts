@@ -13,7 +13,7 @@ import { filter, map, mergeMap, switchMap } from 'rxjs/operators';
   styleUrls: ['./txs.component.css'],
 })
 export class TxsComponent implements OnInit {
-  pollingInterval = 30;
+  pollingInterval = 30 * 60;
   txs$?: Observable<InlineResponse20075TxResponse[] | undefined>;
   txTypeOptions?: string[];
   pageSize$: BehaviorSubject<number> = new BehaviorSubject(20);
