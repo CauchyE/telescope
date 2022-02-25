@@ -15,7 +15,7 @@ export class HomeComponent implements OnInit, OnDestroy {
   syncing$: Observable<boolean>;
 
   constructor(private cosmosSDK: CosmosSDKService) {
-    const timer$ = timer(0, 60 * 1000);
+    const timer$ = timer(0, 60 * 60 * 1000);
     const combined$ = combineLatest([timer$, this.cosmosSDK.sdk$]).pipe(map(([_, sdk]) => sdk));
 
     this.nodeInfo$ = combined$.pipe(
