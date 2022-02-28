@@ -24,7 +24,8 @@ export class BlocksComponent implements OnInit {
   latestBlock$: Observable<InlineResponse20035 | undefined>;
   latestBlockHeight$: Observable<bigint | undefined>;
   firstBlockHeight$: Observable<bigint | undefined>;
-  blocks$: Observable<InlineResponse20036[] | undefined>;
+  //blocks$: Observable<InlineResponse20036[] | undefined>;
+  blocks$: Observable<bigint[] | undefined>;
 
   constructor(
     private router: Router,
@@ -101,6 +102,7 @@ export class BlocksComponent implements OnInit {
           (index) => firstBlockHeight - BigInt(index),
         );
       }),
+      /*
       mergeMap((blockHeights) =>
         zip(
           ...blockHeights.map((blockHeight) =>
@@ -112,6 +114,7 @@ export class BlocksComponent implements OnInit {
           ),
         ),
       ),
+      */
       catchError((error) => {
         console.error(error);
         return of(undefined);
@@ -119,7 +122,7 @@ export class BlocksComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   appPaginationChanged(pageEvent: PageEvent): void {
     this.router.navigate([], {

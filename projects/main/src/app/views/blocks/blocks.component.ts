@@ -9,7 +9,8 @@ import { InlineResponse20035 } from '@cosmos-client/core/esm/openapi';
 })
 export class BlocksComponent implements OnInit {
   @Input()
-  blocks?: InlineResponse20035[] | null;
+  //blocks?: InlineResponse20035[] | null;
+  blocks?: bigint[] | null;
 
   @Input()
   pageSizeOptions?: number[] | null;
@@ -30,7 +31,7 @@ export class BlocksComponent implements OnInit {
     this.paginationChange = new EventEmitter();
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   onPaginationChange(pageEvent: PageEvent): void {
     this.paginationChange.emit(pageEvent);
