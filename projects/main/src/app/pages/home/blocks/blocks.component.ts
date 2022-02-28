@@ -12,7 +12,7 @@ import { catchError, map, mergeMap } from 'rxjs/operators';
   styleUrls: ['./blocks.component.css'],
 })
 export class BlocksComponent implements OnInit {
-  pollingInterval = 30;
+  pollingInterval = 30 * 60;
   latestBlock$: Observable<InlineResponse20035 | undefined>;
   latestBlockHeight$: Observable<bigint | undefined>;
   latestBlocks$: Observable<InlineResponse20036[] | undefined>;
