@@ -12,7 +12,6 @@ import { filter, map, mergeMap, switchMap, distinctUntilChanged, withLatestFrom 
 export type PaginationInfo = {
   pageSize: number;
   pageNumber: number;
-  //selectedTxType: string;
 };
 
 
@@ -26,8 +25,6 @@ export type PaginationInfo = {
 
 export class TxsComponent implements OnInit {
   pageSizeOptions = [5, 10, 20, 50, 100];
-  //pageSize$: Observable<number>;
-  //pageNumber$: Observable<number>;
   pageLength$: Observable<number | undefined>;
 
   paginationInfo$: Observable<PaginationInfo>;
@@ -35,7 +32,6 @@ export class TxsComponent implements OnInit {
   defaultPageNumber = 1;
   defaultTxType = 'bank';
   txsTotalCount$: Observable<bigint>;
-  //txsPageOffset$: Observable<bigint>;
 
   pollingInterval = 30;
   txs$?: Observable<InlineResponse20075TxResponse[] | undefined>;
@@ -50,37 +46,27 @@ export class TxsComponent implements OnInit {
   ) {
     this.txTypeOptions = this.configService.config.extension?.messageModules;
     const timer$ = timer(0, this.pollingInterval * 1000);
-    const sdk$ = timer$.pipe(mergeMap((_) => this.cosmosSDK.sdk$));
+    const sdk$ = timer$.pipe(mergeMap((_) => {
+      console.log("time 30 seconds")
+      return this.cosmosSDK.sdk$
+    }));
 
     this.selectedTxType$ = this.route.queryParams.pipe(
+      distinctUntilChanged(),
       map((params) => {
         if (this.txTypeOptions?.includes(params.txType)) {
+          console.log("selected", params.txType)
           return params.txType;
         } else {
+          console.log("this.defaultTxType", params.txType)
           return this.defaultTxType;
         }
       }),
     );
 
-    /*
-    this.pageSize$ = this.route.queryParams.pipe(
-      distinctUntilChanged(),
-      map((params) => {
-        if (params.perPage === undefined) {
-          return this.defaultPageSize;
-        }
-        const pageSize = Number(params.perPage);
-        if (this.pageSizeOptions.includes(pageSize)) {
-          return pageSize;
-        } else {
-          return this.defaultPageSize;
-        }
-      }),
-    );*/
-
     this.txsTotalCount$ = combineLatest([
       sdk$,
-      this.selectedTxType$, // <-- pagenationInfo
+      this.selectedTxType$,
     ]).pipe(
       switchMap(([sdk, selectedTxType]) => {
         return rest.tx
@@ -106,9 +92,10 @@ export class TxsComponent implements OnInit {
       map((txsTotalCount) => (txsTotalCount ? parseInt(txsTotalCount.toString()) : undefined)),
     );
 
+    // どちらを先にするか。this.txsTotalCount$が先だと更新が遅くなる。this.route.queryParamsが先だと一発目リストが表示されない。
     this.paginationInfo$ = this.route.queryParams.pipe(
       withLatestFrom(this.txsTotalCount$),
-      map(([params, txTotalCount]) => {
+      map(([params, txTotalCount,]) => {
 
         //get page size from query param
         const pageSize = this.pageSizeOptions.includes(Number(params.perPage)) ? Number(params.perPage) : this.defaultPageSize;
@@ -117,22 +104,23 @@ export class TxsComponent implements OnInit {
         const pages = Number(params.pages)
         const pageNumber = (txTotalCount === undefined || !pages || pages > Number(txTotalCount) / pageSize + 1) ? this.defaultPageNumber : pages
 
+        console.log({ pageSize, pageNumber })
         return { pageNumber, pageSize }
       }
       )
     )
 
-    this.txs$ = this.txsTotalCount$.pipe(
+    this.txs$ = this.paginationInfo$.pipe(
       withLatestFrom(
         sdk$,
         this.selectedTxType$,
-        this.paginationInfo$),
-      filter(
-        ([txTotalCount, _sdk, _selectedTxType, _paginationInfo,]) =>
-          txTotalCount !== BigInt(0),
-      ),
-      switchMap(([txsTotalCount, sdk, selectedTxType, paginationInfo]) => {
-
+        this.txsTotalCount$),
+      /*
+    filter(
+      ([_paginationInfo, _sdk, _selectedTxType, txTotalCount,]) =>
+        txTotalCount !== BigInt(0),
+    ),*/
+      mergeMap(([paginationInfo, sdk, selectedTxType, txsTotalCount]) => {
 
         const pageOffset = txsTotalCount - BigInt(paginationInfo.pageSize) * BigInt(paginationInfo.pageNumber);
         const modifiedPageOffset = pageOffset < 1 ? BigInt(1) : pageOffset;
@@ -147,9 +135,12 @@ export class TxsComponent implements OnInit {
 
         console.log({ selectedTxType, paginationInfo, pageOffset, modifiedPageOffset, modifiedPageSize })
 
+        /*
         if (modifiedPageOffset <= 0 || modifiedPageSize <= 0) {
+          console.log("return []")
           return [];
         }
+        */
 
         return rest.tx
           .getTxsEvent(
@@ -171,7 +162,7 @@ export class TxsComponent implements OnInit {
           });
       }),
       map((latestTxs) => {
-        console.log("error2")
+        console.log("OK", latestTxs?.length, typeof latestTxs)
         return latestTxs?.reverse()
       }),
     );
@@ -187,6 +178,8 @@ export class TxsComponent implements OnInit {
       },
       queryParamsHandling: 'merge',
     });
+    //this.txs$ = of([])
+    console.log("txtype change")
   }
 
   appPaginationChanged(pageEvent: PageEvent): void {
@@ -198,5 +191,6 @@ export class TxsComponent implements OnInit {
       },
       queryParamsHandling: 'merge',
     });
+    console.log("pagination change")
   }
 }

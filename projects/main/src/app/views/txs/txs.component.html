@@ -30,13 +30,9 @@
         </ng-container>
       </mat-nav-list>
     </ng-template>
-    <mat-paginator
-      [length]="pageLength"
-      [pageSize]="pageSize"
-      [pageIndex]="pageNumber ? pageNumber - 1 : 0"
-      [pageSizeOptions]="pageSizeOptions ? pageSizeOptions : []"
-      (page)="onPaginationChange($event)"
-    >
+    <mat-paginator [length]="pageLength" [pageSize]="pageInfo ? pageInfo.pageSize : 5"
+      [pageIndex]=" pageInfo ? pageInfo.pageNumber - 1 : 0" [pageSizeOptions]="pageSizeOptions ? pageSizeOptions : []"
+      (page)="onPaginationChange($event)">
     </mat-paginator>
   </mat-card>
 </div>
