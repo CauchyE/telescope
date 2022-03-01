@@ -15,7 +15,8 @@ export class BlocksComponent implements OnInit {
   pollingInterval = 30 * 60;
   latestBlock$: Observable<InlineResponse20035 | undefined>;
   latestBlockHeight$: Observable<bigint | undefined>;
-  latestBlocks$: Observable<InlineResponse20036[] | undefined>;
+  //latestBlocks$: Observable<InlineResponse20036[] | undefined>;
+  latestBlocks$: Observable<bigint[] | undefined>;
 
   constructor(private route: ActivatedRoute, private cosmosSDK: CosmosSDKService) {
     const timer$ = timer(0, this.pollingInterval * 1000);
@@ -44,6 +45,7 @@ export class BlocksComponent implements OnInit {
           return latestBlockHeight - BigInt(index);
         }),
       ),
+      /*
       mergeMap((blockHeights) =>
         zip(
           ...blockHeights.map((blockHeight) =>
@@ -55,6 +57,7 @@ export class BlocksComponent implements OnInit {
           ),
         ),
       ),
+      */
       catchError((error) => {
         console.error(error);
         return of(undefined);
@@ -62,5 +65,5 @@ export class BlocksComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 }
