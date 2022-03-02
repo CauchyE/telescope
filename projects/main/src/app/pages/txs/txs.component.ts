@@ -26,22 +26,21 @@ export type PaginationInfo = {
   styleUrls: ['./txs.component.css'],
 })
 export class TxsComponent implements OnInit {
+  pollingInterval = 30;
   pageSizeOptions = [5, 10, 20, 50, 100];
-  pageLength$: Observable<number | undefined>;
+  txTypeOptions?: string[];
 
-  paginationInfo$: Observable<PaginationInfo>;
   defaultPageSize = this.pageSizeOptions[1];
   defaultPageNumber = 1;
   defaultTxType = 'bank';
-  txsTotalCount$: Observable<bigint>;
 
-  pollingInterval = 3000;
-  txs$?: Observable<InlineResponse20075TxResponse[] | undefined>;
-  txTypeOptions?: string[];
   selectedTxType$: Observable<string>;
-
   selectedTxTypeChanged$: Observable<string>;
+  txsTotalCount$: Observable<bigint>;
+  paginationInfo$: Observable<PaginationInfo>;
   paginationInfoChanged$: Observable<PaginationInfo>;
+  pageLength$: Observable<number | undefined>;
+  txs$?: Observable<InlineResponse20075TxResponse[] | undefined>;
 
   constructor(
     private router: Router,
