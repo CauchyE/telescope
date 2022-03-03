@@ -1,5 +1,5 @@
 <h2>Account Info</h2>
-<ng-container *ngIf="baseAccount === undefined || null ; then empty; else exist"></ng-container>
+<ng-container *ngIf="baseAccount === undefined || null; then empty; else exist"></ng-container>
 
 <ng-template #empty>
   <span>*This account has no denoms</span>
@@ -34,19 +34,18 @@
         <span class="flex-auto"></span>
         <span class="ml-2 break-all text-xs md:text-base">{{ publicKey }}</span>
       </mat-list-item>
-      <mat-divider [inset]="true"></mat-divider>
     </mat-list>
   </mat-card>
 
   <h2>Coins</h2>
   <mat-card>
-    <mat-list *ngFor="let balance of balances">
+    <mat-list *ngFor="let balance of balances; last as last">
       <mat-list-item>
-        <span class="whitespace-nowrap">{{ balance.amount | number:'1.0-0' }}</span>
+        <span class="whitespace-nowrap">{{ balance.amount | number: '1.0-0' }}</span>
         <span class="flex-auto"></span>
         <span class="ml-2 break-all">{{ balance.denom }}</span>
+        <mat-divider *ngIf="!last"></mat-divider>
       </mat-list-item>
-      <mat-divider [inset]="true"></mat-divider>
     </mat-list>
   </mat-card>
 </ng-template>
