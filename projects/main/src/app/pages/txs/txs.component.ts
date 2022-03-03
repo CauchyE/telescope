@@ -5,15 +5,8 @@ import { rest } from '@cosmos-client/core';
 import { InlineResponse20075TxResponse } from '@cosmos-client/core/esm/openapi/api';
 import { ConfigService } from 'projects/main/src/app/models/config.service';
 import { CosmosSDKService } from 'projects/main/src/app/models/cosmos-sdk.service';
-import { of, BehaviorSubject, combineLatest, Observable, timer } from 'rxjs';
-import {
-  filter,
-  map,
-  mergeMap,
-  switchMap,
-  distinctUntilChanged,
-  withLatestFrom,
-} from 'rxjs/operators';
+import { of, combineLatest, Observable, timer } from 'rxjs';
+import { map, mergeMap, switchMap, distinctUntilChanged, withLatestFrom } from 'rxjs/operators';
 
 export type PaginationInfo = {
   pageSize: number;
@@ -50,31 +43,17 @@ export class TxsComponent implements OnInit {
   ) {
     this.txTypeOptions = this.configService.config.extension?.messageModules;
     const timer$ = timer(0, this.pollingInterval * 1000);
-    const sdk$ = timer$.pipe(
-      mergeMap((_) => {
-        console.log('time 30 seconds');
-        return this.cosmosSDK.sdk$;
-      }),
-    );
+    const sdk$ = timer$.pipe(mergeMap((_) => this.cosmosSDK.sdk$));
 
     this.selectedTxType$ = this.route.queryParams.pipe(
-      map((params) => {
-        if (this.txTypeOptions?.includes(params.txType)) {
-          console.log('selected', params.txType);
-          return params.txType;
-        } else {
-          console.log('this.defaultTxType', params.txType);
-          return this.defaultTxType;
-        }
-      }),
+      map((params) =>
+        this.txTypeOptions?.includes(params.txType) ? params.txType : this.defaultTxType,
+      ),
     );
 
     this.selectedTxTypeChanged$ = this.selectedTxType$.pipe(
       distinctUntilChanged(),
-      map((txType) => {
-        console.log('distinctUntilChanged', txType, typeof txType);
-        return txType;
-      }),
+      map((txType) => txType),
     );
 
     this.txsTotalCount$ = combineLatest([sdk$, this.selectedTxTypeChanged$]).pipe(
@@ -116,26 +95,17 @@ export class TxsComponent implements OnInit {
             ? this.defaultPageNumber
             : pages;
 
-        console.log({ pageSize, pageNumber });
         return of({ pageNumber, pageSize });
       }),
     );
 
     this.paginationInfoChanged$ = this.paginationInfo$.pipe(
       distinctUntilChanged(),
-      map((paginationInfo) => {
-        console.log('distinctUntilChanged-Page', paginationInfo);
-        return paginationInfo;
-      }),
+      map((paginationInfo) => paginationInfo),
     );
 
     this.txs$ = this.paginationInfoChanged$.pipe(
       withLatestFrom(sdk$, this.selectedTxType$, this.txsTotalCount$),
-      /*
-    filter(
-      ([_paginationInfo, _sdk, _selectedTxType, txTotalCount,]) =>
-        txTotalCount !== BigInt(0),
-    ),*/
       mergeMap(([paginationInfo, sdk, selectedTxType, txsTotalCount]) => {
         const pageOffset =
           txsTotalCount - BigInt(paginationInfo.pageSize) * BigInt(paginationInfo.pageNumber);
@@ -152,16 +122,7 @@ export class TxsComponent implements OnInit {
             ? modifiedPageSize + BigInt(1)
             : modifiedPageSize;
 
-        console.log({
-          selectedTxType,
-          paginationInfo,
-          pageOffset,
-          modifiedPageOffset,
-          modifiedPageSize,
-        });
-
         if (modifiedPageOffset <= 0 || modifiedPageSize <= 0) {
-          console.log('return []');
           return [];
         }
 
@@ -174,20 +135,13 @@ export class TxsComponent implements OnInit {
             temporaryWorkaroundPageSize,
             true,
           )
-          .then((res) => {
-            console.log('sss', res);
-            return res.data.tx_responses;
-          })
+          .then((res) => res.data.tx_responses)
           .catch((error) => {
             console.error(error);
-            console.log('error1', { selectedTxType, pageOffset, txsTotalCount });
             return [];
           });
       }),
-      map((latestTxs) => {
-        console.log('OK', latestTxs?.length, typeof latestTxs);
-        return latestTxs?.reverse();
-      }),
+      map((latestTxs) => latestTxs?.reverse()),
     );
   }
 
@@ -201,8 +155,6 @@ export class TxsComponent implements OnInit {
       },
       queryParamsHandling: 'merge',
     });
-    //this.txs$ = of([])
-    console.log('txtype change');
   }
 
   appPaginationChanged(pageEvent: PageEvent): void {
@@ -214,6 +166,5 @@ export class TxsComponent implements OnInit {
       },
       queryParamsHandling: 'merge',
     });
-    console.log('pagination change');
   }
 }
