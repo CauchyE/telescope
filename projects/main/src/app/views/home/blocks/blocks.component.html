@@ -8,19 +8,24 @@
         <mat-list-item>
           <span class="break-all truncate pr-4">Height</span>
           <span class="flex-auto"></span>
+          <!--
           <span class="break-all truncate">Time</span>
-          <mat-divider></mat-divider>
+          -->
         </mat-list-item>
       </mat-list>
       <mat-nav-list>
         <ng-container *ngFor="let latestBlock of latestBlocks; last as last">
-          <mat-list-item routerLink="/blocks/{{ latestBlock?.block?.header?.height }}">
-            <span class="pr-4">{{ latestBlock?.block?.header?.height }}</span>
+          <mat-divider></mat-divider>
+          <!--<mat-list-item routerLink="/blocks/{{ latestBlock?.block?.header?.height }}">-->
+          <mat-list-item routerLink="/blocks/{{ latestBlock }}">
+            <!--<span class="pr-4">{{ latestBlock?.block?.header?.height }}</span>-->
+            <span class="pr-4">{{ latestBlock }}</span>
             <span class="flex-auto"></span>
+            <!--
             <span class="break-all text-sm sm:text-base">
               {{ latestBlock?.block?.header?.time | date : 'yyyy-M-d a h:mm:ss z' }}
             </span>
-            <mat-divider *ngIf="!last"></mat-divider>
+            -->
           </mat-list-item>
         </ng-container>
       </mat-nav-list>
