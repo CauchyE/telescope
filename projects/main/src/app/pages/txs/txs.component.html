@@ -1,11 +1,4 @@
-<view-txs
-  [txs]="txs$ | async"
-  [txTypeOptions]="txTypeOptions"
-  [selectedTxType]="selectedTxType$ | async"
-  [pageSize]="pageSize$ | async"
-  [pageNumber]="pageNumber$ | async"
-  [pageLength]="pageLength$ | async"
-  [pageSizeOptions]="pageSizeOptions"
-  (selectedTxTypeChanged)="appSelectedTxTypeChanged($event)"
-  (paginationChange)="appPaginationChanged($event)">
+<view-txs [txs]="txs$ | async" [txTypeOptions]="txTypeOptions" [selectedTxType]="selectedTxType$ | async"
+  [pageInfo]="paginationInfo$ | async" [pageLength]="pageLength$ | async" [pageSizeOptions]="pageSizeOptions"
+  (selectedTxTypeChanged)="appSelectedTxTypeChanged($event)" (paginationChange)="appPaginationChanged($event)">
 </view-txs>

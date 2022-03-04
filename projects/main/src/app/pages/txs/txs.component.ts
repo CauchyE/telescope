@@ -1,12 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
-import { ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { rest } from '@cosmos-client/core';
 import { InlineResponse20075TxResponse } from '@cosmos-client/core/esm/openapi/api';
 import { ConfigService } from 'projects/main/src/app/models/config.service';
 import { CosmosSDKService } from 'projects/main/src/app/models/cosmos-sdk.service';
-import { BehaviorSubject, combineLatest, Observable, timer } from 'rxjs';
-import { filter, map, mergeMap, switchMap } from 'rxjs/operators';
+import { of, combineLatest, Observable, timer } from 'rxjs';
+import { map, mergeMap, switchMap, distinctUntilChanged, withLatestFrom } from 'rxjs/operators';
+
+export type PaginationInfo = {
+  pageSize: number;
+  pageNumber: number;
+};
 
 @Component({
   selector: 'app-txs',
@@ -14,20 +19,24 @@ import { filter, map, mergeMap, switchMap } from 'rxjs/operators';
   styleUrls: ['./txs.component.css'],
 })
 export class TxsComponent implements OnInit {
-  pageSizeOptions = [5, 10, 20, 50, 100];
-  pageSize$: BehaviorSubject<number> = new BehaviorSubject(10);
-  pageNumber$: BehaviorSubject<number> = new BehaviorSubject(1);
-  pageLength$: BehaviorSubject<number> = new BehaviorSubject(0);
-
-  txsTotalCount$: Observable<bigint>;
-  txsPageOffset$: Observable<bigint>;
-
   pollingInterval = 30;
-  txs$?: Observable<InlineResponse20075TxResponse[] | undefined>;
+  pageSizeOptions = [5, 10, 20, 50, 100];
   txTypeOptions?: string[];
-  selectedTxType$: BehaviorSubject<string> = new BehaviorSubject('bank');
+
+  defaultPageSize = this.pageSizeOptions[1];
+  defaultPageNumber = 1;
+  defaultTxType = 'bank';
+
+  selectedTxType$: Observable<string>;
+  selectedTxTypeChanged$: Observable<string>;
+  txsTotalCount$: Observable<bigint>;
+  paginationInfo$: Observable<PaginationInfo>;
+  paginationInfoChanged$: Observable<PaginationInfo>;
+  pageLength$: Observable<number | undefined>;
+  txs$?: Observable<InlineResponse20075TxResponse[] | undefined>;
 
   constructor(
+    private router: Router,
     private route: ActivatedRoute,
     private cosmosSDK: CosmosSDKService,
     private configService: ConfigService,
@@ -36,13 +45,19 @@ export class TxsComponent implements OnInit {
     const timer$ = timer(0, this.pollingInterval * 1000);
     const sdk$ = timer$.pipe(mergeMap((_) => this.cosmosSDK.sdk$));
 
-    this.txsTotalCount$ = combineLatest([
-      sdk$,
-      this.pageNumber$,
-      this.pageSize$,
-      this.selectedTxType$,
-    ]).pipe(
-      switchMap(([sdk, _pageNumber, _pageSize, selectedTxType]) => {
+    this.selectedTxType$ = this.route.queryParams.pipe(
+      map((params) =>
+        this.txTypeOptions?.includes(params.txType) ? params.txType : this.defaultTxType,
+      ),
+    );
+
+    this.selectedTxTypeChanged$ = this.selectedTxType$.pipe(
+      distinctUntilChanged(),
+      map((txType) => txType),
+    );
+
+    this.txsTotalCount$ = combineLatest([sdk$, this.selectedTxTypeChanged$]).pipe(
+      switchMap(([sdk, selectedTxType]) => {
         return rest.tx
           .getTxsEvent(
             sdk.rest,
@@ -61,38 +76,47 @@ export class TxsComponent implements OnInit {
           });
       }),
     );
-    this.txsTotalCount$.subscribe((txsTotalCount) => {
-      this.pageLength$.next(parseInt(txsTotalCount.toString()));
-    });
 
-    this.txsPageOffset$ = combineLatest([
-      this.pageNumber$,
-      this.pageSize$,
-      this.txsTotalCount$,
-    ]).pipe(
-      map(([pageNumber, pageSize, txsTotalCount]) => {
-        const pageOffset = txsTotalCount - BigInt(pageSize) * BigInt(pageNumber);
-        return pageOffset;
+    this.pageLength$ = this.txsTotalCount$.pipe(
+      map((txsTotalCount) => (txsTotalCount ? parseInt(txsTotalCount.toString()) : undefined)),
+    );
+
+    this.paginationInfo$ = combineLatest([this.txsTotalCount$, this.route.queryParams]).pipe(
+      switchMap(([txTotalCount, params]) => {
+        //get page size from query param
+        const pageSize = this.pageSizeOptions.includes(Number(params.perPage))
+          ? Number(params.perPage)
+          : this.defaultPageSize;
+
+        //get page number from query param
+        const pages = Number(params.pages);
+        const pageNumber =
+          txTotalCount === undefined || !pages || pages > Number(txTotalCount) / pageSize + 1
+            ? this.defaultPageNumber
+            : pages;
+
+        return of({ pageNumber, pageSize });
       }),
     );
 
-    this.txs$ = combineLatest([
-      sdk$,
-      this.selectedTxType$,
-      this.pageSize$.asObservable(),
-      this.txsPageOffset$,
-      this.txsTotalCount$,
-    ]).pipe(
-      filter(
-        ([_sdk, _selectedTxType, _pageSize, _pageOffset, txTotalCount]) =>
-          txTotalCount !== BigInt(0),
-      ),
-      switchMap(([sdk, selectedTxType, pageSize, pageOffset, txTotalCount]) => {
+    this.paginationInfoChanged$ = this.paginationInfo$.pipe(
+      distinctUntilChanged(),
+      map((paginationInfo) => paginationInfo),
+    );
+
+    this.txs$ = this.paginationInfoChanged$.pipe(
+      withLatestFrom(sdk$, this.selectedTxType$, this.txsTotalCount$),
+      mergeMap(([paginationInfo, sdk, selectedTxType, txsTotalCount]) => {
+        const pageOffset =
+          txsTotalCount - BigInt(paginationInfo.pageSize) * BigInt(paginationInfo.pageNumber);
         const modifiedPageOffset = pageOffset < 1 ? BigInt(1) : pageOffset;
-        const modifiedPageSize = pageOffset < 1 ? pageOffset + BigInt(pageSize) : BigInt(pageSize);
+        const modifiedPageSize =
+          pageOffset < 1
+            ? pageOffset + BigInt(paginationInfo.pageSize)
+            : BigInt(paginationInfo.pageSize);
         // Note: This is strange. This is temporary workaround way.
         const temporaryWorkaroundPageSize =
-          txTotalCount === BigInt(1) &&
+          txsTotalCount === BigInt(1) &&
           modifiedPageOffset === BigInt(1) &&
           modifiedPageSize === BigInt(1)
             ? modifiedPageSize + BigInt(1)
@@ -111,9 +135,7 @@ export class TxsComponent implements OnInit {
             temporaryWorkaroundPageSize,
             true,
           )
-          .then((res) => {
-            return res.data.tx_responses;
-          })
+          .then((res) => res.data.tx_responses)
           .catch((error) => {
             console.error(error);
             return [];
@@ -126,11 +148,23 @@ export class TxsComponent implements OnInit {
   ngOnInit(): void {}
 
   appSelectedTxTypeChanged(selectedTxType: string): void {
-    this.selectedTxType$.next(selectedTxType);
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        txType: selectedTxType,
+      },
+      queryParamsHandling: 'merge',
+    });
   }
 
   appPaginationChanged(pageEvent: PageEvent): void {
-    this.pageSize$.next(pageEvent.pageSize);
-    this.pageNumber$.next(pageEvent.pageIndex + 1);
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: {
+        perPage: pageEvent.pageSize,
+        pages: pageEvent.pageIndex + 1,
+      },
+      queryParamsHandling: 'merge',
+    });
   }
 }
