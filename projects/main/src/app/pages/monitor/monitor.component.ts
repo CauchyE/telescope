@@ -25,9 +25,8 @@ export class MonitorComponent implements OnInit {
     this.endDate$ = this.dateRange$.pipe(map(([start, end]) => end));
     this.dataArray$ = dateRangeMinus1$.pipe(
       map(([start, end]) => {
-        console.log(start, end);
         const count = Math.ceil(((end as any) - (start as any)) / 86400000) + 1;
-        console.log('count', count);
+
         return [start, end, count] as [Date, Date, number];
       }),
       mergeMap(([start, end, count]) =>
@@ -44,7 +43,6 @@ export class MonitorComponent implements OnInit {
       }),
       map((list) => list.reverse()),
     );
-    this.dataArray$.subscribe((data) => console.log(data));
   }
 
   ngOnInit(): void {}

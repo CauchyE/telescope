@@ -31,10 +31,5 @@ export class BlockComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {
-    this.validatorsets$?.subscribe((validatorsets) => {
-      console.log('validatorsets');
-      console.log(validatorsets);
-    });
-  }
+  ngOnInit(): void {}
 }
