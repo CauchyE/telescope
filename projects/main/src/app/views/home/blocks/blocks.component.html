@@ -1,7 +1,7 @@
-<h2>Latest Blocks</h2>
+<h2 class="mb-0 mt-4">Latest Blocks</h2>
 <div class="overflow-scroll h-80">
   <mat-card>
-    <ng-container *ngIf="latestBlocks === undefined || null ; then empty; else exist"></ng-container>
+    <ng-container *ngIf="latestBlocks === undefined || null; then empty; else exist"></ng-container>
     <ng-template #empty></ng-template>
     <ng-template #exist>
       <mat-list>
