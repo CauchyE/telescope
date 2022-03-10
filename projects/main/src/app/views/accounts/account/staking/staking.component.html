@@ -1,6 +1,8 @@
 <h2>Delegator Rewards</h2>
 
-<ng-container *ngIf="(totalRewards?.total?.length || 0) > 0; then existTotalRewards; else emptyTotalRewards">
+<ng-container
+  *ngIf="(totalRewards?.total?.length || 0) > 0; then existTotalRewards; else emptyTotalRewards"
+>
 </ng-container>
 <ng-template #emptyTotalRewards>
   <p>*This account has no total rewards</p>
@@ -10,7 +12,8 @@
   <mat-card>
     <mat-list *ngFor="let eachTotalReward of totalRewards?.total">
       <mat-list-item>
-        <span>{{ eachTotalReward.amount | number:'1.6-6' }}</span>
+        <span>{{ eachTotalReward.amount | floor }}</span>
+        <span class="text-gray-500 text-sm">{{ eachTotalReward.amount | decimals: 6 }}</span>
         <span class="flex-auto"></span>
         <span>{{ eachTotalReward.denom }}</span>
       </mat-list-item>
@@ -20,7 +23,12 @@
 </ng-template>
 
 <ng-container
-  *ngIf="(totalRewards?.rewards?.length || 0) > 0; then existEachValidatorRewards; else emptyEachValidatorRewards">
+  *ngIf="
+    (totalRewards?.rewards?.length || 0) > 0;
+    then existEachValidatorRewards;
+    else emptyEachValidatorRewards
+  "
+>
 </ng-container>
 <ng-template #emptyEachValidatorRewards>
   <p>*This account has not received any rewards from validators</p>
@@ -35,7 +43,8 @@
         <span class="ml-2 break-all text-sm sm:text-base">{{ reward.validator_address }}</span>
       </mat-list-item>
       <mat-list-item *ngFor="let eachReward of reward?.reward">
-        <span>{{ eachReward.amount | number:'1.6-6' }}</span>
+        <span>{{ eachReward.amount | floor }}</span>
+        <span class="text-gray-500 text-sm">{{ eachReward.amount | decimals: 6 }}</span>
         <span class="flex-auto"></span>
         <span>{{ eachReward.denom }}</span>
       </mat-list-item>

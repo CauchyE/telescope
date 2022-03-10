@@ -1,6 +1,12 @@
 <h2>Validator Rewards</h2>
 
-<ng-container *ngIf="(commission?.commission?.commission?.length || 0) > 0; then existCommission; else emptyCommission">
+<ng-container
+  *ngIf="
+    (commission?.commission?.commission?.length || 0) > 0;
+    then existCommission;
+    else emptyCommission
+  "
+>
 </ng-container>
 <ng-template #emptyCommission>
   <p>*This account has no commission</p>
@@ -10,7 +16,8 @@
   <mat-card>
     <mat-list *ngFor="let commission of commission?.commission?.commission">
       <mat-list-item>
-        <span>{{ commission.amount | number:'1.6-6' }}</span>
+        <span>{{ commission.amount | floor }}</span>
+        <span class="text-gray-500 text-sm">{{ commission.amount | decimals: 6 }}</span>
         <span class="flex-auto"></span>
         <span>{{ commission.denom }}</span>
       </mat-list-item>
@@ -19,7 +26,9 @@
   </mat-card>
 </ng-template>
 
-<ng-container *ngIf="(rewards?.rewards?.rewards?.length || 0) > 0; then existRewards; else emptyRewards">
+<ng-container
+  *ngIf="(rewards?.rewards?.rewards?.length || 0) > 0; then existRewards; else emptyRewards"
+>
 </ng-container>
 <ng-template #emptyRewards>
   <p>*This account has no outstanding rewards</p>
@@ -29,7 +38,8 @@
   <mat-card>
     <mat-list *ngFor="let reward of rewards?.rewards?.rewards">
       <mat-list-item>
-        <span>{{ reward.amount | number:'1.6-6' }}</span>
+        <span>{{ reward.amount | floor }}</span>
+        <span class="text-gray-500 text-sm">{{ reward.amount | decimals: 6 }}</span>
         <span class="flex-auto"></span>
         <span>{{ reward.denom }}</span>
       </mat-list-item>
@@ -56,7 +66,8 @@
       <mat-list-item>
         <span>Fraction:</span>
         <span class="flex-auto"></span>
-        <span>{{ slash.fraction }}</span>
+        <span>{{ slash.fraction | floor }}</span>
+        <span class="text-gray-500 text-sm">{{ slash.fraction | decimals: 6 }}</span>
       </mat-list-item>
       <mat-divider [inset]="true"></mat-divider>
     </mat-list>
