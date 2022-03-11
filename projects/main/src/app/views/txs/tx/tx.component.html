@@ -33,10 +33,9 @@
       <span class="whitespace-nowrap">Timestamp: </span>
       <span class="flex-auto"></span>
       <span class="ml-2 break-all text-xs sm:text-base">
-        {{ tx?.tx_response?.timestamp | date : 'yyyy-M-d a h:mm:ss z' }}
+        {{ tx?.tx_response?.timestamp | date: 'yyyy-M-d a h:mm:ss z' }}
       </span>
     </mat-list-item>
-
   </mat-list>
 </mat-card>
 
@@ -78,13 +77,13 @@
         <mat-list-item>
           <span class="whitespace-nowrap">Public Key: </span>
           <span class="flex-auto"></span>
-          <span class="ml-2 break-all">{{ pubKey?.toString() }}</span>
+          <span class="ml-2 break-all">{{ pubKey | json }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
           <span class="whitespace-nowrap">Signature: </span>
           <span class="flex-auto"></span>
-          <span class="ml-2 break-all">{{ signerInfo?.mode_info }}</span>
+          <span class="ml-2 break-all">{{ signerInfo?.mode_info | json }}</span>
         </mat-list-item>
       </mat-list>
     </mat-card>
