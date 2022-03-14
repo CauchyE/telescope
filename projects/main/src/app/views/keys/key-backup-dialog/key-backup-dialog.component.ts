@@ -85,7 +85,7 @@ export class KeyBackupDialogComponent implements OnInit {
   checkSaveMnemonic(str: string): void {
     if (this.mnemonicArray[this.requiredMnemonicNumber] === str) {
       this.checked = true;
-      this.snackBar.open('Collect', undefined, {
+      this.snackBar.open('Correct', undefined, {
         duration: 2000,
       });
     } else {
