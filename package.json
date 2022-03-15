@@ -25,7 +25,7 @@
     "@angular/platform-browser": "~12.2.0",
     "@angular/platform-browser-dynamic": "~12.2.0",
     "@angular/router": "~12.2.0",
-    "@cosmos-client/core": "^0.44.4",
+    "@cosmos-client/core": "^0.45.1",
     "@ngneat/tailwind": "^7.0.3",
     "@ngrx/effects": "^12.4.0",
     "@ngrx/store": "^12.4.0",
