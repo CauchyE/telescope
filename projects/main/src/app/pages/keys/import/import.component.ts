@@ -27,7 +27,7 @@ export class ImportComponent implements OnInit {
     this.privateKey = '';
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   async onBlurMnemonic(mnemonic: string) {
     if (!mnemonic) {

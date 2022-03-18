@@ -35,7 +35,7 @@ export class ImportComponent implements OnInit {
     this.appSubmit = new EventEmitter();
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 
   onBlurMnemonic(mnemonic: string) {
     this.appBlurMnemonic.next(mnemonic);

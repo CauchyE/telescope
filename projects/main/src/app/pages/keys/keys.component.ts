@@ -14,5 +14,5 @@ export class KeysComponent implements OnInit {
     this.keys$ = from(this.key.list());
   }
 
-  ngOnInit(): void { }
+  ngOnInit(): void {}
 }

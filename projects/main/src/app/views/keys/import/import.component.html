@@ -1,7 +1,18 @@
-<form #formRef="ngForm" (submit)="onSubmit(idRef.value, typeRef.value, privateKeyRef.value, mnemonicRef.value)">
+<form
+  #formRef="ngForm"
+  (submit)="onSubmit(idRef.value, typeRef.value, privateKeyRef.value, mnemonicRef.value)"
+>
   <mat-form-field class="w-full">
     <mat-label>ID</mat-label>
-    <input #idRef ngModel name="id" matInput required pattern="^[a-z_][a-z_0-9]*$" autocomplete="username" />
+    <input
+      #idRef
+      ngModel
+      name="id"
+      matInput
+      required
+      pattern="^[a-z_][a-z_0-9]*$"
+      autocomplete="username"
+    />
     <mat-error>^[a-z_][a-z_0-9]*$</mat-error>
   </mat-form-field>
   <mat-form-field class="w-full">
@@ -14,8 +25,18 @@
   </mat-form-field>
   <mat-form-field class="w-full">
     <mat-label>Mnemonic</mat-label>
-    <textarea #mnemonicRef [(ngModel)]="mnemonic" name="mnemonic" matInput rows="3" style="resize: none"
-      [readOnly]="!typeRef.value" required pattern="^[a-z\s]+$" (blur)="onBlurMnemonic(mnemonicRef.value)"></textarea>
+    <textarea
+      #mnemonicRef
+      [(ngModel)]="mnemonic"
+      name="mnemonic"
+      matInput
+      rows="3"
+      style="resize: none"
+      [readOnly]="!typeRef.value"
+      required
+      pattern="^[a-z\s]+$"
+      (blur)="onBlurMnemonic(mnemonicRef.value)"
+    ></textarea>
     <button mat-button type="button" matSuffix (click)="copyClipboard(mnemonicRef.value)">
       <mat-icon>content_copy</mat-icon>
       <span>copy</span>
@@ -23,8 +44,17 @@
   </mat-form-field>
   <mat-form-field class="w-full mb-4 md:mb-0">
     <mat-label>Private key</mat-label>
-    <input #privateKeyRef ngModel [type]="isPasswordVisible ? 'text' : 'password'" name="password"
-      [(ngModel)]="privateKey" matInput readonly required autocomplete="new-password" />
+    <input
+      #privateKeyRef
+      ngModel
+      [type]="isPasswordVisible ? 'text' : 'password'"
+      name="password"
+      [(ngModel)]="privateKey"
+      matInput
+      readonly
+      required
+      autocomplete="new-password"
+    />
     <button mat-button type="button" matSuffix (click)="togglePasswordVisibility()">
       <mat-icon>
         {{ isPasswordVisible ? 'visibility' : 'visibility_off' }}
@@ -35,11 +65,8 @@
       <span>copy</span>
     </button>
     <mat-hint>
-      You must save this as a password using password manager built in the web
-      browser.
+      You must save this as a password using password manager built in the web browser.
     </mat-hint>
   </mat-form-field>
-  <button mat-flat-button class="w-full" color="accent" [disabled]="formRef.invalid">
-    Submit
-  </button>
+  <button mat-flat-button class="w-full" color="accent" [disabled]="formRef.invalid">Submit</button>
 </form>
