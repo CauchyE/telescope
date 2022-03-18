@@ -57,6 +57,46 @@ export class KeyApplicationService {
     await this.router.navigate(['keys', id]);
   }
 
+  async import(id: string, type: KeyType, privateKey: string) {
+    const key = await this.key.get(id);
+    if (key !== undefined) {
+      this.snackBar.open('ID is already used', undefined, {
+        duration: 6000,
+      });
+      return;
+    }
+
+    const publicKey = Buffer.from(await this.key.getPrivKey(type, privateKey).pubKey().bytes()).toString('hex');
+    const keyList = await this.key.list()
+    for (var i = 0; i < keyList.length; i++) {
+      if (keyList[i].public_key === publicKey) {
+        this.snackBar.open('This mnemonic is already used', undefined, {
+          duration: 3000,
+        });
+        return;
+      }
+    }
+
+    const dialogRef = this.loadingDialog.open('Importing');
+    try {
+      await this.key.set(id, type, privateKey);
+    } catch {
+      this.snackBar.open('Error has occured', undefined, {
+        duration: 6000,
+      });
+      return;
+    } finally {
+      dialogRef.close();
+    }
+
+    this.snackBar.open('Successfully imported', undefined, {
+      duration: 6000,
+    });
+
+    await this.router.navigate(['keys', id]);
+  }
+
+
   async delete(id: string) {
     await this.key.delete(id);
 
