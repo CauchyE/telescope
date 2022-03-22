@@ -1,52 +1,52 @@
-<h2>Account Info</h2>
-<ng-container *ngIf="baseAccount === undefined || null ; then empty; else exist"></ng-container>
+<h2 class="mb-0">Account Info</h2>
+<ng-container *ngIf="baseAccount === undefined || null; then empty; else exist"></ng-container>
 
 <ng-template #empty>
   <span>*This account has no denoms</span>
 </ng-template>
 
 <ng-template #exist>
-  <mat-card *ngIf="baseAccount">
+  <mat-card class="mb-4" *ngIf="baseAccount">
     <mat-list>
       <mat-list-item>
         <span class="whitespace-nowrap">Sequence:</span>
         <span class="flex-auto"></span>
         <span class="ml-2 break-all">{{ baseAccount?.sequence }}</span>
+        <mat-divider [inset]="true"></mat-divider>
       </mat-list-item>
-      <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="whitespace-nowrap">Account Number: </span>
         <span class="flex-auto"></span>
         <span class="ml-2 break-all">{{ baseAccount?.account_number }}</span>
+        <mat-divider [inset]="true"></mat-divider>
       </mat-list-item>
-      <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="whitespace-nowrap">Address: </span>
         <span class="flex-auto"></span>
         <span class="ml-2 break-all text-sm sm:text-base">{{ baseAccount?.address }}</span>
+        <mat-divider [inset]="true"></mat-divider>
       </mat-list-item>
-      <mat-divider [inset]="true"></mat-divider>
 
       <mat-list-item>
         <span class="whitespace-nowrap">Public key: </span>
         <span class="flex-auto"></span>
         <span class="ml-2 break-all text-xs md:text-base">{{ publicKey }}</span>
       </mat-list-item>
-      <mat-divider [inset]="true"></mat-divider>
     </mat-list>
   </mat-card>
 
-  <h2>Coins</h2>
-  <mat-card>
-    <mat-list *ngFor="let balance of balances">
+  <h2 class="mb-0">Coins</h2>
+  <mat-card class="mb-4">
+    <mat-list *ngFor="let balance of balances; last as last">
       <mat-list-item>
-        <span class="whitespace-nowrap">{{ balance.amount | number:'1.0-0' }}</span>
         <span class="flex-auto"></span>
-        <span class="ml-2 break-all">{{ balance.denom }}</span>
+        <span class="mr-2">{{ balance.amount | number: '1.0-0' }}</span>
+        <span>{{ balance.denom }}</span>
+        <span *ngIf="balance?.denom?.length == 3" class="mr-2"></span>
+        <mat-divider *ngIf="!last"></mat-divider>
       </mat-list-item>
-      <mat-divider [inset]="true"></mat-divider>
     </mat-list>
   </mat-card>
 </ng-template>

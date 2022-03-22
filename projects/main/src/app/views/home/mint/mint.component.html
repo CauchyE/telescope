@@ -1,25 +1,31 @@
-<h2>Inflation</h2>
+<h2 class="mb-0 mt-2">Inflation</h2>
 <mat-card>
   <mat-list>
     <mat-list-item>
       <span>Current Annual Inflation Rate: </span>
       <span class="flex-auto"></span>
-      <span class="ml-2">{{ inflation?.inflation | floor }}</span>
-      <span class="text-gray-500 text-sm">{{ inflation?.inflation | decimals: 6 }}</span>
+
+      <span class="mr-2 break-all">
+        <span class="ml-2">{{ inflation?.inflation | floor }}</span>
+        <span class="text-gray-500 text-sm">{{ inflation?.inflation | decimals: 6 }}</span>
+      </span>
     </mat-list-item>
   </mat-list>
 </mat-card>
 
-<h2>Annual Provisions</h2>
+<h2 class="mb-0 mt-2">Annual Provisions</h2>
 <mat-card>
   <mat-list>
     <mat-list-item>
       <span>Current Annual Expected Provisions: </span>
       <span class="flex-auto"></span>
-      <span class="ml-2">{{ annualProvisions?.annual_provisions | floor }}</span>
-      <span class="text-gray-500 text-sm">{{
-        annualProvisions?.annual_provisions | decimals: 6
-      }}</span>
+
+      <span class="mr-2 break-all">
+        <span class="ml-2">{{ annualProvisions?.annual_provisions | floor }}</span>
+        <span class="text-gray-500 text-sm">{{
+          annualProvisions?.annual_provisions | decimals: 6
+        }}</span>
+      </span>
     </mat-list-item>
   </mat-list>
 </mat-card>

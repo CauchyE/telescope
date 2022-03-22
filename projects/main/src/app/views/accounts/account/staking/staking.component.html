@@ -1,4 +1,4 @@
-<h2>Delegator Rewards</h2>
+<h2 class="mb-0">Delegator Rewards</h2>
 
 <ng-container
   *ngIf="(totalRewards?.total?.length || 0) > 0; then existTotalRewards; else emptyTotalRewards"
@@ -8,16 +8,18 @@
   <p>*This account has no total rewards</p>
 </ng-template>
 <ng-template #existTotalRewards>
-  <h3>Total Rewards</h3>
-  <mat-card>
-    <mat-list *ngFor="let eachTotalReward of totalRewards?.total">
+  <h3 class="ml-4 mb-0">Total Rewards</h3>
+  <mat-card class="mb-2">
+    <mat-list *ngFor="let eachTotalReward of totalRewards?.total; last as last">
       <mat-list-item>
-        <span>{{ eachTotalReward.amount | floor }}</span>
-        <span class="text-gray-500 text-sm">{{ eachTotalReward.amount | decimals: 6 }}</span>
         <span class="flex-auto"></span>
+        <span class="mr-2 break-all">
+          <span>{{ eachTotalReward.amount | floor }}</span>
+          <span class="text-gray-500 text-sm">{{ eachTotalReward.amount | decimals: 6 }}</span>
+        </span>
         <span>{{ eachTotalReward.denom }}</span>
+        <mat-divider *ngIf="!last"></mat-divider>
       </mat-list-item>
-      <mat-divider [inset]="true"></mat-divider>
     </mat-list>
   </mat-card>
 </ng-template>
@@ -34,21 +36,25 @@
   <p>*This account has not received any rewards from validators</p>
 </ng-template>
 <ng-template #existEachValidatorRewards>
-  <h3>Rewards by Each Validator</h3>
-  <mat-card>
-    <mat-list *ngFor="let reward of totalRewards?.rewards">
+  <h3 class="ml-4 mb-0">Rewards by Each Validator</h3>
+  <mat-card class="mb-2" *ngFor="let reward of totalRewards?.rewards">
+    <mat-list>
       <mat-list-item>
         <span>Validator Address: </span>
         <span class="flex-auto"></span>
         <span class="ml-2 break-all text-sm sm:text-base">{{ reward.validator_address }}</span>
+        <mat-divider></mat-divider>
       </mat-list-item>
-      <mat-list-item *ngFor="let eachReward of reward?.reward">
-        <span>{{ eachReward.amount | floor }}</span>
-        <span class="text-gray-500 text-sm">{{ eachReward.amount | decimals: 6 }}</span>
+      <mat-list-item *ngFor="let eachReward of reward?.reward; last as last">
         <span class="flex-auto"></span>
+
+        <span class="mr-2 break-all">
+          <span>{{ eachReward.amount | floor }}</span>
+          <span class="text-gray-500 text-sm">{{ eachReward.amount | decimals: 6 }}</span>
+        </span>
         <span>{{ eachReward.denom }}</span>
+        <mat-divider *ngIf="!last"></mat-divider>
       </mat-list-item>
-      <mat-divider [inset]="true"></mat-divider>
     </mat-list>
   </mat-card>
 </ng-template>
