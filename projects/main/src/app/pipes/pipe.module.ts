@@ -1,5 +1,5 @@
-import { DecimalsPipe } from './../decimals.pipe';
-import { FloorPipe } from './../floor.pipe';
+import { DecimalsPipe } from './decimals.pipe';
+import { FloorPipe } from './floor.pipe';
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 
