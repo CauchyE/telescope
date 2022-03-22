@@ -1,5 +1,5 @@
-<h2>Transaction</h2>
-<mat-card>
+<h2 class="mb-0">Transaction</h2>
+<mat-card class="mb-4">
   <mat-list>
     <mat-list-item>
       <span class="whitespace-nowrap">TxHash:</span>
@@ -33,17 +33,16 @@
       <span class="whitespace-nowrap">Timestamp: </span>
       <span class="flex-auto"></span>
       <span class="ml-2 break-all text-xs sm:text-base">
-        {{ tx?.tx_response?.timestamp | date : 'yyyy-M-d a h:mm:ss z' }}
+        {{ tx?.tx_response?.timestamp | date: 'yyyy-M-d a h:mm:ss z' }}
       </span>
     </mat-list-item>
-
   </mat-list>
 </mat-card>
 
-<h3>Msgs</h3>
+<h2 class="mb-0">Msgs</h2>
 <ng-template ngFor let-message [ngForOf]="tx?.tx?.body?.messages">
   <ng-container *ngIf="unpackMsg(message) as msg">
-    <mat-card>
+    <mat-card class="mb-4">
       <mat-list>
         <mat-list-item>
           <span class="whitespace-nowrap">Type: </span>
@@ -64,10 +63,10 @@
   </ng-container>
 </ng-template>
 
-<h3>Signatures</h3>
+<h2 class="mb-0">Signatures</h2>
 <ng-template ngFor let-signerInfo [ngForOf]="tx?.tx?.auth_info?.signer_infos">
   <ng-container *ngIf="unpackKey(signerInfo.public_key) as pubKey">
-    <mat-card class="mb-2">
+    <mat-card class="mb-4">
       <mat-list>
         <mat-list-item>
           <span class="whitespace-nowrap">Key Type: </span>
@@ -91,10 +90,10 @@
   </ng-container>
 </ng-template>
 
-<h3>Logs</h3>
+<h2 class="mb-0">Logs</h2>
 <ng-template ngFor let-log [ngForOf]="tx?.tx_response?.logs">
   <ng-template ngFor let-event [ngForOf]="log.events">
-    <mat-card class="mb-2">
+    <mat-card class="mb-4">
       <mat-list>
         <mat-list-item>
           <span class="whitespace-nowrap">Type: </span>

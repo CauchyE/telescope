@@ -1,5 +1,5 @@
-<h2>Block</h2>
-<mat-card>
+<h2 class="mb-0">Block</h2>
+<mat-card class="mb-4">
   <mat-list>
     <mat-list-item>
       <span class="whitespace-nowrap">BlockHash:</span>
@@ -19,15 +19,15 @@
       <span class="whitespace-nowrap">Timestamp:</span>
       <span class="flex-auto"></span>
       <span class="ml-2 break-all text-sm sm:text-base">
-        {{ block?.block?.header?.time | date : 'yyyy-M-d a h:mm:ss z' }}
+        {{ block?.block?.header?.time | date: 'yyyy-M-d a h:mm:ss z' }}
       </span>
     </mat-list-item>
   </mat-list>
 </mat-card>
 
-<h3>Validator sets</h3>
+<h2 class="mb-0">Validator Sets</h2>
 <ng-container *ngFor="let validatorset of validatorsets?.validators">
-  <mat-card class="mb-2">
+  <mat-card class="mb-4">
     <mat-list>
       <mat-list-item>
         <span class="whitespace-nowrap">Address:</span>
@@ -44,7 +44,9 @@
       <mat-list-item>
         <span class="whitespace-nowrap">Proposer Priority:</span>
         <span class="flex-auto"></span>
-        <span class="ml-2 break-all text-sm sm:text-base">{{ validatorset.proposer_priority }}</span>
+        <span class="ml-2 break-all text-sm sm:text-base">{{
+          validatorset.proposer_priority
+        }}</span>
       </mat-list-item>
     </mat-list>
   </mat-card>
