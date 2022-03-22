@@ -1,39 +1,47 @@
-<h2>Validator Rewards</h2>
+<h2 class="mb-0">Validator Rewards</h2>
 
-<ng-container *ngIf="(commission?.commission?.commission?.length || 0) > 0; then existCommission; else emptyCommission">
+<ng-container
+  *ngIf="
+    (commission?.commission?.commission?.length || 0) > 0;
+    then existCommission;
+    else emptyCommission
+  "
+>
 </ng-container>
 <ng-template #emptyCommission>
   <p>*This account has no commission</p>
 </ng-template>
 <ng-template #existCommission>
-  <h3>Accumulated Commission</h3>
-  <mat-card>
-    <mat-list *ngFor="let commission of commission?.commission?.commission">
+  <h3 class="ml-4 mb-0">Accumulated Commission</h3>
+  <mat-card class="mb-2">
+    <mat-list *ngFor="let commission of commission?.commission?.commission; last as last">
       <mat-list-item>
-        <span>{{ commission.amount | number:'1.6-6' }}</span>
         <span class="flex-auto"></span>
+        <span class="mr-2">{{ commission.amount | number: '1.6-6' }}</span>
         <span>{{ commission.denom }}</span>
+        <mat-divider *ngIf="!last"></mat-divider>
       </mat-list-item>
-      <mat-divider [inset]="true"></mat-divider>
     </mat-list>
   </mat-card>
 </ng-template>
 
-<ng-container *ngIf="(rewards?.rewards?.rewards?.length || 0) > 0; then existRewards; else emptyRewards">
+<ng-container
+  *ngIf="(rewards?.rewards?.rewards?.length || 0) > 0; then existRewards; else emptyRewards"
+>
 </ng-container>
 <ng-template #emptyRewards>
   <p>*This account has no outstanding rewards</p>
 </ng-template>
 <ng-template #existRewards>
-  <h3>Outstanding Rewards</h3>
-  <mat-card>
-    <mat-list *ngFor="let reward of rewards?.rewards?.rewards">
+  <h3 class="ml-4 mb-0">Outstanding Rewards</h3>
+  <mat-card class="mb-2">
+    <mat-list *ngFor="let reward of rewards?.rewards?.rewards; last as last">
       <mat-list-item>
-        <span>{{ reward.amount | number:'1.6-6' }}</span>
         <span class="flex-auto"></span>
+        <span class="mr-2">{{ reward.amount | number: '1.6-6' }}</span>
         <span>{{ reward.denom }}</span>
+        <mat-divider *ngIf="!last"></mat-divider>
       </mat-list-item>
-      <mat-divider [inset]="true"></mat-divider>
     </mat-list>
   </mat-card>
 </ng-template>
@@ -44,21 +52,20 @@
   <p>*This account has no slashes</p>
 </ng-template>
 <ng-template #existSlashes>
-  <h3>Slashing</h3>
-  <mat-card>
-    <mat-list *ngFor="let slash of slashes?.slashes">
+  <h3 class="ml-4 mb-0">Slashing</h3>
+  <mat-card class="mb-2" *ngFor="let slash of slashes?.slashes">
+    <mat-list>
       <mat-list-item>
         <span>Validator Period:</span>
         <span class="flex-auto"></span>
         <span>{{ slash.validator_period }}</span>
+        <mat-divider></mat-divider>
       </mat-list-item>
-      <mat-divider [inset]="true"></mat-divider>
       <mat-list-item>
         <span>Fraction:</span>
         <span class="flex-auto"></span>
-        <span>{{ slash.fraction }}</span>
+        <span>{{ slash.fraction | number: '1.6-6' }}</span>
       </mat-list-item>
-      <mat-divider [inset]="true"></mat-divider>
     </mat-list>
   </mat-card>
 </ng-template>

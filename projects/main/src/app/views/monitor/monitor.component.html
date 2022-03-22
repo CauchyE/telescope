@@ -1,23 +1,37 @@
-<h2>Daily Rewards</h2>
-<mat-card>
+<h2 class="mb-0">Daily Rewards</h2>
+<mat-card class="mb-4">
   <form #formRef="ngForm" (submit)="onSubmit(startRef.value, endRef.value)">
     <mat-form-field class="w-full">
       <mat-label>Choose a Date Range</mat-label>
       <mat-date-range-input [rangePicker]="picker">
-        <input #startRef="ngModel" name="startDate" [ngModel]="startDate" matStartDate matInput placeholder="Start date"
-          required />
-        <input #endRef="ngModel" name="endDate" [ngModel]="endDate" matEndDate matInput placeholder="End date"
-          required />
+        <input
+          #startRef="ngModel"
+          name="startDate"
+          [ngModel]="startDate"
+          matStartDate
+          matInput
+          placeholder="Start date"
+          required
+        />
+        <input
+          #endRef="ngModel"
+          name="endDate"
+          [ngModel]="endDate"
+          matEndDate
+          matInput
+          placeholder="End date"
+          required
+        />
       </mat-date-range-input>
       <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
       <mat-date-range-picker #picker></mat-date-range-picker>
     </mat-form-field>
     <br />
-    <button mat-flat-button class="w-full" color="accent" [disabled]="formRef.invalid">Submit</button>
+    <button mat-flat-button class="w-full" color="accent" [disabled]="formRef.invalid">
+      Submit
+    </button>
   </form>
 </mat-card>
-<br />
-<br />
 
 <ng-container *ngIf="dataArray === null; then loading; else loaded"></ng-container>
 <ng-template #loading>
@@ -29,7 +43,7 @@
 <ng-template #loaded>
   <ng-container *ngIf="(dataArray || []).length > 0; else empty">
     <ng-container *ngFor="let data of dataArray">
-      <mat-card>
+      <mat-card class="mb-4">
         <mat-list>
           <mat-list-item>
             <span>Date:</span>
@@ -40,25 +54,17 @@
           <mat-list-item>
             <span>Commission:</span>
             <span class="flex-auto"></span>
-            <span>{{
-              data.result.commission.commission.commission[0].amount
-              }}</span>
+            <span>{{ data.result.commission.commission.commission[0].amount }}</span>
             <span class="flex-auto"></span>
-            <span>{{
-              data.result.commission.commission.commission[0].denom
-              }}</span>
+            <span>{{ data.result.commission.commission.commission[0].denom }}</span>
           </mat-list-item>
           <mat-divider></mat-divider>
           <mat-list-item>
             <span>Outstanding Rewards:</span>
             <span class="flex-auto"></span>
-            <span>{{
-              data.result.outstanding_rewards.rewards.rewards[0].amount
-              }}</span>
+            <span>{{ data.result.outstanding_rewards.rewards.rewards[0].amount }}</span>
             <span class="flex-auto"></span>
-            <span>{{
-              data.result.outstanding_rewards.rewards.rewards[0].denom
-              }}</span>
+            <span>{{ data.result.outstanding_rewards.rewards.rewards[0].denom }}</span>
           </mat-list-item>
           <mat-divider></mat-divider>
           <mat-list-item>
@@ -69,7 +75,6 @@
           <mat-divider></mat-divider>
         </mat-list>
       </mat-card>
-      <br />
     </ng-container>
   </ng-container>
 </ng-template>
