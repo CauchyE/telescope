@@ -1,4 +1,4 @@
-<h2>Blocks</h2>
+<h2 class="mb-0">Blocks</h2>
 <div>
   <mat-card>
     <ng-container *ngIf="blocks === undefined || null; then empty; else exist"></ng-container>
@@ -18,13 +18,18 @@
             <span class="pr-4">{{ block?.block?.header?.height }}</span>
             <span class="flex-auto"></span>
             <span class="break-all text-sm sm:text-base">
-              {{ block?.block?.header?.time | date : 'yyyy-M-d a h:mm:ss z' }}
+              {{ block?.block?.header?.time | date: 'yyyy-M-d a h:mm:ss z' }}
             </span>
             <mat-divider></mat-divider>
           </mat-list-item>
         </ng-container>
-        <mat-paginator [length]="pageLength" [pageSize]="pageSize" [pageIndex]="pageNumber ? pageNumber - 1 : 0"
-          [pageSizeOptions]="pageSizeOptions ? pageSizeOptions : []" (page)="onPaginationChange($event)">
+        <mat-paginator
+          [length]="pageLength"
+          [pageSize]="pageSize"
+          [pageIndex]="pageNumber ? pageNumber - 1 : 0"
+          [pageSizeOptions]="pageSizeOptions ? pageSizeOptions : []"
+          (page)="onPaginationChange($event)"
+        >
         </mat-paginator>
       </mat-nav-list>
     </ng-template>

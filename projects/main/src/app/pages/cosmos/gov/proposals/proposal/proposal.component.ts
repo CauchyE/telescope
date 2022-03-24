@@ -65,22 +65,5 @@ export class ProposalComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {
-    this.proposal$.subscribe((proposal) => {
-      console.log('proposal');
-      console.log(proposal);
-    });
-    this.deposits$.subscribe((deposits) => {
-      console.log('deposits');
-      console.log(deposits);
-    });
-    this.tally$.subscribe((tally) => {
-      console.log('tally');
-      console.log(tally);
-    });
-    this.votes$.subscribe((votes) => {
-      console.log('votes');
-      console.log(votes);
-    });
-  }
+  ngOnInit(): void {}
 }
