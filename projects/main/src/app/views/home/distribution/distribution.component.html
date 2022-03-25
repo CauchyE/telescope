@@ -1,5 +1,5 @@
-<h2 class="mb-0 mt-2">Community Pool</h2>
-<mat-card>
+<h2 class="mb-0">Community Pool</h2>
+<mat-card class="mb-2">
   <mat-list *ngFor="let pool of communityPool?.pool; last as last">
     <mat-list-item>
       <span class="flex-auto"></span>
@@ -8,6 +8,7 @@
         <span class="text-gray-500 text-sm">{{ pool.amount | decimals: 6 }}</span>
       </span>
       <span>{{ pool.denom }}</span>
+      <span *ngIf="pool?.denom?.length == 3" class="mr-2"></span>
       <mat-divider *ngIf="!last"></mat-divider>
     </mat-list-item>
   </mat-list>

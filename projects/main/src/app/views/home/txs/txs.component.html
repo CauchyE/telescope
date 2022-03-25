@@ -16,8 +16,8 @@
           <span class="break-all truncate pr-4">Block Height</span>
           <span class="flex-auto"></span>
           <span class="break-all truncate">Tx Hash</span>
+          <mat-divider></mat-divider>
         </mat-list-item>
-        <mat-divider></mat-divider>
       </mat-list>
       <mat-nav-list>
         <ng-container *ngFor="let tx of txs; last as last">
@@ -25,8 +25,8 @@
             <span class="pr-4 font-mono">{{ tx.height }}</span>
             <span class="flex-auto"></span>
             <span class="break-all truncate font-mono">{{ tx.txhash }}</span>
+            <mat-divider *ngIf="!last"></mat-divider>
           </mat-list-item>
-          <mat-divider *ngIf="!last"></mat-divider>
         </ng-container>
       </mat-nav-list>
     </ng-template>
