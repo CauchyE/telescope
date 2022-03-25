@@ -1,10 +1,8 @@
 <h2 class="mb-0">Account Info</h2>
 <ng-container *ngIf="baseAccount === undefined || null; then empty; else exist"></ng-container>
-
 <ng-template #empty>
   <span>*This account has no denoms</span>
 </ng-template>
-
 <ng-template #exist>
   <mat-card class="mb-4" *ngIf="baseAccount">
     <mat-list>
@@ -14,21 +12,18 @@
         <span class="ml-2 break-all">{{ baseAccount?.sequence }}</span>
         <mat-divider [inset]="true"></mat-divider>
       </mat-list-item>
-
       <mat-list-item>
         <span class="whitespace-nowrap">Account Number: </span>
         <span class="flex-auto"></span>
         <span class="ml-2 break-all">{{ baseAccount?.account_number }}</span>
         <mat-divider [inset]="true"></mat-divider>
       </mat-list-item>
-
       <mat-list-item>
         <span class="whitespace-nowrap">Address: </span>
         <span class="flex-auto"></span>
         <span class="ml-2 break-all text-sm sm:text-base">{{ baseAccount?.address }}</span>
         <mat-divider [inset]="true"></mat-divider>
       </mat-list-item>
-
       <mat-list-item>
         <span class="whitespace-nowrap">Public key: </span>
         <span class="flex-auto"></span>
