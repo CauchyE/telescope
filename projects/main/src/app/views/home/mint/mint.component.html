@@ -4,7 +4,11 @@
     <mat-list-item>
       <span>Current Annual Inflation Rate: </span>
       <span class="flex-auto"></span>
-      <span class="ml-2">{{ inflation?.inflation | number: '1.9-9' }}</span>
+
+      <span class="mr-2 break-all">
+        <span class="ml-2">{{ inflation?.inflation | floor }}</span>
+        <span class="text-gray-500 text-sm">{{ inflation?.inflation | decimals: 6 }}</span>
+      </span>
     </mat-list-item>
   </mat-list>
 </mat-card>
@@ -15,7 +19,13 @@
     <mat-list-item>
       <span>Current Annual Expected Provisions: </span>
       <span class="flex-auto"></span>
-      <span class="ml-2">{{ annualProvisions?.annual_provisions | number: '1.6-6' }}</span>
+
+      <span class="mr-2 break-all">
+        <span class="ml-2">{{ annualProvisions?.annual_provisions | floor }}</span>
+        <span class="text-gray-500 text-sm">{{
+          annualProvisions?.annual_provisions | decimals: 6
+        }}</span>
+      </span>
     </mat-list-item>
   </mat-list>
 </mat-card>
