@@ -13,8 +13,8 @@
         <span class="break-all truncate pr-4">Block Height</span>
         <span class="flex-auto"></span>
         <span class="break-all truncate">Tx Hash</span>
+        <mat-divider></mat-divider>
       </mat-list-item>
-      <mat-divider></mat-divider>
     </mat-list>
     <ng-container *ngIf="(txs?.length || 0) > 0; then exist; else empty"></ng-container>
     <ng-template #empty></ng-template>
@@ -25,8 +25,8 @@
             <span class="pr-4 font-mono">{{ tx.height }}</span>
             <span class="flex-auto"></span>
             <span class="break-all truncate font-mono">{{ tx.txhash }}</span>
+            <mat-divider></mat-divider>
           </mat-list-item>
-          <mat-divider></mat-divider>
         </ng-container>
       </mat-nav-list>
     </ng-template>
