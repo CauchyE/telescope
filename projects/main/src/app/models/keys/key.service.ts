@@ -4,13 +4,13 @@ import { Injectable } from '@angular/core';
 import { cosmosclient } from '@cosmos-client/core';
 
 export interface IKeyInfrastructure {
-  getPrivKey(type: KeyType, privateKey: string): cosmosclient.PrivKey;
+  getPrivKey(type: KeyType, privateKey: Uint8Array): cosmosclient.PrivKey;
   getPubKey(type: KeyType, publicKey: string): cosmosclient.PubKey;
-  sign(type: KeyType, privateKey: string, message: Uint8Array): Uint8Array;
+  sign(type: KeyType, privateKey: Uint8Array, message: Uint8Array): Uint8Array;
   getPrivateKeyFromMnemonic(mnemonic: string): Promise<string>;
   get(id: string): Promise<Key | undefined>;
   list(): Promise<Key[]>;
-  set(id: string, type: KeyType, privateKey: string): Promise<void>;
+  set(id: string, type: KeyType, privateKey: Uint8Array): Promise<void>;
   delete(id: string): Promise<void>;
 }
 
@@ -23,9 +23,8 @@ export class KeyService {
     this.iKeyInfrastructure = keyInfrastructure;
   }
 
-  getPrivKey(type: KeyType, privateKey: string) {
-    const privateKeyWithNoWhitespace = privateKey.replace(/\s+/g, '');
-    return this.iKeyInfrastructure.getPrivKey(type, privateKeyWithNoWhitespace);
+  getPrivKey(type: KeyType, privateKey: Uint8Array) {
+    return this.iKeyInfrastructure.getPrivKey(type, privateKey);
   }
 
   getPubKey(type: KeyType, publicKey: string) {
@@ -33,9 +32,8 @@ export class KeyService {
     return this.iKeyInfrastructure.getPubKey(type, publicKeyWithNoWhitespace);
   }
 
-  sign(type: KeyType, privateKey: string, message: Uint8Array) {
-    const privateKeyWithNoWhitespace = privateKey.replace(/\s+/g, '');
-    return this.iKeyInfrastructure.sign(type, privateKeyWithNoWhitespace, message);
+  sign(type: KeyType, privateKey: Uint8Array, message: Uint8Array) {
+    return this.iKeyInfrastructure.sign(type, privateKey, message);
   }
 
   getPrivateKeyFromMnemonic(mnemonic: string) {
@@ -43,7 +41,7 @@ export class KeyService {
     return this.iKeyInfrastructure.getPrivateKeyFromMnemonic(mnemonicWithNoWhitespace);
   }
 
-  async validatePrivKey(key: Key, privateKey: string) {
+  async validatePrivKey(key: Key, privateKey: Uint8Array) {
     const privKey = this.getPrivKey(key.type, privateKey);
 
     return key.public_key === Buffer.from(privKey.pubKey().bytes()).toString('hex');
@@ -57,7 +55,7 @@ export class KeyService {
     return this.iKeyInfrastructure.list();
   }
 
-  set(id: string, type: KeyType, privateKey: string) {
+  set(id: string, type: KeyType, privateKey: Uint8Array) {
     return this.iKeyInfrastructure.set(id, type, privateKey);
   }
 

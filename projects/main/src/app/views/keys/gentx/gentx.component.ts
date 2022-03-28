@@ -28,12 +28,12 @@ export class GentxComponent implements OnInit {
 
   @Output() submitGentx = new EventEmitter<GentxData>();
 
-  constructor() {}
+  constructor() { }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   async onSubmitGentx(
-    privateKey: string,
+    privateKeyString: string,
     moniker: string,
     identity: string,
     website: string,
@@ -51,6 +51,11 @@ export class GentxComponent implements OnInit {
     node_id: string,
     pubkey: string,
   ): Promise<void> {
+
+    const privateKeyWithNoWhitespace = privateKeyString.replace(/\s+/g, '');
+    const privateKeyBuffer = Buffer.from(privateKeyWithNoWhitespace, 'hex')
+    const privateKey = Uint8Array.from(privateKeyBuffer)
+
     this.submitGentx.emit({
       privateKey,
       moniker,
