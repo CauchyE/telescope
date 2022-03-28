@@ -6,6 +6,10 @@
       <mat-icon>add</mat-icon>
       <span>Create</span>
     </button>
+    <button mat-flat-button routerLink="/keys/import" color="primary">
+      <mat-icon>add</mat-icon>
+      <span>Import</span>
+    </button>
   </div>
   <mat-divider></mat-divider>
   <ng-container *ngIf="keys === null; then loading; else loaded">
