@@ -1,5 +1,5 @@
 export type GentxData = {
-  privateKey: string;
+  privateKey: Uint8Array;
   moniker: string;
   identity: string;
   website: string;

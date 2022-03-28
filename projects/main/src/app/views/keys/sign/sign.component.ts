@@ -2,7 +2,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 export type SignOnSignEvent = {
   data: string;
-  privateKey: string;
+  privateKey: Uint8Array;
 };
 
 @Component({
@@ -26,7 +26,12 @@ export class SignComponent implements OnInit {
 
   ngOnInit(): void { }
 
-  onClickButton(data: string, privateKey: string) {
+  onClickButton(data: string, privateKeyString: string) {
+
+    const privateKeyWithNoWhitespace = privateKeyString.replace(/\s+/g, '');
+    const privateKeyBuffer = Buffer.from(privateKeyWithNoWhitespace, 'hex')
+    const privateKey = Uint8Array.from(privateKeyBuffer)
+
     this.appSign.emit({
       data,
       privateKey,

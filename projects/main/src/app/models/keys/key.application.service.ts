@@ -18,7 +18,7 @@ export class KeyApplicationService {
     console.log('KeyApplicationService', router, snackBar, loadingDialog, key);
   }
 
-  async create(id: string, type: KeyType, privateKey: string) {
+  async create(id: string, type: KeyType, privateKey: Uint8Array) {
     const key = await this.key.get(id);
     if (key !== undefined) {
       this.snackBar.open('ID is already used', undefined, {
@@ -67,7 +67,7 @@ export class KeyApplicationService {
     await this.router.navigate(['keys']);
   }
 
-  sign(data: string, privateKey: string): string {
+  sign(data: string, privateKey: Uint8Array): string {
     const uInt8ArrayData = Uint8Array.from(Buffer.from(data, 'base64'));
     const uInt8ArraySignedData = this.key.sign(KeyType.SECP256K1, privateKey, uInt8ArrayData);
     const base64SignedData = Buffer.from(uInt8ArraySignedData).toString('base64');

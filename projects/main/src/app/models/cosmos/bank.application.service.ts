@@ -21,14 +21,14 @@ export class BankApplicationService {
     private readonly loadingDialog: LoadingDialogService,
     private readonly bank: BankService,
     private readonly key: KeyService,
-  ) {}
+  ) { }
 
   async send(
     key: Key,
     toAddress: string,
     amount: proto.cosmos.base.v1beta1.ICoin[],
     minimumGasPrice: proto.cosmos.base.v1beta1.ICoin,
-    privateKey: string,
+    privateKey: Uint8Array,
     coins: proto.cosmos.base.v1beta1.ICoin[],
   ) {
     if (!(await this.key.validatePrivKey(key, privateKey))) {

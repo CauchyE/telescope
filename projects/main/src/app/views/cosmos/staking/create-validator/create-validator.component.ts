@@ -36,7 +36,7 @@ export class CreateValidatorComponent implements OnInit {
 
   minimumGasPrice?: proto.cosmos.base.v1beta1.ICoin;
 
-  constructor() {}
+  constructor() { }
 
   ngOnChanges(): void {
     if (this.minimumGasPrices && this.minimumGasPrices.length > 0) {
@@ -44,10 +44,10 @@ export class CreateValidatorComponent implements OnInit {
     }
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void { }
 
   async onSubmitCreateValidator(
-    privateKey: string,
+    privateKeyString: string,
     moniker: string,
     identity: string,
     website: string,
@@ -69,6 +69,11 @@ export class CreateValidatorComponent implements OnInit {
     if (this.minimumGasPrice === undefined) {
       return;
     }
+
+    const privateKeyWithNoWhitespace = privateKeyString.replace(/\s+/g, '');
+    const privateKeyBuffer = Buffer.from(privateKeyWithNoWhitespace, 'hex')
+    const privateKey = Uint8Array.from(privateKeyBuffer)
+
     this.submitCreateValidator.emit({
       privateKey,
       moniker,
