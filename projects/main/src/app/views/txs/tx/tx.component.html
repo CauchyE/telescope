@@ -77,13 +77,13 @@
         <mat-list-item>
           <span class="whitespace-nowrap">Public Key: </span>
           <span class="flex-auto"></span>
-          <span class="ml-2 break-all">{{ pubKey?.toString() }}</span>
+          <span class="ml-2 break-all">{{ getPublicKey(pubKey) }}</span>
         </mat-list-item>
         <mat-divider [inset]="true"></mat-divider>
         <mat-list-item>
           <span class="whitespace-nowrap">Signature: </span>
           <span class="flex-auto"></span>
-          <span class="ml-2 break-all">{{ signerInfo?.mode_info }}</span>
+          <span class="ml-2 break-all">{{ signerInfo?.mode_info?.single?.mode }}</span>
         </mat-list-item>
       </mat-list>
     </mat-card>
