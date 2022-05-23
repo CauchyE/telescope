@@ -32,7 +32,7 @@
     "@ngrx/store-devtools": "^12.4.0",
     "bip39": "^3.0.4",
     "crypto-browserify": "^3.12.0",
-    "dexie": "^3.0.3",
+    "dexie": "^3.2.2",
     "ng-loading-dialog": "^12.0.6",
     "ng-min-max": "^12.0.5",
     "querystring": "^0.2.1",
