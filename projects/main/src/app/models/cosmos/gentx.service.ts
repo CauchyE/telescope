@@ -44,10 +44,10 @@ export class GentxService {
     const createValidatorTxData = {
       description: {
         moniker: gentxData.moniker,
-        identity: gentxData.identity,
-        website: gentxData.website,
-        security_contact: gentxData.security_contact,
-        details: gentxData.details,
+        identity: gentxData.identity || null,
+        website: gentxData.website || null,
+        security_contact: gentxData.security_contact || null,
+        details: gentxData.details || null,
       },
       commission: {
         rate: gentxData.rate,
@@ -72,9 +72,6 @@ export class GentxService {
     const txBody = new proto.cosmos.tx.v1beta1.TxBody({
       messages: [cosmosclient.codec.packAny(msgCreateValidator)],
       memo: `${gentxData.node_id}@${gentxData.ip}:26656`,
-      timeout_height: cosmosclient.Long.fromString('0'),
-      extension_options: [],
-      non_critical_extension_options: [],
     });
     console.log('txBody', txBody);
 
@@ -91,10 +88,7 @@ export class GentxService {
         },
       ],
       fee: {
-        amount: [],
         gas_limit: cosmosclient.Long.fromString('200000'),
-        payer: '',
-        granter: '',
       },
     });
     console.log('authInfo', authInfo);
