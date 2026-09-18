@@ -52,10 +52,8 @@ export class TxsComponent implements OnInit {
             undefined,
             true,
           )
-          .then((res) => {
-            console.log("tx-dbg", res)//debug
-            return res.data.pagination?.total ? BigInt(res.data.pagination?.total) : BigInt(0)
-          }
+          .then((res) =>
+            res.data.pagination?.total ? BigInt(res.data.pagination?.total) : BigInt(0),
           )
           .catch((error) => {
             console.error(error);

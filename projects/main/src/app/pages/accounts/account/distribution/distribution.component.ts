@@ -90,22 +90,26 @@ export class DistributionComponent implements OnInit {
     );
 
     this.slashesTotalCount$ = combineLatest([this.cosmosSDK.sdk$, accAddress$, valAddress$, this.latestBlock$]).pipe(
-      switchMap(([sdk, address, valAddress, latestBlock]) => {
+      switchMap(([sdk, accAddress, valAddress, latestBlock]) => {
+        if (accAddress === undefined || valAddress === undefined) {
+          return of(BigInt(0));
+        }
+        const latestBlockHeight = latestBlock?.block?.header?.height
+          ? latestBlock.block.header.height
+          : '0';
         return rest.distribution
           .validatorSlashes(
             sdk.rest,
-            valAddress!,
-            "10",
-            "20",
+            valAddress,
+            '1',
+            latestBlockHeight,
             undefined,
-            BigInt(10),
-            BigInt(100),
+            undefined,
+            undefined,
             true
           )
-          .then((res) => {
-            console.log("ac-dbg", res)//debug
-            return res.data.slashes?.length ? BigInt(res.data.slashes?.length) : BigInt(0)
-          }
+          .then((res) =>
+            res.data.pagination?.total ? BigInt(res.data.pagination?.total) : BigInt(0),
           )
       }),
     );
@@ -121,19 +125,22 @@ export class DistributionComponent implements OnInit {
       }),
     );
 
-    this.slashes$ = combineLatest([this.cosmosSDK.sdk$, accAddress$, valAddress$, this.displaySize$, this.displayNumber$, this.displayLength$]).pipe(
+    this.slashes$ = combineLatest([this.cosmosSDK.sdk$, accAddress$, valAddress$, this.displaySize$, this.slashingDisplayOffset$, this.latestBlock$]).pipe(
       switchMap(([sdk, accAddress, valAddress, displaySize, displayOffset, latestBlock]) => {
         if (accAddress === undefined || valAddress === undefined) {
           return of(undefined);
         }
         const modifiedDisplayOffset = displayOffset < 1 ? BigInt(1) : BigInt(displayOffset);
         const modifiedDisplaySize = displayOffset < 1 ? BigInt(displayOffset) + BigInt(displaySize) : BigInt(displaySize);
+        const latestBlockHeight = latestBlock?.block?.header?.height
+          ? latestBlock.block.header.height
+          : '0';
         return rest.distribution
           .validatorSlashes(
             sdk.rest,
             valAddress,
             '1',
-            String(latestBlock),
+            latestBlockHeight,
             undefined,
             modifiedDisplayOffset,
             modifiedDisplaySize,
