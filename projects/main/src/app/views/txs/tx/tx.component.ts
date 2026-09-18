@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { cosmosclient, proto } from '@cosmos-client/core';
+import { cosmosclient } from '@cosmos-client/core';
 import { CosmosTxV1beta1GetTxResponse } from '@cosmos-client/core/esm/openapi';
 
 @Component({
@@ -40,9 +40,9 @@ export class TxComponent implements OnInit {
   }
 
   getPublicKey(pubkey: any): string {
-    const publicKey = new proto.cosmos.crypto.secp256k1.PubKey({
-      key: pubkey.key,
-    });
-    return cosmosclient.AccAddress.fromPublicKey(publicKey).toString();
+    if (!pubkey?.key) {
+      return '';
+    }
+    return Buffer.from(pubkey.key).toString('hex');
   }
 }
