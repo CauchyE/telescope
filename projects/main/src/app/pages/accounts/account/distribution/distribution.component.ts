@@ -148,6 +148,12 @@ export class DistributionComponent implements OnInit {
           )
           .then((res) => res.data);
       }),
+      map((slashesResponse) => {
+        if (slashesResponse?.slashes) {
+          slashesResponse.slashes = [...slashesResponse.slashes].reverse();
+        }
+        return slashesResponse;
+      }),
     );
   }
 
